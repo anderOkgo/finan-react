@@ -64,17 +64,23 @@ const Register = () => {
             <div>
               <div className="form-group">
                 <label htmlFor="username">Username</label>
-                <input type="text" name="username" value={username} onChange={onChangeUsername} />
+                <input id="username" type="text" name="username" value={username} onChange={onChangeUsername} />
               </div>
 
               <div className="form-group">
                 <label htmlFor="email">Email</label>
-                <input type="text" name="email" value={email} onChange={onChangeEmail} />
+                <input id="email" type="text" name="email" value={email} onChange={onChangeEmail} />
               </div>
 
               <div className="form-group">
                 <label htmlFor="password">Password</label>
-                <input type="password" name="password" value={password} onChange={onChangePassword} />
+                <input
+                  id="password"
+                  type="password"
+                  name="password"
+                  value={password}
+                  onChange={onChangePassword}
+                />
               </div>
 
               <div className="form-group">

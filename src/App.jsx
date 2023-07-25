@@ -16,53 +16,48 @@ const App = () => {
     }
   }, []);
 
-  const logOut = () => {
+  const handleLogout = () => {
     AuthService.logout();
   };
 
   return (
-    <div>
-      <nav className="navbar navbar-expand navbar-dark bg-dark">
-        <Link to={'/'} className="navbar-brand">
-          root
-        </Link>
-        <div className="navbar-nav mr-auto">
+    <div className="app">
+      <nav className="navbar">
+        <div className="navbar-brand">Finan</div>
+        <ul className="navbar-nav">
           <li className="nav-item">
-            <Link to={'/home'} className="nav-link">
+            <a href="/" className="nav-link">
               Home
-            </Link>
+            </a>
           </li>
-        </div>
-        {currentUser ? (
-          <div className="navbar-nav ml-auto">
-            <li className="nav-item">
-              <Link to={'/profile'} className="nav-link">
-                profile
-              </Link>
-            </li>
-            <li className="nav-item">
-              <a href="/login" className="nav-link" onClick={logOut}>
-                LogOut
-              </a>
-            </li>
-          </div>
-        ) : (
-          <div className="navbar-nav ml-auto">
+          {!currentUser ? (
             <li className="nav-item">
               <Link to={'/login'} className="nav-link">
                 Login
               </Link>
             </li>
-            <li className="nav-item">
-              <Link to={'/register'} className="nav-link">
-                Sign Up
-              </Link>
-            </li>
-          </div>
-        )}
+          ) : (
+            <>
+              <li className="nav-item">
+                <Link to={'/profile'} className="nav-link">
+                  profile
+                </Link>
+              </li>
+              <li className="nav-item">
+                <a href="/logout" className="nav-link" onClick={handleLogout}>
+                  Logout
+                </a>
+              </li>
+            </>
+          )}
+        </ul>
       </nav>
+      <div className="container">
+        <h1>Welcome to Finan</h1>
+        {/* Add other content of your app here */}
+      </div>
 
-      <div className="container mt-3">
+      <div className="container">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/home" element={<Home />} />

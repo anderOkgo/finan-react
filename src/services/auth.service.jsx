@@ -1,5 +1,6 @@
 import { helpHttp } from '../helpers/helpHttp';
-const API_URL = 'http://localhost:3001/api/users/';
+//const API_URL = 'http://localhost:3001/api/users/';
+const API_URL = 'https://info.animecream.com/api/users/';
 
 const register = (username, email, password) => {
   return helpHttp().post(API_URL, {

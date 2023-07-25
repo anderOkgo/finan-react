@@ -1,24 +1,19 @@
 //import React from "react";
 import AuthService from '../services/auth.service';
+import Login from './Login';
 
 const Profile = () => {
   const currentUser = AuthService.getCurrentUser();
 
   return (
     <div className="container">
-      <header className="jumbotron">
-        <h3>
-          <strong>{currentUser}</strong> Profile
-        </h3>
-      </header>
-      <p></p>
-      <p>
-        <strong>Id:</strong> {currentUser}
-      </p>
-      <p>
-        <strong>Email:</strong> {currentUser}
-      </p>
-      <strong>Authorities:</strong>
+      {!currentUser ? (
+        <Login></Login>
+      ) : (
+        <>
+          <div>currentUser</div>
+        </>
+      )}
     </div>
   );
 };

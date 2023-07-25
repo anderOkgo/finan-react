@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AuthService from '../services/auth.service';
+import './Login.css';
 
 const Login = () => {
   let navigate = useNavigate();
@@ -25,19 +26,23 @@ const Login = () => {
 
     if (resp) {
       navigate('/profile');
-      //window.location.reload();
+      window.location.reload();
     }
   };
 
   return (
     <div className="col-md-12">
       <div className="card card-container">
-        <img src="//ssl.gstatic.com/accounts/ui/avatar_2x.png" alt="profile-img" className="profile-img-card" />
-
+        <img
+          src="https://yt3.googleusercontent.com/ytc/AOPolaREZCtxoq-_qTVDtexVZc85xutRQ4MNpn-YFgos8Q=s176-c-k-c0x00ffffff-no-rj"
+          alt="profile-img"
+          className="profile-img-card"
+        />
         <form onSubmit={handleLogin} ref={form}>
           <div className="form-group">
             <label htmlFor="username">Username</label>
             <input
+              id="username"
               type="text"
               className="form-control"
               name="username"
@@ -49,6 +54,7 @@ const Login = () => {
           <div className="form-group">
             <label htmlFor="password">Password</label>
             <input
+              id="password"
               type="password"
               className="form-control"
               name="password"
