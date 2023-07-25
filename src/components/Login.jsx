@@ -22,11 +22,11 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     let resp = await AuthService.login(username, password);
-    alert(resp);
+    //alert(resp);
 
     if (resp) {
       navigate('/profile');
-      window.location.reload();
+      //window.location.reload();
     }
   };
 
