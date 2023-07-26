@@ -1,5 +1,5 @@
 //import * as React from 'react';
-import ExchangeRate from '../ExchangeRate';
+//import ExchangeRate from '../ExchangeRate';
 import CountDownEnd from '../countDownEnd/CountDownEnd';
 import './CardRow.css';
 
@@ -17,9 +17,7 @@ export default function CardRow() {
               <h2>{`Remaing time`}</h2>
               <hr />
               <CountDownEnd />
-              <div>
-                <ExchangeRate />
-              </div>
+              <div>{/* <ExchangeRate /> */}</div>
             </div>
           </div>
         </div>

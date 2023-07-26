@@ -18,7 +18,7 @@ th {
 
 /* Set the main color as RGB: #104858 */
 :root {
-  --main-color: #009688;
+  --main-color: #01579b;
 }
 
 /* Reset default browser styles */
@@ -37,7 +37,7 @@ ol {
 }
 
 body {
-  font-family: Arial, sans-serif;
+  font-family: 'Roboto', Arial, sans-serif;
   background-color: #f5f5f5;
 }
 
