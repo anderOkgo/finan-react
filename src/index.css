@@ -2,9 +2,23 @@
   box-sizing: border-box;
 }
 
+/* Apply a CSS reset to remove default margins and paddings */
+body,
+h1,
+h2,
+h3,
+p,
+table,
+td,
+th {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 /* Set the main color as RGB: #104858 */
 :root {
-  --main-color: #104858;
+  --main-color: #009688;
 }
 
 /* Reset default browser styles */

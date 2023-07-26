@@ -1,7 +1,7 @@
 /* smallest screen first */
 .card {
   /* max-width: 900px; */
-  padding: 0.5em;
+
   margin: auto;
 }
 
@@ -41,8 +41,8 @@
 }
 
 .radiotab:checked + .label {
-  background: #fff;
-  color: #000;
+  background: #009688;
+  color: #ffffff;
   border-top: 1px solid #ccc;
   border-left: 1px solid #ccc;
   border-right: 1px solid #ccc;

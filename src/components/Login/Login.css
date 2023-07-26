@@ -1,6 +1,7 @@
 /* CSS design for the JSX code */
 .col-md-12 {
   display: flex;
+  margin: 1em;
 }
 
 .card-container {
@@ -31,7 +32,7 @@ label {
 }
 
 .form-control {
-  width: 90%;
+  width: 100%;
   padding: 8px 12px;
   border: 1px solid #cccccc;
   border-radius: 4px;

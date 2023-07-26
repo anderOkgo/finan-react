@@ -1,4 +1,6 @@
 //import * as React from 'react';
+import ExchangeRate from '../ExchangeRate';
+import CountDownEnd from '../countDownEnd/CountDownEnd';
 import './CardRow.css';
 
 export default function CardRow() {
@@ -12,12 +14,12 @@ export default function CardRow() {
         <div className="panel">
           <div className="tab-section">
             <div className="section-details">
-              <h2>{`titulo`}</h2>
-              <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus voluptates dignissimos facere, nisi,
-                molestiae ex ipsa laboriosam dicta saepe similique, a non quam harum ipsum reprehenderit aliquid
-                molestias impedit illo.
-              </p>
+              <h2>{`Remaing time`}</h2>
+              <hr />
+              <CountDownEnd />
+              <div>
+                <ExchangeRate />
+              </div>
             </div>
           </div>
         </div>
@@ -27,11 +29,11 @@ export default function CardRow() {
         </label>
         <div className="panel">
           <div id="section2" className="tab-section">
-            <h2>{'Ander'}</h2>
+            <h2>{'Title2'}</h2>
             <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Vel consequatur exercitationem obcaecati
-              ducimus dolorum velit sapiente blanditiis provident quas. Voluptatem reiciendis quae aliquam libero
-              tempora ratione enim debitis consectetur soluta.
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit quod laborum voluptates eaque nemo atque
+              necessitatibus laudantium ex error nisi esse facere, placeat nesciunt veritatis recusandae aliquam
+              itaque. Nesciunt, voluptatum!
             </p>
           </div>
         </div>
@@ -41,11 +43,11 @@ export default function CardRow() {
         </label>
         <div className="panel">
           <div id="section2" className="tab-section">
-            <h2>{'title3'}</h2>
+            <h2>{'Title3'}</h2>
             <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Vel consequatur exercitationem obcaecati
-              ducimus dolorum velit sapiente blanditiis provident quas. Voluptatem reiciendis quae aliquam libero
-              tempora ratione enim debitis consectetur soluta.
+              Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quasi deleniti laudantium suscipit ipsam,
+              aliquid, rerum assumenda esse hic ducimus temporibus accusantium nesciunt quidem dolor ea delectus
+              deserunt sit! Repudiandae, quasi?
             </p>
           </div>
         </div>
@@ -55,11 +57,11 @@ export default function CardRow() {
         </label>
         <div className="panel">
           <div id="section2" className="tab-section">
-            <h2>{'title4'}</h2>
+            <h2>{'Title4'}</h2>
             <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Vel consequatur exercitationem obcaecati
-              ducimus dolorum velit sapiente blanditiis provident quas. Voluptatem reiciendis quae aliquam libero
-              tempora ratione enim debitis consectetur soluta.
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Omnis consequuntur unde rem assumenda
+              distinctio labore impedit tenetur natus eos voluptatem quaerat vero veritatis dicta temporibus
+              maxime, error, soluta molestias perferendis?
             </p>
           </div>
         </div>
