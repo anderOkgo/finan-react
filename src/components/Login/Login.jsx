@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import AuthService from '../services/auth.service';
+import AuthService from '../../services/auth.service';
 import './Login.css';
 
 const Login = () => {
@@ -25,8 +25,8 @@ const Login = () => {
     //alert(resp);
 
     if (resp) {
-      navigate('/profile');
-      //window.location.reload();
+      navigate('/');
+      window.location.reload();
     }
   };
 

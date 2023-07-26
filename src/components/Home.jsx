@@ -1,26 +1,12 @@
-//import { useState, useEffect } from 'react';
+import AuthService from '../services/auth.service';
+import CardRow from './CardRow/CardRow';
+import Login from './Login/Login';
 
 const Home = () => {
-  //const [content, setContent] = useState('');
-
-  /* useEffect(() => {
-    UserService.getPublicContent().then(
-      (response) => {
-        setContent(response.data);
-      },
-      (error) => {
-        const _content = (error.response && error.response.data) || error.message || error.toString();
-
-        setContent(_content);
-      }
-    );
-  }, []); */
-
+  const currentUser = AuthService.getCurrentUser();
   return (
     <div className="container">
-      <header className="jumbotron">
-        <h3>HOME</h3>
-      </header>
+      <div>{!currentUser ? <Login></Login> : <CardRow />}</div>;
     </div>
   );
 };

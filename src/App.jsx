@@ -2,10 +2,9 @@ import { useState, useEffect } from 'react';
 import { Routes, Route, Link } from 'react-router-dom';
 import './App.css';
 import AuthService from './services/auth.service';
-import Login from './components/Login';
+import Login from './components/Login/Login';
 import Register from './components/Register';
 import Home from './components/Home';
-import Profile from './components/Profile';
 
 const App = () => {
   const [currentUser, setCurrentUser] = useState(undefined);
@@ -25,26 +24,16 @@ const App = () => {
       <nav className="navbar">
         <div className="navbar-brand">Finan</div>
         <ul className="navbar-nav">
-          <li className="nav-item">
-            <a href="/" className="nav-link">
-              Home
-            </a>
-          </li>
           {!currentUser ? (
             <li className="nav-item">
-              <Link to={'/login'} className="nav-link">
+              <Link to={'/'} className="nav-link">
                 Login
               </Link>
             </li>
           ) : (
             <>
               <li className="nav-item">
-                <Link to={'/profile'} className="nav-link">
-                  profile
-                </Link>
-              </li>
-              <li className="nav-item">
-                <a href="/logout" className="nav-link" onClick={handleLogout}>
+                <a href="/" className="nav-link" onClick={handleLogout}>
                   Logout
                 </a>
               </li>
@@ -52,18 +41,13 @@ const App = () => {
           )}
         </ul>
       </nav>
-      <div className="container">
-        <h1>Welcome to Finan</h1>
-        {/* Add other content of your app here */}
-      </div>
 
-      <div className="container">
+      <div className="">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/home" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/profile" element={<Profile />} />
         </Routes>
       </div>
     </div>

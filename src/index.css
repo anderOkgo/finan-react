@@ -1,3 +1,7 @@
+* {
+  box-sizing: border-box;
+}
+
 /* Set the main color as RGB: #104858 */
 :root {
   --main-color: #104858;
@@ -33,13 +37,6 @@ a:hover {
   color: #0d3042;
 }
 
-/* Container styles */
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
-}
-
 /* Button styles */
 .btn {
   display: inline-block;
@@ -68,8 +65,6 @@ a:hover {
 
 .label {
   display: block;
-  margin-bottom: 5px;
-  font-weight: bold;
   color: #333333;
 }
 
