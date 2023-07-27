@@ -1,0 +1,191 @@
+a {
+  text-decoration: none;
+}
+
+li {
+  list-style: none;
+}
+
+/* NAVBAR STYLING STARTS */
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  background-color: var(--main-color);
+  color: #fff;
+  transition: max-height 0.5s ease-out;
+}
+
+.nav-links a {
+  color: #fff;
+}
+
+/* LOGO */
+.logo {
+  font-size: 32px;
+}
+
+/* NAVBAR MENU */
+.menu {
+  display: flex;
+  gap: 1em;
+  font-size: 18px;
+  z-index: 2;
+}
+
+.menu li:hover {
+  color: #d4f1f7;
+  border-radius: 5px;
+  transition: 0.3s ease;
+}
+
+.menu li {
+  padding: 5px 14px;
+}
+
+/* DROPDOWN MENU */
+.services {
+  position: relative;
+}
+
+.dropdown {
+  background-color: var(--main-color);
+  padding: 1px 0;
+  position: absolute; /*WITH RESPECT TO PARENT*/
+  display: none;
+  top: 30px;
+  left: 10px;
+}
+
+.dropdown li + li {
+  margin-top: 10px;
+}
+
+.dropdown li {
+  padding: 5px 14px;
+  width: fit-content;
+  text-align: center;
+}
+
+.dropdown li:hover {
+  background-color: var(--main-color);
+}
+
+.services:hover .dropdown {
+  display: block;
+}
+
+/* RESPONSIVE NAVBAR MENU STARTS */
+
+/* CHECKBOX HACK */
+
+#checkbox_toggle {
+  display: none;
+}
+
+/* HAMBURGER MENU */
+.hamburger {
+  color: #d4f1f7;
+  display: none;
+  font-size: 24px;
+  user-select: none;
+}
+
+.hamb {
+  cursor: pointer;
+  float: right;
+  padding: 40px 20px;
+}
+
+.hamb-line {
+  background: white;
+  display: block;
+  height: 2px;
+  position: relative;
+  width: 24px;
+}
+
+.hamb-line::before,
+.hamb-line::after {
+  background: white;
+  content: '';
+  display: block;
+  height: 100%;
+  position: absolute;
+  transition: all 0.2s ease-out;
+  width: 100%;
+}
+
+.hamb-line::before {
+  top: 5px;
+}
+
+.hamb-line::after {
+  top: -5px;
+}
+
+#checkbox_toggle:checked ~ nav {
+  max-height: 100%;
+}
+
+#checkbox_toggle:checked ~ .hamburger .hamb-line {
+  background: transparent;
+}
+
+#checkbox_toggle:checked ~ .hamburger .hamb-line::before {
+  transform: rotate(-45deg);
+  top: 0;
+}
+
+#checkbox_toggle:checked ~ .hamburger .hamb-line::after {
+  transform: rotate(45deg);
+  top: 0;
+}
+
+/* APPLYING MEDIA QUERIES */
+@media (max-width: 768px) {
+  .menu {
+    margin: 20px 0 0 0;
+    background-color: var(--main-color);
+    display: none;
+    position: absolute;
+    right: 0;
+    left: 0;
+    text-align: center;
+    padding: 16px 0;
+  }
+
+  .menu li:hover {
+    background-color: var(--main-color);
+    display: inline-block;
+    transition: 0.3s ease;
+  }
+
+  .menu li + li {
+    margin-top: 12px;
+  }
+
+  #checkbox_toggle:checked ~ .menu {
+    display: block;
+  }
+
+  .hamburger {
+    display: block;
+  }
+
+  .hamb {
+    display: none;
+  }
+
+  .dropdown {
+    position: initial;
+    left: 50%;
+    top: 30px;
+    transform: translateX(35%);
+  }
+
+  .dropdown li:hover {
+    background-color: var(--main-color);
+  }
+}

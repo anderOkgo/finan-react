@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import './ExchangeRate.css'; // Import the CSS file
-import { helpHttp } from '../helpers/helpHttp';
+import { helpHttp } from '../../helpers/helpHttp';
 
 const ExchangeRate = () => {
   const [dollarPrice, setDollarPrice] = useState(null);
