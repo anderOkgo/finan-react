@@ -4,6 +4,7 @@ li {
 
 .navbar {
   height: 10vh;
+  min-height: 2.8em;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -148,7 +149,7 @@ li {
     display: block;
     opacity: 100%;
     max-height: 100%;
-    z-index: 1;
+    z-index: 2;
   }
 
   .menu li:hover {
