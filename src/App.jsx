@@ -5,8 +5,8 @@ import Menu from './components/Menu/Menu';
 const App = () => {
   return (
     <div className="app">
-      <Menu></Menu>
-      <div>{<Home />}</div>
+      <Menu />
+      <Home />
     </div>
   );
 };

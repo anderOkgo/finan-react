@@ -1,6 +1,5 @@
 import { useState, useRef } from 'react';
-
-import AuthService from '../services/auth.service';
+import AuthService from '../../services/auth.service';
 
 const Register = () => {
   const form = useRef();
