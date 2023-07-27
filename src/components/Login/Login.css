@@ -1,6 +1,8 @@
 .col-md-12 {
   display: flex;
-  margin: 3em;
+  justify-content: center;
+  align-items: center;
+  height: 90vh;
 }
 
 .card-container {

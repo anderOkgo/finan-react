@@ -4,11 +4,7 @@ import Login from './Login/Login';
 
 const Home = () => {
   const currentUser = AuthService.getCurrentUser();
-  return (
-    <div className="container">
-      <div>{!currentUser ? <Login></Login> : <Tabs />}</div>
-    </div>
-  );
+  return <>{!currentUser ? <Login /> : <Tabs />}</>;
 };
 
 export default Home;
