@@ -15,6 +15,9 @@
 .label {
   max-width: 8em;
   width: 25%;
+  height: 10%;
+  min-height: 37px;
+  max-height: 37px;
   padding: 0.3em;
   background: var(--light-gray);
   cursor: pointer;
@@ -41,7 +44,7 @@
   border-bottom: 1px solid var(--soft-gray);
   border-right: 1px solid var(--soft-gray);
   border-radius: 0px 0px 8px 8px;
-  height: 100vh;
+  height: 90%;
 }
 
 .panel:hover {
