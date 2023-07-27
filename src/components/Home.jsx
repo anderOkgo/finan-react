@@ -1,5 +1,5 @@
 import AuthService from '../services/auth.service';
-import CardRow from './CardRow/CardRow';
+import CardRow from './Tabs/Tabs';
 import Login from './Login/Login';
 
 const Home = () => {

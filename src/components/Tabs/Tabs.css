@@ -19,7 +19,7 @@
   max-width: 8em;
   width: 25%;
   padding: 0.3em;
-  background: #eeeeee;
+  background: var(--light-gray);
   cursor: pointer;
   font-weight: bold;
   font-size: 20px;
@@ -31,33 +31,29 @@
 }
 
 .label:hover {
-  background: #d8d8d8;
-}
-
-.label:active {
-  background: #ccc;
+  background: var(--white);
 }
 
 .panel {
   order: 99;
   display: none;
   padding: 10px 15px 15px;
-  background: #fff;
+  background: var(--white);
   width: 100%;
-  border-left: 1px solid #ccc;
-  border-bottom: 1px solid #ccc;
-  border-right: 1px solid #ccc;
+  border-left: 1px solid var(--soft-gray);
+  border-bottom: 1px solid var(--soft-gray);
+  border-right: 1px solid var(--soft-gray);
   border-radius: 0px 0px 8px 8px;
   height: 80vh;
 }
 
 .panel:hover {
-  box-shadow: 0px 1px 1px #676767;
+  box-shadow: 0px 1px 1px var(--dark-gray);
 }
 
 .radiotab:checked + .label {
   background: var(--main-color);
-  color: #ffffff;
+  color: var(--white);
   border-bottom: none;
 }
 
@@ -95,7 +91,7 @@
 /* from 650px onwards -- Large screen*/
 @media (min-width: 650px) {
   .panel {
-    border-top: 1px solid #ccc;
+    border-top: 1px solid var(--soft-gray);
   }
 
   .label {
@@ -104,9 +100,6 @@
     z-index: 1;
   }
 
-  .tab-desc {
-    display: none;
-  }
   .production-desc {
     display: block;
   }

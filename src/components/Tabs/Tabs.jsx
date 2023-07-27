@@ -1,7 +1,7 @@
 //import * as React from 'react';
 //import ExchangeRate from '../ExchangeRate';
 import CountDownEnd from '../countDownEnd/CountDownEnd';
-import './CardRow.css';
+import './Tabs.css';
 
 export default function CardRow() {
   return (
