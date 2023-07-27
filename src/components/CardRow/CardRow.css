@@ -19,11 +19,11 @@
   max-width: 8em;
   width: 25%;
   padding: 0.3em;
-  background: #e5e5e5;
+  background: #eeeeee;
   cursor: pointer;
   font-weight: bold;
   font-size: 20px;
-  color: #7f7f7f;
+  color: #161515;
   transition: background 0.3s, color 0.3s;
   border: none;
   text-align: center;
@@ -58,8 +58,6 @@
 .radiotab:checked + .label {
   background: var(--main-color);
   color: #ffffff;
-  border-left: 1px solid #ccc;
-  border-right: 1px solid #ccc;
   border-bottom: none;
 }
 

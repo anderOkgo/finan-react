@@ -25,7 +25,7 @@ const Menu = () => {
         </label>
         <div className="menu">
           <li>
-            <a href="https://react.animecream.com/">R-animecream</a>
+            <a href="https://react.animecream.com/">R-Animecream</a>
           </li>
           <li>
             <a href="https://www.animecream.com/">Animecream</a>
