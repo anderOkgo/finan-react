@@ -1,9 +1,6 @@
 /* smallest screen first */
-.card {
-  margin: auto;
-}
-
 .tabs {
+  height: 90vh;
   display: flex;
   flex-wrap: wrap;
   margin: 0 auto 20px;
