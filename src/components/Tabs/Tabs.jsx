@@ -12,7 +12,7 @@ export default function CardRow() {
       </label>
       <div className="panel">
         <div className="tab-section">
-          <h2>{`Remainimg time`}</h2>
+          <h2>{`Remaining time`}</h2>
           <hr />
           <CountDownEnd />
           <div>{/* <ExchangeRate /> */}</div>
