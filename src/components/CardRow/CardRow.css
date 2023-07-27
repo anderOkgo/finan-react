@@ -72,16 +72,13 @@
   justify-content: center;
 }
 
-.section-details {
-  flex-grow: 1;
-}
-
-.section-details + p {
-  font-size: 1em;
-}
-
-.tab-section p {
+.tab-section > p {
   text-align: justify;
+}
+
+.tab-section > h2 {
+  text-align: center;
+  margin: 1em 0em 0.5em 0em;
 }
 
 .production-desc {

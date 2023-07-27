@@ -13,12 +13,10 @@ export default function CardRow() {
         </label>
         <div className="panel">
           <div className="tab-section">
-            <div className="section-details">
-              <h2>{`Remaing time`}</h2>
-              <hr />
-              <CountDownEnd />
-              <div>{/* <ExchangeRate /> */}</div>
-            </div>
+            <h2>{`Remaing time`}</h2>
+            <hr />
+            <CountDownEnd />
+            <div>{/* <ExchangeRate /> */}</div>
           </div>
         </div>
         <input className="radiotab" name={`tab-${1}`} type="radio" id={`tabtwo-${1}`} />
@@ -26,7 +24,7 @@ export default function CardRow() {
           Tab2
         </label>
         <div className="panel">
-          <div id="section2" className="tab-section">
+          <div className="tab-section">
             <h2>{'Title2'}</h2>
             <p>
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit quod laborum voluptates eaque nemo atque
