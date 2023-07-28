@@ -46,7 +46,7 @@ const AuthService = {
 
 export default AuthService;
 
-export function authHeader() {
+/* export function authHeader() {
   const user = JSON.parse(localStorage.getItem('user'));
 
   if (user && user.accessToken) {
@@ -54,4 +54,4 @@ export function authHeader() {
   } else {
     return {};
   }
-}
+} */
