@@ -1,5 +1,5 @@
 /* smallest screen first */
-.tabs {
+.tabs-area {
   height: 90vh;
   display: flex;
   flex-wrap: wrap;
@@ -38,7 +38,7 @@
   background: var(--white);
 }
 
-.panel {
+.panel-tab {
   order: 99;
   display: none;
   padding: 10px 15px 15px;
@@ -51,7 +51,7 @@
   height: 93%;
 }
 
-.panel:hover {
+.panel-tab:hover {
   box-shadow: 0px 1px 1px var(--dark-gray);
 }
 
@@ -61,7 +61,7 @@
   border-bottom: none;
 }
 
-.radio-tab:checked + .label-tab + .panel {
+.radio-tab:checked + .label-tab + .panel-tab {
   display: grid;
 }
 
@@ -72,11 +72,11 @@
   justify-content: center;
 }
 
-.tab-section > p {
+.section-tab > p {
   text-align: justify;
 }
 
-.tab-section > h2 {
+.section-tab > h2 {
   text-align: center;
   margin: 1em 0em 0.5em 0em;
 }
@@ -94,7 +94,7 @@
 
 /* from 650px onwards -- Large screen*/
 @media (min-width: 650px) {
-  .panel {
+  .panel-tab {
     border-top: 1px solid var(--soft-gray);
   }
 
