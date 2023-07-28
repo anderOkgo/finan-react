@@ -28,6 +28,11 @@ th {
   --light-gray: #eee8e8;
 }
 
+.insetshadow {
+  letter-spacing: 0.05em;
+  text-shadow: -1px -1px 1px var(--second-color), 2px 2px 1px var(--black);
+}
+
 /* Reset default browser styles */
 body,
 h1,
