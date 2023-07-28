@@ -25,6 +25,9 @@ const Menu = () => {
         </label>
         <div className="menu">
           <li>
+            <a href="https://cyfer.animecream.com/">Cyfer</a>
+          </li>
+          <li>
             <a href="https://react.animecream.com/">R-Animecream</a>
           </li>
           <li>
