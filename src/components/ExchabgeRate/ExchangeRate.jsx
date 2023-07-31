@@ -9,7 +9,7 @@ const ExchangeRate = () => {
     const fetchExchangeRate = async () => {
       try {
         // Replace 'YOUR_API_KEY' with your actual API key from ExchangeRate-API or other providers
-        const response = await helpHttp().get(
+        const response = await helpHttp.get(
           'https://v6.exchangerate-api.com/v6/5ff10ac237e8f3cfce6883d9/latest/AUD'
         );
         const exchangeRateAUDtoCOP = response.conversion_rates.COP;
