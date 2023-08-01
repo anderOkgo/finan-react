@@ -1,7 +1,20 @@
 import CountDownEnd from '../countDownEnd/CountDownEnd';
+import { useEffect, useState } from 'react';
+import DataService from '../../services/data.service';
 import './Tabs.css';
 
 export default function CardRow() {
+  const [timeTotal, setTimeTotal] = useState(0);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      let resp = await DataService.totalBank();
+      setTimeTotal(resp[0].total_Bank);
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <div className="tabs-area">
       <input className="radio-tab" name="tab" type="radio" id="tab-one" defaultChecked="checked" />
@@ -14,6 +27,7 @@ export default function CardRow() {
           <hr />
           <CountDownEnd />
         </div>
+        <div>{timeTotal}</div>
       </div>
       <input className="radio-tab" name="tab" type="radio" id="tab-two" />
       <label className="label-tab" htmlFor="tab-two">
