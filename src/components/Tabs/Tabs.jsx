@@ -5,13 +5,13 @@ import './Tabs.css';
 import { moneyFormat } from '../../helpers/operations';
 
 export default function CardRow() {
-  const [timeTotal, setTimeTotal] = useState(0);
+  const [bankTotal, setBankTotal] = useState({});
   const [form, setForm] = useState({});
 
   useEffect(() => {
     const fetchData = async () => {
       let resp = await DataService.totalBank();
-      setTimeTotal(resp[0].total_Bank);
+      setBankTotal(resp[0]);
     };
 
     fetchData();
@@ -48,7 +48,12 @@ export default function CardRow() {
             <hr />
             <CountDownEnd />
             <br />
-            <div className="label-bank">ToataBank: {moneyFormat(timeTotal)}</div>
+            <div className="label-bank">ToataBank: {moneyFormat(bankTotal.total_bank)}</div>
+            {/* {bankTotal.map((genre) => (
+              <span className="tag" key={genre}>
+                {genre}
+              </span>
+            ))} */}
             <br />
             <div>
               <form onSubmit={handleInsert}>
