@@ -21,7 +21,7 @@ const login = async (username, password) => {
   };
 
   const response = await helpHttp.post(API_URL + 'login', options);
-  if (response.token === undefined) {
+  if (response.token_ === undefined) {
     return false;
   } else {
     localStorage.setItem('user', JSON.stringify(response));
