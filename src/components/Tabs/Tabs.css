@@ -9,6 +9,21 @@
   place-content: flex-start;
 }
 
+.label-bank {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: navajowhite;
+  font-size: larger;
+  font-weight: bold;
+  padding: 0.5em;
+}
+
+.container {
+  max-width: 1200px;
+  margin: auto;
+}
+
 .radio-tab {
   position: absolute;
   opacity: 0;

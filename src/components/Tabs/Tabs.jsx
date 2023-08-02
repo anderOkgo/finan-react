@@ -2,6 +2,7 @@ import CountDownEnd from '../countDownEnd/CountDownEnd';
 import { useEffect, useState } from 'react';
 import DataService from '../../services/data.service';
 import './Tabs.css';
+import { moneyFormat } from '../../helpers/operations';
 
 export default function CardRow() {
   const [timeTotal, setTimeTotal] = useState(0);
@@ -40,61 +41,67 @@ export default function CardRow() {
       </label>
       <div className="panel-tab">
         <div className="section-tab">
-          <h2>Remaining time</h2>
-          <hr />
-          <CountDownEnd />
-        </div>
-        <div>{timeTotal}</div>
-        <div>
-          <form onSubmit={handleInsert}>
-            <div className="form-group">
-              <label htmlFor="name">name</label>
-              <input
-                id="name"
-                type="text"
-                className="form-control"
-                name="name"
-                value={form.name}
-                onChange={handleChange}
-              />
-            </div>
+          <div className="container">
+            <h2>Remaining time</h2>
+            <hr />
+            <CountDownEnd />
+            <br />
+            <div className="label-bank">ToataBank: {moneyFormat(timeTotal)}</div>
+            <br />
+            <div>
+              <form onSubmit={handleInsert}>
+                <div className="form-group">
+                  <label htmlFor="name">name</label>
+                  <input
+                    id="name"
+                    type="text"
+                    className="form-control"
+                    name="name"
+                    value={form.name}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
 
-            <div className="form-group">
-              <label htmlFor="val">Value</label>
-              <input
-                id="val"
-                type="number"
-                className="form-control"
-                name="val"
-                value={form.val}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="type">Transaction type</label>
-              <select name="type" onChange={handleChange} required>
-                <option value="">---</option>
-                <option value="1">Income</option>
-                <option value="2">Bill</option>
-                <option value="7">Saving</option>
-                <option value="8">Balance</option>
-                <option value="9">Tax return</option>
-                <option value="10">GYG payment</option>
-                <option value="11">Interest</option>
-                <option value="12">Visa refund</option>
-                <option value="13">Cash exchange</option>
-              </select>
-            </div>
+                <div className="form-group">
+                  <label htmlFor="val">Value</label>
+                  <input
+                    id="val"
+                    type="number"
+                    className="form-control"
+                    name="val"
+                    value={form.val}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="type">Transaction type</label>
+                  <select className="form-control" name="type" onChange={handleChange} required>
+                    <option value="">---</option>
+                    <option value="1">Income</option>
+                    <option value="2">Bill</option>
+                    <option value="7">Saving</option>
+                    <option value="8">Balance</option>
+                    <option value="9">Tax return</option>
+                    <option value="10">GYG payment</option>
+                    <option value="11">Interest</option>
+                    <option value="12">Visa refund</option>
+                    <option value="13">Cash exchange</option>
+                  </select>
+                </div>
 
-            <div className="form-group">
-              <button className="btn btn-primary btn-block">
-                <span>Send</span>
-              </button>
+                <div className="form-group">
+                  <button className="btn btn-primary btn-block">
+                    <span>Send</span>
+                  </button>
+                </div>
+              </form>
             </div>
-          </form>
+          </div>
         </div>
       </div>
+
       <input className="radio-tab" name="tab" type="radio" id="tab-two" />
       <label className="label-tab" htmlFor="tab-two">
         Tab2
@@ -109,6 +116,7 @@ export default function CardRow() {
           </p>
         </div>
       </div>
+
       <input className="radio-tab" name="tab" type="radio" id="tab-three" />
       <label className="label-tab" htmlFor="tab-three">
         Tab3
