@@ -28,7 +28,7 @@ export default function CardRow() {
     let resp = await DataService.insert(form);
     //console.log(resp);
     if (resp) {
-      //window.location.reload();
+      window.location.reload();
     }
   };
 
