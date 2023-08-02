@@ -5,6 +5,7 @@ import './Tabs.css';
 
 export default function CardRow() {
   const [timeTotal, setTimeTotal] = useState(0);
+  const [form, setForm] = useState({});
 
   useEffect(() => {
     const fetchData = async () => {
@@ -14,6 +15,22 @@ export default function CardRow() {
 
     fetchData();
   }, []);
+
+  const handleChange = (e) => {
+    setForm({
+      ...form,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleInsert = async (e) => {
+    e.preventDefault();
+    let resp = await DataService.insert(form);
+    //console.log(resp);
+    if (resp) {
+      //window.location.reload();
+    }
+  };
 
   return (
     <div className="tabs-area">
@@ -28,6 +45,55 @@ export default function CardRow() {
           <CountDownEnd />
         </div>
         <div>{timeTotal}</div>
+        <div>
+          <form onSubmit={handleInsert}>
+            <div className="form-group">
+              <label htmlFor="name">name</label>
+              <input
+                id="name"
+                type="text"
+                className="form-control"
+                name="name"
+                value={form.name}
+                onChange={handleChange}
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="val">Value</label>
+              <input
+                id="val"
+                type="number"
+                className="form-control"
+                name="val"
+                value={form.val}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="type">Transaction type</label>
+              <select name="type" onChange={handleChange} required>
+                <option value="">---</option>
+                <option value="1">Income</option>
+                <option value="2">Bill</option>
+                <option value="7">Saving</option>
+                <option value="8">Balance</option>
+                <option value="9">Tax return</option>
+                <option value="10">GYG payment</option>
+                <option value="11">Interest</option>
+                <option value="12">Visa refund</option>
+                <option value="13">Cash exchange</option>
+              </select>
+            </div>
+
+            <div className="form-group">
+              <button className="btn btn-primary btn-block">
+                <span>Send</span>
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
       <input className="radio-tab" name="tab" type="radio" id="tab-two" />
       <label className="label-tab" htmlFor="tab-two">
