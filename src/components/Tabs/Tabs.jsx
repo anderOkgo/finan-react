@@ -5,7 +5,7 @@ import './Tabs.css';
 import { moneyFormat } from '../../helpers/operations';
 
 export default function CardRow() {
-  const [bankTotal, setBankTotal] = useState({});
+  const [bankTotal, setBankTotal] = useState('');
   const [form, setForm] = useState({});
 
   useEffect(() => {
@@ -27,10 +27,9 @@ export default function CardRow() {
   const handleInsert = async (e) => {
     e.preventDefault();
     let resp = await DataService.insert(form);
-    //console.log(resp);
     e.target.reset();
-    setForm(0);
     if (resp) {
+      alert('successful');
       window.location.reload();
     }
   };

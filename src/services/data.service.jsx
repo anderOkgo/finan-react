@@ -7,27 +7,13 @@ const totalBank = async () => {
 };
 
 const insert = async (par) => {
-  //return await helpHttp.put(API_URL + 'insert', par);
-  var myHeaders = new Headers();
-  myHeaders.append('Content-Type', 'application/json');
-  myHeaders.append(
-    'Authorization',
-    'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJub21icmUiOiJqb2EiLCJpYXQiOjE2Nzg2MTQzNzJ9.233oWiPpIlfzHyva4gdXBuobsssrEf3Ce4tGTZHWm-I'
-  );
-
-  var raw = JSON.stringify(par);
-
-  var requestOptions = {
-    method: 'PUT',
-    headers: myHeaders,
-    body: raw,
-    redirect: 'follow',
-  };
-
-  fetch(API_URL + 'insert', requestOptions)
-    .then((response) => response.text())
-    .then((result) => console.log(result))
-    .catch((error) => console.log('error', error));
+  return await helpHttp.put(API_URL + 'insert', {
+    body: par,
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+    },
+  });
 };
 
 const DataService = { totalBank, insert };
