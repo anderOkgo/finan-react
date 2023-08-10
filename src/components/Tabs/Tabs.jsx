@@ -28,8 +28,11 @@ export default function CardRow() {
     e.preventDefault();
     let resp = await DataService.insert(form);
     e.target.reset();
-    if (resp) {
-      alert('successful');
+    console.log(resp);
+    if (resp.err) {
+      alert('Fail');
+    } else {
+      alert('Success');
       window.location.reload();
     }
   };
@@ -38,7 +41,7 @@ export default function CardRow() {
     <div className="tabs-area">
       <input className="radio-tab" name="tab" type="radio" id="tab-one" defaultChecked="checked" />
       <label className="label-tab" htmlFor="tab-one">
-        Tab1
+        Input
       </label>
       <div className="panel-tab">
         <div className="section-tab">
@@ -95,6 +98,31 @@ export default function CardRow() {
                     <option value="12">Visa refund</option>
                     <option value="13">Cash exchange</option>
                   </select>
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="datemov">Date:</label>
+                  <input
+                    type="datetime-local"
+                    id="datemov"
+                    name="datemov"
+                    value={form.datemov}
+                    onChange={handleChange}
+                    required
+                  ></input>
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="val">Tag</label>
+                  <input
+                    id="tag"
+                    type="text"
+                    className="form-control"
+                    name="tag"
+                    value={form.tag}
+                    onChange={handleChange}
+                    required
+                  />
                 </div>
 
                 <div className="form-group">
