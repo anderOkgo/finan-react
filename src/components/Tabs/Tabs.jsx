@@ -28,7 +28,6 @@ export default function CardRow() {
     e.preventDefault();
     let resp = await DataService.insert(form);
     e.target.reset();
-    console.log(resp);
     if (resp.err) {
       alert('Fail');
     } else {
