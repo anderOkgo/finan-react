@@ -5,7 +5,7 @@ import './Tabs.css';
 import { moneyFormat } from '../../helpers/operations';
 
 export default function CardRow() {
-  const [bankTotal, setBankTotal] = useState('');
+  const [bankTotal, setBankTotal] = useState(0);
   const [form, setForm] = useState({});
 
   useEffect(() => {
@@ -49,7 +49,7 @@ export default function CardRow() {
             <hr />
             <CountDownEnd />
             <br />
-            <div className="label-bank">ToataBank: {moneyFormat(bankTotal.total_bank)}</div>
+            <div className="label-bank">ToataBank: {moneyFormat(bankTotal.total_bank ?? 0)}</div>
             {/* {bankTotal.map((genre) => (
               <span className="tag" key={genre}>
                 {genre}
