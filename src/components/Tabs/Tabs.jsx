@@ -49,7 +49,9 @@ export default function CardRow() {
             <hr />
             <CountDownEnd />
             <br />
-            <div className="label-bank">ToataBank: {moneyFormat(bankTotal.total_bank ?? 0)}</div>
+            <div className="label-bank">
+              ToataBank: {moneyFormat(bankTotal === undefined ? 0 : bankTotal.total_bank)}
+            </div>
             {/* {bankTotal.map((genre) => (
               <span className="tag" key={genre}>
                 {genre}
