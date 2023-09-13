@@ -1,10 +1,16 @@
 import { useState, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import AuthService from '../../services/auth.service';
 import './Login.css';
 
-const Login = () => {
-  let navigate = useNavigate();
+const Login = ({ setInit, init, setProc, proc }) => {
+  Login.propTypes = {
+    setInit: PropTypes.func.isRequired,
+    init: PropTypes.any,
+    setProc: PropTypes.func.isRequired,
+    proc: PropTypes.any,
+  };
+
   const form = useRef();
 
   const [username, setUsername] = useState('');
@@ -21,12 +27,11 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    let resp = await AuthService.login(username, password);
-    //alert(resp);
-
-    if (resp) {
-      navigate('/');
-      window.location.reload();
+    if (init) {
+      setProc(true);
+      let resp = await AuthService.login(username, password);
+      resp.err ? setInit(false) : window.location.reload() & setInit(true);
+      setProc(false);
     }
   };
 
@@ -66,6 +71,7 @@ const Login = () => {
           <div className="form-group">
             <button className="btn btn-primary btn-block">
               <span>Login</span>
+              {proc && <span> &#9201;</span>} {init ? <span> &#128293;</span> : <span> &#10060;</span>}
             </button>
           </div>
         </form>
