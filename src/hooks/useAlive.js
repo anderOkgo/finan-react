@@ -8,10 +8,8 @@ export const useAlive = () => {
   useEffect(() => {
     const fetchData = async () => {
       if (!init) {
-        setProc(true);
         const resp = await DataService.boot();
-        resp.err ? setInit(false) : setInit(resp);
-        setProc(false);
+        resp.err ? setInit(false) : setInit(true);
       }
     };
 
