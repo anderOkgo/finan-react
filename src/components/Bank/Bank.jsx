@@ -27,8 +27,7 @@ export default function Bank({ setInit, init, setProc, proc }) {
 
   return (
     <div className="label-bank">
-      {proc && <p> &#9201;</p>}
-      {init ? <p> &#128293;</p> : <p> &#10060;</p>} ToataBank: {moneyFormat(bankTotal)}
+      {proc && <p> &#9201;</p>} {init ? <p> &#128293;</p> : <p> &#10060;</p>} ToataBank: {moneyFormat(bankTotal)}
     </div>
   );
 }
