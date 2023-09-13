@@ -9,6 +9,20 @@
   place-content: flex-start;
 }
 
+.btn-primarys {
+  box-sizing: border-box;
+  width: 49%;
+  padding: 12px 0;
+  font-size: 15px;
+  font-weight: bold;
+  color: var(--white);
+  background-color: var(--main-color);
+  border: none;
+  cursor: pointer;
+  margin-left: 1px;
+  border-radius: 0.4em;
+}
+
 .label-bank {
   display: flex;
   justify-content: center;

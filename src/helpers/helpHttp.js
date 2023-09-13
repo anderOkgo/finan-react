@@ -1,19 +1,21 @@
-const customFetch = async (endpoint, options) => {
-  var myHeaders = new Headers();
-  myHeaders.append('Authorization', options.token);
-  myHeaders.append('Content-Type', 'application/json');
+const customFetch = async (endpoint, options = {}) => {
+  const defaultHeaders = {
+    Authorization: options.token,
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+  };
 
   const controller = new AbortController();
-  options.signal = controller.signal;
+  const timeout = options.timeout || 7000;
 
+  options.signal = controller.signal;
   options.method = options.method || 'GET';
-  options.headers = options.headers ? { ...myHeaders, ...options.headers } : myHeaders;
+  options.headers = { ...defaultHeaders, ...options.headers };
 
   options.body = JSON.stringify(options.body) || false;
   if (!options.body) delete options.body;
 
-  setTimeout(() => controller.abort(), 7000);
-  //console.log(options);
+  setTimeout(() => controller.abort(), timeout);
 
   try {
     const res = await fetch(endpoint, options);
@@ -25,7 +27,7 @@ const customFetch = async (endpoint, options) => {
           statusText: res.statusText || 'Ocurrió un error',
         }));
   } catch (err) {
-    return err;
+    return { err };
   }
 };
 

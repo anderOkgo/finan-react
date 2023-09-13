@@ -3,19 +3,41 @@ import { useEffect, useState } from 'react';
 import DataService from '../../services/data.service';
 import './Tabs.css';
 import { moneyFormat } from '../../helpers/operations';
+import { useAlive } from '../../hooks/useAlive';
 
 export default function CardRow() {
+  const initailForm = {
+    name: '',
+    val: '',
+    type: '',
+    datemov: '',
+    tag: '',
+  };
+
+  const [form, setForm] = useState(initailForm);
+  const { setInit, init, setProc, proc } = useAlive();
   const [bankTotal, setBankTotal] = useState(0);
-  const [form, setForm] = useState({});
+
+  useEffect(() => {
+    setForm(initailForm);
+  }, []);
+
+  const handleReset = () => {
+    setForm(initailForm);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
-      let resp = await DataService.totalBank();
-      setBankTotal(resp[0]);
+      setProc(true);
+      if (init) {
+        let resp = await DataService.totalBank();
+        resp.err ? setInit(false) : setBankTotal(resp[0] === undefined ? 0 : resp[0].total_bank) & setInit(true);
+      }
+      setProc(false);
     };
 
     fetchData();
-  }, []);
+  }, [init]);
 
   const handleChange = (e) => {
     setForm({
@@ -25,15 +47,18 @@ export default function CardRow() {
   };
 
   const handleInsert = async (e) => {
+    setProc(true);
     e.preventDefault();
-    let resp = await DataService.insert(form);
-    e.target.reset();
-    if (resp.err) {
-      alert('Fail');
+    if (init) {
+      e.target.reset();
+      const response = await DataService.insert(form);
+      response.err ? alert('Fail') : alert('Success');
+      setInit(Date.now());
     } else {
-      alert('Success');
-      window.location.reload();
+      alert('Server idle');
+      setInit(undefined);
     }
+    setProc(false);
   };
 
   return (
@@ -50,7 +75,8 @@ export default function CardRow() {
             <CountDownEnd />
             <br />
             <div className="label-bank">
-              ToataBank: {moneyFormat(bankTotal === undefined ? 0 : bankTotal.total_bank)}
+              {proc && <p> &#9201;</p>}
+              {init ? <p> &#128293;</p> : <p> &#10060;</p>} ToataBank: {moneyFormat(bankTotal)}
             </div>
             {/* {bankTotal.map((genre) => (
               <span className="tag" key={genre}>
@@ -87,7 +113,7 @@ export default function CardRow() {
                 </div>
                 <div className="form-group">
                   <label htmlFor="type">Transaction type</label>
-                  <select className="form-control" name="type" onChange={handleChange} required>
+                  <select id="type" className="form-control" name="type" onChange={handleChange} required>
                     <option value="">---</option>
                     <option value="1">Income</option>
                     <option value="2">Bill</option>
@@ -127,9 +153,8 @@ export default function CardRow() {
                 </div>
 
                 <div className="form-group">
-                  <button className="btn btn-primary btn-block">
-                    <span>Send</span>
-                  </button>
+                  <input type="submit" className=" btn-primarys"></input>
+                  <input className=" btn-primarys" type="reset" value="Reset" onClick={handleReset} />
                 </div>
               </form>
             </div>
