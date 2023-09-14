@@ -40,7 +40,8 @@ export default function Tabs({ setInit, init, setProc, proc }) {
       <div className="panel-tab">
         <div className="section-tab">
           <div className="container">
-            <h2>Title2</h2>
+            <h2>Monthly Balances</h2>
+            <hr />
             <Table />
           </div>
         </div>
