@@ -1,3 +1,4 @@
+import set from '../helpers/set.json';
 import { useState, useEffect } from 'react';
 import DataService from '../services/data.service';
 
@@ -13,13 +14,11 @@ export const useAlive = () => {
         resp.err ? setInit(false) : setInit(true);
         setProc(false);
       }
+
+      setTimeout(fetchData, set.alive_setTimeout || 120000);
     };
 
-    let timerId = fetchData();
-
-    return () => {
-      clearTimeout(timerId);
-    };
+    fetchData();
   }, [init]);
 
   return { init, setInit, proc, setProc };

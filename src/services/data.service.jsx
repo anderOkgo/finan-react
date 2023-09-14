@@ -1,7 +1,7 @@
+import set from '../helpers/set.json';
 import helpHttp from '../helpers/helpHttp';
 
-const BASE_URL = 'https://info.animecream.com/';
-//const BASE_URL = 'http://localhost:3001/';
+const BASE_URL = set.baseUrl;
 const API_URL = BASE_URL + 'api/finan/';
 
 const totalBank = async () => {
@@ -9,7 +9,7 @@ const totalBank = async () => {
 };
 
 const boot = async () => {
-  return await helpHttp.get(BASE_URL, { timeout: 15000 });
+  return await helpHttp.get(BASE_URL, { timeout: set.boot_timeout });
 };
 
 const insert = async (par) => {

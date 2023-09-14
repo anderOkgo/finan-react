@@ -1,6 +1,8 @@
+import set from '../helpers/set.json';
 import helpHttp from '../helpers/helpHttp';
-//const API_URL = 'http://localhost:3001/api/users/';
-const API_URL = 'https://info.animecream.com/api/users/';
+
+const BASE_URL = set.baseUrl;
+const API_URL = BASE_URL + 'api/users/';
 
 const register = (username, email, password) => {
   return helpHttp.post(API_URL, {
@@ -45,13 +47,3 @@ const AuthService = {
 };
 
 export default AuthService;
-
-/* export function authHeader() {
-  const user = JSON.parse(localStorage.getItem('user'));
-
-  if (user && user.accessToken) {
-    return { Authorization: 'Bearer ' + user.accessToken };
-  } else {
-    return {};
-  }
-} */
