@@ -24,8 +24,8 @@ function DataTable() {
   const renderTableRows = () => {
     return data.map((item, index) => (
       <tr key={index}>
-        <td>{item.month_name}</td>
         <td>{item.month_num}</td>
+        <td>{item.month_name}</td>
         <td>{item.year_num}</td>
         <td>{item.incomes}</td>
         <td>{item.bills}</td>
@@ -43,9 +43,9 @@ function DataTable() {
           <table>
             <thead>
               <tr>
-                <th>Month Name</th>
-                <th>Month Number</th>
-                <th>Year Number</th>
+                <th>#</th>
+                <th>Month </th>
+                <th>Year </th>
                 <th>Incomes</th>
                 <th>Bills</th>
               </tr>
