@@ -1,0 +1,53 @@
+/* Table Styles */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  font-size: 16px;
+}
+
+th,
+td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+
+.table-container {
+  overflow-x: auto;
+  max-width: 100%;
+}
+
+/* Table Header Styles */
+thead th {
+  background-color: #3498db;
+  color: #fff;
+}
+
+/* Table Row Hover Effect */
+tbody tr:hover {
+  background-color: #f5f5f5;
+}
+
+/* Add Padding to the First Column (Month Name) */
+td:first-child {
+  padding-left: 20px;
+}
+
+/* Center Numeric Data (Month Number, Year Number, Incomes, Bills) */
+td:nth-child(2),
+td:nth-child(3),
+td:nth-child(4),
+td:nth-child(5) {
+  text-align: center;
+}
+
+/* Add Space Between Incomes and Bills Columns */
+td:nth-child(4) + td {
+  padding-left: 20px;
+}

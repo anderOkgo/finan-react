@@ -1,0 +1,72 @@
+[
+  {
+    "month_name": "January",
+    "month_num": 1,
+    "year_num": 2023,
+    "incomes": 3427.25,
+    "bills": 2036.22
+  },
+  {
+    "month_name": "February",
+    "month_num": 2,
+    "year_num": 2023,
+    "incomes": 2998.07,
+    "bills": 1725.15
+  },
+  {
+    "month_name": "March",
+    "month_num": 3,
+    "year_num": 2023,
+    "incomes": 4398.22,
+    "bills": 1711.12
+  },
+  {
+    "month_name": "April",
+    "month_num": 4,
+    "year_num": 2023,
+    "incomes": 3271.92,
+    "bills": 2128.35
+  },
+  {
+    "month_name": "May",
+    "month_num": 5,
+    "year_num": 2023,
+    "incomes": 3578.51,
+    "bills": 1934.56
+  },
+  {
+    "month_name": "June",
+    "month_num": 6,
+    "year_num": 2023,
+    "incomes": 7554.97,
+    "bills": 2448.56
+  },
+  {
+    "month_name": "July",
+    "month_num": 7,
+    "year_num": 2023,
+    "incomes": 7127.3,
+    "bills": 2506.33
+  },
+  {
+    "month_name": "August",
+    "month_num": 8,
+    "year_num": 2023,
+    "incomes": 3937.34,
+    "bills": 2526.5
+  },
+  {
+    "month_name": "September",
+    "month_num": 9,
+    "year_num": 2023,
+    "incomes": 1319.03,
+    "bills": 1132.68
+  },
+  {
+    "month_name": "December",
+    "month_num": 12,
+    "year_num": 2022,
+    "incomes": 26289.23,
+    "bills": 14152.96
+  }
+]

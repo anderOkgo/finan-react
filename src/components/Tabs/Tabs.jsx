@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import CountDownEnd from '../CountDownEnd/CountDownEnd';
 import Form from '../Form/Form';
 import Bank from '../Bank/Bank';
+import Table from '../Table/Table';
 import './Tabs.css';
 
 export default function Tabs({ setInit, init, setProc, proc }) {
@@ -34,17 +35,13 @@ export default function Tabs({ setInit, init, setProc, proc }) {
 
       <input className="radio-tab" name="tab" type="radio" id="tab-two" />
       <label className="label-tab" htmlFor="tab-two">
-        Tab2
+        Balance
       </label>
       <div className="panel-tab">
         <div className="section-tab">
           <div className="container">
             <h2>Title2</h2>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit quod laborum voluptates eaque nemo atque
-              necessitatibus laudantium ex error nisi esse facere, placeat nesciunt veritatis recusandae aliquam
-              itaque. Nesciunt, voluptatum!
-            </p>
+            <Table />
           </div>
         </div>
       </div>
