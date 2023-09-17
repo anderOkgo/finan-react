@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 //import Data from './data.json';
 import './Table.css';
-function DataTable({ balance }) {
+function DataTable({ movimentSources }) {
   DataTable.propTypes = {
-    balance: PropTypes.any,
+    movimentSources: PropTypes.any,
   };
 
   const [data, setData] = useState([]);
@@ -12,17 +12,16 @@ function DataTable({ balance }) {
 
   useEffect(() => {
     setLoading(false);
-    setData(balance);
-  }, [balance]);
+    setData(movimentSources);
+  }, [movimentSources]);
 
   const renderTableRows = () => {
     return data.map((item, index) => (
       <tr key={index}>
-        <td>{item.month_num}</td>
-        <td>{item.month_name}</td>
-        <td>{item.year_num}</td>
-        <td>{item.incomes}</td>
-        <td>{item.bills}</td>
+        <td>{item.month_number_mov}</td>
+        <td>{item.name_source}</td>
+        <td>{item.montly_sum}</td>
+        <td>{item.year_mov}</td>
       </tr>
     ));
   };
@@ -38,10 +37,9 @@ function DataTable({ balance }) {
             <thead>
               <tr>
                 <th>#</th>
-                <th>Month </th>
-                <th>Year </th>
-                <th>Incomes</th>
-                <th>Bills</th>
+                <th>Source </th>
+                <th>Total </th>
+                <th>Year</th>
               </tr>
             </thead>
             <tbody>{renderTableRows()}</tbody>

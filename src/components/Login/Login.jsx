@@ -2,6 +2,7 @@ import { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import AuthService from '../../services/auth.service';
 import './Login.css';
+import Status from '../Status/Status';
 
 const Login = ({ setInit, init, setProc, proc }) => {
   Login.propTypes = {
@@ -71,7 +72,7 @@ const Login = ({ setInit, init, setProc, proc }) => {
           <div className="form-group">
             <button className="btn btn-primary btn-block">
               <span>Login</span>
-              {proc && <span> &#9201;</span>} {init ? <span> &#128293;</span> : <span> &#10060;</span>}
+              <Status init={init} proc={proc} />
             </button>
           </div>
         </form>

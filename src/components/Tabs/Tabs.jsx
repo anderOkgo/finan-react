@@ -1,8 +1,11 @@
 import PropTypes from 'prop-types';
+import { useEffect, useState } from 'react';
+import DataService from '../../services/data.service';
 import CountDownEnd from '../CountDownEnd/CountDownEnd';
 import Form from '../Form/Form';
 import Bank from '../Bank/Bank';
 import Table from '../Table/Table';
+import Table2 from '../Table/Table2';
 import './Tabs.css';
 
 export default function Tabs({ setInit, init, setProc, proc }) {
@@ -12,6 +15,30 @@ export default function Tabs({ setInit, init, setProc, proc }) {
     setProc: PropTypes.func.isRequired,
     proc: PropTypes.any,
   };
+
+  const [bankTotal, setBankTotal] = useState(0);
+  const [balance, setBalance] = useState([]);
+  const [movimentSources, setMovimentSources] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setProc(true);
+      if (init) {
+        let resp = await DataService.totalBank();
+        console.log(resp);
+        setMovimentSources(resp.MovimentSources);
+        resp.err
+          ? setInit(false)
+          : setBankTotal(resp.tota_bank[0] === undefined ? 0 : resp.tota_bank[0].total_bank);
+        setBalance(resp.balance);
+
+        setInit(true);
+      }
+      setProc(false);
+    };
+
+    fetchData();
+  }, [init]);
 
   return (
     <div className="tabs-area">
@@ -26,7 +53,7 @@ export default function Tabs({ setInit, init, setProc, proc }) {
             <hr />
             <CountDownEnd />
             <br />
-            <Bank setInit={setInit} init={init} setProc={setProc} proc={proc} />
+            <Bank setInit={setInit} init={init} setProc={setProc} proc={proc} bankTotal={bankTotal} />
             <br />
             <Form setInit={setInit} init={init} setProc={setProc} proc={proc} />
           </div>
@@ -42,31 +69,28 @@ export default function Tabs({ setInit, init, setProc, proc }) {
           <div className="container">
             <h2>Monthly Balances</h2>
             <hr />
-            <Table />
+            <Table balance={balance} />
           </div>
         </div>
       </div>
 
       <input className="radio-tab" name="tab" type="radio" id="tab-three" />
       <label className="label-tab" htmlFor="tab-three">
-        Tab3
+        Source
       </label>
       <div className="panel-tab">
         <div className="section-tab">
           <div className="container">
-            <h2>Title3</h2>
-            <p>
-              Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quasi deleniti laudantium suscipit ipsam,
-              aliquid, rerum assumenda esse hic ducimus temporibus accusantium nesciunt quidem dolor ea delectus
-              deserunt sit! Repudiandae, quasi?
-            </p>
+            <h2>Table Sources</h2>
+            <hr />
+            <Table2 movimentSources={movimentSources} />
           </div>
         </div>
       </div>
 
       <input className="radio-tab" name="tab" type="radio" id="tab-four" />
       <label className="label-tab" htmlFor="tab-four">
-        Tab4
+        resume
       </label>
       <div className="panel-tab">
         <div className="section-tab">
