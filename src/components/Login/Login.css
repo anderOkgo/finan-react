@@ -52,7 +52,7 @@ label {
 }
 
 .btn-primary:hover {
-  background-color: var(--second-blue);
+  background-color: var(--second-color);
 }
 
 .btn-block {

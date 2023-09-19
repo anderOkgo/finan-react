@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import './countDownEnd.css';
 import { monthDiff } from '../../helpers/operations';
+import Table from '../Table/Table';
 
 export default function CountDownEnd() {
   const [timeTotal, setTimeTotal] = useState(0);
@@ -8,8 +9,7 @@ export default function CountDownEnd() {
   const [timeNow, setTimeNow] = useState(0);
   const [timeMonthLeft, setTimeMonthLeft] = useState(0);
   const [timeMonthNow, setTimeMonthNow] = useState(0);
-
-  // const [timeObject, setTimeObject] = useState({});
+  const [data, setdData] = useState([]);
 
   useEffect(() => {
     let id = setInterval(() => {
@@ -23,6 +23,24 @@ export default function CountDownEnd() {
       setTimeTotal(calculateTime(dayEnd, dayIni));
       setTimeMonthLeft(monthDiff(now, dayEnd));
       setTimeMonthNow(monthDiff(dayIni, now));
+      let json = [
+        {
+          Total: timeTotal,
+          Elapsed: timeNow.toFixed(5),
+          Remaining: timeLeft.toFixed(5),
+        },
+        {
+          Total: (timeMonthNow + timeMonthLeft).toFixed(0),
+          Elapsed: timeMonthNow.toFixed(2),
+          Remaining: timeMonthLeft.toFixed(2),
+        },
+        {
+          Total: '100%',
+          Elapsed: `${((timeNow / timeTotal).toFixed(2) * 100).toFixed(2)}%`,
+          Remaining: `${((timeLeft / timeTotal).toFixed(2) * 100).toFixed(2)}%`,
+        },
+      ];
+      setdData(json);
     }, 1000);
 
     return () => {
@@ -30,34 +48,5 @@ export default function CountDownEnd() {
     };
   }, [timeTotal, timeLeft, timeNow]);
 
-  return (
-    <div>
-      <table className="table">
-        <thead>
-          <tr>
-            <th>Total</th>
-            <th>Elapsed</th>
-            <th>Remaining</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>{timeTotal}</td>
-            <td>{timeNow.toFixed(5)}</td>
-            <td>{timeLeft.toFixed(5)}</td>
-          </tr>
-          <tr>
-            <td>{(timeMonthNow + timeMonthLeft).toFixed(0)}</td>
-            <td>{timeMonthNow.toFixed(2)}</td>
-            <td>{timeMonthLeft.toFixed(2)}</td>
-          </tr>
-          <tr>
-            <td>{100}%</td>
-            <td>{(timeNow / timeTotal).toFixed(2) * 100}%</td>
-            <td>{(timeLeft / timeTotal).toFixed(2) * 100}%</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  );
+  return <Table data={data} />;
 }

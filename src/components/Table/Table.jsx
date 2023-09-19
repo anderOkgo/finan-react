@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import './Table.css';
 
-function DataTable({ data, columns }) {
-  DataTable.propTypes = {
+function Table({ data, columns }) {
+  Table.propTypes = {
     data: PropTypes.arrayOf(PropTypes.object),
     columns: PropTypes.arrayOf(PropTypes.object),
   };
@@ -60,4 +60,4 @@ function DataTable({ data, columns }) {
   );
 }
 
-export default DataTable;
+export default Table;

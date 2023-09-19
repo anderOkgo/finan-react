@@ -31,7 +31,7 @@ li {
 }
 
 .menu li:hover {
-  color: var(--second-color);
+  color: var(--tertiary-color);
   border-radius: 5px;
   transition: 0.3s ease;
 }
@@ -76,7 +76,7 @@ li {
 }
 
 .hamburger {
-  color: var(--second-color);
+  color: var(--tertiary-color);
   display: none;
   font-size: 24px;
   user-select: none;

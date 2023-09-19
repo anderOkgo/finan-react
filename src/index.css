@@ -19,8 +19,8 @@ th {
 /* Set the main color as RGB: #104858 */
 :root {
   --main-color: #01579b;
-  --second-color: #d4f1f7;
-  --second-blue: #086bb8;
+  --second-color: #086bb8;
+  --tertiary-color: #d4f1f7;
   --white: #fff;
   --black: #000;
   --soft-gray: #ccc;
@@ -30,7 +30,7 @@ th {
 
 .insetshadow {
   letter-spacing: 0.05em;
-  text-shadow: -1px -1px 1px var(--second-color), 2px 2px 1px var(--black);
+  text-shadow: -1px -1px 1px var(--tertiary-color), 2px 2px 1px var(--black);
 }
 
 /* Reset default browser styles */
@@ -60,5 +60,5 @@ a {
 }
 
 a:hover {
-  color: var(--second-color);
+  color: var(--tertiary-color);
 }
