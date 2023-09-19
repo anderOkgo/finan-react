@@ -76,7 +76,7 @@ export default function Tabs({ setInit, init, setProc, proc }) {
             <Table data={balance} columns={['Month', '#', 'Year', 'Incomes', 'Bills']} />
             <h2>Table Sources</h2>
             <hr />
-            <Table data={movimentSources} />
+            <Table data={movimentSources} columns={['Total', 'Year', '#', 'Month', 'Source']} />
           </div>
         </div>
       </div>
@@ -90,7 +90,7 @@ export default function Tabs({ setInit, init, setProc, proc }) {
           <div className="container">
             <h2>Table Tag</h2>
             <hr />
-            <Table data={movimentTag} />
+            <Table data={movimentTag} columns={['Value', 'Year', '#', 'Month', 'Source', 'Tag']} />
           </div>
         </div>
       </div>
