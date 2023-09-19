@@ -2,10 +2,10 @@ import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import './Table.css';
 
-function DataTable({ data, headernames }) {
+function DataTable({ data, columns }) {
   DataTable.propTypes = {
     data: PropTypes.arrayOf(PropTypes.object),
-    headernames: PropTypes.arrayOf(PropTypes.object),
+    columns: PropTypes.arrayOf(PropTypes.object),
   };
 
   const [dataset, setdataset] = useState([]);
@@ -48,9 +48,9 @@ function DataTable({ data, headernames }) {
         <div className="table-container">
           <table>
             <thead>
-              {headernames === undefined || headernames.length == 0
+              {columns === undefined || columns.length == 0
                 ? renderTableHeader(header)
-                : renderTableHeader(headernames)}
+                : renderTableHeader(columns)}
             </thead>
             <tbody>{renderTableRows()}</tbody>
           </table>

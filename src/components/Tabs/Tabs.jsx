@@ -6,7 +6,6 @@ import Form from '../Form/Form';
 import Bank from '../Bank/Bank';
 import Table from '../Table/Table';
 import './Tabs.css';
-//import DataTable2 from '../Table/DataTable2';
 
 export default function Tabs({ setInit, init, setProc, proc }) {
   Tabs.propTypes = {
@@ -74,7 +73,7 @@ export default function Tabs({ setInit, init, setProc, proc }) {
           <div className="container">
             <h2>Monthly Balances</h2>
             <hr />
-            <Table data={balance} headernames={['Month', '#', 'Year', 'Incomes', 'Bills']} />
+            <Table data={balance} columns={['Month', '#', 'Year', 'Incomes', 'Bills']} />
             <h2>Table Sources</h2>
             <hr />
             <Table data={movimentSources} />

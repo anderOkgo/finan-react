@@ -101,7 +101,7 @@ input[type='datetime-local'] {
 }
 
 .radio-tab:checked + .label-tab + .panel-tab {
-  display: grid;
+  display: block;
 }
 
 .section-content {
