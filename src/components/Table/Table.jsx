@@ -1,30 +1,42 @@
 import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-//import Data from './data.json';
 import './Table.css';
-function DataTable({ balance }) {
+
+function DataTable({ data, headernames }) {
   DataTable.propTypes = {
-    balance: PropTypes.any,
+    data: PropTypes.arrayOf(PropTypes.object),
+    headernames: PropTypes.arrayOf(PropTypes.object),
   };
 
-  const [data, setData] = useState([]);
+  const [dataset, setdataset] = useState([]);
+  const [header, setHeader] = useState([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     setLoading(false);
-    setData(balance);
-  }, [balance]);
+
+    if (data && data.length > 0) {
+      setdataset(data);
+      setHeader(Object.keys(data[0]));
+    }
+  }, [data]);
+
+  const renderTableHeader = (header) => {
+    return (
+      <tr>
+        {header.map((item, index) => (
+          <th key={index}>{item}</th>
+        ))}
+      </tr>
+    );
+  };
+
+  const renderTableRow = (row) => {
+    return row.map((item, index) => <td key={index}>{item}</td>);
+  };
 
   const renderTableRows = () => {
-    return data.map((item, index) => (
-      <tr key={index}>
-        <td>{item.month_num}</td>
-        <td>{item.month_name}</td>
-        <td>{item.year_num}</td>
-        <td>{item.incomes}</td>
-        <td>{item.bills}</td>
-      </tr>
-    ));
+    return dataset.map((item, index) => <tr key={index}>{renderTableRow(Object.values(item))}</tr>);
   };
 
   return (
@@ -36,13 +48,9 @@ function DataTable({ balance }) {
         <div className="table-container">
           <table>
             <thead>
-              <tr>
-                <th>#</th>
-                <th>Month </th>
-                <th>Year </th>
-                <th>Incomes</th>
-                <th>Bills</th>
-              </tr>
+              {headernames === undefined || headernames.length == 0
+                ? renderTableHeader(header)
+                : renderTableHeader(headernames)}
             </thead>
             <tbody>{renderTableRows()}</tbody>
           </table>

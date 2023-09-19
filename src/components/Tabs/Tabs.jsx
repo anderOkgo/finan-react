@@ -5,8 +5,8 @@ import CountDownEnd from '../CountDownEnd/CountDownEnd';
 import Form from '../Form/Form';
 import Bank from '../Bank/Bank';
 import Table from '../Table/Table';
-import Table2 from '../Table/Table2';
 import './Tabs.css';
+//import DataTable2 from '../Table/DataTable2';
 
 export default function Tabs({ setInit, init, setProc, proc }) {
   Tabs.propTypes = {
@@ -19,6 +19,8 @@ export default function Tabs({ setInit, init, setProc, proc }) {
   const [bankTotal, setBankTotal] = useState(0);
   const [balance, setBalance] = useState([]);
   const [movimentSources, setMovimentSources] = useState([]);
+  const [movimentTag, setMovimentTag] = useState([]);
+  const [moviments, setMoviments] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -26,7 +28,10 @@ export default function Tabs({ setInit, init, setProc, proc }) {
       if (init) {
         let resp = await DataService.totalBank();
         console.log(resp);
-        setMovimentSources(resp.MovimentSources);
+        setMovimentSources(resp.movimentSources);
+        setMovimentTag(resp.movimentTag);
+        setMoviments(resp.moviments);
+
         resp.err
           ? setInit(false)
           : setBankTotal(resp.tota_bank[0] === undefined ? 0 : resp.tota_bank[0].total_bank);
@@ -69,38 +74,38 @@ export default function Tabs({ setInit, init, setProc, proc }) {
           <div className="container">
             <h2>Monthly Balances</h2>
             <hr />
-            <Table balance={balance} />
+            <Table data={balance} headernames={['Month', '#', 'Year', 'Incomes', 'Bills']} />
+            <h2>Table Sources</h2>
+            <hr />
+            <Table data={movimentSources} />
           </div>
         </div>
       </div>
 
       <input className="radio-tab" name="tab" type="radio" id="tab-three" />
       <label className="label-tab" htmlFor="tab-three">
-        Source
+        Tag
       </label>
       <div className="panel-tab">
         <div className="section-tab">
           <div className="container">
-            <h2>Table Sources</h2>
+            <h2>Table Tag</h2>
             <hr />
-            <Table2 movimentSources={movimentSources} />
+            <Table data={movimentTag} />
           </div>
         </div>
       </div>
 
       <input className="radio-tab" name="tab" type="radio" id="tab-four" />
       <label className="label-tab" htmlFor="tab-four">
-        resume
+        General
       </label>
       <div className="panel-tab">
         <div className="section-tab">
           <div className="container">
-            <h2>Title4</h2>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Omnis consequuntur unde rem assumenda
-              distinctio labore impedit tenetur natus eos voluptatem quaerat vero veritatis dicta temporibus
-              maxime, error, soluta molestias perferendis?
-            </p>
+            <h2>Table Moviments</h2>
+            <hr />
+            <Table data={moviments} />
           </div>
         </div>
       </div>
