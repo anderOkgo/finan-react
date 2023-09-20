@@ -51,31 +51,28 @@ function Tabs({ setInit, init, setProc, proc }) {
       <div className="panel-tab">
         <div className="section-tab">
           <div className="container">
-            <h2>Remaining time</h2>
+            <h2>Input Bank</h2>
             <hr />
-            <CountDownEnd />
-            <br />
             <Bank {...{ setInit, init, setProc, proc, bankTotal }} />
+            <br />
+            <CountDownEnd />
             <br />
             <Form {...{ setInit, init, setProc, proc }} />
           </div>
         </div>
       </div>
 
-      {/* Balance Tab */}
-      <input className="radio-tab" name="tab" type="radio" id="tab-two" />
-      <label className="label-tab" htmlFor="tab-two">
-        Balance
+      {/* General Tab */}
+      <input className="radio-tab" name="tab" type="radio" id="tab-four" />
+      <label className="label-tab" htmlFor="tab-four">
+        General
       </label>
       <div className="panel-tab">
         <div className="section-tab">
           <div className="container">
-            <h2>Monthly Balances</h2>
+            <h2>Table Moviments</h2>
             <hr />
-            <Table data={balance} columns={['Month', '#', 'Year', 'Incomes', 'Bills']} />
-            <h2>Table Sources</h2>
-            <hr />
-            <Table data={movimentSources} columns={['Total', 'Year', '#', 'Month', 'Source']} />
+            <Table data={moviments} />
           </div>
         </div>
       </div>
@@ -95,17 +92,20 @@ function Tabs({ setInit, init, setProc, proc }) {
         </div>
       </div>
 
-      {/* General Tab */}
-      <input className="radio-tab" name="tab" type="radio" id="tab-four" />
-      <label className="label-tab" htmlFor="tab-four">
-        General
+      {/* Balance Tab */}
+      <input className="radio-tab" name="tab" type="radio" id="tab-two" />
+      <label className="label-tab" htmlFor="tab-two">
+        Balance
       </label>
       <div className="panel-tab">
         <div className="section-tab">
           <div className="container">
-            <h2>Table Moviments</h2>
+            <h2>Monthly Balances</h2>
             <hr />
-            <Table data={moviments} />
+            <Table data={balance} columns={['Month', '#', 'Year', 'Incomes', 'Bills']} />
+            <h2>Table Sources</h2>
+            <hr />
+            <Table data={movimentSources} columns={['Total', 'Year', '#', 'Month', 'Source']} />
           </div>
         </div>
       </div>
