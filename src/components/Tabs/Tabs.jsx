@@ -7,14 +7,7 @@ import Bank from '../Bank/Bank';
 import Table from '../Table/Table';
 import './Tabs.css';
 
-export default function Tabs({ setInit, init, setProc, proc }) {
-  Tabs.propTypes = {
-    setInit: PropTypes.func.isRequired,
-    init: PropTypes.any,
-    setProc: PropTypes.func.isRequired,
-    proc: PropTypes.any,
-  };
-
+function Tabs({ setInit, init, setProc, proc }) {
   const [bankTotal, setBankTotal] = useState(0);
   const [balance, setBalance] = useState([]);
   const [movimentSources, setMovimentSources] = useState([]);
@@ -25,18 +18,22 @@ export default function Tabs({ setInit, init, setProc, proc }) {
     const fetchData = async () => {
       setProc(true);
       if (init) {
-        let resp = await DataService.totalBank();
-        console.log(resp);
-        setMovimentSources(resp.movimentSources);
-        setMovimentTag(resp.movimentTag);
-        setMoviments(resp.moviments);
-
-        resp.err
-          ? setInit(false)
-          : setBankTotal(resp.tota_bank[0] === undefined ? 0 : resp.tota_bank[0].total_bank);
-        setBalance(resp.balance);
-
-        setInit(true);
+        try {
+          const resp = await DataService.totalBank();
+          if (!resp.err) {
+            setMovimentSources(resp.movimentSources);
+            setMovimentTag(resp.movimentTag);
+            setMoviments(resp.moviments);
+            setBankTotal(resp.tota_bank[0]?.total_bank || 0);
+            setBalance(resp.balance);
+            setInit(true);
+          } else {
+            setInit(false);
+          }
+        } catch (error) {
+          console.error('An error occurred:', error);
+          setInit(false);
+        }
       }
       setProc(false);
     };
@@ -46,6 +43,7 @@ export default function Tabs({ setInit, init, setProc, proc }) {
 
   return (
     <div className="tabs-area">
+      {/* Input Tab */}
       <input className="radio-tab" name="tab" type="radio" id="tab-one" defaultChecked="checked" />
       <label className="label-tab" htmlFor="tab-one">
         Input
@@ -57,13 +55,14 @@ export default function Tabs({ setInit, init, setProc, proc }) {
             <hr />
             <CountDownEnd />
             <br />
-            <Bank setInit={setInit} init={init} setProc={setProc} proc={proc} bankTotal={bankTotal} />
+            <Bank {...{ setInit, init, setProc, proc, bankTotal }} />
             <br />
-            <Form setInit={setInit} init={init} setProc={setProc} proc={proc} />
+            <Form {...{ setInit, init, setProc, proc }} />
           </div>
         </div>
       </div>
 
+      {/* Balance Tab */}
       <input className="radio-tab" name="tab" type="radio" id="tab-two" />
       <label className="label-tab" htmlFor="tab-two">
         Balance
@@ -81,6 +80,7 @@ export default function Tabs({ setInit, init, setProc, proc }) {
         </div>
       </div>
 
+      {/* Tag Tab */}
       <input className="radio-tab" name="tab" type="radio" id="tab-three" />
       <label className="label-tab" htmlFor="tab-three">
         Tag
@@ -95,6 +95,7 @@ export default function Tabs({ setInit, init, setProc, proc }) {
         </div>
       </div>
 
+      {/* General Tab */}
       <input className="radio-tab" name="tab" type="radio" id="tab-four" />
       <label className="label-tab" htmlFor="tab-four">
         General
@@ -111,3 +112,12 @@ export default function Tabs({ setInit, init, setProc, proc }) {
     </div>
   );
 }
+
+Tabs.propTypes = {
+  setInit: PropTypes.func.isRequired,
+  init: PropTypes.any,
+  setProc: PropTypes.func.isRequired,
+  proc: PropTypes.any,
+};
+
+export default Tabs;

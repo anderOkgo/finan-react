@@ -2,8 +2,9 @@ import PropTypes from 'prop-types';
 import { useState, useCallback, useMemo } from 'react';
 import DataService from '../../services/data.service';
 import AutoDismissMessage from '../Message/AutoDismissMessage.jsx';
+import Loader from '../Loader/Loader';
 
-function Form({ setInit, init, setProc }) {
+function Form({ setInit, init, setProc, proc }) {
   const initialForm = useMemo(
     () => ({
       name: '',
@@ -71,7 +72,8 @@ function Form({ setInit, init, setProc }) {
 
   return (
     <div>
-      <AutoDismissMessage msg={msg} bgColor={bgColor} duration={5000} visible={visible} setVisible={setVisible} />
+      <AutoDismissMessage msg={msg} bgColor={bgColor} duration={3000} visible={visible} setVisible={setVisible} />
+      {proc && <Loader />}
       <form onSubmit={handleInsert}>
         <div className="form-group">
           <label htmlFor="name">name</label>
@@ -152,6 +154,7 @@ Form.propTypes = {
   setInit: PropTypes.func.isRequired,
   init: PropTypes.any,
   setProc: PropTypes.func.isRequired,
+  proc: PropTypes.any,
 };
 
 export default Form;
