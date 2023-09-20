@@ -1,55 +1,74 @@
 import PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
+import { useState, useCallback } from 'react';
 import DataService from '../../services/data.service';
+import AutoDismissMessage from '../Message/AutoDismissMessage.jsx';
 
-export default function Form({ setInit, init, setProc }) {
-  Form.propTypes = {
-    setInit: PropTypes.func.isRequired,
-    init: PropTypes.any,
-    setProc: PropTypes.func.isRequired,
-  };
-
-  const initailForm = {
+function Form({ setInit, init, setProc }) {
+  const initialForm = {
     name: '',
     val: '',
     type: '',
     datemov: '',
     tag: '',
   };
-  const [form, setForm] = useState(initailForm);
 
-  useEffect(() => {
-    setForm(initailForm);
+  const [form, setForm] = useState(initialForm);
+  const [msg, setMsg] = useState('');
+  const [bgColor, setBgColor] = useState('');
+  const [visible, setVisible] = useState(false);
+
+  const handleReset = useCallback(() => {
+    setForm(initialForm);
+    setVisible(true);
+    alert();
   }, []);
 
-  const handleReset = () => {
-    setForm(initailForm);
-  };
+  const handleChange = useCallback(
+    (e) => {
+      setForm({
+        ...form,
+        [e.target.name]: e.target.value,
+      });
+    },
+    [form]
+  );
 
-  const handleChange = (e) => {
-    setForm({
-      ...form,
-      [e.target.name]: e.target.value,
-    });
-  };
+  const handleInsert = useCallback(
+    async (e) => {
+      e.preventDefault();
+      setProc(true);
 
-  const handleInsert = async (e) => {
-    setProc(true);
-    e.preventDefault();
-    if (init) {
-      e.target.reset();
-      const response = await DataService.insert(form);
-      response.err ? alert('Fail') : alert('Success');
-      setInit(Date.now());
-    } else {
-      alert('Server idle');
-      setInit(undefined);
-    }
-    setProc(false);
-  };
+      if (init) {
+        e.target.reset();
+        try {
+          const response = await DataService.insert(form);
+          if (response.err) {
+            setMsg('Insertion failed');
+            setBgColor('red');
+            setVisible(true);
+          } else {
+            setMsg('Insertion successful');
+            setBgColor('green');
+            setInit(Date.now());
+            setVisible(true);
+          }
+        } catch (error) {
+          console.error('An error occurred:', error);
+          alert('Insertion failed');
+        }
+      } else {
+        alert('Server idle');
+        setInit(undefined);
+      }
+
+      setProc(false);
+    },
+    [form, init, setInit, setProc]
+  );
 
   return (
     <div>
+      <AutoDismissMessage msg={msg} bgColor={bgColor} duration={5000} visible={visible} setVisible={setVisible} />
       <form onSubmit={handleInsert}>
         <div className="form-group">
           <label htmlFor="name">name</label>
@@ -118,10 +137,18 @@ export default function Form({ setInit, init, setProc }) {
         </div>
 
         <div className="form-group">
-          <input type="submit" className=" btn-primarys"></input>
-          <input className=" btn-primarys" type="reset" value="Reset" onClick={handleReset} />
+          <input type="submit" className="btn-primarys"></input>
+          <input className="btn-primarys" type="reset" value="Reset" onClick={handleReset} />
         </div>
       </form>
     </div>
   );
 }
+
+Form.propTypes = {
+  setInit: PropTypes.func.isRequired,
+  init: PropTypes.any,
+  setProc: PropTypes.func.isRequired,
+};
+
+export default Form;

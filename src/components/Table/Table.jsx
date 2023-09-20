@@ -5,7 +5,7 @@ import './Table.css';
 function Table({ data, columns }) {
   Table.propTypes = {
     data: PropTypes.arrayOf(PropTypes.object),
-    columns: PropTypes.arrayOf(PropTypes.object),
+    columns: PropTypes.any,
   };
 
   const [dataset, setdataset] = useState([]);
