@@ -40,8 +40,7 @@ function Table({ data, columns }) {
   };
 
   return (
-    <div>
-      <h2>Data Table</h2>
+    <>
       {loading ? (
         <p>Loading...</p>
       ) : (
@@ -54,9 +53,10 @@ function Table({ data, columns }) {
             </thead>
             <tbody>{renderTableRows()}</tbody>
           </table>
+          <br />
         </div>
       )}
-    </div>
+    </>
   );
 }
 

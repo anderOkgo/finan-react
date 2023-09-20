@@ -1,16 +1,19 @@
 import PropTypes from 'prop-types';
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import DataService from '../../services/data.service';
 import AutoDismissMessage from '../Message/AutoDismissMessage.jsx';
 
 function Form({ setInit, init, setProc }) {
-  const initialForm = {
-    name: '',
-    val: '',
-    type: '',
-    datemov: '',
-    tag: '',
-  };
+  const initialForm = useMemo(
+    () => ({
+      name: '',
+      val: '',
+      type: '',
+      datemov: '',
+      tag: '',
+    }),
+    []
+  );
 
   const [form, setForm] = useState(initialForm);
   const [msg, setMsg] = useState('');
@@ -21,7 +24,7 @@ function Form({ setInit, init, setProc }) {
     setForm(initialForm);
     setVisible(true);
     alert();
-  }, []);
+  }, [initialForm]);
 
   const handleChange = useCallback(
     (e) => {
