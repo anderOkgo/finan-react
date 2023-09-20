@@ -23,8 +23,6 @@ function Form({ setInit, init, setProc, proc }) {
 
   const handleReset = useCallback(() => {
     setForm(initialForm);
-    setVisible(true);
-    alert();
   }, [initialForm]);
 
   const handleChange = useCallback(
