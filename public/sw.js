@@ -8,35 +8,64 @@ let appfiles = [];
 } */
 
 appfiles = [
-  `./inde.html`,
+  `./index.html`,
   `./manifest.json`,
   `./sw.js`,
   `./assets/index-a929effa.js`,
   `./assets/index-a929effa.js`,
-  `./icon/android-icon-128x128.png`,
-  `./icon/android-icon-144x144.png`,
-  `./icon/android-icon-152x152.png`,
-  `./icon/android-icon-192x192.png`,
-  `./icon/android-icon-256x256.png`,
-  `./icon/android-icon-32x32.png`,
-  `./icon/android-icon-36x36.png`,
-  `./icon/android-icon-384x384.png`,
-  `./icon/android-icon-48x48.png`,
-  `./icon/android-icon-512x512.png`,
-  `./icon/android-icon-72x72.png`,
-  `./icon/android-icon-96x96.png`,
+  `./icon/icon-128x128.png`,
+  `./icon/icon-144x144.png`,
+  `./icon/icon-152x152.png`,
+  `./icon/icon-192x192.png`,
+  `./icon/icon-384x384.png`,
+  `./icon/icon-48x48.png`,
+  `./icon/icon-512x512.png`,
+  `./icon/icon-72x72.png`,
+  `./icon/icon-96x96.png`,
 ];
 
 let contentToCache = appfiles; //.concat(imagenes);
+console.log(contentToCache);
 
 self.addEventListener('install', (e) => {
   e.waitUntil(
-    caches
-      .open(CACHE_NAME)
-      .then((cache) => {
-        return cache.addAll(contentToCache).then(() => self.skipWaiting());
-      })
-      .catch((err) => console.log('Falló registro de cache', err))
+    caches.open(CACHE_NAME).then((cache) => {
+      return cache
+        .addAll(contentToCache)
+        .then(() => {
+          console.log('Cache installation successful');
+          return self.skipWaiting();
+        })
+        .catch((err) => {
+          console.error('Cache installation failed:', err);
+        });
+    })
+  );
+});
+
+self.addEventListener('fetch', (e) => {
+  e.respondWith(
+    caches.match(e.request).then((res) => {
+      if (res) {
+        // Return cached resource
+        return res;
+      }
+
+      // Try to fetch the resource from the network
+      return fetch(e.request)
+        .then((response) => {
+          // Clone the response to use it and store it in the cache
+          const responseClone = response.clone();
+          caches.open(CACHE_NAME).then((cache) => {
+            cache.put(e.request, responseClone);
+          });
+          return response;
+        })
+        .catch(() => {
+          // If fetching from network fails, return a fallback response
+          return caches.match('/offline.html');
+        });
+    })
   );
 });
 
@@ -64,15 +93,27 @@ self.addEventListener('activate', (e) => {
 
 //cuando el navegador recupera una url
 self.addEventListener('fetch', (e) => {
-  //Responder ya sea con el objeto en caché o continuar y buscar la url real
   e.respondWith(
     caches.match(e.request).then((res) => {
       if (res) {
-        //recuperar del cache
+        // Return cached resource
         return res;
       }
-      //recuperar de la petición a la url
-      return fetch(e.request);
+
+      // Try to fetch the resource from the network
+      return fetch(e.request)
+        .then((response) => {
+          // Clone the response to use it and store it in the cache
+          const responseClone = response.clone();
+          caches.open(CACHE_NAME).then((cache) => {
+            cache.put(e.request, responseClone);
+          });
+          return response;
+        })
+        .catch(() => {
+          // If fetching from network fails, return a fallback response
+          return caches.match('/offline.html');
+        });
     })
   );
 });
