@@ -33,6 +33,11 @@ const customFetch = async (endpoint, options = {}) => {
 
 const get = (url, options = {}) => customFetch(url, options);
 
+const opt = (url, options = {}) => {
+  options.method = 'OPTIONS';
+  return customFetch(url, options);
+};
+
 const post = (url, options = {}) => {
   options.method = 'POST';
   return customFetch(url, options);
@@ -48,6 +53,6 @@ const del = (url, options = {}) => {
   return customFetch(url, options);
 };
 
-const helpHttp = { get, post, put, del };
+const helpHttp = { get, post, put, del, opt };
 
 export default helpHttp;
