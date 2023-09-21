@@ -1,5 +1,5 @@
-import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import DataService from '../../services/data.service';
 import CountDownEnd from '../CountDownEnd/CountDownEnd';
 import Form from '../Form/Form';
@@ -13,6 +13,32 @@ function Tabs({ setInit, init, setProc, proc }) {
   const [movimentSources, setMovimentSources] = useState([]);
   const [movimentTag, setMovimentTag] = useState([]);
   const [moviments, setMoviments] = useState([]);
+  const [selectedOption, setSelectedOption] = useState(1);
+
+  // Handle swipe gestures
+  let startX = null;
+
+  const handleTouchStart = (e) => {
+    startX = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = (e) => {
+    if (startX === null) return;
+
+    const endX = e.changedTouches[0].clientX;
+    const deltaX = endX - startX;
+    const swipeThreshold = 90;
+
+    if (deltaX > swipeThreshold) {
+      // Swipe to the right, select the previous option
+      setSelectedOption((prevOption) => Math.max(prevOption - 1, 1));
+    } else if (deltaX < -swipeThreshold) {
+      // Swipe to the left, select the next option
+      setSelectedOption((prevOption) => Math.min(prevOption + 1, 4));
+    }
+
+    startX = null;
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -41,10 +67,22 @@ function Tabs({ setInit, init, setProc, proc }) {
     fetchData();
   }, [init]);
 
+  const handleRadioChange = (option) => {
+    setSelectedOption(option);
+  };
+
   return (
-    <div className="tabs-area">
+    <div className="tabs-area" id="swipeArea" onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
       {/* Input Tab */}
-      <input className="radio-tab" name="tab" type="radio" id="tab-one" defaultChecked="checked" />
+      <input
+        onClick={() => handleRadioChange(1)}
+        checked={selectedOption === 1}
+        value="1"
+        className="radio-tab"
+        name="tab"
+        type="radio"
+        id="tab-one"
+      />
       <label className="label-tab" htmlFor="tab-one">
         Input
       </label>
@@ -63,7 +101,15 @@ function Tabs({ setInit, init, setProc, proc }) {
       </div>
 
       {/* General Tab */}
-      <input className="radio-tab" name="tab" type="radio" id="tab-four" />
+      <input
+        onClick={() => handleRadioChange(2)}
+        checked={selectedOption === 2}
+        value="2"
+        className="radio-tab"
+        name="tab"
+        type="radio"
+        id="tab-four"
+      />
       <label className="label-tab" htmlFor="tab-four">
         General
       </label>
@@ -78,7 +124,15 @@ function Tabs({ setInit, init, setProc, proc }) {
       </div>
 
       {/* Tag Tab */}
-      <input className="radio-tab" name="tab" type="radio" id="tab-three" />
+      <input
+        onClick={() => handleRadioChange(3)}
+        checked={selectedOption === 3}
+        value="3"
+        className="radio-tab"
+        name="tab"
+        type="radio"
+        id="tab-three"
+      />
       <label className="label-tab" htmlFor="tab-three">
         Tag
       </label>
@@ -93,7 +147,15 @@ function Tabs({ setInit, init, setProc, proc }) {
       </div>
 
       {/* Balance Tab */}
-      <input className="radio-tab" name="tab" type="radio" id="tab-two" />
+      <input
+        onClick={() => handleRadioChange(4)}
+        checked={selectedOption === 4}
+        value="4"
+        className="radio-tab"
+        name="tab"
+        type="radio"
+        id="tab-two"
+      />
       <label className="label-tab" htmlFor="tab-two">
         Balance
       </label>
