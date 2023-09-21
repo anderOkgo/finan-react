@@ -26,25 +26,19 @@ self.addEventListener('install', (e) => {
 
 self.addEventListener('fetch', (e) => {
   e.respondWith(
-    caches.match(e.request).then((res) => {
-      if (res) {
-        // Return cached resource
-        return res;
-      }
+    caches.match(e.request).then(async (res) => {
+      if ((await res) || false) if (res.type !== 'cors') return res; // Return cached resource exept cors
 
-      // Try to fetch the resource from the network
-      return fetch(e.request)
+      return fetch(e.request) // Try to fetch the resource from the network
         .then((response) => {
-          // Clone the response to use it and store it in the cache
-          const responseClone = response.clone();
+          const responseClone = response.clone(); // Clone the response to use it and store it in the cache
           caches.open(CACHE_NAME).then((cache) => {
             cache.put(e.request, responseClone);
           });
           return response;
         })
         .catch(() => {
-          // If fetching from network fails, return a fallback response
-          return caches.match(offlinePage);
+          return caches.match(offlinePage); // If fetching from network fails, return a fallback response
         });
     })
   );
