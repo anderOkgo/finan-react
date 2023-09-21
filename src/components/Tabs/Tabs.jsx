@@ -13,6 +13,8 @@ function Tabs({ setInit, init, setProc, proc }) {
   const [movimentSources, setMovimentSources] = useState([]);
   const [movimentTag, setMovimentTag] = useState([]);
   const [moviments, setMoviments] = useState([]);
+  const [totalDay, setTotalDay] = useState([]);
+
   const [selectedOption, setSelectedOption] = useState(1);
 
   // Handle swipe gestures
@@ -50,8 +52,9 @@ function Tabs({ setInit, init, setProc, proc }) {
             setMovimentSources(resp.movimentSources);
             setMovimentTag(resp.movimentTag);
             setMoviments(resp.moviments);
-            setBankTotal(resp.tota_bank[0]?.total_bank || 0);
+            setBankTotal(resp.tota_bank[0].total_bank || 0);
             setBalance(resp.balance);
+            setTotalDay(resp.totalDay[0].Total_day);
             setInit(true);
           } else {
             setInit(false);
@@ -91,7 +94,7 @@ function Tabs({ setInit, init, setProc, proc }) {
           <div className="container">
             <h2>Input Bank</h2>
             <hr />
-            <Bank {...{ setInit, init, setProc, proc, bankTotal }} />
+            <Bank {...{ setInit, init, setProc, proc, data: totalDay, label: 'Total Day' }} />
             <br />
             <CountDownEnd />
             <br />
@@ -164,6 +167,8 @@ function Tabs({ setInit, init, setProc, proc }) {
           <div className="container">
             <h2>Monthly Balances</h2>
             <hr />
+            <Bank {...{ setInit, init, setProc, proc, data: bankTotal, label: 'Total Bank' }} />
+            <br />
             <Table data={balance} columns={['Month', '#', 'Year', 'Incomes', 'Bills']} />
             <h2>Table Sources</h2>
             <hr />

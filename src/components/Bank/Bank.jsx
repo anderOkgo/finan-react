@@ -2,18 +2,19 @@ import PropTypes from 'prop-types';
 import { moneyFormat } from '../../helpers/operations';
 import Status from '../Status/Status';
 
-export default function Bank({ init, proc, bankTotal }) {
+export default function Bank({ label, init, proc, data }) {
   Bank.propTypes = {
     setInit: PropTypes.func.isRequired,
     init: PropTypes.any,
     setProc: PropTypes.func.isRequired,
     proc: PropTypes.any,
-    bankTotal: PropTypes.any,
+    data: PropTypes.any,
+    label: PropTypes.any,
   };
 
   return (
     <div className="label-bank">
-      <Status init={init} proc={proc} /> ToataBank: {moneyFormat(bankTotal)}
+      <Status init={init} proc={proc} /> {label}: {moneyFormat(data)}
     </div>
   );
 }
