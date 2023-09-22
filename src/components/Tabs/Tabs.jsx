@@ -47,7 +47,12 @@ function Tabs({ setInit, init, setProc, proc }) {
       setProc(true);
       if (init) {
         try {
-          const resp = await DataService.totalBank();
+          const currentDate = new Date();
+          const year = currentDate.getFullYear();
+          const month = String(currentDate.getMonth() + 1).padStart(2, '0'); // 7Month is 0-based, so add 1
+          const day = String(currentDate.getDate()).padStart(2, '0');
+          const formattedDate = `${year}-${month}-${day}`;
+          const resp = await DataService.totalBank({ date: formattedDate });
           if (!resp.err) {
             setMovimentSources(resp.movimentSources);
             setMovimentTag(resp.movimentTag);
@@ -68,7 +73,7 @@ function Tabs({ setInit, init, setProc, proc }) {
     };
 
     fetchData();
-  }, [init]);
+  }, []);
 
   const handleRadioChange = (option) => {
     setSelectedOption(option);

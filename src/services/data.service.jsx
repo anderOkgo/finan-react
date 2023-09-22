@@ -8,8 +8,8 @@ const balanceMonthly = async () => {
   return await helpHttp.get(API_URL + 'totalbank', {});
 };
 
-const totalBank = async () => {
-  return await helpHttp.get(API_URL + 'totalbank', {});
+const totalBank = async (data) => {
+  return await helpHttp.post(API_URL + 'totalbank', { body: data });
 };
 
 const boot = async () => {
