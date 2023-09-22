@@ -53,27 +53,25 @@ function Tabs({ setInit, init, setProc, proc }) {
           const day = String(currentDate.getDate()).padStart(2, '0');
           const formattedDate = `${year}-${month}-${day}`;
           const resp = await DataService.totalBank({ date: formattedDate });
+          console.log(resp);
           if (!resp.err) {
             setMovimentSources(resp.movimentSources);
             setMovimentTag(resp.movimentTag);
             setMoviments(resp.moviments);
             setBankTotal(resp.tota_bank[0].total_bank || 0);
             setBalance(resp.balance);
-            setTotalDay(resp.totalDay[0].Total_day);
+            setTotalDay(resp.totalDay[0].Total_day || 0);
             setInit(true);
-          } else {
-            setInit(false);
           }
         } catch (error) {
           console.error('An error occurred:', error);
-          setInit(false);
         }
       }
       setProc(false);
     };
 
     fetchData();
-  }, []);
+  }, [init]);
 
   const handleRadioChange = (option) => {
     setSelectedOption(option);
