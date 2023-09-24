@@ -1,5 +1,6 @@
 import set from '../helpers/set.json';
 import helpHttp from '../helpers/helpHttp';
+import cyfer from '../helpers/cyfer';
 
 const BASE_URL = set.baseUrl;
 const API_URL = BASE_URL + 'api/users/';
@@ -26,17 +27,18 @@ const login = async (username, password) => {
   if (response.token === undefined) {
     return false;
   } else {
-    localStorage.setItem('user', JSON.stringify(response));
+    console.log(cyfer().cy('user', 'enter'));
+    localStorage.setItem(cyfer().cy('user', 'enter'), JSON.stringify(response));
     return true;
   }
 };
 
 const logout = () => {
-  localStorage.removeItem('user');
+  localStorage.removeItem(cyfer().cy('user', 'enter'));
 };
 
 const getCurrentUser = () => {
-  return JSON.parse(localStorage.getItem('user'));
+  return JSON.parse(localStorage.getItem(cyfer().cy('user', 'enter')));
 };
 
 const AuthService = {

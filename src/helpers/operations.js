@@ -16,3 +16,11 @@ export const monthDiff = (date1, date2) => {
   const totalDays = diffInMilliseconds / millisecondsInDay;
   return Math.floor(totalDays) / 30.5;
 };
+
+export const formattedDate = () => {
+  const currentDate = new Date();
+  const year = currentDate.getFullYear();
+  const month = String(currentDate.getMonth() + 1).padStart(2, '0'); // Month is 0-based, so add 1
+  const day = String(currentDate.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+};

@@ -6,6 +6,7 @@ import Form from '../Form/Form';
 import Bank from '../Bank/Bank';
 import Table from '../Table/Table';
 import './Tabs.css';
+import { formattedDate } from '../../helpers/operations';
 
 function Tabs({ setInit, init, setProc, proc }) {
   const [bankTotal, setBankTotal] = useState(0);
@@ -29,7 +30,7 @@ function Tabs({ setInit, init, setProc, proc }) {
 
     const endX = e.changedTouches[0].clientX;
     const deltaX = endX - startX;
-    const swipeThreshold = 90;
+    const swipeThreshold = 120;
 
     if (deltaX > swipeThreshold) {
       // Swipe to the right, select the previous option
@@ -47,13 +48,7 @@ function Tabs({ setInit, init, setProc, proc }) {
       setProc(true);
       if (init) {
         try {
-          const currentDate = new Date();
-          const year = currentDate.getFullYear();
-          const month = String(currentDate.getMonth() + 1).padStart(2, '0'); // 7Month is 0-based, so add 1
-          const day = String(currentDate.getDate()).padStart(2, '0');
-          const formattedDate = `${year}-${month}-${day}`;
-          const resp = await DataService.totalBank({ date: formattedDate });
-          console.log(resp);
+          const resp = await DataService.totalBank({ date: formattedDate() });
           if (!resp.err) {
             setMovimentSources(resp.movimentSources);
             setMovimentTag(resp.movimentTag);
