@@ -1,6 +1,7 @@
 import set from '../helpers/set.json';
 import helpHttp from '../helpers/helpHttp';
 import cyfer from '../helpers/cyfer';
+import { formattedDate } from '../helpers/operations';
 
 const BASE_URL = set.baseUrl;
 const API_URL = BASE_URL + 'api/users/';
@@ -27,18 +28,17 @@ const login = async (username, password) => {
   if (response.token === undefined) {
     return false;
   } else {
-    console.log(cyfer().cy('user', 'enter'));
-    localStorage.setItem(cyfer().cy('user', 'enter'), JSON.stringify(response));
+    localStorage.setItem(cyfer().cy('user', formattedDate()), JSON.stringify(response));
     return true;
   }
 };
 
 const logout = () => {
-  localStorage.removeItem(cyfer().cy('user', 'enter'));
+  localStorage.removeItem(cyfer().cy('user', formattedDate()));
 };
 
 const getCurrentUser = () => {
-  return JSON.parse(localStorage.getItem(cyfer().cy('user', 'enter')));
+  return JSON.parse(localStorage.getItem(cyfer().cy('user', formattedDate())));
 };
 
 const AuthService = {
