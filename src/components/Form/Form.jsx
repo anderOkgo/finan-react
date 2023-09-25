@@ -127,7 +127,7 @@ function Form({ setInit, init, setProc, proc }) {
         </div>
 
         <div className="form-group">
-          <label htmlFor="val">Tag</label>
+          <label htmlFor="tag">Tag:</label>
           <input
             id="tag"
             type="text"
