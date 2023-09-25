@@ -15,7 +15,6 @@ function Tabs({ setInit, init, setProc, proc }) {
   const [movimentTag, setMovimentTag] = useState([]);
   const [moviments, setMoviments] = useState([]);
   const [totalDay, setTotalDay] = useState([]);
-
   const [selectedOption, setSelectedOption] = useState(1);
 
   // Handle swipe gestures
@@ -53,9 +52,9 @@ function Tabs({ setInit, init, setProc, proc }) {
             setMovimentSources(resp.movimentSources);
             setMovimentTag(resp.movimentTag);
             setMoviments(resp.moviments);
-            setBankTotal(resp.tota_bank[0].total_bank || 0);
+            setBankTotal(resp.tota_bank?.[0]?.total_bank ?? 0);
             setBalance(resp.balance);
-            setTotalDay(resp.totalDay[0].Total_day || 0);
+            setTotalDay(resp.totalDay?.[0]?.Total_day ?? 0);
             setInit(true);
           }
         } catch (error) {
@@ -76,6 +75,7 @@ function Tabs({ setInit, init, setProc, proc }) {
     <div className="tabs-area" id="swipeArea" onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
       {/* Input Tab */}
       <input
+        onChange={() => handleRadioChange(1)}
         onClick={() => handleRadioChange(1)}
         checked={selectedOption === 1}
         value="1"
@@ -103,6 +103,7 @@ function Tabs({ setInit, init, setProc, proc }) {
 
       {/* General Tab */}
       <input
+        onChange={() => handleRadioChange(2)}
         onClick={() => handleRadioChange(2)}
         checked={selectedOption === 2}
         value="2"
@@ -126,6 +127,7 @@ function Tabs({ setInit, init, setProc, proc }) {
 
       {/* Tag Tab */}
       <input
+        onChange={() => handleRadioChange(3)}
         onClick={() => handleRadioChange(3)}
         checked={selectedOption === 3}
         value="3"
@@ -149,6 +151,7 @@ function Tabs({ setInit, init, setProc, proc }) {
 
       {/* Balance Tab */}
       <input
+        onChange={() => handleRadioChange(4)}
         onClick={() => handleRadioChange(4)}
         checked={selectedOption === 4}
         value="4"

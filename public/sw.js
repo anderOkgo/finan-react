@@ -27,13 +27,14 @@ self.addEventListener('install', (e) => {
 self.addEventListener('fetch', (e) => {
   e.respondWith(
     caches.match(e.request).then(async (res) => {
-      if ((await res) || false) if (res.type !== 'cors') return res; // Return cached resource exept cors
-
+      if (res || false) if (res.type !== 'cors' || !res.url.includes(self.location.origin)) return res; // Return cached resource exept cors
       return fetch(e.request) // Try to fetch the resource from the network
         .then((response) => {
           const responseClone = response.clone(); // Clone the response to use it and store it in the cache
           caches.open(CACHE_NAME).then((cache) => {
-            cache.put(e.request, responseClone);
+            if (e.request.method == 'GET') {
+              cache.put(e.request, responseClone);
+            }
           });
           return response;
         })

@@ -22,7 +22,10 @@ const boot = async () => {
 };
 
 const insert = async (par) => {
-  return await helpHttp.put(API_URL + 'insert', { body: par });
+  return await helpHttp.put(API_URL + 'insert', {
+    body: par,
+    token: formatToken(AuthService.getCurrentUser().token),
+  });
 };
 
 const DataService = { totalBank, insert, boot, balanceMonthly };
