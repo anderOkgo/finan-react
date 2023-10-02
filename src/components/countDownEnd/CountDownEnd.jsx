@@ -36,8 +36,8 @@ export default function CountDownEnd() {
         },
         {
           Total: '100%',
-          Elapsed: `${((timeNow / timeTotal).toFixed(2) * 100).toFixed(2)}%`,
-          Remaining: `${((timeLeft / timeTotal).toFixed(2) * 100).toFixed(2)}%`,
+          Elapsed: `${((timeNow / timeTotal) * 100).toFixed(2)}%`,
+          Remaining: `${((timeLeft / timeTotal) * 100).toFixed(2)}%`,
         },
       ];
       setdData(json);
