@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import DataService from '../../services/data.service';
 import './Tabs.css';
@@ -77,7 +77,7 @@ function Tabs({ setInit, init, setProc, proc }) {
   return (
     <div className="tabs-area" id="swipeArea" onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
       {tabsData.map((tab) => (
-        <>
+        <React.Fragment key={tab.id}>
           <input
             onChange={() => handleRadioChange(tab.id)}
             onClick={() => handleRadioChange(tab.id)}
@@ -96,7 +96,7 @@ function Tabs({ setInit, init, setProc, proc }) {
               <div className="container">{tab.component}</div>
             </div>
           </div>
-        </>
+        </React.Fragment>
       ))}
     </div>
   );
