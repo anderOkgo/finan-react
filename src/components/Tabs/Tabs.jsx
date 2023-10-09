@@ -52,12 +52,13 @@ function Tabs({ setInit, init, setProc, proc }) {
         try {
           const resp = await DataService.totalBank({ date: formattedDate() });
           if (!resp.err) {
-            setMovimentSources(resp.movimentSources);
-            setMovimentTag(resp.movimentTag);
-            setMoviments(resp.moviments);
-            setBankTotal(resp.tota_bank?.[0]?.total_bank ?? 0);
-            setBalance(resp.balance);
-            setTotalDay(resp.totalDay?.[0]?.Total_day ?? 0);
+            const { tota_bank, balance, movimentSources, movimentTag, moviments, totalDay } = resp;
+            setMovimentSources(movimentSources);
+            setMovimentTag(movimentTag);
+            setMoviments(moviments);
+            setBankTotal(tota_bank?.[0]?.total_bank ?? 0);
+            setBalance(balance);
+            setTotalDay(totalDay?.[0]?.Total_day ?? 0);
             setInit(true);
           }
         } catch (error) {
