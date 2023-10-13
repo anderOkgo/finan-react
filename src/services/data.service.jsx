@@ -22,12 +22,20 @@ const boot = async () => {
 };
 
 const insert = async (par) => {
-  return await helpHttp.put(API_URL + 'insert', {
+  return await helpHttp.post(API_URL + 'insert', {
     body: par,
     token: formatToken(AuthService.getCurrentUser().token),
   });
 };
 
-const DataService = { totalBank, insert, boot, balanceMonthly };
+const update = async (par) => {
+  console.log(par);
+  return await helpHttp.put(API_URL + 'update/' + par.id, {
+    body: par,
+    token: formatToken(AuthService.getCurrentUser().token),
+  });
+};
+
+const DataService = { totalBank, insert, update, boot, balanceMonthly };
 
 export default DataService;

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import DataService from '../../services/data.service';
 import './Tabs.css';
@@ -16,18 +16,33 @@ function Tabs({ setInit, init, setProc, proc }) {
   const [movimentTag, setMovimentTag] = useState([]);
   const [moviments, setMoviments] = useState([]);
   const [totalDay, setTotalDay] = useState([]);
+  const [edit, setEdit] = useState(false);
+
   const { selectedOption, setSelectedOption, handleTouchStart, handleTouchEnd } = useSwipeableTabs(1, 4, 120);
+
+  const initialForm = useMemo(
+    () => ({
+      name: '',
+      val: '',
+      type: '',
+      datemov: '',
+      tag: '',
+    }),
+    []
+  );
+
+  const [form, setForm] = useState(initialForm);
 
   const tabsData = [
     {
       id: 1,
       label: 'Input',
-      component: <TabInput {...{ setInit, init, setProc, proc, totalDay }} />,
+      component: <TabInput {...{ setInit, init, setProc, proc, totalDay, setForm, form, edit }} />,
     },
     {
       id: 2,
       label: 'General',
-      component: <TabGeneral {...{ moviments }} />,
+      component: <TabGeneral {...{ moviments, setForm, form, setEdit }} />,
     },
     {
       id: 3,
@@ -108,6 +123,7 @@ Tabs.propTypes = {
   init: PropTypes.any,
   setProc: PropTypes.func.isRequired,
   proc: PropTypes.any,
+  setEdit: PropTypes.any,
 };
 
 export default Tabs;

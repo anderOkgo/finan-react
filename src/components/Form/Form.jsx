@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback, useMemo, useRef } from 'react';
 import DataService from '../../services/data.service';
 import AutoDismissMessage from '../Message/AutoDismissMessage.jsx';
 import Loader from '../Loader/Loader';
 
-function Form({ setInit, init, setProc, proc }) {
+function Form({ setInit, init, setProc, proc, setForm, form, edit }) {
   const initialForm = useMemo(
     () => ({
       name: '',
@@ -16,14 +16,27 @@ function Form({ setInit, init, setProc, proc }) {
     []
   );
 
-  const [form, setForm] = useState(initialForm);
   const [msg, setMsg] = useState('');
   const [bgColor, setBgColor] = useState('');
   const [visible, setVisible] = useState(false);
+  const buttonRef = useRef(null);
+
+  const typeOptions = [
+    { value: '', label: '---' },
+    { value: '1', label: 'Income' },
+    { value: '2', label: 'Bill' },
+    { value: '7', label: 'Saving' },
+    { value: '8', label: 'Balance' },
+    { value: '9', label: 'Tax return' },
+    { value: '10', label: 'GYG payment' },
+    { value: '11', label: 'Interest' },
+    { value: '12', label: 'Visa refund' },
+    { value: '13', label: 'Cash exchange' },
+  ];
 
   const handleReset = useCallback(() => {
     setForm(initialForm);
-  }, [initialForm]);
+  }, [initialForm, setForm]);
 
   const handleChange = useCallback(
     (e) => {
@@ -32,7 +45,7 @@ function Form({ setInit, init, setProc, proc }) {
         [e.target.name]: e.target.value,
       });
     },
-    [form]
+    [form, setForm]
   );
 
   const handleInsert = useCallback(
@@ -43,16 +56,22 @@ function Form({ setInit, init, setProc, proc }) {
       if (init) {
         e.target.reset();
         try {
-          const response = await DataService.insert(form);
+          let response;
+          if (edit) {
+            response = await DataService.update(form);
+          } else {
+            response = await DataService.insert(form);
+          }
           if (response.err) {
-            setMsg('Insertion failed');
+            setMsg('Transaction failed');
             setBgColor('red');
             setVisible(true);
           } else {
-            setMsg('Insertion successful');
+            setMsg('Transaction successful');
             setBgColor('green');
             setInit(Date.now());
             setVisible(true);
+            handleReset();
           }
         } catch (error) {
           console.error('An error occurred:', error);
@@ -65,7 +84,7 @@ function Form({ setInit, init, setProc, proc }) {
 
       setProc(false);
     },
-    [form, init, setInit, setProc]
+    [form, init, setInit, setProc, edit]
   );
 
   return (
@@ -74,7 +93,7 @@ function Form({ setInit, init, setProc, proc }) {
       {proc && <Loader />}
       <form onSubmit={handleInsert}>
         <div className="form-group">
-          <label htmlFor="name">name</label>
+          <label htmlFor="name">Name</label>
           <input
             id="name"
             type="text"
@@ -100,17 +119,20 @@ function Form({ setInit, init, setProc, proc }) {
         </div>
         <div className="form-group">
           <label htmlFor="type">Transaction type</label>
-          <select id="type" className="form-control" name="type" onChange={handleChange} required>
-            <option value="">---</option>
-            <option value="1">Income</option>
-            <option value="2">Bill</option>
-            <option value="7">Saving</option>
-            <option value="8">Balance</option>
-            <option value="9">Tax return</option>
-            <option value="10">GYG payment</option>
-            <option value="11">Interest</option>
-            <option value="12">Visa refund</option>
-            <option value="13">Cash exchange</option>
+          <select
+            id="type"
+            className="form-control"
+            name="type"
+            onChange={handleChange}
+            required
+            value={form.type}
+            ref={buttonRef}
+          >
+            {typeOptions.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
           </select>
         </div>
 
@@ -153,6 +175,9 @@ Form.propTypes = {
   init: PropTypes.any,
   setProc: PropTypes.func.isRequired,
   proc: PropTypes.any,
+  setForm: PropTypes.any,
+  form: PropTypes.any,
+  edit: PropTypes.any,
 };
 
 export default Form;
