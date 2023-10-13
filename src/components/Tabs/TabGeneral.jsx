@@ -13,74 +13,51 @@ function TabGeneral({ moviments, setForm, setEdit, setSelectedOption }) {
       case 'bill':
         document.querySelector('#type').selectedIndex = 2;
         type = 2;
-        break; // Select "Bill"
+        break;
       case 'income':
         document.querySelector('#type').selectedIndex = 1;
         type = 1;
-        break; // Select "Income"
+        break;
       case 'saving':
         document.querySelector('#type').selectedIndex = 7;
         type = 7;
-        break; // Select "Saving"
+        break;
       case 'balance':
         document.querySelector('#type').selectedIndex = 8;
         type = 8;
-        break; // Select "Balance"
+        break;
       case 'tax return':
         document.querySelector('#type').selectedIndex = 9;
         type = 9;
-        break; // Select "Tax return"
+        break;
       case 'gyg payment':
         document.querySelector('#type').selectedIndex = 1;
         type = 1;
-        break; // Select "GYG payment"
+        break;
       case 'interest':
         document.querySelector('#type').selectedIndex = 1;
         type = 1;
-        break; // Select "Interest"
+        break;
       case 'visa refund':
         document.querySelector('#type').selectedIndex = 1;
         type = 1;
-        break; // Select "Visa refund"
+        break;
       case 'cash exchange':
         document.querySelector('#type').selectedIndex = 1;
         type = 1;
-        break; // Select "Cash exchange"
+        break;
       default:
         document.querySelector('#type').selectedIndex = '';
-        break; // Select the default option (e.g., "---")
+        break;
     }
-
-    const dateFromDatabase = row.datemov;
-    const dateInJavaScript = new Date(dateFromDatabase.replace(' ', 'T')); // Convert the date
-
-    let formattedDate = dateInJavaScript.toLocaleString('en-GB', {
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit',
-    });
-
-    const parts = formattedDate.split(', ');
-    const dateParts = parts[0].split('/');
-    const timePart = parts[1];
-
-    const year = dateParts[2];
-    const month = dateParts[1];
-    const day = dateParts[0];
-
-    formattedDate = `${year}-${month}-${day} ${timePart}`;
 
     const outputObject = {
       ...row,
-      datemov: formattedDate,
+      datemov: row.datemov,
       type: type,
     };
 
     setForm(outputObject);
-    console.log(outputObject);
     setEdit(true);
     setSelectedOption(1);
   };
