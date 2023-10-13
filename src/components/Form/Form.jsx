@@ -194,7 +194,7 @@ function Form({ setInit, init, setProc, proc, setForm, form, edit }) {
         <div className="form-group">
           <input type="submit" className="btn-primarys"></input>
           <input className="btn-primarys" type="reset" value="Reset" onClick={handleReset} />
-          {edit && <input className="" type="button" value="delete" onClick={handleDelete} />}
+          {edit && <input className="delete-button" type="button" value="delete" onClick={handleDelete} />}
         </div>
       </form>
     </div>

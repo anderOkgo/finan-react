@@ -23,6 +23,21 @@
   border-radius: 0.4em;
 }
 
+.delete-button {
+  background-color: #f44336;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 4px;
+  width: 98.5%;
+  margin-top: 2px;
+}
+
+.delete-button:hover {
+  background-color: #ff0000;
+}
+
 .label-bank {
   display: flex;
   justify-content: center;
