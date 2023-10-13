@@ -37,7 +37,7 @@ function Tabs({ setInit, init, setProc, proc }) {
     {
       id: 1,
       label: 'Input',
-      component: <TabInput {...{ setInit, init, setProc, proc, totalDay, setForm, form, edit }} />,
+      component: <TabInput {...{ setInit, init, setProc, proc, totalDay, setForm, form, edit, setEdit }} />,
     },
     {
       id: 2,

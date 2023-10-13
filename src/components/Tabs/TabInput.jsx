@@ -3,7 +3,7 @@ import CountDownEnd from '../CountDownEnd/CountDownEnd';
 import Form from '../Form/Form';
 import Bank from '../Bank/Bank';
 
-function TabInput({ setInit, init, setProc, proc, totalDay, setForm, form, edit }) {
+function TabInput({ setInit, init, setProc, proc, totalDay, setForm, form, edit, setEdit }) {
   return (
     <div>
       <h2>Input Bank</h2>
@@ -12,7 +12,7 @@ function TabInput({ setInit, init, setProc, proc, totalDay, setForm, form, edit 
       <br />
       <CountDownEnd />
       <br />
-      <Form {...{ setInit, init, setProc, proc, setForm, form, edit }} />
+      <Form {...{ setInit, init, setProc, proc, setForm, form, edit, setEdit }} />
     </div>
   );
 }
@@ -28,6 +28,7 @@ TabInput.propTypes = {
   setForm: PropTypes.any,
   form: PropTypes.any,
   edit: PropTypes.any,
+  setEdit: PropTypes.any,
 };
 
 export default TabInput;

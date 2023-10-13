@@ -4,7 +4,7 @@ import DataService from '../../services/data.service';
 import AutoDismissMessage from '../Message/AutoDismissMessage.jsx';
 import Loader from '../Loader/Loader';
 
-function Form({ setInit, init, setProc, proc, setForm, form, edit }) {
+function Form({ setInit, init, setProc, proc, setForm, form, edit, setEdit }) {
   const initialForm = useMemo(
     () => ({
       name: '',
@@ -36,7 +36,8 @@ function Form({ setInit, init, setProc, proc, setForm, form, edit }) {
 
   const handleReset = useCallback(() => {
     setForm(initialForm);
-  }, [initialForm, setForm]);
+    setEdit(false);
+  }, [initialForm, setForm, setEdit]);
 
   const handleDelete = useCallback(async () => {
     console.log(form);
@@ -58,6 +59,7 @@ function Form({ setInit, init, setProc, proc, setForm, form, edit }) {
           setInit(Date.now());
           setVisible(true);
           handleReset();
+          setEdit(false);
         }
       } catch (error) {
         console.error('An error occurred:', error);
@@ -66,7 +68,7 @@ function Form({ setInit, init, setProc, proc, setForm, form, edit }) {
     } else {
       return;
     }
-  }, [initialForm, form, edit, handleReset, setInit]);
+  }, [form, edit, handleReset, setInit, setEdit]);
 
   const handleChange = useCallback(
     (e) => {
@@ -194,7 +196,7 @@ function Form({ setInit, init, setProc, proc, setForm, form, edit }) {
         <div className="form-group">
           <input type="submit" className="btn-primarys"></input>
           <input className="btn-primarys" type="reset" value="Reset" onClick={handleReset} />
-          {edit && <input className="delete-button" type="button" value="delete" onClick={handleDelete} />}
+          {edit && <input className="delete-button" type="button" value="Delete" onClick={handleDelete} />}
         </div>
       </form>
     </div>
@@ -209,6 +211,7 @@ Form.propTypes = {
   setForm: PropTypes.any,
   form: PropTypes.any,
   edit: PropTypes.any,
+  setEdit: PropTypes.any,
 };
 
 export default Form;
