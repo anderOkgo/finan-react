@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import Table from '../Table/Table';
 import { useState } from 'react';
 
-function TabGeneral({ moviments, setForm, setEdit }) {
+function TabGeneral({ moviments, setForm, setEdit, setSelectedOption }) {
   const [selectedRow, setSelectedRow] = useState(null);
 
   const handleRowDoubleClick = (row) => {
@@ -74,14 +74,15 @@ function TabGeneral({ moviments, setForm, setEdit }) {
     formattedDate = `${year}-${month}-${day} ${timePart}`;
 
     const outputObject = {
-      ...row, // Copy all existing properties
+      ...row,
       datemov: formattedDate,
-      type: type, // Replace the date property with the formatted date
+      type: type,
     };
 
     setForm(outputObject);
+    console.log(outputObject);
     setEdit(true);
-    //console.log(`${JSON.stringify(outputObject)}`);
+    setSelectedOption(1);
   };
   return (
     <div>
@@ -99,10 +100,11 @@ function TabGeneral({ moviments, setForm, setEdit }) {
 }
 
 TabGeneral.propTypes = {
-  moviments: PropTypes.any, // Update with the correct prop type
-  setForm: PropTypes.any, // Update with the correct prop type
-  form: PropTypes.any, // Update with the correct prop type
-  setEdit: PropTypes.any, // Update with the correct prop type
+  moviments: PropTypes.any,
+  setForm: PropTypes.any,
+  form: PropTypes.any,
+  setEdit: PropTypes.any,
+  setSelectedOption: PropTypes.any,
 };
 
 export default TabGeneral;

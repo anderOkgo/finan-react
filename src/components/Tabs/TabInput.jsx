@@ -21,13 +21,13 @@ TabInput.propTypes = {
   handleRadioChange: PropTypes.func,
   selectedOption: PropTypes.number,
   setInit: PropTypes.func.isRequired,
-  init: PropTypes.any, // Update with the correct prop type
+  init: PropTypes.any,
   setProc: PropTypes.func.isRequired,
-  proc: PropTypes.any, // Update with the correct prop type
-  totalDay: PropTypes.any, // Update with the correct prop type
-  setForm: PropTypes.any, // Update with the correct prop type
-  form: PropTypes.any, // Update with the correct prop type
-  edit: PropTypes.any, // Update with the correct prop type
+  proc: PropTypes.any,
+  totalDay: PropTypes.any,
+  setForm: PropTypes.any,
+  form: PropTypes.any,
+  edit: PropTypes.any,
 };
 
 export default TabInput;

@@ -36,6 +36,14 @@ const update = async (par) => {
   });
 };
 
-const DataService = { totalBank, insert, update, boot, balanceMonthly };
+const del = async (par) => {
+  console.log(par);
+  return await helpHttp.del(API_URL + 'delete/' + par.id, {
+    body: par,
+    token: formatToken(AuthService.getCurrentUser().token),
+  });
+};
+
+const DataService = { totalBank, insert, update, del, boot, balanceMonthly };
 
 export default DataService;

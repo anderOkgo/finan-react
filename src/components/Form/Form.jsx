@@ -38,6 +38,36 @@ function Form({ setInit, init, setProc, proc, setForm, form, edit }) {
     setForm(initialForm);
   }, [initialForm, setForm]);
 
+  const handleDelete = useCallback(async () => {
+    console.log(form);
+    let isDelete = window.confirm(`¿Are you sure to delete it? '${form.id}'?`);
+
+    if (isDelete) {
+      try {
+        let response;
+        if (edit) {
+          response = await DataService.del(form);
+        }
+        if (response.err) {
+          setMsg('Transaction failed');
+          setBgColor('red');
+          setVisible(true);
+        } else {
+          setMsg('Transaction successful');
+          setBgColor('green');
+          setInit(Date.now());
+          setVisible(true);
+          handleReset();
+        }
+      } catch (error) {
+        console.error('An error occurred:', error);
+        alert('Insertion failed');
+      }
+    } else {
+      return;
+    }
+  }, [initialForm, form, edit, handleReset, setInit]);
+
   const handleChange = useCallback(
     (e) => {
       setForm({
@@ -164,6 +194,7 @@ function Form({ setInit, init, setProc, proc, setForm, form, edit }) {
         <div className="form-group">
           <input type="submit" className="btn-primarys"></input>
           <input className="btn-primarys" type="reset" value="Reset" onClick={handleReset} />
+          {edit && <input className="" type="button" value="delete" onClick={handleDelete} />}
         </div>
       </form>
     </div>

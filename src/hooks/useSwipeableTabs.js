@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-function useSwipeableTabs(initialOption = 1, numOptions = 4, swipeThreshold = 120) {
+function useSwipeableTabs(initialOption = 1, numOptions = 4, swipeThreshold = 180) {
   const [selectedOption, setSelectedOption] = useState(initialOption);
 
   // Handle swipe gestures

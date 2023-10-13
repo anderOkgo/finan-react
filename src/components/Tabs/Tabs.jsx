@@ -42,7 +42,7 @@ function Tabs({ setInit, init, setProc, proc }) {
     {
       id: 2,
       label: 'General',
-      component: <TabGeneral {...{ moviments, setForm, form, setEdit }} />,
+      component: <TabGeneral {...{ moviments, setForm, form, setEdit, setSelectedOption }} />,
     },
     {
       id: 3,
