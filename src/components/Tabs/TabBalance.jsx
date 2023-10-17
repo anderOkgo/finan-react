@@ -1,15 +1,19 @@
 import PropTypes from 'prop-types';
 import Table from '../Table/Table';
 import Bank from '../Bank/Bank';
+import LineChart from '../Charts/LineChart';
 
 function TabBalance({ setInit, init, setProc, proc, bankTotal, balance, movimentSources }) {
   return (
     <div>
-      <h2>Table Moviments</h2>
-      <hr />
       <Bank {...{ setInit, init, setProc, proc, data: bankTotal, label: 'Total Bank' }} />
       <br />
+      <h2>Annual movements table </h2>
+      <hr />
       <Table data={balance} columns={['Month', '#', 'Year', 'Incomes', 'Bills']} />
+
+      <LineChart dataI={balance} />
+      <br />
       <h2>Table Sources</h2>
       <hr />
       <Table data={movimentSources} columns={['Total', 'Year', '#', 'Month', 'Source']} />

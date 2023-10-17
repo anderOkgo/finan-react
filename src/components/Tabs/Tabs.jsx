@@ -73,6 +73,7 @@ function Tabs({ setInit, init, setProc, proc }) {
             setMoviments(moviments);
             setBankTotal(tota_bank?.[0]?.total_bank ?? 0);
             setBalance(balance);
+            console.log(balance);
             setTotalDay(totalDay?.[0]?.Total_day ?? 0);
             setInit(true);
           }
