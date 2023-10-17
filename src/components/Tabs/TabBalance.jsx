@@ -11,7 +11,6 @@ function TabBalance({ setInit, init, setProc, proc, bankTotal, balance, moviment
       <h2>Annual movements table </h2>
       <hr />
       <Table data={balance} columns={['Month', '#', 'Year', 'Incomes', 'Bills']} />
-
       <LineChart dataI={balance} />
       <br />
       <h2>Table Sources</h2>
