@@ -21,7 +21,7 @@ export const options = {
     },
     title: {
       display: true,
-      text: 'Custom Line Chart',
+      text: 'Balances',
     },
   },
 };
@@ -40,13 +40,13 @@ function LineChart({ dataI }) {
     labels,
     datasets: [
       {
-        label: 'Income',
+        label: 'Incomes',
         data: dataset1Data,
         borderColor: 'rgb(53, 162, 235)',
         backgroundColor: 'rgba(53, 162, 235, 0.5)',
       },
       {
-        label: 'Expenses',
+        label: 'Bills',
         data: dataset2Data,
 
         borderColor: 'rgb(255, 99, 132)',
