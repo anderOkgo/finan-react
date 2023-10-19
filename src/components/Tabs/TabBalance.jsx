@@ -10,7 +10,7 @@ function TabBalance({ setInit, init, setProc, proc, bankTotal, balance, moviment
       <br />
       <h2>Annual Table </h2>
       <hr />
-      <Table data={balance} columns={['Month', '#', 'Year', 'Incomes', 'Bills']} />
+      <Table data={balance} columns={['Month', '#', 'Year', 'Incomes', 'Bills', 'Patrimony']} />
       <LineChart dataI={balance} />
       <br />
       <h2>Table Sources</h2>
