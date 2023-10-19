@@ -29,10 +29,8 @@ export const options = {
 // eslint-disable-next-line react/prop-types
 function LineChart({ dataI }) {
   const dataFromAPI = dataI;
-  const filteredData = dataFromAPI.filter((item) => item.month_name !== 'December');
-
+  const filteredData = dataFromAPI.filter((item) => item.year_number !== 2022);
   const labels = filteredData.map((item) => item.month_name);
-
   const dataset1Data = filteredData.map((item) => item.incomes);
   const dataset2Data = filteredData.map((item) => item.bills);
 

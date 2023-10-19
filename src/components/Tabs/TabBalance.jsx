@@ -8,7 +8,7 @@ function TabBalance({ setInit, init, setProc, proc, bankTotal, balance, moviment
     <div>
       <Bank {...{ setInit, init, setProc, proc, data: bankTotal, label: 'Total Bank' }} />
       <br />
-      <h2>Annual movements table </h2>
+      <h2>Annual Table </h2>
       <hr />
       <Table data={balance} columns={['Month', '#', 'Year', 'Incomes', 'Bills']} />
       <LineChart dataI={balance} />
@@ -22,12 +22,12 @@ function TabBalance({ setInit, init, setProc, proc, bankTotal, balance, moviment
 
 TabBalance.propTypes = {
   setInit: PropTypes.func.isRequired,
-  init: PropTypes.any, // Update with the correct prop type
+  init: PropTypes.any,
   setProc: PropTypes.func.isRequired,
-  proc: PropTypes.any, // Update with the correct prop type
-  bankTotal: PropTypes.any, // Update with the correct prop type
-  balance: PropTypes.array.isRequired, // Update with the correct prop type
-  movimentSources: PropTypes.array.isRequired, // Update with the correct prop type
+  proc: PropTypes.any,
+  bankTotal: PropTypes.any,
+  balance: PropTypes.array.isRequired,
+  movimentSources: PropTypes.array.isRequired,
 };
 
 export default TabBalance;
