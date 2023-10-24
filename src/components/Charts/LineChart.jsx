@@ -1,5 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
 import { Line } from 'react-chartjs-2';
+import './LineChart.css';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -52,7 +53,7 @@ function LineChart({ dataI }) {
       },
     ],
   };
-  return <Line options={options} data={data} />;
+  return <Line className="line-chart" options={options} data={data} />;
 }
 
 export default LineChart;

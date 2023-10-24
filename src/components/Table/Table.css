@@ -27,28 +27,18 @@ th {
 thead th {
   background-color: var(--second-color);
   color: #fff;
-  padding: 0.3em;
+  padding: 0.5em;
 }
 
-/* Table Row Hover Effect */
 tbody tr:hover {
   background-color: var(--tertiary-color);
 }
 
+tbody td {
+  max-height: 40px;
+}
+
 /* Add Padding to the First Column (Month Name) */
 td:first-child {
-  padding-left: 20px;
-}
-
-/* Center Numeric Data (Month Number, Year Number, Incomes, Bills) */
-td:nth-child(2),
-td:nth-child(3),
-td:nth-child(4),
-td:nth-child(5) {
-  text-align: center;
-}
-
-/* Add Space Between Incomes and Bills Columns */
-td:nth-child(4) + td {
-  padding-left: 20px;
+  padding-left: 2px;
 }
