@@ -2,9 +2,8 @@ import PropTypes from 'prop-types';
 import { useState, useCallback, useMemo, useRef } from 'react';
 import DataService from '../../services/data.service';
 import AutoDismissMessage from '../Message/AutoDismissMessage.jsx';
-import Loader from '../Loader/Loader';
 
-function Form({ setInit, init, setProc, proc, setForm, form, edit, setEdit }) {
+function Form({ setInit, init, setProc, setForm, form, edit, setEdit }) {
   const initialForm = useMemo(
     () => ({
       name: '',
@@ -116,13 +115,12 @@ function Form({ setInit, init, setProc, proc, setForm, form, edit, setEdit }) {
 
       setProc(false);
     },
-    [form, init, setInit, setProc, edit]
+    [form, init, setInit, setProc, edit, handleReset]
   );
 
   return (
     <div>
       <AutoDismissMessage msg={msg} bgColor={bgColor} duration={3000} visible={visible} setVisible={setVisible} />
-      {proc && <Loader />}
       <form onSubmit={handleInsert}>
         <div className="form-group">
           <label htmlFor="name">Name</label>

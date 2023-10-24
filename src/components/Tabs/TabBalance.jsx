@@ -2,11 +2,15 @@ import PropTypes from 'prop-types';
 import Table from '../Table/Table';
 import Bank from '../Bank/Bank';
 import LineChart from '../Charts/LineChart';
+import CountDownEnd from '../CountDownEnd/CountDownEnd';
 
 function TabBalance({ setInit, init, setProc, proc, bankTotal, balance, movimentSources }) {
   return (
     <div>
       <Bank {...{ setInit, init, setProc, proc, data: bankTotal, label: 'Total Bank' }} />
+      <br />
+
+      <CountDownEnd />
       <br />
       <h2>Annual Table </h2>
       <hr />
