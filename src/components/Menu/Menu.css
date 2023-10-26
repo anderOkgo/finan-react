@@ -3,12 +3,12 @@ li {
 }
 
 .navbar {
-  height: 10vh;
+  height: 11vh;
   min-height: 2.8em;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px;
+  padding: 15px;
   background-color: var(--main-color);
   color: var(--white);
   transition: max-height 0.5s ease-out;

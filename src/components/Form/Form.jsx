@@ -123,7 +123,7 @@ function Form({ setInit, init, setProc, setForm, form, edit, setEdit }) {
       <AutoDismissMessage msg={msg} bgColor={bgColor} duration={3000} visible={visible} setVisible={setVisible} />
       <form onSubmit={handleInsert}>
         <div className="form-group">
-          <label htmlFor="name">Name</label>
+          <label htmlFor="name">Moviment Name</label>
           <input
             id="name"
             type="text"

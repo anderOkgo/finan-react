@@ -52,11 +52,7 @@ function Tabs({ setInit, init, setProc, proc }) {
     {
       id: 4,
       label: 'Balance',
-      component: (
-        <TabBalance
-          {...{ setInit, init, setProc, proc, bankTotal, balance, movimentSources, label: 'Total Bank' }}
-        />
-      ),
+      component: <TabBalance {...{ setInit, init, setProc, proc, bankTotal, balance, movimentSources }} />,
     },
   ];
 
