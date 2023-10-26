@@ -2,11 +2,12 @@ import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import './Table.css';
 
-function Table({ data, columns, onRowDoubleClick }) {
+function Table({ data, columns, onRowDoubleClick, label }) {
   Table.propTypes = {
     data: PropTypes.arrayOf(PropTypes.object),
-    columns: PropTypes.any,
     onRowDoubleClick: PropTypes.any,
+    columns: PropTypes.any,
+    label: PropTypes.any,
   };
 
   const [dataset, setdataset] = useState([]);
@@ -50,6 +51,8 @@ function Table({ data, columns, onRowDoubleClick }) {
         <p>Loading...</p>
       ) : (
         <div className="table-container">
+          <h2>{label}</h2>
+          <hr />
           <table>
             <thead>
               {columns === undefined || columns.length == 0

@@ -46,7 +46,7 @@ export default function CountDownEnd() {
     return () => {
       clearInterval(id);
     };
-  }, [timeTotal, timeLeft, timeNow]);
+  }, [timeTotal, timeLeft, timeNow, timeMonthLeft, timeMonthNow]);
 
-  return <Table data={data} />;
+  return <Table label={'Remaining Time Table'} data={data} />;
 }

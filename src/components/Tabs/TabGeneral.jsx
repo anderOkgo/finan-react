@@ -63,9 +63,7 @@ function TabGeneral({ moviments, setForm, setEdit, setSelectedOption }) {
   };
   return (
     <div>
-      <h2>Moviment Table</h2>
-      <hr />
-      <Table data={moviments} onRowDoubleClick={handleRowDoubleClick} />
+      <Table label={'Moviment Table'} data={moviments} onRowDoubleClick={handleRowDoubleClick} />
       {selectedRow && (
         <div>
           <h2>Selected Row Data:</h2>

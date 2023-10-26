@@ -9,17 +9,17 @@ function TabBalance({ setInit, init, setProc, proc, bankTotal, balance, moviment
     <div>
       <Bank {...{ setInit, init, setProc, proc, data: bankTotal, label: 'Total Bank' }} />
       <br />
-      <h2>Remaining Time Table </h2>
-      <hr />
       <CountDownEnd />
-      <h2>Annual Table </h2>
-      <hr />
-      <Table data={balance} columns={['#', 'Year', 'Month', 'Incomes', 'Bills', 'TotalGain']} />
+      <br />
+      <Table
+        label={'Annual Table'}
+        data={balance}
+        columns={['#', 'Year', 'Month', 'Incomes', 'Bills', 'TotalGain']}
+      />
+      <br />
       <LineChart dataI={balance} />
       <br />
-      <h2>Source Table</h2>
-      <hr />
-      <Table data={movimentSources} columns={['Total', 'Year', '#', 'Month', 'Source']} />
+      <Table label={'Source Table'} data={movimentSources} columns={['Total', 'Year', '#', 'Month', 'Source']} />
     </div>
   );
 }

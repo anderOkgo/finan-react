@@ -4,9 +4,7 @@ import Table from '../Table/Table';
 function TabTag({ movimentTag }) {
   return (
     <div>
-      <h2>Tag Table</h2>
-      <hr />
-      <Table data={movimentTag} columns={['Value', 'Year', '#', 'Month', 'Source', 'Tag']} />
+      <Table label={'Tag Table'} data={movimentTag} columns={['Value', 'Year', '#', 'Month', 'Source', 'Tag']} />
     </div>
   );
 }
