@@ -73,6 +73,9 @@ function Tabs({ setInit, init, setProc, proc }) {
         } catch (error) {
           console.error('An error occurred:', error);
         }
+      } else {
+        let local = JSON.parse(localStorage.getItem('resp'));
+        Object.keys(local ? local : {}).length !== 0 ? writeData(local) : false;
       }
       setProc(false);
     };
