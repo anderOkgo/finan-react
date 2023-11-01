@@ -1,10 +1,9 @@
 import AuthService from '../../services/auth.service';
 import Tabs from '../Tabs/Tabs';
 import Login from '../Login/Login';
-import { useAlive } from '../../hooks/useAlive';
 
-const Home = () => {
-  const { setInit, init, setProc, proc } = useAlive();
+// eslint-disable-next-line react/prop-types
+const Home = ({ setInit, init, setProc, proc }) => {
   const currentUser = AuthService.getCurrentUser();
   return (
     <>

@@ -1,8 +1,7 @@
 import PropTypes from 'prop-types';
 import { moneyFormat } from '../../helpers/operations';
-import Status from '../Status/Status';
 
-export default function Bank({ label, init, proc, data }) {
+export default function Bank({ label, data }) {
   Bank.propTypes = {
     setInit: PropTypes.func.isRequired,
     init: PropTypes.any,
@@ -14,7 +13,7 @@ export default function Bank({ label, init, proc, data }) {
 
   return (
     <div className="label-bank">
-      <Status init={init} proc={proc} /> {label}: {moneyFormat(data)}
+      {label}: {moneyFormat(data)}
     </div>
   );
 }

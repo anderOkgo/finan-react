@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import AuthService from '../../services/auth.service';
 import './Menu.css';
+import Status from '../Status/Status';
 
-const Menu = () => {
+// eslint-disable-next-line react/prop-types
+const Menu = ({ init, proc }) => {
   const [currentUser, setCurrentUser] = useState(undefined);
   useEffect(() => {
     const user = AuthService.getCurrentUser();
@@ -32,7 +34,12 @@ const Menu = () => {
 
   return (
     <nav className="navbar">
-      <div className="logo insetshadow">Finanz</div>
+      <div className="logo insetshadow">
+        Finanz
+        <span className="icon-activity">
+          <Status init={init} proc={proc} />
+        </span>
+      </div>
       <div className="nav-links">
         <input type="checkbox" id="checkbox_toggle" />
         <label htmlFor="checkbox_toggle" className="hamburger">
