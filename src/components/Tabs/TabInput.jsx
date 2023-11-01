@@ -7,7 +7,7 @@ function TabInput({ setInit, init, setProc, proc, totalDay, setForm, form, edit,
     <div>
       <Bank {...{ setInit, init, setProc, proc, data: totalDay, label: 'Total Day' }} />
       <br />
-      <h2>Input Moviments</h2>
+      <h2>Movement Input</h2>
       <hr />
       <br />
       <Form {...{ setInit, init, setProc, proc, setForm, form, edit, setEdit }} />
