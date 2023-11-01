@@ -61,23 +61,33 @@ function Tabs({ setInit, init, setProc, proc }) {
       setProc(true);
       if (init) {
         try {
-          const resp = await DataService.totalBank({ date: formattedDate() });
-          if (!resp.err) {
-            const { tota_bank, balance, movimentSources, movimentTag, moviments, totalDay } = resp;
-            setMovimentSources(movimentSources);
-            setMovimentTag(movimentTag);
-            setMoviments(moviments);
-            setBankTotal(tota_bank?.[0]?.total_bank ?? 0);
-            setBalance(balance);
-            console.log(balance);
-            setTotalDay(totalDay?.[0]?.Total_day ?? 0);
-            setInit(true);
-          }
+          let local = JSON.parse(localStorage.getItem('resp'));
+          let resp =
+            Object.keys(local ? local : {}).length !== 0
+              ? local
+              : await DataService.totalBank({ date: formattedDate() });
+          writeData(resp);
+          let aresp = await DataService.totalBank({ date: formattedDate() });
+          localStorage.setItem('resp', JSON.stringify(aresp));
+          writeData(aresp);
         } catch (error) {
           console.error('An error occurred:', error);
         }
       }
       setProc(false);
+    };
+
+    const writeData = (resp) => {
+      if (!resp.err) {
+        const { tota_bank, balance, movimentSources, movimentTag, moviments, totalDay } = resp;
+        setMovimentSources(movimentSources);
+        setMovimentTag(movimentTag);
+        setMoviments(moviments);
+        setBankTotal(tota_bank?.[0]?.total_bank ?? 0);
+        setBalance(balance);
+        setTotalDay(totalDay?.[0]?.Total_day ?? 0);
+        setInit(true);
+      }
     };
 
     fetchData();
