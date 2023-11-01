@@ -67,9 +67,9 @@ function Tabs({ setInit, init, setProc, proc }) {
               ? local
               : await DataService.totalBank({ date: formattedDate() });
           writeData(resp);
-          let aresp = await DataService.totalBank({ date: formattedDate() });
-          localStorage.setItem('resp', JSON.stringify(aresp));
-          writeData(aresp);
+          resp = await DataService.totalBank({ date: formattedDate() });
+          localStorage.setItem('resp', JSON.stringify(resp));
+          writeData(resp);
         } catch (error) {
           console.error('An error occurred:', error);
         }
