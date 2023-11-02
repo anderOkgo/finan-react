@@ -85,6 +85,8 @@
   border-right: 1px solid var(--soft-gray);
   border-radius: 0px 0px 0px 0px;
   min-height: 93%;
+  overflow-y: scroll;
+  height: 93%;
 }
 
 input[type='datetime-local'] {
