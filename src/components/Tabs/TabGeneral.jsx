@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import Table from '../Table/Table';
 import { useState } from 'react';
 
-function TabGeneral({ moviments, setForm, setEdit, setSelectedOption }) {
+function TabGeneral({ moviments, generalInfo, setForm, setEdit, setSelectedOption }) {
   const [selectedRow, setSelectedRow] = useState(null);
 
   const handleRowDoubleClick = (row) => {
@@ -63,19 +63,16 @@ function TabGeneral({ moviments, setForm, setEdit, setSelectedOption }) {
   };
   return (
     <div>
+      <Table label={'General Info Table'} data={[generalInfo]} onRowDoubleClick={handleRowDoubleClick} />
       <Table label={'Moviment Table'} data={moviments} onRowDoubleClick={handleRowDoubleClick} />
-      {selectedRow && (
-        <div>
-          <h2>Selected Row Data:</h2>
-          <pre>{JSON.stringify(selectedRow, null, 2)}</pre>
-        </div>
-      )}
+      {selectedRow && true}
     </div>
   );
 }
 
 TabGeneral.propTypes = {
   moviments: PropTypes.any,
+  generalInfo: PropTypes.any,
   setForm: PropTypes.any,
   form: PropTypes.any,
   setEdit: PropTypes.any,
