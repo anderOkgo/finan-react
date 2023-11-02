@@ -1,0 +1,9 @@
+.label-bank {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--warning);
+  font-size: larger;
+  font-weight: bold;
+  padding: 0.5em;
+}

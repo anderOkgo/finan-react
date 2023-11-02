@@ -1,6 +1,6 @@
 import set from '../helpers/set.json';
 import helpHttp from '../helpers/helpHttp';
-import AuthService from '../services/auth.service';
+import AuthService from './auth.service';
 
 const BASE_URL = set.baseUrl;
 const API_URL = BASE_URL + 'api/finan/';

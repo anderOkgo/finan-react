@@ -1,16 +1,3 @@
-.table {
-  width: 100%;
-  border-collapse: collapse;
-  border: 0px solid #ccc;
-}
-
-th,
-td {
-  padding: 10px;
-  text-align: center;
-  border: 0px solid #ccc;
-}
-
 /* Apply Flexbox styles for responsiveness */
 @media (max-width: 600px) {
 }

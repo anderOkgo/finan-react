@@ -14,7 +14,7 @@ const AutoDismissMessage = ({ msg, bgColor, duration, setVisible, visible }) => 
         clearTimeout(timer);
       };
     }
-  }, [visible, duration]);
+  }, [visible, duration, setVisible]);
 
   return (
     <div>
