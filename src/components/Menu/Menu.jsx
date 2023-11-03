@@ -32,12 +32,17 @@ const Menu = ({ init, proc }) => {
     },
   ];
 
-  const [isChecked, setIsChecked] = useState(false);
   const checkboxRef = useRef(null);
-
+  const spanRef = useRef(null);
   useEffect(() => {
     const handleClick = (e) => {
-      if (checkboxRef.current && !checkboxRef.current.contains(e.target)) setIsChecked(false);
+      if (checkboxRef.current == e.target || spanRef.current == e.target) {
+        checkboxRef.current.checked ? false : true;
+      } else {
+        checkboxRef.current.checked = false;
+      }
+
+      console.log(e.target);
     };
     document.addEventListener('click', handleClick);
     return () => {
@@ -54,15 +59,9 @@ const Menu = ({ init, proc }) => {
         </span>
       </div>
       <div className="nav-links">
-        <input
-          type="checkbox"
-          id="checkbox_toggle"
-          checked={isChecked}
-          ref={checkboxRef}
-          onChange={(e) => setIsChecked(e.target.checked)}
-        />
+        <input type="checkbox" id="checkbox_toggle" ref={checkboxRef} />
         <label htmlFor="checkbox_toggle" className="hamburger">
-          <span className="hamb-line"></span>
+          <span ref={spanRef} className="hamb-line"></span>
         </label>
         <ul className="menu">
           {menuItems.map((menuItem, index) => (
