@@ -26,8 +26,8 @@ const Menu = ({ init, proc }) => {
       label: 'session',
       url: '#',
       child: [
-        { session: true, label: 'login', url: '/' },
-        { session: true, label: 'logout', url: '/', trigger: handleLogout },
+        { isSessionNeeded: false, label: 'login', url: '/' },
+        { isSessionNeeded: true, label: 'logout', url: '/', trigger: handleLogout },
       ],
     },
   ];
@@ -38,6 +38,8 @@ const Menu = ({ init, proc }) => {
     const handleClick = (e) => {
       if (checkboxRef.current == e.target || spanRef.current == e.target) {
         checkboxRef.current.checked ? false : true;
+      } else if (e.target.closest('.navbar') !== null) {
+        checkboxRef.current.checked = true;
       } else {
         checkboxRef.current.checked = false;
       }
@@ -72,14 +74,15 @@ const Menu = ({ init, proc }) => {
                     <a href={menuItem.url}>{menuItem.label}</a>
                     <ul className="dropdown">
                       {menuItem.child.map((subMenu) =>
-                        subMenu.session === true && currentUser ? (
+                        subMenu.isSessionNeeded === true && currentUser ? (
                           <li key={subMenu.label} className="nav-item">
                             <a href={subMenu.url} className="nav-link" onClick={subMenu.trigger}>
                               {subMenu.label}
                             </a>
                           </li>
                         ) : (
-                          !subMenu.session && (
+                          !subMenu.isSessionNeeded &&
+                          !currentUser && (
                             <li key={subMenu.label} className="nav-item">
                               <a href={subMenu.url} className="nav-link" onClick={subMenu?.trigger}>
                                 {subMenu.label}
