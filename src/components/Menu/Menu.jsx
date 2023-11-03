@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import AuthService from '../../services/auth.service';
 import './Menu.css';
 import Status from '../Status/Status';
@@ -32,6 +32,19 @@ const Menu = ({ init, proc }) => {
     },
   ];
 
+  const [isChecked, setIsChecked] = useState(false);
+  const checkboxRef = useRef(null);
+
+  useEffect(() => {
+    const handleClick = (e) => {
+      if (checkboxRef.current && !checkboxRef.current.contains(e.target)) setIsChecked(false);
+    };
+    document.addEventListener('click', handleClick);
+    return () => {
+      document.removeEventListener('click', handleClick);
+    };
+  }, []);
+
   return (
     <nav className="navbar">
       <div className="logo insetshadow">
@@ -41,7 +54,13 @@ const Menu = ({ init, proc }) => {
         </span>
       </div>
       <div className="nav-links">
-        <input type="checkbox" id="checkbox_toggle" />
+        <input
+          type="checkbox"
+          id="checkbox_toggle"
+          checked={isChecked}
+          ref={checkboxRef}
+          onChange={(e) => setIsChecked(e.target.checked)}
+        />
         <label htmlFor="checkbox_toggle" className="hamburger">
           <span className="hamb-line"></span>
         </label>
