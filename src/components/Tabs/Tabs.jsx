@@ -18,6 +18,7 @@ function Tabs({ setInit, init, setProc, proc }) {
   const [totalDay, setTotalDay] = useState([]);
   const [edit, setEdit] = useState(false);
   const [generalInfo, setGeneralInfo] = useState([]);
+  const [exchangeCol, setExchangeCol] = useState([]);
 
   const { selectedOption, setSelectedOption, handleTouchStart, handleTouchEnd } = useSwipeableTabs(1, 4, 180);
 
@@ -48,7 +49,7 @@ function Tabs({ setInit, init, setProc, proc }) {
     {
       id: 3,
       label: 'Tag',
-      component: <TabTag {...{ movimentTag }} />,
+      component: <TabTag {...{ movimentTag, exchangeCol }} />,
     },
     {
       id: 4,
@@ -91,6 +92,8 @@ function Tabs({ setInit, init, setProc, proc }) {
         setBalance(balance);
         setTotalDay(totalDay?.[0]?.Total_day ?? 0);
         setGeneralInfo(generalInfo?.find((item) => item.detail === 'total-save-au'));
+        setExchangeCol(generalInfo?.find((item) => item.detail === 'Exchange Colombia'));
+        console.log(generalInfo);
         setInit(true);
       }
     };
