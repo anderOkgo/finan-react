@@ -4,9 +4,7 @@ import './Bank.css';
 
 export default function Bank({ label, data }) {
   Bank.propTypes = {
-    setInit: PropTypes.func.isRequired,
     init: PropTypes.any,
-    setProc: PropTypes.func.isRequired,
     proc: PropTypes.any,
     data: PropTypes.any,
     label: PropTypes.any,

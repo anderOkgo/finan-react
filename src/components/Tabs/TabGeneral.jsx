@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import Table from '../Table/Table';
 import { useState } from 'react';
+import Bank from '../Bank/Bank';
 
 function TabGeneral({ moviments, generalInfo, setForm, setEdit, setSelectedOption }) {
   const [selectedRow, setSelectedRow] = useState(null);
@@ -63,7 +64,8 @@ function TabGeneral({ moviments, generalInfo, setForm, setEdit, setSelectedOptio
   };
   return (
     <div>
-      <Table label={'General Info Table'} data={[generalInfo]} onRowDoubleClick={handleRowDoubleClick} />
+      <Bank {...{ data: generalInfo['total'], label: 'Total Save AU' }} />
+      <br />
       <Table label={'Moviment Table'} data={moviments} onRowDoubleClick={handleRowDoubleClick} />
       {selectedRow && true}
     </div>

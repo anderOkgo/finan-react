@@ -39,12 +39,10 @@ const Menu = ({ init, proc }) => {
       if (checkboxRef.current == e.target || spanRef.current == e.target) {
         checkboxRef.current.checked ? false : true;
       } else if (e.target.closest('.navbar') !== null) {
-        checkboxRef.current.checked = true;
+        //nothig to do
       } else {
         checkboxRef.current.checked = false;
       }
-
-      console.log(e.target);
     };
     document.addEventListener('click', handleClick);
     return () => {
