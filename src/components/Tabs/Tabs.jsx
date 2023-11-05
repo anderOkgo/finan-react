@@ -70,7 +70,7 @@ function Tabs({ setInit, init, setProc, proc }) {
               : await DataService.totalBank({ date: formattedDate() });
           writeData(resp);
           resp = await DataService.totalBank({ date: formattedDate() });
-          localStorage.setItem('resp', JSON.stringify(resp));
+          if (resp) localStorage.setItem('resp', JSON.stringify(resp));
           writeData(resp);
         } catch (error) {
           console.error('An error occurred:', error);
@@ -83,18 +83,19 @@ function Tabs({ setInit, init, setProc, proc }) {
     };
 
     const writeData = (resp) => {
-      if (!resp.err) {
-        const { tota_bank, balance, movimentSources, movimentTag, moviments, totalDay, generalInfo } = resp;
-        setMovimentSources(movimentSources);
-        setMovimentTag(movimentTag);
-        setMoviments(moviments);
-        setBankTotal(tota_bank?.[0]?.total_bank ?? 0);
-        setBalance(balance);
-        setTotalDay(totalDay?.[0]?.Total_day ?? 0);
-        setGeneralInfo(generalInfo?.find((item) => item.detail === 'total-save-au'));
-        setExchangeCol(generalInfo?.find((item) => item.detail === 'Exchange Colombia'));
-        console.log(generalInfo);
-        setInit(true);
+      if (!resp?.err) {
+        if (resp) {
+          const { tota_bank, balance, movimentSources, movimentTag, moviments, totalDay, generalInfo } = resp;
+          setMovimentSources(movimentSources);
+          setMovimentTag(movimentTag);
+          setMoviments(moviments);
+          setBankTotal(tota_bank?.[0]?.total_bank ?? 0);
+          setBalance(balance);
+          setTotalDay(totalDay?.[0]?.Total_day ?? 0);
+          setGeneralInfo(generalInfo?.find((item) => item.detail === 'total-save-au'));
+          setExchangeCol(generalInfo?.find((item) => item.detail === 'Exchange Colombia'));
+          setInit(true);
+        }
       }
     };
 

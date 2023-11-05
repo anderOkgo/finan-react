@@ -17,17 +17,20 @@ const customFetch = async (endpoint, options = {}) => {
 
   setTimeout(() => controller.abort(), timeout);
 
-  try {
-    const res = await fetch(endpoint, options);
-    return await (res.ok
-      ? res.json()
-      : Promise.reject({
-          err: true,
-          status: res.status || '00',
-          statusText: res.statusText || 'Ocurrió un error',
-        }));
-  } catch (err) {
-    return { err };
+  if (navigator.onLine) {
+    try {
+      const res = await fetch(endpoint, options);
+      return await (res.ok
+        ? res.json()
+        : Promise.reject({
+            err: true,
+            status: res.status || '00',
+            statusText: res.statusText || 'Ocurrió un error',
+          }));
+    } catch (err) {
+      console.log('err');
+      return { err };
+    }
   }
 };
 

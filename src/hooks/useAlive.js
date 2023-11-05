@@ -11,7 +11,7 @@ export const useAlive = () => {
       if (!init) {
         setProc(true);
         const resp = await DataService.boot();
-        resp.err ? setInit(false) : setInit(true);
+        resp?.err ? setInit(false) : setInit(true);
         setProc(false);
       }
 
