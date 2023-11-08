@@ -29,7 +29,6 @@ const insert = async (par) => {
 };
 
 const update = async (par) => {
-  console.log(par);
   return await helpHttp.put(API_URL + 'update/' + par.id, {
     body: par,
     token: formatToken(AuthService.getCurrentUser().token),
@@ -37,7 +36,6 @@ const update = async (par) => {
 };
 
 const del = async (par) => {
-  console.log(par);
   return await helpHttp.del(API_URL + 'delete/' + par.id, {
     body: par,
     token: formatToken(AuthService.getCurrentUser().token),

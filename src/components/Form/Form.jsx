@@ -1,7 +1,8 @@
 import PropTypes from 'prop-types';
-import { useState, useCallback, useMemo, useRef } from 'react';
+import { useState, useCallback, useMemo, useRef, useEffect } from 'react';
 import DataService from '../../services/data.service';
 import AutoDismissMessage from '../Message/AutoDismissMessage.jsx';
+import Table from '../Table/Table';
 
 function Form({ setInit, init, setProc, setForm, form, edit, setEdit }) {
   const initialForm = useMemo(
@@ -33,6 +34,25 @@ function Form({ setInit, init, setProc, setForm, form, edit, setEdit }) {
     { value: '13', label: 'Cash exchange' },
   ];
 
+  const [off, setOff] = useState(null);
+
+  useEffect(() => {
+    var arrayOff = [];
+    if (localStorage.getItem('insert')) {
+      arrayOff = [...arrayOff, ...JSON.parse(localStorage.getItem('insert'))];
+    }
+    if (localStorage.getItem('update')) {
+      arrayOff = [...arrayOff, ...JSON.parse(localStorage.getItem('update'))];
+    }
+    arrayOff.forEach((obj, index) => {
+      // eslint-disable-next-line no-prototype-builtins
+      if (!obj.hasOwnProperty('id')) {
+        arrayOff[index].id = null;
+      }
+    });
+    setOff(arrayOff);
+  }, []);
+
   const handleReset = useCallback(() => {
     setForm(initialForm);
     setEdit(false);
@@ -40,7 +60,7 @@ function Form({ setInit, init, setProc, setForm, form, edit, setEdit }) {
 
   const handleDelete = useCallback(async () => {
     console.log(form);
-    let isDelete = window.confirm(`¿Are you sure to delete it? '${form.id}'?`);
+    let isDelete = window.confirm(`¿Are you sure to delete it? '${form.name}'?`);
 
     if (isDelete) {
       try {
@@ -48,7 +68,7 @@ function Form({ setInit, init, setProc, setForm, form, edit, setEdit }) {
         if (edit) {
           response = await DataService.del(form);
         }
-        if (response.err) {
+        if (response?.err) {
           setMsg('Transaction failed');
           setBgColor('red');
           setVisible(true);
@@ -93,9 +113,20 @@ function Form({ setInit, init, setProc, setForm, form, edit, setEdit }) {
           } else {
             response = await DataService.insert(form);
           }
-          if (response.err) {
+          if (response?.err) {
             setMsg('Transaction failed');
             setBgColor('red');
+            let local_data = '';
+            edit ? (local_data = 'update') : (local_data = 'insert');
+            if (localStorage.getItem(local_data)) {
+              const existingArray = JSON.parse(localStorage.getItem(local_data));
+              existingArray.push(form);
+              localStorage.setItem(local_data, JSON.stringify(existingArray));
+            } else {
+              localStorage.setItem(local_data, JSON.stringify([form]));
+            }
+            setOff([...off, form]);
+
             setVisible(true);
           } else {
             setMsg('Transaction successful');
@@ -107,16 +138,74 @@ function Form({ setInit, init, setProc, setForm, form, edit, setEdit }) {
         } catch (error) {
           console.error('An error occurred:', error);
           alert('Insertion failed');
+          let local_data = '';
+          edit ? (local_data = 'update') : (local_data = 'insert');
+          if (localStorage.getItem(local_data)) {
+            const existingArray = JSON.parse(localStorage.getItem(local_data));
+            existingArray.push(form);
+            localStorage.setItem(local_data, JSON.stringify(existingArray));
+          } else {
+            localStorage.setItem(local_data, JSON.stringify([form]));
+          }
+          setOff([...off, form]);
         }
       } else {
         alert('Server idle');
         setInit(undefined);
+        let local_data = '';
+        edit ? (local_data = 'update') : (local_data = 'insert');
+        if (localStorage.getItem(local_data)) {
+          const existingArray = JSON.parse(localStorage.getItem(local_data));
+          existingArray.push(form);
+          localStorage.setItem(local_data, JSON.stringify(existingArray));
+        } else {
+          localStorage.setItem(local_data, JSON.stringify([form]));
+        }
+        setOff([...off, form]);
       }
 
       setProc(false);
     },
-    [form, init, setInit, setProc, edit, handleReset]
+    [form, init, setInit, setProc, edit, handleReset, off]
   );
+
+  const handleRowDoubleClick = async () => {
+    setProc(true);
+    if (init) {
+      const updatedInsertArray = [];
+      if (localStorage.getItem('insert')) {
+        const insertArray = JSON.parse(localStorage.getItem('insert'));
+        insertArray.forEach(async (item) => {
+          try {
+            const response = await DataService.insert(item);
+            response.err ? updatedInsertArray.push(item) : setInit(Date.now());
+          } catch (error) {
+            updatedInsertArray.push(item);
+          }
+        });
+        localStorage.setItem('insert', JSON.stringify(updatedInsertArray));
+      }
+
+      const updatedUpdateArray = [];
+      if (localStorage.getItem('update')) {
+        const insertArray = JSON.parse(localStorage.getItem('update'));
+        insertArray.forEach(async (item) => {
+          try {
+            const response = await DataService.update(item);
+            response.err ? updatedUpdateArray.push(item) : setInit(Date.now());
+          } catch (error) {
+            updatedUpdateArray.push(item);
+          }
+        });
+        setOff([...updatedUpdateArray, ...updatedInsertArray]);
+        localStorage.setItem('update', JSON.stringify(updatedUpdateArray));
+      }
+      setMsg('Transaction successful');
+      setBgColor('green');
+    }
+
+    setProc(false);
+  };
 
   return (
     <div>
@@ -197,6 +286,14 @@ function Form({ setInit, init, setProc, setForm, form, edit, setEdit }) {
           {edit && <input className="delete-button" type="button" value="Delete" onClick={handleDelete} />}
         </div>
       </form>
+      {off?.length !== 0 && (
+        <Table
+          label={'Offline Table'}
+          columns={['id', 'name', 'val', 'tag', 'source', 'datemov']}
+          data={off}
+          onRowDoubleClick={handleRowDoubleClick}
+        />
+      )}
     </div>
   );
 }

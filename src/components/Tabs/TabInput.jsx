@@ -11,6 +11,7 @@ function TabInput({ setInit, init, setProc, proc, totalDay, setForm, form, edit,
       <hr />
       <br />
       <Form {...{ setInit, init, setProc, proc, setForm, form, edit, setEdit }} />
+      <br />
     </div>
   );
 }

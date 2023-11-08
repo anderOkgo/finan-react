@@ -31,6 +31,12 @@ const customFetch = async (endpoint, options = {}) => {
       console.log('err');
       return { err };
     }
+  } else {
+    return {
+      err: true,
+      status: '00',
+      statusText: 'offline',
+    };
   }
 };
 
