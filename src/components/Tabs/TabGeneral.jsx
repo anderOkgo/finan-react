@@ -66,7 +66,12 @@ function TabGeneral({ moviments, generalInfo, setForm, setEdit, setSelectedOptio
     <div>
       <Bank {...{ data: generalInfo['total'], label: 'Total Save AU' }} />
       <br />
-      <Table label={'Moviment Table'} data={moviments} onRowDoubleClick={handleRowDoubleClick} />
+      <Table
+        label={'Movement Table'}
+        columns={['Id', 'Name', 'Value', 'Tag', 'Source', 'Date Movement']}
+        data={moviments}
+        onRowDoubleClick={handleRowDoubleClick}
+      />
       {selectedRow && true}
     </div>
   );

@@ -1,5 +1,5 @@
-import PropTypes from 'prop-types';
 import { useState, useCallback, useMemo, useRef, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import DataService from '../../services/data.service';
 import AutoDismissMessage from '../Message/AutoDismissMessage.jsx';
 import Table from '../Table/Table';
@@ -34,23 +34,22 @@ function Form({ setInit, init, setProc, setForm, form, edit, setEdit }) {
     { value: '13', label: 'Cash exchange' },
   ];
 
-  const [off, setOff] = useState(null);
+  const [off, setOff] = useState([]);
 
   useEffect(() => {
-    var arrayOff = [];
-    if (localStorage.getItem('insert')) {
-      arrayOff = [...arrayOff, ...JSON.parse(localStorage.getItem('insert'))];
-    }
-    if (localStorage.getItem('update')) {
-      arrayOff = [...arrayOff, ...JSON.parse(localStorage.getItem('update'))];
-    }
-    arrayOff.forEach((obj, index) => {
-      // eslint-disable-next-line no-prototype-builtins
-      if (!obj.hasOwnProperty('id')) {
-        arrayOff[index].id = null;
+    const insertData = JSON.parse(localStorage.getItem('insert')) || [];
+    const updateData = JSON.parse(localStorage.getItem('update')) || [];
+    const delData = JSON.parse(localStorage.getItem('del')) || [];
+
+    const mergedData = [...insertData, ...updateData, ...delData].map((obj) => {
+      if (obj.id === undefined || obj.source === undefined) {
+        obj.id = 0;
+        obj.source = 0;
       }
+      return obj;
     });
-    setOff(arrayOff);
+
+    setOff(mergedData);
   }, []);
 
   const handleReset = useCallback(() => {
@@ -59,8 +58,7 @@ function Form({ setInit, init, setProc, setForm, form, edit, setEdit }) {
   }, [initialForm, setForm, setEdit]);
 
   const handleDelete = useCallback(async () => {
-    console.log(form);
-    let isDelete = window.confirm(`¿Are you sure to delete it? '${form.name}'?`);
+    const isDelete = window.confirm(`Are you sure to delete '${form.name}'?`);
 
     if (isDelete) {
       try {
@@ -68,10 +66,9 @@ function Form({ setInit, init, setProc, setForm, form, edit, setEdit }) {
         if (edit) {
           response = await DataService.del(form);
         }
+
         if (response?.err) {
-          setMsg('Transaction failed');
-          setBgColor('red');
-          setVisible(true);
+          handleOfflineData('del', form);
         } else {
           setMsg('Transaction successful');
           setBgColor('green');
@@ -82,10 +79,9 @@ function Form({ setInit, init, setProc, setForm, form, edit, setEdit }) {
         }
       } catch (error) {
         console.error('An error occurred:', error);
-        alert('Insertion failed');
+        alert('Deletion failed');
+        handleOfflineData('del', form);
       }
-    } else {
-      return;
     }
   }, [form, edit, handleReset, setInit, setEdit]);
 
@@ -105,7 +101,6 @@ function Form({ setInit, init, setProc, setForm, form, edit, setEdit }) {
       setProc(true);
 
       if (init) {
-        e.target.reset();
         try {
           let response;
           if (edit) {
@@ -113,21 +108,10 @@ function Form({ setInit, init, setProc, setForm, form, edit, setEdit }) {
           } else {
             response = await DataService.insert(form);
           }
+
           if (response?.err) {
             setMsg('Transaction failed');
-            setBgColor('red');
-            let local_data = '';
-            edit ? (local_data = 'update') : (local_data = 'insert');
-            if (localStorage.getItem(local_data)) {
-              const existingArray = JSON.parse(localStorage.getItem(local_data));
-              existingArray.push(form);
-              localStorage.setItem(local_data, JSON.stringify(existingArray));
-            } else {
-              localStorage.setItem(local_data, JSON.stringify([form]));
-            }
-            setOff([...off, form]);
-
-            setVisible(true);
+            handleOfflineData(edit ? 'update' : 'insert', form);
           } else {
             setMsg('Transaction successful');
             setBgColor('green');
@@ -138,74 +122,67 @@ function Form({ setInit, init, setProc, setForm, form, edit, setEdit }) {
         } catch (error) {
           console.error('An error occurred:', error);
           alert('Insertion failed');
-          let local_data = '';
-          edit ? (local_data = 'update') : (local_data = 'insert');
-          if (localStorage.getItem(local_data)) {
-            const existingArray = JSON.parse(localStorage.getItem(local_data));
-            existingArray.push(form);
-            localStorage.setItem(local_data, JSON.stringify(existingArray));
-          } else {
-            localStorage.setItem(local_data, JSON.stringify([form]));
-          }
-          setOff([...off, form]);
+          handleOfflineData(edit ? 'update' : 'insert', form);
         }
       } else {
         alert('Server idle');
         setInit(undefined);
-        let local_data = '';
-        edit ? (local_data = 'update') : (local_data = 'insert');
-        if (localStorage.getItem(local_data)) {
-          const existingArray = JSON.parse(localStorage.getItem(local_data));
-          existingArray.push(form);
-          localStorage.setItem(local_data, JSON.stringify(existingArray));
-        } else {
-          localStorage.setItem(local_data, JSON.stringify([form]));
-        }
-        setOff([...off, form]);
+        handleOfflineData(edit ? 'update' : 'insert', form);
       }
 
       setProc(false);
     },
-    [form, init, setInit, setProc, edit, handleReset, off]
+    [form, init, setInit, setProc, edit, handleReset]
   );
 
   const handleRowDoubleClick = async () => {
     setProc(true);
     if (init) {
-      const updatedInsertArray = [];
-      if (localStorage.getItem('insert')) {
-        const insertArray = JSON.parse(localStorage.getItem('insert'));
-        insertArray.forEach(async (item) => {
-          try {
-            const response = await DataService.insert(item);
-            response.err ? updatedInsertArray.push(item) : setInit(Date.now());
-          } catch (error) {
-            updatedInsertArray.push(item);
-          }
-        });
-        localStorage.setItem('insert', JSON.stringify(updatedInsertArray));
-      }
+      const updatedInsertArray = await handleBulkData('insert');
+      const updatedUpdateArray = await handleBulkData('update');
+      const delUpdateArray = await handleBulkData('del');
 
-      const updatedUpdateArray = [];
-      if (localStorage.getItem('update')) {
-        const insertArray = JSON.parse(localStorage.getItem('update'));
-        insertArray.forEach(async (item) => {
-          try {
-            const response = await DataService.update(item);
-            response.err ? updatedUpdateArray.push(item) : setInit(Date.now());
-          } catch (error) {
-            updatedUpdateArray.push(item);
-          }
-        });
-        setOff([...updatedUpdateArray, ...updatedInsertArray]);
-        localStorage.setItem('update', JSON.stringify(updatedUpdateArray));
-      }
+      setOff([...updatedUpdateArray, ...updatedInsertArray, ...delUpdateArray]);
       setMsg('Transaction successful');
       setBgColor('green');
+      setVisible(true);
     }
 
     setProc(false);
   };
+
+  const handleBulkData = async (type) => {
+    const dataKey = type;
+    const localData = JSON.parse(localStorage.getItem(dataKey)) || [];
+    const updatedData = [];
+
+    for (const item of localData) {
+      try {
+        const response = await DataService[type](item);
+        if (!response.err) {
+          setInit(Date.now());
+        } else {
+          updatedData.push(item);
+        }
+      } catch (error) {
+        updatedData.push(item);
+      }
+    }
+
+    localStorage.setItem(dataKey, JSON.stringify(updatedData));
+    return updatedData;
+  };
+
+  const handleOfflineData = useCallback(
+    (type, data) => {
+      const localData = type;
+      const existingData = JSON.parse(localStorage.getItem(localData)) || [];
+      existingData.push(data);
+      localStorage.setItem(localData, JSON.stringify(existingData));
+      setOff((prevOff) => [...prevOff, data]);
+    },
+    [setOff]
+  );
 
   return (
     <div>
@@ -286,10 +263,10 @@ function Form({ setInit, init, setProc, setForm, form, edit, setEdit }) {
           {edit && <input className="delete-button" type="button" value="Delete" onClick={handleDelete} />}
         </div>
       </form>
-      {off?.length !== 0 && (
+      {off.length !== 0 && (
         <Table
           label={'Offline Table'}
-          columns={['id', 'name', 'val', 'tag', 'source', 'datemov']}
+          columns={['Field', 'Field', 'Field', 'Field', 'Field', 'Field', 'Field']}
           data={off}
           onRowDoubleClick={handleRowDoubleClick}
         />
