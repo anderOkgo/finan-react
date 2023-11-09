@@ -82,6 +82,7 @@ function Form({ setInit, init, setProc, setForm, form, edit, setEdit }) {
         alert('Deletion failed');
         handleOfflineData('del', form);
       }
+      handleReset();
     }
   }, [form, edit, handleReset, setInit, setEdit]);
 
@@ -129,7 +130,7 @@ function Form({ setInit, init, setProc, setForm, form, edit, setEdit }) {
         setInit(undefined);
         handleOfflineData(edit ? 'update' : 'insert', form);
       }
-
+      handleReset();
       setProc(false);
     },
     [form, init, setInit, setProc, edit, handleReset]

@@ -11,7 +11,7 @@ const appfiles = [
   './icon/icon-284x284.png',
   './icon/icon-512x512.png',
 ];
-const offlinePage = './offline.html';
+//const offlinePage = './offline.html';
 
 self.addEventListener('install', (e) => {
   e.waitUntil(
@@ -32,14 +32,14 @@ self.addEventListener('fetch', (e) => {
         .then((response) => {
           const responseClone = response.clone(); // Clone the response to use it and store it in the cache
           caches.open(CACHE_NAME).then((cache) => {
-            if (e.request.method == 'GET') {
+            if (e.request.method === 'GET') {
               cache.put(e.request, responseClone);
             }
           });
           return response;
         })
         .catch(() => {
-          return caches.match(offlinePage); // If fetching from network fails, return a fallback response
+          return caches.match(e.request);
         });
     })
   );
