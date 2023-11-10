@@ -16,7 +16,7 @@ export const useAlive = () => {
     };
 
     fetchData();
-  }, [init, proc]);
+  }, [init]);
 
   return { init, setInit, proc, setProc };
 };

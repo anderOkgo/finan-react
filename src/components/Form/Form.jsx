@@ -4,7 +4,7 @@ import DataService from '../../services/data.service';
 import AutoDismissMessage from '../Message/AutoDismissMessage.jsx';
 import Table from '../Table/Table';
 
-function Form({ setInit, setForm, form, edit, setEdit }) {
+function Form({ setInit, setForm, form, setProc, edit, setEdit }) {
   const initialForm = useMemo(
     () => ({
       name: '',
@@ -78,6 +78,7 @@ function Form({ setInit, setForm, form, edit, setEdit }) {
   );
 
   const handleDelete = useCallback(async () => {
+    setProc(true);
     const isDelete = window.confirm(`Are you sure to delete '${form.name}'?`);
     if (isDelete) {
       let response = await DataService.del(form);
@@ -95,11 +96,13 @@ function Form({ setInit, setForm, form, edit, setEdit }) {
 
       setVisible(true);
       handleReset();
+      setProc(true);
     }
   }, [form, handleReset, setInit, setEdit, handleOfflineData]);
 
   const handleInsert = useCallback(
     async (e) => {
+      setProc(true);
       e.preventDefault();
       let response = edit ? await DataService.update(form) : await DataService.insert(form);
       if (response?.err) {
@@ -114,22 +117,29 @@ function Form({ setInit, setForm, form, edit, setEdit }) {
 
       setVisible(true);
       handleReset();
+      setProc(false);
     },
     [form, setInit, edit, handleOfflineData, handleReset]
   );
 
   const handleRowDoubleClick = async () => {
+    setProc(true);
     const updatedInsertArray = await handleBulkData('insert');
     const updatedUpdateArray = await handleBulkData('update');
     const UpdatedDeleteArray = await handleBulkData('del');
     let sum = [...updatedUpdateArray, ...updatedInsertArray, ...UpdatedDeleteArray];
     setOff(sum);
     if (sum?.length === 0) {
-      setMsg('Transaction successfully');
+      setMsg('Transaction successful');
       setBgColor('green');
-      setVisible(true);
       setInit(Date.now());
+    } else {
+      setMsg('Offline');
+      setBgColor('red');
     }
+
+    setVisible(true);
+    setProc(false);
   };
 
   const handleBulkData = async (type) => {
