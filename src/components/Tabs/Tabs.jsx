@@ -61,46 +61,36 @@ function Tabs({ setInit, init, setProc, proc }) {
   useEffect(() => {
     const fetchData = async () => {
       setProc(true);
+      const localResp = JSON.parse(localStorage.getItem('resp'));
+
+      if (Object.keys(localResp || {}).length !== 0) {
+        writeData(localResp);
+      }
+
       if (init) {
-        try {
-          let local = JSON.parse(localStorage.getItem('resp'));
-          let resp =
-            Object.keys(local ? local : {}).length !== 0
-              ? local
-              : await DataService.totalBank({ date: formattedDate() });
+        const resp = await DataService.totalBank({ date: formattedDate() });
+        if (!resp?.err) {
+          localStorage.setItem('resp', JSON.stringify(resp));
           writeData(resp);
-          resp = await DataService.totalBank({ date: formattedDate() });
-          if (resp) localStorage.setItem('resp', JSON.stringify(resp));
-          writeData(resp);
-        } catch (error) {
-          console.error('An error occurred:', error);
         }
-      } else {
-        let local = JSON.parse(localStorage.getItem('resp'));
-        Object.keys(local ? local : {}).length !== 0 ? writeData(local) : false;
       }
       setProc(false);
     };
 
     const writeData = (resp) => {
-      if (!resp?.err) {
-        if (resp) {
-          const { tota_bank, balance, movimentSources, movimentTag, moviments, totalDay, generalInfo } = resp;
-          setMovimentSources(movimentSources);
-          setMovimentTag(movimentTag);
-          setMoviments(moviments);
-          setBankTotal(tota_bank?.[0]?.total_bank ?? 0);
-          setBalance(balance);
-          setTotalDay(totalDay?.[0]?.Total_day ?? 0);
-          setGeneralInfo(generalInfo?.find((item) => item.detail === 'total-save-au'));
-          setExchangeCol(generalInfo?.find((item) => item.detail === 'Exchange Colombia'));
-          setInit(true);
-        }
-      }
+      const { tota_bank, balance, movimentSources, movimentTag, moviments, totalDay, generalInfo } = resp;
+      setMovimentSources(movimentSources);
+      setMovimentTag(movimentTag);
+      setMoviments(moviments);
+      setBankTotal(tota_bank?.[0]?.total_bank ?? 0);
+      setBalance(balance);
+      setTotalDay(totalDay?.[0]?.Total_day ?? 0);
+      setGeneralInfo(generalInfo?.find((item) => item.detail === 'total-save-au'));
+      setExchangeCol(generalInfo?.find((item) => item.detail === 'Exchange Colombia'));
     };
 
     fetchData();
-  }, [init, setInit, setProc]);
+  }, [init, setProc]);
 
   const handleRadioChange = (option) => {
     setSelectedOption(option);

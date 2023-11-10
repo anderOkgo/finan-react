@@ -7,8 +7,8 @@ const App = () => {
   const { init, setInit, proc, setProc } = useAlive();
   return (
     <div className="app">
-      <Menu init={init} proc={proc} />
-      <Home setInit={setInit} init={init} setProc={setProc} proc={proc} />
+      <Menu {...{ init, proc }} />
+      <Home {...{ setInit, init, setProc, proc }} />
     </div>
   );
 };

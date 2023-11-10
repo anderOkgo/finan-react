@@ -8,9 +8,9 @@ const Home = ({ setInit, init, setProc, proc }) => {
   return (
     <>
       {!currentUser ? (
-        <Login setInit={setInit} init={init} setProc={setProc} proc={proc} />
+        <Login {...{ setInit, init, setProc, proc }} />
       ) : (
-        <Tabs setInit={setInit} init={init} setProc={setProc} proc={proc} />
+        <Tabs {...{ setInit, init, setProc, proc }} />
       )}
     </>
   );

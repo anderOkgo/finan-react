@@ -137,6 +137,7 @@ function Form({ setInit, init, setProc, setForm, form, edit, setEdit }) {
         setMsg('Transaction successfully');
         setBgColor('green');
         setVisible(true);
+        setInit(Date.now());
       }
     }
 
@@ -149,7 +150,7 @@ function Form({ setInit, init, setProc, setForm, form, edit, setEdit }) {
 
     for (const item of localData) {
       const response = await DataService[type](item);
-      !response.err ? setInit(Date.now()) : updatedData.push(item);
+      response.err ? updatedData.push(item) : false;
     }
 
     localStorage.setItem(type, JSON.stringify(updatedData));
