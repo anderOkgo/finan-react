@@ -39,9 +39,9 @@ function Form({ setInit, init, setProc, setForm, form, edit, setEdit }) {
   useEffect(() => {
     const insertData = JSON.parse(localStorage.getItem('insert')) || [];
     const updateData = JSON.parse(localStorage.getItem('update')) || [];
-    const delData = JSON.parse(localStorage.getItem('del')) || [];
+    const deleteData = JSON.parse(localStorage.getItem('del')) || [];
 
-    const mergedData = [...insertData, ...updateData, ...delData].map((obj) => {
+    const mergedData = [...insertData, ...updateData, ...deleteData].map((obj) => {
       if (obj.id === undefined || obj.source === undefined) {
         obj.id = 0;
         obj.source = 0;
@@ -141,12 +141,14 @@ function Form({ setInit, init, setProc, setForm, form, edit, setEdit }) {
     if (init) {
       const updatedInsertArray = await handleBulkData('insert');
       const updatedUpdateArray = await handleBulkData('update');
-      const delUpdateArray = await handleBulkData('del');
-
-      setOff([...updatedUpdateArray, ...updatedInsertArray, ...delUpdateArray]);
-      setMsg('Transaction successful');
-      setBgColor('green');
-      setVisible(true);
+      const UpdatedDeleteArray = await handleBulkData('del');
+      let sum = [...updatedUpdateArray, ...updatedInsertArray, ...UpdatedDeleteArray];
+      setOff(sum);
+      if (sum?.length === 0) {
+        setMsg('Transaction successfully');
+        setBgColor('green');
+        setVisible(true);
+      }
     }
 
     setProc(false);
@@ -176,10 +178,9 @@ function Form({ setInit, init, setProc, setForm, form, edit, setEdit }) {
 
   const handleOfflineData = useCallback(
     (type, data) => {
-      const localData = type;
-      const existingData = JSON.parse(localStorage.getItem(localData)) || [];
+      const existingData = JSON.parse(localStorage.getItem(type)) || [];
       existingData.push(data);
-      localStorage.setItem(localData, JSON.stringify(existingData));
+      localStorage.setItem(type, JSON.stringify(existingData));
       setOff((prevOff) => [...prevOff, data]);
     },
     [setOff]
