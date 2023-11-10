@@ -123,6 +123,7 @@ function Form({ setInit, setForm, form, edit, setEdit }) {
     const updatedUpdateArray = await handleBulkData('update');
     const UpdatedDeleteArray = await handleBulkData('del');
     let sum = [...updatedUpdateArray, ...updatedInsertArray, ...UpdatedDeleteArray];
+    setOff(sum);
     if (sum?.length === 0) {
       setMsg('Transaction successfully');
       setBgColor('green');
