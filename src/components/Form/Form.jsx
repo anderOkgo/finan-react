@@ -52,39 +52,20 @@ function Form({ setInit, init, setProc, setForm, form, edit, setEdit }) {
     setOff(mergedData);
   }, []);
 
+  const handleOfflineData = useCallback(
+    (type, data) => {
+      const existingData = JSON.parse(localStorage.getItem(type)) || [];
+      existingData.push(data);
+      localStorage.setItem(type, JSON.stringify(existingData));
+      setOff((prevOff) => [...prevOff, data]);
+    },
+    [setOff]
+  );
+
   const handleReset = useCallback(() => {
     setForm(initialForm);
     setEdit(false);
   }, [initialForm, setForm, setEdit]);
-
-  const handleDelete = useCallback(async () => {
-    const isDelete = window.confirm(`Are you sure to delete '${form.name}'?`);
-
-    if (isDelete) {
-      try {
-        let response;
-        if (edit) {
-          response = await DataService.del(form);
-        }
-
-        if (response?.err) {
-          handleOfflineData('del', form);
-        } else {
-          setMsg('Transaction successful');
-          setBgColor('green');
-          setInit(Date.now());
-          setVisible(true);
-          handleReset();
-          setEdit(false);
-        }
-      } catch (error) {
-        console.error('An error occurred:', error);
-        alert('Deletion failed');
-        handleOfflineData('del', form);
-      }
-      handleReset();
-    }
-  }, [form, edit, handleReset, setInit, setEdit]);
 
   const handleChange = useCallback(
     (e) => {
@@ -96,44 +77,52 @@ function Form({ setInit, init, setProc, setForm, form, edit, setEdit }) {
     [form, setForm]
   );
 
+  const handleDelete = useCallback(async () => {
+    const isDelete = window.confirm(`Are you sure to delete '${form.name}'?`);
+    if (isDelete) {
+      let response = await DataService.del(form);
+      if (response?.err) {
+        handleOfflineData('del', form);
+      } else {
+        setMsg('Transaction successful');
+        setBgColor('green');
+        setInit(Date.now());
+        setVisible(true);
+        handleReset();
+        setEdit(false);
+      }
+
+      handleReset();
+    }
+  }, [form, handleReset, setInit, setEdit, handleOfflineData]);
+
   const handleInsert = useCallback(
     async (e) => {
       e.preventDefault();
       setProc(true);
-
       if (init) {
-        try {
-          let response;
-          if (edit) {
-            response = await DataService.update(form);
-          } else {
-            response = await DataService.insert(form);
-          }
-
-          if (response?.err) {
-            setMsg('Transaction failed');
-            handleOfflineData(edit ? 'update' : 'insert', form);
-          } else {
-            setMsg('Transaction successful');
-            setBgColor('green');
-            setInit(Date.now());
-            setVisible(true);
-            handleReset();
-          }
-        } catch (error) {
-          console.error('An error occurred:', error);
-          alert('Insertion failed');
+        let response = edit ? await DataService.update(form) : await DataService.insert(form);
+        if (response?.err) {
+          setMsg('Transaction failed');
           handleOfflineData(edit ? 'update' : 'insert', form);
+        } else {
+          setMsg('Transaction successful');
+          setBgColor('green');
+          setInit(Date.now());
+          setVisible(true);
+          handleReset();
         }
       } else {
-        alert('Server idle');
+        setMsg('Server idle');
+        setBgColor('red');
+        setVisible(true);
         setInit(undefined);
         handleOfflineData(edit ? 'update' : 'insert', form);
       }
       handleReset();
       setProc(false);
     },
-    [form, init, setInit, setProc, edit, handleReset]
+    [form, init, setInit, setProc, edit, handleOfflineData, handleReset]
   );
 
   const handleRowDoubleClick = async () => {
@@ -155,36 +144,17 @@ function Form({ setInit, init, setProc, setForm, form, edit, setEdit }) {
   };
 
   const handleBulkData = async (type) => {
-    const dataKey = type;
-    const localData = JSON.parse(localStorage.getItem(dataKey)) || [];
+    const localData = JSON.parse(localStorage.getItem(type)) || [];
     const updatedData = [];
 
     for (const item of localData) {
-      try {
-        const response = await DataService[type](item);
-        if (!response.err) {
-          setInit(Date.now());
-        } else {
-          updatedData.push(item);
-        }
-      } catch (error) {
-        updatedData.push(item);
-      }
+      const response = await DataService[type](item);
+      !response.err ? setInit(Date.now()) : updatedData.push(item);
     }
 
-    localStorage.setItem(dataKey, JSON.stringify(updatedData));
+    localStorage.setItem(type, JSON.stringify(updatedData));
     return updatedData;
   };
-
-  const handleOfflineData = useCallback(
-    (type, data) => {
-      const existingData = JSON.parse(localStorage.getItem(type)) || [];
-      existingData.push(data);
-      localStorage.setItem(type, JSON.stringify(existingData));
-      setOff((prevOff) => [...prevOff, data]);
-    },
-    [setOff]
-  );
 
   return (
     <div>
