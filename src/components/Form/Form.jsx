@@ -4,7 +4,7 @@ import DataService from '../../services/data.service';
 import AutoDismissMessage from '../Message/AutoDismissMessage.jsx';
 import Table from '../Table/Table';
 
-function Form({ setInit, init, setProc, setForm, form, edit, setEdit }) {
+function Form({ setInit, setForm, form, edit, setEdit }) {
   const initialForm = useMemo(
     () => ({
       name: '',
@@ -82,16 +82,18 @@ function Form({ setInit, init, setProc, setForm, form, edit, setEdit }) {
     if (isDelete) {
       let response = await DataService.del(form);
       if (response?.err) {
+        setMsg('Transaction failed');
+        setBgColor('red');
         handleOfflineData('del', form);
       } else {
         setMsg('Transaction successful');
         setBgColor('green');
         setInit(Date.now());
-        setVisible(true);
         handleReset();
         setEdit(false);
       }
 
+      setVisible(true);
       handleReset();
     }
   }, [form, handleReset, setInit, setEdit, handleOfflineData]);
@@ -99,49 +101,34 @@ function Form({ setInit, init, setProc, setForm, form, edit, setEdit }) {
   const handleInsert = useCallback(
     async (e) => {
       e.preventDefault();
-      setProc(true);
-      if (init) {
-        let response = edit ? await DataService.update(form) : await DataService.insert(form);
-        if (response?.err) {
-          setMsg('Transaction failed');
-          handleOfflineData(edit ? 'update' : 'insert', form);
-        } else {
-          setMsg('Transaction successful');
-          setBgColor('green');
-          setInit(Date.now());
-          setVisible(true);
-          handleReset();
-        }
-      } else {
-        setMsg('Server idle');
+      let response = edit ? await DataService.update(form) : await DataService.insert(form);
+      if (response?.err) {
+        setMsg('Transaction failed');
         setBgColor('red');
-        setVisible(true);
-        setInit(undefined);
         handleOfflineData(edit ? 'update' : 'insert', form);
+      } else {
+        setMsg('Transaction successful');
+        setBgColor('green');
+        setInit(Date.now());
       }
+
+      setVisible(true);
       handleReset();
-      setProc(false);
     },
-    [form, init, setInit, setProc, edit, handleOfflineData, handleReset]
+    [form, setInit, edit, handleOfflineData, handleReset]
   );
 
   const handleRowDoubleClick = async () => {
-    setProc(true);
-    if (init) {
-      const updatedInsertArray = await handleBulkData('insert');
-      const updatedUpdateArray = await handleBulkData('update');
-      const UpdatedDeleteArray = await handleBulkData('del');
-      let sum = [...updatedUpdateArray, ...updatedInsertArray, ...UpdatedDeleteArray];
-      setOff(sum);
-      if (sum?.length === 0) {
-        setMsg('Transaction successfully');
-        setBgColor('green');
-        setVisible(true);
-        setInit(Date.now());
-      }
+    const updatedInsertArray = await handleBulkData('insert');
+    const updatedUpdateArray = await handleBulkData('update');
+    const UpdatedDeleteArray = await handleBulkData('del');
+    let sum = [...updatedUpdateArray, ...updatedInsertArray, ...UpdatedDeleteArray];
+    if (sum?.length === 0) {
+      setMsg('Transaction successfully');
+      setBgColor('green');
+      setVisible(true);
+      setInit(Date.now());
     }
-
-    setProc(false);
   };
 
   const handleBulkData = async (type) => {
