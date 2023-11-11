@@ -87,7 +87,7 @@ function Form({ setInit, setForm, form, setProc, edit, setEdit }) {
 
       let response;
       if (actionType === 'del') {
-        const isDelete = window.confirm(`Are you sure to delete '${form.name}'`);
+        const isDelete = window.confirm(`Are you sure to delete: '${form.name}'`);
         isDelete ? (response = await DataService.del(form)) : false;
       } else {
         actionType = edit ? 'update' : 'insert';
@@ -98,6 +98,7 @@ function Form({ setInit, setForm, form, setProc, edit, setEdit }) {
         setMsg('Transaction failed');
         setBgColor('red');
         handleOfflineData(actionType, form);
+        setInit(false);
       } else {
         setMsg('Transaction successful');
         setBgColor('green');
@@ -126,6 +127,7 @@ function Form({ setInit, setForm, form, setProc, edit, setEdit }) {
     } else {
       setMsg('Offline');
       setBgColor('red');
+      setInit(false);
     }
 
     setVisible(true);
@@ -138,7 +140,7 @@ function Form({ setInit, setForm, form, setProc, edit, setEdit }) {
 
     for (const item of localData) {
       const response = await DataService[type](item);
-      response.err ? updatedData.push(item) : false;
+      response.err ? updatedData.push(item) & setInit(false) : false;
     }
 
     localStorage.setItem(type, JSON.stringify(updatedData));
