@@ -77,38 +77,27 @@ function Form({ setInit, setForm, form, setProc, edit, setEdit }) {
     [form, setForm]
   );
 
-  const handleDelete = useCallback(async () => {
-    setProc(true);
-    const isDelete = window.confirm(`Are you sure to delete '${form.name}'?`);
-    if (isDelete) {
-      let response = await DataService.del(form);
-      if (response?.err) {
-        setMsg('Transaction failed');
-        setBgColor('red');
-        handleOfflineData('del', form);
+  const [disabled, setDisabled] = useState(false);
+
+  const handleAction = useCallback(
+    async (e, actionType) => {
+      e.target instanceof HTMLFormElement ? e.preventDefault() : false;
+      setDisabled(true);
+      setProc(true);
+
+      let response;
+      if (actionType === 'del') {
+        const isDelete = window.confirm(`Are you sure to delete '${form.name}'`);
+        isDelete ? (response = await DataService.del(form)) : false;
       } else {
-        setMsg('Transaction successful');
-        setBgColor('green');
-        setInit(Date.now());
-        handleReset();
-        setEdit(false);
+        actionType = edit ? 'update' : 'insert';
+        response = edit ? await DataService.update(form) : await DataService.insert(form);
       }
 
-      setVisible(true);
-      handleReset();
-      setProc(true);
-    }
-  }, [form, handleReset, setInit, setEdit, handleOfflineData]);
-
-  const handleInsert = useCallback(
-    async (e) => {
-      setProc(true);
-      e.preventDefault();
-      let response = edit ? await DataService.update(form) : await DataService.insert(form);
       if (response?.err) {
         setMsg('Transaction failed');
         setBgColor('red');
-        handleOfflineData(edit ? 'update' : 'insert', form);
+        handleOfflineData(actionType, form);
       } else {
         setMsg('Transaction successful');
         setBgColor('green');
@@ -116,10 +105,11 @@ function Form({ setInit, setForm, form, setProc, edit, setEdit }) {
       }
 
       setVisible(true);
-      handleReset();
       setProc(false);
+      handleReset();
+      setDisabled(false);
     },
-    [form, setInit, edit, handleOfflineData, handleReset]
+    [form, setInit, edit, handleOfflineData, handleReset, setProc]
   );
 
   const handleRowDoubleClick = async () => {
@@ -157,8 +147,8 @@ function Form({ setInit, setForm, form, setProc, edit, setEdit }) {
 
   return (
     <div>
-      <AutoDismissMessage msg={msg} bgColor={bgColor} duration={3000} visible={visible} setVisible={setVisible} />
-      <form onSubmit={handleInsert}>
+      <AutoDismissMessage msg={msg} bgColor={bgColor} duration={2000} visible={visible} setVisible={setVisible} />
+      <form onSubmit={(e) => handleAction(e, '')}>
         <div className="form-group">
           <label htmlFor="name">Name</label>
           <input
@@ -229,9 +219,16 @@ function Form({ setInit, setForm, form, setProc, edit, setEdit }) {
         </div>
 
         <div className="form-group">
-          <input type="submit" className="btn-primarys"></input>
+          <input type="submit" className="btn-primarys" disabled={disabled}></input>
           <input className="btn-primarys" type="reset" value="Reset" onClick={handleReset} />
-          {edit && <input className="delete-button" type="button" value="Delete" onClick={handleDelete} />}
+          {edit && (
+            <input
+              className="delete-button"
+              type="button"
+              value="Delete"
+              onClick={(e) => handleAction(e, 'del')}
+            />
+          )}
         </div>
       </form>
       {off.length !== 0 && (
