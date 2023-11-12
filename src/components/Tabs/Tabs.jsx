@@ -62,10 +62,14 @@ function Tabs({ setInit, init, setProc, proc }) {
   useEffect(() => {
     const fetchData = async () => {
       setProc(true);
-      var localResp = localStorage.getItem('resp');
-      localResp && (localResp = JSON.parse(cyfer().dcy(localResp, 'hola')));
-      if (Object.keys(localResp || {}).length !== 0) {
-        writeData(localResp);
+      try {
+        var localResp = localStorage.getItem('resp');
+        localResp && (localResp = JSON.parse(cyfer().dcy(localResp, 'hola')));
+        if (Object.keys(localResp || {}).length !== 0) {
+          writeData(localResp);
+        }
+      } catch (error) {
+        localStorage.removeItem('resp');
       }
 
       if (init) {
