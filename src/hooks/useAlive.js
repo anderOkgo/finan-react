@@ -5,6 +5,7 @@ import DataService from '../services/data.service';
 export const useAlive = () => {
   const [init, setInit] = useState(false);
   const [proc, setProc] = useState(1);
+  const [previnit, setPrevinit] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -14,11 +15,20 @@ export const useAlive = () => {
         resp?.err ? setInit(false) : setInit(true);
         setProc(false);
       }
-      setTimeout(fetchData, set.alive_setTimeout || 12000);
+      let intervalId = '';
+
+      if (previnit === true) {
+        intervalId = setTimeout(fetchData, set.alive_setTimeout || 120000);
+        setPrevinit(init);
+      }
+
+      return () => {
+        clearTimeout(intervalId);
+      };
     };
 
     fetchData();
-  }, [init]);
+  }, [init, previnit]);
 
   return { init, setInit, proc, setProc };
 };
