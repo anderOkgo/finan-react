@@ -11,7 +11,6 @@ const appfiles = [
   './icon/icon-284x284.png',
   './icon/icon-512x512.png',
 ];
-//const offlinePage = './offline.html';
 
 self.addEventListener('install', (e) => {
   e.waitUntil(
