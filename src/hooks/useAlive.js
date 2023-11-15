@@ -5,21 +5,21 @@ import DataService from '../services/data.service';
 export const useAlive = () => {
   const [init, setInit] = useState(false);
   const [proc, setProc] = useState(1);
-  const [previnit, setPrevinit] = useState(true);
+  const [prevInit, setPrevInit] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       if (!init) {
         setProc(true);
         const resp = await DataService.boot();
-        resp?.err ? setInit(false) : setInit(true);
+        setInit(resp?.err ? false : true);
         setProc(false);
       }
-      let intervalId = '';
 
-      if (previnit === true) {
-        intervalId = setTimeout(fetchData, set.alive_setTimeout || 120000);
-        setPrevinit(init);
+      let intervalId = '';
+      if (prevInit === true) {
+        intervalId = setTimeout(() => fetchData(), set.alive_setTimeout || 120000);
+        setPrevInit(init);
       }
 
       return () => {
@@ -28,7 +28,7 @@ export const useAlive = () => {
     };
 
     fetchData();
-  }, [init, previnit]);
+  }, [init, prevInit]);
 
   return { init, setInit, proc, setProc };
 };
