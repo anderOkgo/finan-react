@@ -2,7 +2,7 @@
 .tabs-area {
   height: 90vh;
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: wrap-reverse;
   margin: 0 auto 20px;
   border-radius: 0;
   background-color: var(--light-gray);
