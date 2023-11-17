@@ -1,3 +1,5 @@
+import set from '../helpers/set.json';
+
 const customFetch = async (endpoint, options = {}) => {
   const defaultHeaders = {
     Authorization: options.token,
@@ -6,7 +8,7 @@ const customFetch = async (endpoint, options = {}) => {
   };
 
   const controller = new AbortController();
-  const timeout = options.timeout || 7000;
+  const timeout = options.timeout || set.defaul_fetch_request;
 
   options.signal = controller.signal;
   options.method = options.method || 'GET';
