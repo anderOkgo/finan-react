@@ -52,12 +52,6 @@ const Menu = ({ init, proc }) => {
 
   return (
     <nav className="navbar">
-      <div className="logo insetshadow">
-        Finanz
-        <span className="icon-activity">
-          <Status init={init} proc={proc} />
-        </span>
-      </div>
       <div className="nav-links">
         <input type="checkbox" id="checkbox_toggle" ref={checkboxRef} />
         <label htmlFor="checkbox_toggle" className="hamburger">
@@ -100,6 +94,12 @@ const Menu = ({ init, proc }) => {
             </React.Fragment>
           ))}
         </ul>
+      </div>
+      <div className="logo insetshadow">
+        <span className="icon-activity">
+          <Status init={init} proc={proc} />
+        </span>
+        &nbsp;Finanz
       </div>
     </nav>
   );

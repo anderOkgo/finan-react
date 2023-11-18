@@ -29,6 +29,9 @@ p {
 
 /* Text Shadow Class */
 .insetshadow {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   letter-spacing: 0.05em;
   text-shadow: -1px -1px 1px var(--tertiary-color), 2px 2px 1px var(--black);
 }
