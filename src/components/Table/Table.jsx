@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import './Table.css';
 
-function Table({ data, columns, onRowDoubleClick, label }) {
+function Table({ data, columns, onRowDoubleClick = false, label }) {
   Table.propTypes = {
     data: PropTypes.arrayOf(PropTypes.object),
     onRowDoubleClick: PropTypes.any,
@@ -39,7 +39,7 @@ function Table({ data, columns, onRowDoubleClick, label }) {
 
   const renderTableRows = () => {
     return dataset.map((item, index) => (
-      <tr key={index} onDoubleClick={() => onRowDoubleClick(item)}>
+      <tr key={index} onDoubleClick={() => (onRowDoubleClick ? onRowDoubleClick(item) : false)}>
         {renderTableRow(Object.values(item))}
       </tr>
     ));

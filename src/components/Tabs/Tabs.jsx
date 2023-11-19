@@ -69,7 +69,8 @@ function Tabs({ setInit, init, setProc, proc }) {
           writeData(localResp);
         }
       } catch (error) {
-        localStorage.removeItem('resp');
+        console.log(error);
+        //localStorage.removeItem('resp');
       }
 
       if (init) {
