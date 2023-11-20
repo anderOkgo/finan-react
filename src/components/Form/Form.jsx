@@ -4,7 +4,7 @@ import DataService from '../../services/data.service';
 import AutoDismissMessage from '../Message/AutoDismissMessage.jsx';
 import Table from '../Table/Table';
 
-function Form({ setInit, setForm, form, setProc, edit, setEdit }) {
+function Form({ setInit, setForm, form, proc, setProc, edit, setEdit }) {
   const initialForm = useMemo(
     () => ({
       name: '',
@@ -81,57 +81,61 @@ function Form({ setInit, setForm, form, setProc, edit, setEdit }) {
 
   const handleAction = useCallback(
     async (e, actionType) => {
-      e.target instanceof HTMLFormElement ? e.preventDefault() : false;
-      setDisabled(true);
-      setProc(true);
+      if (!proc) {
+        e.target instanceof HTMLFormElement ? e.preventDefault() : false;
+        setDisabled(true);
+        setProc(true);
 
-      let response;
-      if (actionType === 'del') {
-        const isDelete = window.confirm(`Are you sure to delete: '${form.name}'`);
-        isDelete ? (response = await DataService.del(form)) : false;
-      } else {
-        actionType = edit ? 'update' : 'insert';
-        response = edit ? await DataService.update(form) : await DataService.insert(form);
+        let response;
+        if (actionType === 'del') {
+          const isDelete = window.confirm(`Are you sure to delete: '${form.name}'`);
+          isDelete ? (response = await DataService.del(form)) : false;
+        } else {
+          actionType = edit ? 'update' : 'insert';
+          response = edit ? await DataService.update(form) : await DataService.insert(form);
+        }
+
+        if (response?.err) {
+          setMsg('Transaction failed');
+          setBgColor('red');
+          handleOfflineData(actionType, form);
+          setInit(false);
+        } else {
+          setMsg('Transaction successful');
+          setBgColor('green');
+          setInit(Date.now());
+        }
+
+        setVisible(true);
+        setProc(false);
+        handleReset();
+        setDisabled(false);
       }
+    },
+    [form, setInit, edit, handleOfflineData, handleReset, setProc, proc]
+  );
 
-      if (response?.err) {
-        setMsg('Transaction failed');
-        setBgColor('red');
-        handleOfflineData(actionType, form);
-        setInit(false);
-      } else {
+  const handleRowDoubleClick = async () => {
+    if (!proc) {
+      setProc(true);
+      const updatedInsertArray = await handleBulkData('insert');
+      const updatedUpdateArray = await handleBulkData('update');
+      const UpdatedDeleteArray = await handleBulkData('del');
+      let sum = [...updatedUpdateArray, ...updatedInsertArray, ...UpdatedDeleteArray];
+      setOff(sum);
+      if (sum?.length === 0) {
         setMsg('Transaction successful');
         setBgColor('green');
         setInit(Date.now());
+      } else {
+        setMsg('Offline');
+        setBgColor('red');
+        setInit(false);
       }
 
       setVisible(true);
       setProc(false);
-      handleReset();
-      setDisabled(false);
-    },
-    [form, setInit, edit, handleOfflineData, handleReset, setProc]
-  );
-
-  const handleRowDoubleClick = async () => {
-    setProc(true);
-    const updatedInsertArray = await handleBulkData('insert');
-    const updatedUpdateArray = await handleBulkData('update');
-    const UpdatedDeleteArray = await handleBulkData('del');
-    let sum = [...updatedUpdateArray, ...updatedInsertArray, ...UpdatedDeleteArray];
-    setOff(sum);
-    if (sum?.length === 0) {
-      setMsg('Transaction successful');
-      setBgColor('green');
-      setInit(Date.now());
-    } else {
-      setMsg('Offline');
-      setBgColor('red');
-      setInit(false);
     }
-
-    setVisible(true);
-    setProc(false);
   };
 
   const handleBulkData = async (type) => {
