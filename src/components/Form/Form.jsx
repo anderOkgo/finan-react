@@ -81,8 +81,8 @@ function Form({ setInit, setForm, form, proc, setProc, edit, setEdit }) {
 
   const handleAction = useCallback(
     async (e, actionType) => {
+      e.target instanceof HTMLFormElement ? e.preventDefault() : false;
       if (!proc) {
-        e.target instanceof HTMLFormElement ? e.preventDefault() : false;
         setDisabled(true);
         setProc(true);
 
@@ -105,12 +105,14 @@ function Form({ setInit, setForm, form, proc, setProc, edit, setEdit }) {
           setBgColor('green');
           setInit(Date.now());
         }
-
-        setVisible(true);
-        setProc(false);
-        handleReset();
-        setDisabled(false);
+      } else {
+        handleOfflineData(actionType, form);
+        setInit(false);
       }
+      setVisible(true);
+      setProc(false);
+      handleReset();
+      setDisabled(false);
     },
     [form, setInit, edit, handleOfflineData, handleReset, setProc, proc]
   );
