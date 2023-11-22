@@ -1,4 +1,5 @@
 import set from '../helpers/set.json';
+import createCookie from '../services/data.local.service';
 import { useState, useEffect } from 'react';
 import DataService from '../services/data.service';
 
@@ -19,6 +20,7 @@ export const useAlive = () => {
       let intervalId = '';
       if (prevInit === true) {
         intervalId = setTimeout(() => fetchData(), set.alive_setTimeout || 120000);
+        createCookie('myCookie', '1');
         setPrevInit(init);
       }
 

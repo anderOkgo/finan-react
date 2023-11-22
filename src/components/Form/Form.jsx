@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import DataService from '../../services/data.service';
 import AutoDismissMessage from '../Message/AutoDismissMessage.jsx';
 import Table from '../Table/Table';
+import checkCookieExistence from '../../services/data.local.service';
 
-function Form({ setInit, setForm, form, proc, setProc, edit, setEdit }) {
+function Form({ setInit, init, setForm, form, proc, setProc, edit, setEdit }) {
   const initialForm = useMemo(
     () => ({
       name: '',
@@ -86,13 +87,22 @@ function Form({ setInit, setForm, form, proc, setProc, edit, setEdit }) {
         setDisabled(true);
         setProc(true);
 
-        let response;
-        if (actionType === 'del') {
-          const isDelete = window.confirm(`Are you sure to delete: '${form.name}'`);
-          isDelete ? (response = await DataService.del(form)) : false;
+        let response = {};
+        const cookieNameToCheck = 'myCookie';
+        const doesCookieExist = checkCookieExistence(cookieNameToCheck);
+        if (doesCookieExist) {
+          alert(`${cookieNameToCheck}  exists!`);
+          if (actionType === 'del') {
+            const isDelete = window.confirm(`Are you sure to delete: '${form.name}'`);
+            isDelete ? (response = await DataService.del(form)) : false;
+          } else {
+            actionType = edit ? 'update' : 'insert';
+            response = edit ? await DataService.update(form) : await DataService.insert(form);
+          }
         } else {
           actionType = edit ? 'update' : 'insert';
-          response = edit ? await DataService.update(form) : await DataService.insert(form);
+          console.log(`${cookieNameToCheck} cookie does not exist.`);
+          response.err = true;
         }
 
         if (response?.err) {
@@ -106,6 +116,8 @@ function Form({ setInit, setForm, form, proc, setProc, edit, setEdit }) {
           setInit(Date.now());
         }
       } else {
+        setMsg('Transaction waiting');
+        setBgColor('yellow');
         handleOfflineData(actionType, form);
         setInit(false);
       }
@@ -114,7 +126,7 @@ function Form({ setInit, setForm, form, proc, setProc, edit, setEdit }) {
       handleReset();
       setDisabled(false);
     },
-    [form, setInit, edit, handleOfflineData, handleReset, setProc, proc]
+    [form, setInit, edit, handleOfflineData, handleReset, setProc, proc, init]
   );
 
   const handleRowDoubleClick = async () => {
@@ -134,10 +146,12 @@ function Form({ setInit, setForm, form, proc, setProc, edit, setEdit }) {
         setBgColor('red');
         setInit(false);
       }
-
-      setVisible(true);
-      setProc(false);
+    } else {
+      setMsg('Transaction waiting');
+      setBgColor('yellow');
     }
+    setVisible(true);
+    setProc(false);
   };
 
   const handleBulkData = async (type) => {

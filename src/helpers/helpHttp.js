@@ -30,7 +30,7 @@ const customFetch = async (endpoint, options = {}) => {
             statusText: res.statusText || 'Ocurrió un error',
           }));
     } catch (err) {
-      console.log('err');
+      console.log({ err });
       return { err };
     }
   } else {
