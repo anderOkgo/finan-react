@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import DataService from '../../services/data.service';
 import AutoDismissMessage from '../Message/AutoDismissMessage.jsx';
 import Table from '../Table/Table';
-import checkCookieExistence from '../../services/data.local.service';
+import DataLocalService from '../../services/data.local.service';
 
 function Form({ setInit, init, setForm, form, proc, setProc, edit, setEdit }) {
   const initialForm = useMemo(
@@ -89,7 +89,7 @@ function Form({ setInit, init, setForm, form, proc, setProc, edit, setEdit }) {
 
         let response = {};
         const cookieNameToCheck = 'myCookie';
-        const doesCookieExist = checkCookieExistence(cookieNameToCheck);
+        const doesCookieExist = DataLocalService.checkCookieExistence(cookieNameToCheck);
         if (doesCookieExist) {
           alert(`${cookieNameToCheck}  exists!`);
           if (actionType === 'del') {
