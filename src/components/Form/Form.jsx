@@ -83,15 +83,11 @@ function Form({ setInit, init, setForm, form, proc, setProc, edit, setEdit }) {
   const handleAction = useCallback(
     async (e, actionType) => {
       e.target instanceof HTMLFormElement ? e.preventDefault() : false;
+      setDisabled(true);
       if (!proc) {
-        setDisabled(true);
         setProc(true);
-
         let response = {};
-        const cookieNameToCheck = 'myCookie';
-        const doesCookieExist = DataLocalService.checkCookieExistence(cookieNameToCheck);
-        if (doesCookieExist) {
-          alert(`${cookieNameToCheck}  exists!`);
+        if (DataLocalService.checkCookieExistence('startCook')) {
           if (actionType === 'del') {
             const isDelete = window.confirm(`Are you sure to delete: '${form.name}'`);
             isDelete ? (response = await DataService.del(form)) : false;
@@ -101,7 +97,6 @@ function Form({ setInit, init, setForm, form, proc, setProc, edit, setEdit }) {
           }
         } else {
           actionType = edit ? 'update' : 'insert';
-          console.log(`${cookieNameToCheck} cookie does not exist.`);
           response.err = true;
         }
 
@@ -117,7 +112,7 @@ function Form({ setInit, init, setForm, form, proc, setProc, edit, setEdit }) {
         }
       } else {
         setMsg('Transaction waiting');
-        setBgColor('yellow');
+        setBgColor('#ab9f09');
         handleOfflineData(actionType, form);
         setInit(false);
       }
@@ -130,7 +125,7 @@ function Form({ setInit, init, setForm, form, proc, setProc, edit, setEdit }) {
   );
 
   const handleRowDoubleClick = async () => {
-    if (!proc) {
+    if (!proc && DataLocalService.checkCookieExistence('startCook')) {
       setProc(true);
       const updatedInsertArray = await handleBulkData('insert');
       const updatedUpdateArray = await handleBulkData('update');
@@ -148,7 +143,8 @@ function Form({ setInit, init, setForm, form, proc, setProc, edit, setEdit }) {
       }
     } else {
       setMsg('Transaction waiting');
-      setBgColor('yellow');
+      setBgColor('#ab9f09');
+      setInit(false);
     }
     setVisible(true);
     setProc(false);

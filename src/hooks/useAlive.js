@@ -20,7 +20,7 @@ export const useAlive = () => {
       let intervalId = '';
       if (prevInit === true) {
         intervalId = setTimeout(() => fetchData(), set.alive_setTimeout || 120000);
-        DataLocalService.createCookie('myCookie', '1');
+        DataLocalService.createCookie('startCook', '1');
         setPrevInit(init);
       }
 
