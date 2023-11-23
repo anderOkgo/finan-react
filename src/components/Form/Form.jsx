@@ -5,7 +5,7 @@ import AutoDismissMessage from '../Message/AutoDismissMessage.jsx';
 import Table from '../Table/Table';
 import DataLocalService from '../../services/data.local.service';
 
-function Form({ setInit, init, setForm, form, proc, setProc, edit, setEdit }) {
+function Form({ setInit, setForm, form, proc, setProc, edit, setEdit }) {
   const initialForm = useMemo(
     () => ({
       name: '',
@@ -119,7 +119,7 @@ function Form({ setInit, init, setForm, form, proc, setProc, edit, setEdit }) {
       handleReset();
       setDisabled(false);
     },
-    [form, setInit, edit, handleOfflineData, handleReset, setProc, proc, init]
+    [form, setInit, edit, handleOfflineData, handleReset, setProc, proc]
   );
 
   const handleRowDoubleClick = async () => {
@@ -163,7 +163,7 @@ function Form({ setInit, init, setForm, form, proc, setProc, edit, setEdit }) {
 
   return (
     <div>
-      <AutoDismissMessage msg={msg} bgColor={bgColor} duration={2000} visible={visible} setVisible={setVisible} />
+      <AutoDismissMessage msg={msg} bgColor={bgColor} duration={3000} visible={visible} setVisible={setVisible} />
       <form onSubmit={(e) => handleAction(e, '')}>
         <div className="form-group">
           <label htmlFor="name">Name</label>
