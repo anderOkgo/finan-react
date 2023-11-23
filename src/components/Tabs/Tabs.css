@@ -77,7 +77,7 @@
 .panel-tab {
   order: 99;
   display: none;
-  padding: 15px 15px 15px;
+  padding: 23px 15px 15px;
   background: var(--white);
   width: 100%;
   border-left: 1px solid var(--soft-gray);
