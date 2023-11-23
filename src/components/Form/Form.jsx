@@ -20,6 +20,9 @@ function Form({ setInit, setForm, form, proc, setProc, edit, setEdit }) {
   const [msg, setMsg] = useState('');
   const [bgColor, setBgColor] = useState('');
   const [visible, setVisible] = useState(false);
+  const [off, setOff] = useState([]);
+  const [disabled, setDisabled] = useState(false);
+
   const buttonRef = useRef(null);
 
   const typeOptions = [
@@ -35,13 +38,10 @@ function Form({ setInit, setForm, form, proc, setProc, edit, setEdit }) {
     { value: '13', label: 'Cash exchange' },
   ];
 
-  const [off, setOff] = useState([]);
-
   useEffect(() => {
     const insertData = JSON.parse(localStorage.getItem('insert')) || [];
     const updateData = JSON.parse(localStorage.getItem('update')) || [];
     const deleteData = JSON.parse(localStorage.getItem('del')) || [];
-
     const mergedData = [...insertData, ...updateData, ...deleteData].map((obj) => {
       if (obj.id === undefined || obj.source === undefined) {
         obj.id = 0;
@@ -52,16 +52,6 @@ function Form({ setInit, setForm, form, proc, setProc, edit, setEdit }) {
 
     setOff(mergedData);
   }, []);
-
-  const handleOfflineData = useCallback(
-    (type, data) => {
-      const existingData = JSON.parse(localStorage.getItem(type)) || [];
-      existingData.push(data);
-      localStorage.setItem(type, JSON.stringify(existingData));
-      setOff((prevOff) => [...prevOff, data]);
-    },
-    [setOff]
-  );
 
   const handleReset = useCallback(() => {
     setForm(initialForm);
@@ -78,7 +68,15 @@ function Form({ setInit, setForm, form, proc, setProc, edit, setEdit }) {
     [form, setForm]
   );
 
-  const [disabled, setDisabled] = useState(false);
+  const handleOfflineData = useCallback(
+    (type, data) => {
+      const existingData = JSON.parse(localStorage.getItem(type)) || [];
+      existingData.push(data);
+      localStorage.setItem(type, JSON.stringify(existingData));
+      setOff((prevOff) => [...prevOff, data]);
+    },
+    [setOff]
+  );
 
   const handleAction = useCallback(
     async (e, actionType) => {
@@ -124,6 +122,16 @@ function Form({ setInit, setForm, form, proc, setProc, edit, setEdit }) {
     [form, setInit, edit, handleOfflineData, handleReset, setProc, proc]
   );
 
+  const handleBulkData = async (type) => {
+    const updatedData = [];
+    for (const item of JSON.parse(localStorage.getItem(type)) || []) {
+      const response = await DataService[type](item);
+      response.err ? updatedData.push(item) & setInit(false) : false;
+    }
+    localStorage.setItem(type, JSON.stringify(updatedData));
+    return updatedData;
+  };
+
   const handleRowDoubleClick = async () => {
     setProc(true);
     DataLocalService.checkCookieExistence('startCook') || setInit(0);
@@ -149,16 +157,6 @@ function Form({ setInit, setForm, form, proc, setProc, edit, setEdit }) {
     }
     setVisible(true);
     setProc(false);
-  };
-
-  const handleBulkData = async (type) => {
-    const updatedData = [];
-    for (const item of JSON.parse(localStorage.getItem(type)) || []) {
-      const response = await DataService[type](item);
-      response.err ? updatedData.push(item) & setInit(false) : false;
-    }
-    localStorage.setItem(type, JSON.stringify(updatedData));
-    return updatedData;
   };
 
   return (

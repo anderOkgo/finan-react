@@ -1,4 +1,4 @@
-const VERSION = '1.1.40';
+const VERSION = '1.1.41';
 const CACHE_NAME = `finan-${VERSION}`;
 const appfiles = [
   './icon/icon-48x48.png',
@@ -31,7 +31,7 @@ self.addEventListener('fetch', (e) => {
         .then((response) => {
           const responseClone = response.clone(); // Clone the response to use it and store it in the cache
           caches.open(CACHE_NAME).then((cache) => {
-            if (e.request.method === 'GET') {
+            if (e.request.method === 'GET' && e.request.url.startsWith('http')) {
               cache.put(e.request, responseClone);
             }
           });
