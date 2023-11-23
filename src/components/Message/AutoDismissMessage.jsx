@@ -47,7 +47,7 @@ const AutoDismissMessage = ({ msg, bgColor, duration, setVisible, visible }) => 
             right: '0',
             width: '100%',
             marginBottom: '5px',
-            padding: '0.1rem',
+            padding: '0.13rem',
             textAlign: 'center',
             color: '#fff',
             fontWeight: 'bold',
