@@ -84,20 +84,15 @@ function Form({ setInit, init, setForm, form, proc, setProc, edit, setEdit }) {
     async (e, actionType) => {
       e.target instanceof HTMLFormElement ? e.preventDefault() : false;
       setDisabled(true);
-      if (!proc) {
+      if (!proc && DataLocalService.checkCookieExistence('startCook')) {
         setProc(true);
         let response = {};
-        if (DataLocalService.checkCookieExistence('startCook')) {
-          if (actionType === 'del') {
-            const isDelete = window.confirm(`Are you sure to delete: '${form.name}'`);
-            isDelete ? (response = await DataService.del(form)) : false;
-          } else {
-            actionType = edit ? 'update' : 'insert';
-            response = edit ? await DataService.update(form) : await DataService.insert(form);
-          }
+        if (actionType === 'del') {
+          const isDelete = window.confirm(`Are you sure to delete: '${form.name}'`);
+          isDelete ? (response = await DataService.del(form)) : (response.avoid = true);
         } else {
           actionType = edit ? 'update' : 'insert';
-          response.err = true;
+          response = edit ? await DataService.update(form) : await DataService.insert(form);
         }
 
         if (response?.err) {
@@ -105,6 +100,9 @@ function Form({ setInit, init, setForm, form, proc, setProc, edit, setEdit }) {
           setBgColor('red');
           handleOfflineData(actionType, form);
           setInit(false);
+        } else if (response?.avoid) {
+          setMsg('Cancelled');
+          setBgColor('gray');
         } else {
           setMsg('Transaction successful');
           setBgColor('green');
