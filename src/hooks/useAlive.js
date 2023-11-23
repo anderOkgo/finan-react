@@ -6,7 +6,7 @@ import DataService from '../services/data.service';
 export const useAlive = () => {
   const [init, setInit] = useState(false);
   const [proc, setProc] = useState(1);
-  const [prevInit, setPrevInit] = useState(true);
+  const [prevInit, setPrevInit] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -18,7 +18,8 @@ export const useAlive = () => {
       }
 
       let intervalId = '';
-      if (prevInit === true) {
+      setPrevInit(init);
+      if (prevInit === 0) {
         intervalId = setTimeout(() => fetchData(), set.alive_setTimeout || 120000);
         DataLocalService.createCookie('startCook', '1');
         setPrevInit(init);

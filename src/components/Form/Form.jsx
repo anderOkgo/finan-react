@@ -82,17 +82,19 @@ function Form({ setInit, setForm, form, proc, setProc, edit, setEdit }) {
 
   const handleAction = useCallback(
     async (e, actionType) => {
-      e.target instanceof HTMLFormElement ? e.preventDefault() : false;
+      setProc(true);
       setDisabled(true);
-      if (!proc && DataLocalService.checkCookieExistence('startCook')) {
-        setProc(true);
+      e.target instanceof HTMLFormElement ? e.preventDefault() : false;
+      DataLocalService.checkCookieExistence('startCook') || setInit(0);
+      actionType === 'del' ? (actionType = 'del') : (actionType = edit ? 'update' : 'insert');
+      if (!proc) {
         let response = {};
         if (actionType === 'del') {
-          const isDelete = window.confirm(`Are you sure to delete: '${form.name}'`);
-          isDelete ? (response = await DataService.del(form)) : (response.avoid = true);
+          window.confirm(`Are you sure to delete: '${form.name}'`)
+            ? (response = await DataService[actionType](form))
+            : (response.avoid = true);
         } else {
-          actionType = edit ? 'update' : 'insert';
-          response = edit ? await DataService.update(form) : await DataService.insert(form);
+          response = await DataService[actionType](form);
         }
 
         if (response?.err) {
@@ -115,16 +117,17 @@ function Form({ setInit, setForm, form, proc, setProc, edit, setEdit }) {
         setInit(false);
       }
       setVisible(true);
-      setProc(false);
       handleReset();
       setDisabled(false);
+      setProc(false);
     },
     [form, setInit, edit, handleOfflineData, handleReset, setProc, proc]
   );
 
   const handleRowDoubleClick = async () => {
-    if (!proc && DataLocalService.checkCookieExistence('startCook')) {
-      setProc(true);
+    setProc(true);
+    DataLocalService.checkCookieExistence('startCook') || setInit(0);
+    if (!proc) {
       const updatedInsertArray = await handleBulkData('insert');
       const updatedUpdateArray = await handleBulkData('update');
       const UpdatedDeleteArray = await handleBulkData('del');
@@ -149,14 +152,11 @@ function Form({ setInit, setForm, form, proc, setProc, edit, setEdit }) {
   };
 
   const handleBulkData = async (type) => {
-    const localData = JSON.parse(localStorage.getItem(type)) || [];
     const updatedData = [];
-
-    for (const item of localData) {
+    for (const item of JSON.parse(localStorage.getItem(type)) || []) {
       const response = await DataService[type](item);
       response.err ? updatedData.push(item) & setInit(false) : false;
     }
-
     localStorage.setItem(type, JSON.stringify(updatedData));
     return updatedData;
   };
