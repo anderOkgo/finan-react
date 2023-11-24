@@ -108,20 +108,17 @@ function Form({ setInit, setForm, form, proc, setProc, edit, setEdit }) {
             setBgColor('green');
             setInit(Date.now());
           }
+          handleReset();
         } else {
           setMsg('Transaction waiting');
           setBgColor('#ab9f09');
-          handleOfflineData(actionType, form);
-          setInit(false);
         }
-
-        handleReset();
-        setVisible(true);
       } else {
         setInit(0);
         setMsg('Transaction waiting');
         setBgColor('#ab9f09');
       }
+      setVisible(true);
       setDisabled(false);
       setProc(false);
     },
@@ -140,26 +137,30 @@ function Form({ setInit, setForm, form, proc, setProc, edit, setEdit }) {
 
   const handleRowDoubleClick = async () => {
     setProc(true);
-    DataLocalService.checkCookieExistence('startCook') || setInit(0);
-    if (!proc) {
-      const updatedInsertArray = await handleBulkData('insert');
-      const updatedUpdateArray = await handleBulkData('update');
-      const UpdatedDeleteArray = await handleBulkData('del');
-      let sum = [...updatedUpdateArray, ...updatedInsertArray, ...UpdatedDeleteArray];
-      setOff(sum);
-      if (sum?.length === 0) {
-        setMsg('Transaction successful');
-        setBgColor('green');
-        setInit(Date.now());
+    if (DataLocalService.checkCookieExistence('startCook')) {
+      if (!proc) {
+        const updatedInsertArray = await handleBulkData('insert');
+        const updatedUpdateArray = await handleBulkData('update');
+        const UpdatedDeleteArray = await handleBulkData('del');
+        let sum = [...updatedUpdateArray, ...updatedInsertArray, ...UpdatedDeleteArray];
+        setOff(sum);
+        if (sum?.length === 0) {
+          setMsg('Transaction successful');
+          setBgColor('green');
+          setInit(Date.now());
+        } else {
+          setMsg('Offline');
+          setBgColor('red');
+          setInit(false);
+        }
       } else {
-        setMsg('Offline');
-        setBgColor('red');
-        setInit(false);
+        setMsg('Transaction waiting');
+        setBgColor('#ab9f09');
       }
     } else {
+      setInit(0);
       setMsg('Transaction waiting');
       setBgColor('#ab9f09');
-      setInit(false);
     }
     setVisible(true);
     setProc(false);
