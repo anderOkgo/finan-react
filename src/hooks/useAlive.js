@@ -21,7 +21,7 @@ export const useAlive = () => {
       setPrevInit(init);
       if (prevInit === 0) {
         intervalId = setTimeout(() => fetchData(), set.alive_setTimeout || 120000);
-        DataLocalService.createCookie('startCook', '1');
+        init ? DataLocalService.createCookie('startCook', '1') : setInit(0);
         setPrevInit(init);
       }
 

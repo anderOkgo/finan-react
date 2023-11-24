@@ -83,39 +83,45 @@ function Form({ setInit, setForm, form, proc, setProc, edit, setEdit }) {
       setProc(true);
       setDisabled(true);
       e.target instanceof HTMLFormElement ? e.preventDefault() : false;
-      DataLocalService.checkCookieExistence('startCook') || setInit(0);
-      actionType === 'del' ? (actionType = 'del') : (actionType = edit ? 'update' : 'insert');
-      if (!proc) {
-        let response = {};
-        if (actionType === 'del') {
-          window.confirm(`Are you sure to delete: '${form.name}'`)
-            ? (response = await DataService[actionType](form))
-            : (response.avoid = true);
-        } else {
-          response = await DataService[actionType](form);
-        }
+      if (DataLocalService.checkCookieExistence('startCook')) {
+        actionType === 'del' ? (actionType = 'del') : (actionType = edit ? 'update' : 'insert');
+        if (!proc) {
+          let response = {};
+          if (actionType === 'del') {
+            window.confirm(`Are you sure to delete: '${form.name}'`)
+              ? (response = await DataService[actionType](form))
+              : (response.avoid = true);
+          } else {
+            response = await DataService[actionType](form);
+          }
 
-        if (response?.err) {
-          setMsg('Transaction failed');
-          setBgColor('red');
+          if (response?.err) {
+            setMsg('Transaction failed');
+            setBgColor('red');
+            handleOfflineData(actionType, form);
+            setInit(false);
+          } else if (response?.avoid) {
+            setMsg('Cancelled');
+            setBgColor('gray');
+          } else {
+            setMsg('Transaction successful');
+            setBgColor('green');
+            setInit(Date.now());
+          }
+        } else {
+          setMsg('Transaction waiting');
+          setBgColor('#ab9f09');
           handleOfflineData(actionType, form);
           setInit(false);
-        } else if (response?.avoid) {
-          setMsg('Cancelled');
-          setBgColor('gray');
-        } else {
-          setMsg('Transaction successful');
-          setBgColor('green');
-          setInit(Date.now());
         }
+
+        handleReset();
+        setVisible(true);
       } else {
+        setInit(0);
         setMsg('Transaction waiting');
         setBgColor('#ab9f09');
-        handleOfflineData(actionType, form);
-        setInit(false);
       }
-      setVisible(true);
-      handleReset();
       setDisabled(false);
       setProc(false);
     },
