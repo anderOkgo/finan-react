@@ -42,16 +42,19 @@ function Form({ setInit, setForm, form, proc, setProc, edit, setEdit }) {
     const insertData = JSON.parse(localStorage.getItem('insert')) || [];
     const updateData = JSON.parse(localStorage.getItem('update')) || [];
     const deleteData = JSON.parse(localStorage.getItem('del')) || [];
-    const mergedData = [...insertData, ...updateData, ...deleteData].map((obj) => {
+    const mergedData = formatOffData([...insertData, ...updateData, ...deleteData]);
+    setOff(mergedData);
+  }, []);
+
+  const formatOffData = (data) => {
+    return data.map((obj) => {
       if (obj.id === undefined || obj.source === undefined) {
-        obj.id = 0;
-        obj.source = 0;
+        obj.id = null;
+        obj.source = null;
       }
       return obj;
     });
-
-    setOff(mergedData);
-  }, []);
+  };
 
   const handleReset = useCallback(() => {
     setForm(initialForm);
@@ -70,6 +73,7 @@ function Form({ setInit, setForm, form, proc, setProc, edit, setEdit }) {
 
   const handleOfflineData = useCallback(
     (type, data) => {
+      //data = formatOffData(data);
       const existingData = JSON.parse(localStorage.getItem(type)) || [];
       existingData.push(data);
       localStorage.setItem(type, JSON.stringify(existingData));
@@ -80,12 +84,12 @@ function Form({ setInit, setForm, form, proc, setProc, edit, setEdit }) {
 
   const handleAction = useCallback(
     async (e, actionType) => {
-      setProc(true);
       setDisabled(true);
       e.target instanceof HTMLFormElement ? e.preventDefault() : false;
       if (DataLocalService.checkCookieExistence('startCook')) {
         actionType === 'del' ? (actionType = 'del') : (actionType = edit ? 'update' : 'insert');
         if (!proc) {
+          setProc(true);
           let response = {};
           if (actionType === 'del') {
             window.confirm(`Are you sure to delete: '${form.name}'`)
@@ -109,6 +113,7 @@ function Form({ setInit, setForm, form, proc, setProc, edit, setEdit }) {
             setInit(Date.now());
           }
           handleReset();
+          setProc(false);
         } else {
           setMsg('Transaction waiting');
           setBgColor('#ab9f09');
@@ -120,7 +125,6 @@ function Form({ setInit, setForm, form, proc, setProc, edit, setEdit }) {
       }
       setVisible(true);
       setDisabled(false);
-      setProc(false);
     },
     [form, setInit, edit, handleOfflineData, handleReset, setProc, proc]
   );
@@ -136,9 +140,9 @@ function Form({ setInit, setForm, form, proc, setProc, edit, setEdit }) {
   };
 
   const handleRowDoubleClick = async () => {
-    setProc(true);
     if (DataLocalService.checkCookieExistence('startCook')) {
       if (!proc) {
+        setProc(true);
         const updatedInsertArray = await handleBulkData('insert');
         const updatedUpdateArray = await handleBulkData('update');
         const UpdatedDeleteArray = await handleBulkData('del');
@@ -153,6 +157,7 @@ function Form({ setInit, setForm, form, proc, setProc, edit, setEdit }) {
           setBgColor('red');
           setInit(false);
         }
+        setProc(false);
       } else {
         setMsg('Transaction waiting');
         setBgColor('#ab9f09');
@@ -163,7 +168,6 @@ function Form({ setInit, setForm, form, proc, setProc, edit, setEdit }) {
       setBgColor('#ab9f09');
     }
     setVisible(true);
-    setProc(false);
   };
 
   return (
