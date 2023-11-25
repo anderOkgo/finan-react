@@ -73,11 +73,12 @@ function Form({ setInit, setForm, form, proc, setProc, edit, setEdit }) {
 
   const handleOfflineData = useCallback(
     (type, data) => {
-      //data = formatOffData(data);
+      data = formatOffData([data]);
       const existingData = JSON.parse(localStorage.getItem(type)) || [];
-      existingData.push(data);
+      console.log(data[0]);
+      existingData.push(data[0]);
       localStorage.setItem(type, JSON.stringify(existingData));
-      setOff((prevOff) => [...prevOff, data]);
+      setOff((prevOff) => [...prevOff, data[0]]);
     },
     [setOff]
   );
@@ -86,8 +87,8 @@ function Form({ setInit, setForm, form, proc, setProc, edit, setEdit }) {
     async (e, actionType) => {
       setDisabled(true);
       e.target instanceof HTMLFormElement ? e.preventDefault() : false;
+      actionType === 'del' ? (actionType = 'del') : (actionType = edit ? 'update' : 'insert');
       if (DataLocalService.checkCookieExistence('startCook')) {
-        actionType === 'del' ? (actionType = 'del') : (actionType = edit ? 'update' : 'insert');
         if (!proc) {
           setProc(true);
           let response = {};
@@ -120,8 +121,10 @@ function Form({ setInit, setForm, form, proc, setProc, edit, setEdit }) {
         }
       } else {
         setInit(0);
-        setMsg('Transaction waiting');
-        setBgColor('#ab9f09');
+        setMsg('Offline');
+        setBgColor('red');
+        handleOfflineData(actionType, form);
+        handleReset();
       }
       setVisible(true);
       setDisabled(false);
@@ -164,8 +167,8 @@ function Form({ setInit, setForm, form, proc, setProc, edit, setEdit }) {
       }
     } else {
       setInit(0);
-      setMsg('Transaction waiting');
-      setBgColor('#ab9f09');
+      setMsg('Offline');
+      setBgColor('red');
     }
     setVisible(true);
   };

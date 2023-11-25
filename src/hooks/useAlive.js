@@ -1,35 +1,31 @@
-import set from '../helpers/set.json';
 import DataLocalService from '../services/data.local.service';
 import { useState, useEffect } from 'react';
 import DataService from '../services/data.service';
 
 export const useAlive = () => {
-  const [init, setInit] = useState(false);
+  const [init, setInit] = useState(0);
   const [proc, setProc] = useState(1);
-  const [prevInit, setPrevInit] = useState(0);
+  const [online, setOnline] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
-      if (!init) {
-        setProc(true);
-        const resp = await DataService.boot();
-        setInit(resp?.err ? false : true);
-        setProc(false);
+      if (online) {
+        if (!init) {
+          setProc(true);
+          const resp = await DataService.boot();
+          setInit(resp?.err ? false : true);
+          setProc(false);
+        }
       }
 
-      let intervalId = '';
-      setPrevInit(init);
-      if (prevInit === 0) {
-        intervalId = setTimeout(() => fetchData(), set.alive_setTimeout || 120000);
-        init ? DataLocalService.createCookie('startCook', '1') : setInit(0);
-        setPrevInit(init);
-      }
+      init && DataLocalService.createCookie('startCook', '1');
 
       const handleOnline = () => {
-        setInit(true);
+        setOnline(true);
       };
 
       const handleOffline = () => {
+        setOnline(false);
         setInit(false);
       };
 
@@ -39,12 +35,11 @@ export const useAlive = () => {
       return () => {
         window.removeEventListener('online', handleOnline);
         window.removeEventListener('offline', handleOffline);
-        clearTimeout(intervalId);
       };
     };
 
     fetchData();
-  }, [init, prevInit]);
+  }, [init, online]);
 
   return { init, setInit, proc, setProc };
 };
