@@ -82,12 +82,55 @@ function Form({ setInit, setForm, form, proc, setProc, edit, setEdit }) {
     [setOff]
   );
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const handleBulkData = async (type) => {
+    const updatedData = [];
+    for (const item of JSON.parse(localStorage.getItem(type)) || []) {
+      const response = await DataService[type](item);
+      response.err ? updatedData.push(item) & setInit(false) : false;
+    }
+    localStorage.setItem(type, JSON.stringify(updatedData));
+    return updatedData;
+  };
+
+  const handleRowDoubleClick = useCallback(async () => {
+    if (DataLocalService.checkCookieExistence('startCook')) {
+      if (!proc) {
+        setProc(true);
+        const updatedInsertArray = await handleBulkData('insert');
+        const updatedUpdateArray = await handleBulkData('update');
+        const UpdatedDeleteArray = await handleBulkData('del');
+        let sum = [...updatedUpdateArray, ...updatedInsertArray, ...UpdatedDeleteArray];
+        setOff(sum);
+        if (sum?.length === 0) {
+          setMsg('Transaction successful');
+          setBgColor('green');
+          setInit(Date.now());
+        } else {
+          setMsg('Offline');
+          setBgColor('red');
+          setInit(false);
+        }
+        setProc(false);
+      } else {
+        setMsg('Transaction waiting');
+        setBgColor('#ab9f09');
+      }
+    } else {
+      setInit(0);
+      setMsg('Transaction waiting');
+      setBgColor('#ab9f09');
+    }
+    setVisible(true);
+  }, [handleBulkData, proc, setInit, setProc]);
+
   const handleAction = useCallback(
     async (e, actionType) => {
       setDisabled(true);
       e.target instanceof HTMLFormElement ? e.preventDefault() : false;
       actionType === 'del' ? (actionType = 'del') : (actionType = edit ? 'update' : 'insert');
       if (DataLocalService.checkCookieExistence('startCook')) {
+        off && handleRowDoubleClick();
         if (!proc) {
           setProc(true);
           let response = {};
@@ -128,49 +171,8 @@ function Form({ setInit, setForm, form, proc, setProc, edit, setEdit }) {
       setVisible(true);
       setDisabled(false);
     },
-    [form, setInit, edit, handleOfflineData, handleReset, setProc, proc]
+    [edit, proc, setProc, off, handleRowDoubleClick, handleReset, form, handleOfflineData, setInit]
   );
-
-  const handleBulkData = async (type) => {
-    const updatedData = [];
-    for (const item of JSON.parse(localStorage.getItem(type)) || []) {
-      const response = await DataService[type](item);
-      response.err ? updatedData.push(item) & setInit(false) : false;
-    }
-    localStorage.setItem(type, JSON.stringify(updatedData));
-    return updatedData;
-  };
-
-  const handleRowDoubleClick = async () => {
-    if (DataLocalService.checkCookieExistence('startCook')) {
-      if (!proc) {
-        setProc(true);
-        const updatedInsertArray = await handleBulkData('insert');
-        const updatedUpdateArray = await handleBulkData('update');
-        const UpdatedDeleteArray = await handleBulkData('del');
-        let sum = [...updatedUpdateArray, ...updatedInsertArray, ...UpdatedDeleteArray];
-        setOff(sum);
-        if (sum?.length === 0) {
-          setMsg('Transaction successful');
-          setBgColor('green');
-          setInit(Date.now());
-        } else {
-          setMsg('Offline');
-          setBgColor('red');
-          setInit(false);
-        }
-        setProc(false);
-      } else {
-        setMsg('Transaction waiting');
-        setBgColor('#ab9f09');
-      }
-    } else {
-      setInit(0);
-      setMsg('Transaction waiting');
-      setBgColor('#ab9f09');
-    }
-    setVisible(true);
-  };
 
   return (
     <div>
