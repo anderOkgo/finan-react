@@ -128,16 +128,16 @@ function Form({ setInit, setForm, form, proc, setProc, edit, setEdit }) {
     async (e, actionType) => {
       setDisabled(true);
       e.target instanceof HTMLFormElement ? e.preventDefault() : false;
+      let isDeleted;
       actionType === 'del' ? (actionType = 'del') : (actionType = edit ? 'update' : 'insert');
+      actionType === 'del' && (isDeleted = window.confirm(`Are you sure to delete: '${form.name}'`));
       if (DataLocalService.checkCookieExistence('startCook')) {
         off.length !== 0 && handleRowDoubleClick();
         if (!proc) {
           setProc(true);
           let response = {};
           if (actionType === 'del') {
-            window.confirm(`Are you sure to delete: '${form.name}'`)
-              ? (response = await DataService[actionType](form))
-              : (response.avoid = true);
+            isDeleted ? (response = await DataService[actionType](form)) : (response.avoid = true);
           } else {
             response = await DataService[actionType](form);
           }
