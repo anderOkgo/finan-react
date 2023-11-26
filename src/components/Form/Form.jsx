@@ -165,7 +165,12 @@ function Form({ setInit, setForm, form, proc, setProc, edit, setEdit }) {
         setInit(0);
         setMsg('Offline');
         setBgColor('red');
-        handleOfflineData(actionType, form);
+        if (actionType === 'del') {
+          isDeleted && handleOfflineData(actionType, form);
+        } else {
+          handleOfflineData(actionType, form);
+        }
+
         handleReset();
       }
       setVisible(true);
