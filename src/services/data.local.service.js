@@ -1,6 +1,6 @@
 function createCookie(name, value) {
   const now = new Date();
-  const expirationTime = new Date(now.getTime() + 2 * 60 * 1000); // 2 minutes in milliseconds
+  const expirationTime = new Date(now.getTime() + 30 * 60 * 1000); // 30 minutes in milliseconds
   const cookieString = `${name}=${value}; expires=${expirationTime.toUTCString()}; path=/`;
   document.cookie = cookieString;
 }

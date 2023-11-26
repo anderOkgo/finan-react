@@ -75,7 +75,6 @@ function Form({ setInit, setForm, form, proc, setProc, edit, setEdit }) {
     (type, data) => {
       data = formatOffData([data]);
       const existingData = JSON.parse(localStorage.getItem(type)) || [];
-      console.log(data[0]);
       existingData.push(data[0]);
       localStorage.setItem(type, JSON.stringify(existingData));
       setOff((prevOff) => [...prevOff, data[0]]);
@@ -121,8 +120,8 @@ function Form({ setInit, setForm, form, proc, setProc, edit, setEdit }) {
         }
       } else {
         setInit(0);
-        setMsg('Offline');
-        setBgColor('red');
+        setMsg('Transaction waiting');
+        setBgColor('#ab9f09');
         handleOfflineData(actionType, form);
         handleReset();
       }
@@ -167,8 +166,8 @@ function Form({ setInit, setForm, form, proc, setProc, edit, setEdit }) {
       }
     } else {
       setInit(0);
-      setMsg('Offline');
-      setBgColor('red');
+      setMsg('Transaction waiting');
+      setBgColor('#ab9f09');
     }
     setVisible(true);
   };
@@ -262,7 +261,7 @@ function Form({ setInit, setForm, form, proc, setProc, edit, setEdit }) {
       {off.length !== 0 && (
         <Table
           label={'Offline Table'}
-          columns={[' ', ' ', ' ', ' ', ' ', ' ', ' ']}
+          columns={['', 'Offline', ' ', ' ', ' ', ' ', ' ']}
           data={off}
           onRowDoubleClick={handleRowDoubleClick}
         />
