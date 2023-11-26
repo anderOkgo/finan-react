@@ -261,7 +261,7 @@ function Form({ setInit, setForm, form, proc, setProc, edit, setEdit }) {
       {off.length !== 0 && (
         <Table
           label={'Offline Table'}
-          columns={['', 'Offline', ' ', ' ', ' ', ' ', ' ']}
+          columns={['Pending', ' ', ' ', ' ', ' ', ' ', ' ']}
           data={off}
           onRowDoubleClick={handleRowDoubleClick}
         />
