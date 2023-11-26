@@ -118,8 +118,8 @@ function Form({ setInit, setForm, form, proc, setProc, edit, setEdit }) {
       }
     } else {
       setInit(0);
-      setMsg('Transaction waiting');
-      setBgColor('#ab9f09');
+      setMsg('Offline');
+      setBgColor('red');
     }
     setVisible(true);
   }, [handleBulkData, proc, setInit, setProc]);
@@ -163,8 +163,8 @@ function Form({ setInit, setForm, form, proc, setProc, edit, setEdit }) {
         }
       } else {
         setInit(0);
-        setMsg('Transaction waiting');
-        setBgColor('#ab9f09');
+        setMsg('Offline');
+        setBgColor('red');
         handleOfflineData(actionType, form);
         handleReset();
       }
