@@ -18,7 +18,7 @@ export const useAlive = () => {
         }
       }
 
-      init && DataLocalService.createCookie('startCook', '1');
+      init ? DataLocalService.createCookie('startCook', '1') : DataLocalService.deleteCookie('startCook');
 
       const handleOnline = () => {
         setOnline(true);

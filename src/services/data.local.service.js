@@ -16,6 +16,10 @@ function checkCookieExistence(name) {
   return false; // Cookie with the specified name does not exist
 }
 
-const DataLocalService = { createCookie, checkCookieExistence };
+function deleteCookie(cookieName) {
+  document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+}
+
+const DataLocalService = { createCookie, checkCookieExistence, deleteCookie };
 
 export default DataLocalService;

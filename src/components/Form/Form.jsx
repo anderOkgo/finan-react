@@ -130,7 +130,7 @@ function Form({ setInit, setForm, form, proc, setProc, edit, setEdit }) {
       e.target instanceof HTMLFormElement ? e.preventDefault() : false;
       actionType === 'del' ? (actionType = 'del') : (actionType = edit ? 'update' : 'insert');
       if (DataLocalService.checkCookieExistence('startCook')) {
-        off && handleRowDoubleClick();
+        off.length !== 0 && handleRowDoubleClick();
         if (!proc) {
           setProc(true);
           let response = {};
