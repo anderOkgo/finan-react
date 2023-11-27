@@ -4,7 +4,7 @@ import DataService from '../../services/data.service';
 import AutoDismissMessage from '../Message/AutoDismissMessage.jsx';
 import Table from '../Table/Table';
 
-function Form({ setInit, setForm, form, proc, setProc, edit, setEdit }) {
+function Form({ setInit, init, setForm, form, proc, setProc, edit, setEdit }) {
   const initialForm = useMemo(
     () => ({
       name: '',
@@ -70,30 +70,29 @@ function Form({ setInit, setForm, form, proc, setProc, edit, setEdit }) {
     [form, setForm]
   );
 
-  const handleOfflineData = useCallback(
-    (type, data) => {
-      data = formatOffData([data]);
-      const existingData = JSON.parse(localStorage.getItem(type)) || [];
-      existingData.push(data[0]);
-      localStorage.setItem(type, JSON.stringify(existingData));
-      setOff((prevOff) => [...prevOff, data[0]]);
+  const handleOfflineData = useCallback((type, data) => {
+    data = formatOffData([data]);
+    const existingData = JSON.parse(localStorage.getItem(type)) || [];
+    existingData.push(data[0]);
+    localStorage.setItem(type, JSON.stringify(existingData));
+    setOff((prevOff) => [...prevOff, data[0]]);
+  }, []);
+
+  const handleBulkData = useCallback(
+    async (type) => {
+      const updatedData = [];
+      for (const item of JSON.parse(localStorage.getItem(type)) || []) {
+        const response = await DataService[type](item);
+        response.err ? updatedData.push(item) & setInit(false) : false;
+      }
+      localStorage.setItem(type, JSON.stringify(updatedData));
+      return updatedData;
     },
-    [setOff]
+    [setInit]
   );
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const handleBulkData = async (type) => {
-    const updatedData = [];
-    for (const item of JSON.parse(localStorage.getItem(type)) || []) {
-      const response = await DataService[type](item);
-      response.err ? updatedData.push(item) & setInit(false) : false;
-    }
-    localStorage.setItem(type, JSON.stringify(updatedData));
-    return updatedData;
-  };
-
   const handleRowDoubleClick = useCallback(async () => {
-    if (!proc) {
+    if (init && !proc) {
       setProc(true);
       const updatedInsertArray = await handleBulkData('insert');
       const updatedUpdateArray = await handleBulkData('update');
@@ -116,7 +115,7 @@ function Form({ setInit, setForm, form, proc, setProc, edit, setEdit }) {
     }
 
     setVisible(true);
-  }, [handleBulkData, proc, setInit, setProc]);
+  }, [handleBulkData, proc, setInit, setProc, init]);
 
   const handleAction = useCallback(
     async (e, actionType) => {
@@ -125,9 +124,9 @@ function Form({ setInit, setForm, form, proc, setProc, edit, setEdit }) {
       let isDeleted;
       actionType === 'del' ? (actionType = 'del') : (actionType = edit ? 'update' : 'insert');
       actionType === 'del' && (isDeleted = window.confirm(`Are you sure to delete: '${form.name}'`));
-      off.length !== 0 && handleRowDoubleClick();
-      if (!proc) {
+      if (init && !proc) {
         setProc(true);
+        off.length !== 0 && handleRowDoubleClick();
         let response = {};
         if (actionType === 'del') {
           isDeleted ? (response = await DataService[actionType](form)) : (response.avoid = true);
@@ -167,7 +166,7 @@ function Form({ setInit, setForm, form, proc, setProc, edit, setEdit }) {
       setVisible(true);
       setDisabled(false);
     },
-    [edit, proc, setProc, off, handleRowDoubleClick, handleReset, form, handleOfflineData, setInit]
+    [edit, proc, setProc, handleReset, form, handleOfflineData, setInit, init, off, handleRowDoubleClick]
   );
 
   return (
@@ -259,7 +258,7 @@ function Form({ setInit, setForm, form, proc, setProc, edit, setEdit }) {
       {off.length !== 0 && (
         <Table
           label={'Offline Table'}
-          columns={['Pending', '...', '..', '.', ' ', ' ', ' ']}
+          columns={['Queue', '', '', '', '', '', '...']}
           data={off}
           onRowDoubleClick={handleRowDoubleClick}
         />
