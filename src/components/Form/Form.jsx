@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import DataService from '../../services/data.service';
 import AutoDismissMessage from '../Message/AutoDismissMessage.jsx';
 import Table from '../Table/Table';
-import DataLocalService from '../../services/data.local.service';
 
 function Form({ setInit, setForm, form, proc, setProc, edit, setEdit }) {
   const initialForm = useMemo(
@@ -94,33 +93,28 @@ function Form({ setInit, setForm, form, proc, setProc, edit, setEdit }) {
   };
 
   const handleRowDoubleClick = useCallback(async () => {
-    if (DataLocalService.checkCookieExistence('startCook')) {
-      if (!proc) {
-        setProc(true);
-        const updatedInsertArray = await handleBulkData('insert');
-        const updatedUpdateArray = await handleBulkData('update');
-        const UpdatedDeleteArray = await handleBulkData('del');
-        let sum = [...updatedUpdateArray, ...updatedInsertArray, ...UpdatedDeleteArray];
-        setOff(sum);
-        if (sum?.length === 0) {
-          setMsg('Transaction successful');
-          setBgColor('green');
-          setInit(Date.now());
-        } else {
-          setMsg('Offline');
-          setBgColor('red');
-          setInit(false);
-        }
-        setProc(false);
+    if (!proc) {
+      setProc(true);
+      const updatedInsertArray = await handleBulkData('insert');
+      const updatedUpdateArray = await handleBulkData('update');
+      const UpdatedDeleteArray = await handleBulkData('del');
+      let sum = [...updatedUpdateArray, ...updatedInsertArray, ...UpdatedDeleteArray];
+      setOff(sum);
+      if (sum?.length === 0) {
+        setMsg('Transaction successful');
+        setBgColor('green');
+        setInit(Date.now());
       } else {
-        setMsg('Transaction waiting');
-        setBgColor('#ab9f09');
+        setMsg('Offline');
+        setBgColor('red');
+        setInit(false);
       }
+      setProc(false);
     } else {
-      setInit(0);
-      setMsg('Offline');
-      setBgColor('red');
+      setMsg('Transaction waiting');
+      setBgColor('#ab9f09');
     }
+
     setVisible(true);
   }, [handleBulkData, proc, setInit, setProc]);
 
@@ -131,46 +125,43 @@ function Form({ setInit, setForm, form, proc, setProc, edit, setEdit }) {
       let isDeleted;
       actionType === 'del' ? (actionType = 'del') : (actionType = edit ? 'update' : 'insert');
       actionType === 'del' && (isDeleted = window.confirm(`Are you sure to delete: '${form.name}'`));
-      if (DataLocalService.checkCookieExistence('startCook')) {
-        off.length !== 0 && handleRowDoubleClick();
-        if (!proc) {
-          setProc(true);
-          let response = {};
-          if (actionType === 'del') {
-            isDeleted ? (response = await DataService[actionType](form)) : (response.avoid = true);
-          } else {
-            response = await DataService[actionType](form);
-          }
-
-          if (response?.err) {
-            setMsg('Transaction failed');
-            setBgColor('red');
-            handleOfflineData(actionType, form);
-            setInit(false);
-          } else if (response?.avoid) {
-            setMsg('Cancelled');
-            setBgColor('gray');
-          } else {
-            setMsg('Transaction successful');
-            setBgColor('green');
-            setInit(Date.now());
-          }
-          handleReset();
-          setProc(false);
+      off.length !== 0 && handleRowDoubleClick();
+      if (!proc) {
+        setProc(true);
+        let response = {};
+        if (actionType === 'del') {
+          isDeleted ? (response = await DataService[actionType](form)) : (response.avoid = true);
         } else {
-          setMsg('Transaction waiting');
-          setBgColor('#ab9f09');
+          response = await DataService[actionType](form);
         }
+
+        if (response?.err) {
+          setMsg('Transaction failed');
+          setBgColor('red');
+          if (actionType === 'del') {
+            isDeleted && handleOfflineData(actionType, form);
+          } else {
+            handleOfflineData(actionType, form);
+          }
+          setInit(false);
+        } else if (response?.avoid) {
+          setMsg('Cancelled');
+          setBgColor('gray');
+        } else {
+          setMsg('Transaction successful');
+          setBgColor('green');
+          setInit(Date.now());
+        }
+        handleReset();
+        setProc(false);
       } else {
-        setInit(0);
-        setMsg('Offline');
-        setBgColor('red');
         if (actionType === 'del') {
           isDeleted && handleOfflineData(actionType, form);
         } else {
           handleOfflineData(actionType, form);
         }
-
+        setMsg('Transaction waiting');
+        setBgColor('#ab9f09');
         handleReset();
       }
       setVisible(true);

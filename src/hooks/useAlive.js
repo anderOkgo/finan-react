@@ -1,4 +1,3 @@
-import DataLocalService from '../services/data.local.service';
 import { useState, useEffect } from 'react';
 import DataService from '../services/data.service';
 
@@ -14,8 +13,6 @@ export const useAlive = () => {
     };
 
     if (online && !init) setProc(true) & boot() & setProc(false);
-
-    init ? DataLocalService.createCookie('startCook', '1') : DataLocalService.deleteCookie('startCook');
 
     const handleOnline = () => setOnline(true);
     const handleOffline = () => setOnline(false) & boot();
