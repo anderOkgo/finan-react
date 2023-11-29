@@ -121,47 +121,36 @@ function Form({ setInit, init, setForm, form, proc, setProc, edit, setEdit }) {
   const handleAction = useCallback(
     async (e, actionType) => {
       setDisabled(true);
-      e.target instanceof HTMLFormElement ? e.preventDefault() : false;
-      let isDeleted;
-      actionType === 'del' ? (actionType = 'del') : (actionType = edit ? 'update' : 'insert');
-      actionType === 'del' && (isDeleted = window.confirm(`Are you sure to delete: '${form.name}'`));
-      if (init && !proc) {
-        setProc(true);
-        off.length !== 0 && handleRowDoubleClick();
-        let response = {};
-        if (actionType === 'del') {
-          isDeleted ? (response = await DataService[actionType](form)) : (response.avoid = true);
-        } else {
-          response = await DataService[actionType](form);
-        }
+      e.target instanceof HTMLFormElement && e.preventDefault();
 
-        if (response?.err) {
-          setMsg('Transaction failed');
-          setBgColor('red');
-          if (actionType === 'del') {
-            isDeleted && handleOfflineData(actionType, form);
-          } else {
+      async function exeAction(actionType) {
+        if (init && !proc) {
+          setProc(true);
+          off.length !== 0 && handleRowDoubleClick();
+          const response = await DataService[actionType](form);
+          if (response?.err) {
+            message('Transaction failed', 'red', true);
             handleOfflineData(actionType, form);
+            setInit(false);
+          } else {
+            message('Transaction successful', 'green', true);
+            setInit(Date.now());
           }
-          setInit(false);
-        } else if (response?.avoid) {
-          message('Cancelled', 'gray', true);
-        } else {
-          message('Transaction successful', 'green', true);
-          setInit(Date.now());
-        }
-        handleReset();
-        setProc(false);
-      } else {
-        if (actionType === 'del') {
-          isDeleted && handleOfflineData(actionType, form);
+          setProc(false);
         } else {
           handleOfflineData(actionType, form);
+          message('Transaction waiting', '#ab9f09', true);
         }
-
-        message('Transaction waiting', '#ab9f09', true);
         handleReset();
       }
+
+      if (actionType === 'del') {
+        window.confirm(`Are you sure to delete: '${form.name}'`) && exeAction(actionType);
+      } else {
+        actionType = edit ? 'update' : 'insert';
+        exeAction(actionType);
+      }
+
       setDisabled(false);
     },
     [edit, proc, setProc, handleReset, form, handleOfflineData, setInit, init, off, handleRowDoubleClick]
