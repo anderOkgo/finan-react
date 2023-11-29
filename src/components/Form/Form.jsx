@@ -4,7 +4,13 @@ import DataService from '../../services/data.service';
 import AutoDismissMessage from '../Message/AutoDismissMessage.jsx';
 import Table from '../Table/Table';
 
-function Form({ setInit, init, setForm, form, proc, setProc, edit, setEdit }) {
+function Form({ setInit, init, setForm, form, proc, setProc, edit, setEdit, typeOptions }) {
+  const [msg, setMsg] = useState('');
+  const [bgColor, setBgColor] = useState('');
+  const [visible, setVisible] = useState(false);
+  const [off, setOff] = useState([]);
+  const [disabled, setDisabled] = useState(false);
+  const buttonRef = useRef(null);
   const initialForm = useMemo(
     () => ({
       name: '',
@@ -16,34 +22,27 @@ function Form({ setInit, init, setForm, form, proc, setProc, edit, setEdit }) {
     []
   );
 
-  const [msg, setMsg] = useState('');
-  const [bgColor, setBgColor] = useState('');
-  const [visible, setVisible] = useState(false);
-  const [off, setOff] = useState([]);
-  const [disabled, setDisabled] = useState(false);
-
-  const buttonRef = useRef(null);
-
-  const typeOptions = [
-    { value: '', label: '---' },
-    { value: '1', label: 'Income' },
-    { value: '2', label: 'Bill' },
-    { value: '7', label: 'Saving' },
-    { value: '8', label: 'Balance' },
-    { value: '9', label: 'Tax return' },
-    { value: '10', label: 'GYG payment' },
-    { value: '11', label: 'Interest' },
-    { value: '12', label: 'Visa refund' },
-    { value: '13', label: 'Cash exchange' },
-  ];
-
   useEffect(() => {
-    const insertData = JSON.parse(localStorage.getItem('insert')) || [];
-    const updateData = JSON.parse(localStorage.getItem('update')) || [];
-    const deleteData = JSON.parse(localStorage.getItem('del')) || [];
-    const mergedData = formatOffData([...insertData, ...updateData, ...deleteData]);
-    setOff(mergedData);
+    function readOfflineData() {
+      const insertData = JSON.parse(localStorage.getItem('insert')) || [];
+      const updateData = JSON.parse(localStorage.getItem('update')) || [];
+      const deleteData = JSON.parse(localStorage.getItem('del')) || [];
+      const mergedData = formatOffData([...insertData, ...updateData, ...deleteData]);
+      setOff(mergedData);
+    }
+    readOfflineData();
   }, []);
+
+  const handleResetForm = useCallback(() => {
+    setForm(initialForm);
+    setEdit(false);
+  }, [initialForm, setForm, setEdit]);
+
+  const message = (msgText, msgColor, msgVisible) => {
+    setMsg(msgText);
+    setBgColor(msgColor);
+    setVisible(msgVisible);
+  };
 
   const formatOffData = (data) => {
     return data.map((obj) => {
@@ -55,18 +54,7 @@ function Form({ setInit, init, setForm, form, proc, setProc, edit, setEdit }) {
     });
   };
 
-  const message = (msgText, msgColor, msgVisible) => {
-    setMsg(msgText);
-    setBgColor(msgColor);
-    setVisible(msgVisible);
-  };
-
-  const handleReset = useCallback(() => {
-    setForm(initialForm);
-    setEdit(false);
-  }, [initialForm, setForm, setEdit]);
-
-  const handleChange = useCallback(
+  const handleChangeInput = useCallback(
     (e) => {
       setForm({
         ...form,
@@ -98,24 +86,27 @@ function Form({ setInit, init, setForm, form, proc, setProc, edit, setEdit }) {
   );
 
   const handleRowDoubleClick = useCallback(async () => {
-    if (init && !proc) {
-      setProc(true);
-      const updatedInsertArray = await handleBulkData('insert');
-      const updatedUpdateArray = await handleBulkData('update');
-      const UpdatedDeleteArray = await handleBulkData('del');
-      let sum = [...updatedUpdateArray, ...updatedInsertArray, ...UpdatedDeleteArray];
-      setOff(sum);
-      if (sum?.length === 0) {
-        message('Transaction successful', 'green', true);
-        setInit(Date.now());
+    async function syncOfflineData() {
+      if (init && !proc) {
+        setProc(true);
+        const updatedInsertArray = await handleBulkData('insert');
+        const updatedUpdateArray = await handleBulkData('update');
+        const UpdatedDeleteArray = await handleBulkData('del');
+        let sum = [...updatedUpdateArray, ...updatedInsertArray, ...UpdatedDeleteArray];
+        setOff(sum);
+        if (sum?.length === 0) {
+          message('Transaction successful', 'green', true);
+          setInit(Date.now());
+        } else {
+          message('Offline', 'red', true);
+          setInit(false);
+        }
+        setProc(false);
       } else {
-        message('Offline', 'red', true);
-        setInit(false);
+        message('Transaction waiting', '#ab9f09', true);
       }
-      setProc(false);
-    } else {
-      message('Transaction waiting', '#ab9f09', true);
     }
+    syncOfflineData();
   }, [handleBulkData, proc, setInit, setProc, init]);
 
   const handleAction = useCallback(
@@ -141,7 +132,7 @@ function Form({ setInit, init, setForm, form, proc, setProc, edit, setEdit }) {
           handleOfflineData(actionType, form);
           message('Transaction waiting', '#ab9f09', true);
         }
-        handleReset();
+        handleResetForm();
       }
 
       if (actionType === 'del') {
@@ -153,7 +144,7 @@ function Form({ setInit, init, setForm, form, proc, setProc, edit, setEdit }) {
 
       setDisabled(false);
     },
-    [edit, proc, setProc, handleReset, form, handleOfflineData, setInit, init, off, handleRowDoubleClick]
+    [edit, proc, setProc, handleResetForm, form, handleOfflineData, setInit, init, off, handleRowDoubleClick]
   );
 
   return (
@@ -168,7 +159,7 @@ function Form({ setInit, init, setForm, form, proc, setProc, edit, setEdit }) {
             className="form-control"
             name="name"
             value={form.name}
-            onChange={handleChange}
+            onChange={handleChangeInput}
             required
           />
         </div>
@@ -181,7 +172,7 @@ function Form({ setInit, init, setForm, form, proc, setProc, edit, setEdit }) {
             className="form-control"
             name="val"
             value={form.val}
-            onChange={handleChange}
+            onChange={handleChangeInput}
             required
           />
         </div>
@@ -191,7 +182,7 @@ function Form({ setInit, init, setForm, form, proc, setProc, edit, setEdit }) {
             id="type"
             className="form-control"
             name="type"
-            onChange={handleChange}
+            onChange={handleChangeInput}
             required
             value={form.type}
             ref={buttonRef}
@@ -211,7 +202,7 @@ function Form({ setInit, init, setForm, form, proc, setProc, edit, setEdit }) {
             id="datemov"
             name="datemov"
             value={form.datemov}
-            onChange={handleChange}
+            onChange={handleChangeInput}
             required
           ></input>
         </div>
@@ -224,14 +215,14 @@ function Form({ setInit, init, setForm, form, proc, setProc, edit, setEdit }) {
             className="form-control"
             name="tag"
             value={form.tag}
-            onChange={handleChange}
+            onChange={handleChangeInput}
             required
           />
         </div>
 
         <div className="form-group">
           <input type="submit" className="btn-primarys" disabled={disabled}></input>
-          <input className="btn-primarys" type="reset" value="Reset" onClick={handleReset} />
+          <input className="btn-primarys" type="reset" value="Reset" onClick={handleResetForm} />
           {edit && (
             <input
               className="delete-button"
@@ -263,6 +254,7 @@ Form.propTypes = {
   form: PropTypes.any,
   edit: PropTypes.any,
   setEdit: PropTypes.any,
+  typeOptions: PropTypes.any.isRequired,
 };
 
 export default Form;

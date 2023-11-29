@@ -36,11 +36,26 @@ function Tabs({ setInit, init, setProc, proc }) {
 
   const [form, setForm] = useState(initialForm);
 
+  const typeOptions = [
+    { value: '', label: '---' },
+    { value: '1', label: 'Income' },
+    { value: '2', label: 'Bill' },
+    { value: '7', label: 'Saving' },
+    { value: '8', label: 'Balance' },
+    { value: '9', label: 'Tax return' },
+    { value: '10', label: 'GYG payment' },
+    { value: '11', label: 'Interest' },
+    { value: '12', label: 'Visa refund' },
+    { value: '13', label: 'Cash exchange' },
+  ];
+
   const tabsData = [
     {
       id: 1,
       label: 'Input',
-      component: <TabInput {...{ setInit, init, setProc, proc, totalDay, setForm, form, edit, setEdit }} />,
+      component: (
+        <TabInput {...{ setInit, init, setProc, proc, totalDay, setForm, form, edit, setEdit, typeOptions }} />
+      ),
     },
     {
       id: 2,
