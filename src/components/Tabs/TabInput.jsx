@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import Form from '../Form/Form';
 import Bank from '../Bank/Bank';
 
-function TabInput({ setInit, init, setProc, proc, totalDay, setForm, form, edit, setEdit, typeOptions }) {
+function TabInput({ setInit, init, setProc, proc, totalDay, setForm, form, edit, setEdit }) {
   return (
     <div>
       <Bank {...{ setInit, init, setProc, proc, data: totalDay, label: 'Total Day' }} />
@@ -10,7 +10,7 @@ function TabInput({ setInit, init, setProc, proc, totalDay, setForm, form, edit,
       <h2>Movement Input</h2>
       <hr />
       <br />
-      <Form {...{ setInit, init, setProc, proc, setForm, form, edit, setEdit, typeOptions }} />
+      <Form {...{ setInit, init, setProc, proc, setForm, form, edit, setEdit }} />
       <br />
     </div>
   );
@@ -28,7 +28,6 @@ TabInput.propTypes = {
   form: PropTypes.any,
   edit: PropTypes.any,
   setEdit: PropTypes.any,
-  typeOptions: PropTypes.any,
 };
 
 export default TabInput;

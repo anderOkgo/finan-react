@@ -4,7 +4,7 @@ import DataService from '../../services/data.service';
 import AutoDismissMessage from '../Message/AutoDismissMessage.jsx';
 import Table from '../Table/Table';
 
-function Form({ setInit, init, setForm, form, proc, setProc, edit, setEdit, typeOptions }) {
+function Form({ setInit, init, setForm, form, proc, setProc, edit, setEdit }) {
   const [msg, setMsg] = useState('');
   const [bgColor, setBgColor] = useState('');
   const [visible, setVisible] = useState(false);
@@ -21,6 +21,19 @@ function Form({ setInit, init, setForm, form, proc, setProc, edit, setEdit, type
     }),
     []
   );
+
+  const typeOptions = [
+    { value: '', label: '---' },
+    { value: '1', label: 'Income' },
+    { value: '2', label: 'Bill' },
+    { value: '7', label: 'Saving' },
+    { value: '8', label: 'Balance' },
+    { value: '9', label: 'Tax return' },
+    { value: '10', label: 'GYG payment' },
+    { value: '11', label: 'Interest' },
+    { value: '12', label: 'Visa refund' },
+    { value: '13', label: 'Cash exchange' },
+  ];
 
   useEffect(() => {
     function readOfflineData() {
@@ -254,7 +267,6 @@ Form.propTypes = {
   form: PropTypes.any,
   edit: PropTypes.any,
   setEdit: PropTypes.any,
-  typeOptions: PropTypes.any.isRequired,
 };
 
 export default Form;
