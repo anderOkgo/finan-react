@@ -1,10 +1,37 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import './Menu.css';
+import AuthService from '../../services/auth.service';
+import Status from '../Status/Status';
 
-const Menu = ({ init, proc, menuItems, title, currentUser, Status }) => {
+const Menu = ({ init, proc }) => {
+  const [currentUser, setCurrentUser] = useState(undefined);
+
+  useEffect(() => {
+    const user = AuthService.getCurrentUser();
+    user && setCurrentUser(user);
+  }, []);
+
+  const handleLogout = () => AuthService.logout();
+
+  const title = 'Finanz';
+  const menuItems = [
+    { label: 'Cyfer', url: 'https://cyfer.animecream.com/' },
+    { label: 'R-Animecream', url: 'https://react.animecream.com/' },
+    { label: 'Animecream', url: 'https://www.animecream.com/' },
+    { label: 'Nabu', url: 'https://nabu.animecream.com/' },
+    {
+      label: 'session',
+      url: '#',
+      child: [
+        { isSessionNeeded: false, label: 'login', url: '/' },
+        { isSessionNeeded: true, label: 'logout', url: '/', trigger: handleLogout },
+      ],
+    },
+  ];
   const checkboxRef = useRef(null);
   const spanRef = useRef(null);
+
   useEffect(() => {
     const handleClick = (e) => {
       if (checkboxRef.current == e.target || spanRef.current == e.target) {
@@ -81,10 +108,6 @@ const Menu = ({ init, proc, menuItems, title, currentUser, Status }) => {
 Menu.propTypes = {
   init: PropTypes.any.isRequired,
   proc: PropTypes.any.isRequired,
-  menuItems: PropTypes.array.isRequired,
-  title: PropTypes.any.isRequired,
-  currentUser: PropTypes.any,
-  Status: PropTypes.any.isRequired,
 };
 
 export default Menu;
