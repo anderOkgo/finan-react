@@ -55,6 +55,12 @@ function Form({ setInit, init, setForm, form, proc, setProc, edit, setEdit }) {
     });
   };
 
+  const message = (msgText, msgColor, msgVisible) => {
+    setMsg(msgText);
+    setBgColor(msgColor);
+    setVisible(msgVisible);
+  };
+
   const handleReset = useCallback(() => {
     setForm(initialForm);
     setEdit(false);
@@ -83,7 +89,7 @@ function Form({ setInit, init, setForm, form, proc, setProc, edit, setEdit }) {
       const updatedData = [];
       for (const item of JSON.parse(localStorage.getItem(type)) || []) {
         const response = await DataService[type](item);
-        response.err ? updatedData.push(item) & setInit(false) : false;
+        response.err && updatedData.push(item) & setInit(false);
       }
       localStorage.setItem(type, JSON.stringify(updatedData));
       return updatedData;
@@ -100,21 +106,16 @@ function Form({ setInit, init, setForm, form, proc, setProc, edit, setEdit }) {
       let sum = [...updatedUpdateArray, ...updatedInsertArray, ...UpdatedDeleteArray];
       setOff(sum);
       if (sum?.length === 0) {
-        setMsg('Transaction successful');
-        setBgColor('green');
+        message('Transaction successful', 'green', true);
         setInit(Date.now());
       } else {
-        setMsg('Offline');
-        setBgColor('red');
+        message('Offline', 'red', true);
         setInit(false);
       }
       setProc(false);
     } else {
-      setMsg('Transaction waiting');
-      setBgColor('#ab9f09');
+      message('Transaction waiting', '#ab9f09', true);
     }
-
-    setVisible(true);
   }, [handleBulkData, proc, setInit, setProc, init]);
 
   const handleAction = useCallback(
@@ -144,11 +145,9 @@ function Form({ setInit, init, setForm, form, proc, setProc, edit, setEdit }) {
           }
           setInit(false);
         } else if (response?.avoid) {
-          setMsg('Cancelled');
-          setBgColor('gray');
+          message('Cancelled', 'gray', true);
         } else {
-          setMsg('Transaction successful');
-          setBgColor('green');
+          message('Transaction successful', 'green', true);
           setInit(Date.now());
         }
         handleReset();
@@ -159,11 +158,10 @@ function Form({ setInit, init, setForm, form, proc, setProc, edit, setEdit }) {
         } else {
           handleOfflineData(actionType, form);
         }
-        setMsg('Transaction waiting');
-        setBgColor('#ab9f09');
+
+        message('Transaction waiting', '#ab9f09', true);
         handleReset();
       }
-      setVisible(true);
       setDisabled(false);
     },
     [edit, proc, setProc, handleReset, form, handleOfflineData, setInit, init, off, handleRowDoubleClick]
