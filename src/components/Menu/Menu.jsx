@@ -1,37 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
-import AuthService from '../../services/auth.service';
+import React, { useEffect, useRef } from 'react';
+import PropTypes from 'prop-types';
 import './Menu.css';
-import Status from '../Status/Status';
 
-// eslint-disable-next-line react/prop-types
-const Menu = ({ init, proc }) => {
-  const [currentUser, setCurrentUser] = useState(undefined);
-  useEffect(() => {
-    const user = AuthService.getCurrentUser();
-    if (user) {
-      setCurrentUser(user);
-    }
-  }, []);
-
-  const handleLogout = () => {
-    AuthService.logout();
-  };
-
-  const menuItems = [
-    { label: 'Cyfer', url: 'https://cyfer.animecream.com/' },
-    { label: 'R-Animecream', url: 'https://react.animecream.com/' },
-    { label: 'Animecream', url: 'https://www.animecream.com/' },
-    { label: 'Nabu', url: 'https://nabu.animecream.com/' },
-    {
-      label: 'session',
-      url: '#',
-      child: [
-        { isSessionNeeded: false, label: 'login', url: '/' },
-        { isSessionNeeded: true, label: 'logout', url: '/', trigger: handleLogout },
-      ],
-    },
-  ];
-
+const Menu = ({ init, proc, menuItems, title, currentUser, Status }) => {
   const checkboxRef = useRef(null);
   const spanRef = useRef(null);
   useEffect(() => {
@@ -44,7 +15,9 @@ const Menu = ({ init, proc }) => {
         checkboxRef.current.checked = false;
       }
     };
+
     document.addEventListener('click', handleClick);
+
     return () => {
       document.removeEventListener('click', handleClick);
     };
@@ -97,12 +70,21 @@ const Menu = ({ init, proc }) => {
       </div>
       <div className="logo insetshadow">
         <span className="icon-activity">
-          <Status init={init} proc={proc} />
+          <Status {...{ init, proc }} />
         </span>
-        &nbsp;Finanz
+        {title}
       </div>
     </nav>
   );
+};
+
+Menu.propTypes = {
+  init: PropTypes.any.isRequired,
+  proc: PropTypes.any.isRequired,
+  menuItems: PropTypes.array.isRequired,
+  title: PropTypes.any.isRequired,
+  currentUser: PropTypes.any,
+  Status: PropTypes.any.isRequired,
 };
 
 export default Menu;
