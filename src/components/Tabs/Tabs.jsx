@@ -20,7 +20,6 @@ function Tabs({ setInit, init, setProc, proc }) {
   const [edit, setEdit] = useState(false);
   const [generalInfo, setGeneralInfo] = useState([]);
   const [exchangeCol, setExchangeCol] = useState([]);
-
   const { selectedOption, setSelectedOption, handleTouchStart, handleTouchEnd } = useSwipeableTabs(1, 4, 170);
 
   const initialForm = useMemo(
