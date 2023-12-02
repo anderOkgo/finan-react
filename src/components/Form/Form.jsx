@@ -124,12 +124,11 @@ function Form({ setInit, init, setForm, form, proc, setProc, edit, setEdit }) {
 
   const handleAction = useCallback(
     async (e, actionType) => {
-      setDisabled(true);
       e.target instanceof HTMLFormElement && e.preventDefault();
-
       async function exeAction(actionType) {
         if (init && !proc) {
           setProc(true);
+          setDisabled(true);
           off.length !== 0 && handleRowDoubleClick();
           const response = await DataService[actionType](form);
           if (response?.err) {
@@ -140,6 +139,7 @@ function Form({ setInit, init, setForm, form, proc, setProc, edit, setEdit }) {
             message('Transaction successful', 'green', true);
             setInit(Date.now());
           }
+          setDisabled(false);
           setProc(false);
         } else {
           handleOfflineData(actionType, form);
@@ -154,8 +154,6 @@ function Form({ setInit, init, setForm, form, proc, setProc, edit, setEdit }) {
         actionType = edit ? 'update' : 'insert';
         exeAction(actionType);
       }
-
-      setDisabled(false);
     },
     [edit, proc, setProc, handleResetForm, form, handleOfflineData, setInit, init, off, handleRowDoubleClick]
   );
