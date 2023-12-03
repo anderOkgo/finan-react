@@ -46,7 +46,9 @@ const Login = ({ setInit, init, setProc, proc }) => {
         />
         <form onSubmit={handleLogin} ref={form}>
           <div className="form-group">
-            <label htmlFor="username">Username</label>
+            <label className="label" htmlFor="username">
+              Username
+            </label>
             <input
               id="username"
               type="text"
@@ -58,7 +60,9 @@ const Login = ({ setInit, init, setProc, proc }) => {
           </div>
 
           <div className="form-group">
-            <label htmlFor="password">Password</label>
+            <label className="label" htmlFor="password">
+              Password
+            </label>
             <input
               id="password"
               type="password"

@@ -1,0 +1,53 @@
+.form-label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: var(--dark-gray);
+}
+
+.form-control {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid var(--soft-gray);
+  border-radius: 4px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.btn-primarys {
+  box-sizing: border-box;
+  width: 49%;
+  padding: 12px 0;
+  font-size: 15px;
+  font-weight: bold;
+  color: var(--white);
+  background-color: var(--main-color);
+  border: none;
+  cursor: pointer;
+  margin-left: 1px;
+  border-radius: 0.4em;
+}
+
+.btn-primarys:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.delete-button {
+  background-color: var(--opposite-color);
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 4px;
+  width: 98.5%;
+  margin-top: 2px;
+}
+
+.delete-button:hover {
+  background-color: var(--opposite-dark-color);
+}

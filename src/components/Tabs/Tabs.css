@@ -9,42 +9,6 @@
   place-content: flex-start;
 }
 
-.btn-primarys {
-  box-sizing: border-box;
-  width: 49%;
-  padding: 12px 0;
-  font-size: 15px;
-  font-weight: bold;
-  color: var(--white);
-  background-color: var(--main-color);
-  border: none;
-  cursor: pointer;
-  margin-left: 1px;
-  border-radius: 0.4em;
-}
-
-.btn-primarys:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-.delete-button {
-  background-color: var(--opposite-color);
-  color: #fff;
-  border: none;
-  padding: 10px 20px;
-  font-size: 15px;
-  font-weight: bold;
-  cursor: pointer;
-  border-radius: 4px;
-  width: 98.5%;
-  margin-top: 2px;
-}
-
-.delete-button:hover {
-  background-color: var(--opposite-dark-color);
-}
-
 .container {
   max-width: 1200px;
   margin: auto;

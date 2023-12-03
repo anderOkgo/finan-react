@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import DataService from '../../services/data.service';
 import AutoDismissMessage from '../Message/AutoDismissMessage.jsx';
 import Table from '../Table/Table';
+import './Form.css';
 
 function Form({ setInit, init, setForm, form, proc, setProc, edit, setEdit }) {
   const [msg, setMsg] = useState('');
@@ -163,7 +164,9 @@ function Form({ setInit, init, setForm, form, proc, setProc, edit, setEdit }) {
       <AutoDismissMessage msg={msg} bgColor={bgColor} duration={3000} visible={visible} setVisible={setVisible} />
       <form onSubmit={(e) => handleAction(e, '')}>
         <div className="form-group">
-          <label htmlFor="name">Name</label>
+          <label className="form-label" htmlFor="name">
+            Name
+          </label>
           <input
             id="name"
             type="text"
@@ -176,7 +179,9 @@ function Form({ setInit, init, setForm, form, proc, setProc, edit, setEdit }) {
         </div>
 
         <div className="form-group">
-          <label htmlFor="val">Value</label>
+          <label className="form-label" htmlFor="val">
+            Value
+          </label>
           <input
             id="val"
             type="number"
@@ -188,7 +193,9 @@ function Form({ setInit, init, setForm, form, proc, setProc, edit, setEdit }) {
           />
         </div>
         <div className="form-group">
-          <label htmlFor="type">Type</label>
+          <label className="form-label" htmlFor="type">
+            Type
+          </label>
           <select
             id="type"
             className="form-control"
@@ -207,7 +214,9 @@ function Form({ setInit, init, setForm, form, proc, setProc, edit, setEdit }) {
         </div>
 
         <div className="form-group">
-          <label htmlFor="datemov">Date:</label>
+          <label className="form-label" htmlFor="datemov">
+            Date:
+          </label>
           <input
             type="datetime-local"
             id="datemov"
@@ -219,7 +228,9 @@ function Form({ setInit, init, setForm, form, proc, setProc, edit, setEdit }) {
         </div>
 
         <div className="form-group">
-          <label htmlFor="tag">Tag:</label>
+          <label className="form-label" htmlFor="tag">
+            Tag:
+          </label>
           <input
             id="tag"
             type="text"
