@@ -102,7 +102,7 @@ function Tabs({ setInit, init, setProc, proc }) {
   };
 
   return (
-    <div className="tabs-area" id="swipeArea" onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
+    <div className="tabs-area" onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
       {tabsData.map((tab) => (
         <React.Fragment key={tab.id}>
           <input
