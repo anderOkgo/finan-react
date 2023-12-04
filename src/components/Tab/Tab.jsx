@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import DataService from '../../services/data.service';
-import './Tabs.css';
+import './Tab.css';
 import { formattedDate } from '../../helpers/operations';
 import useSwipeableTabs from '../../hooks/useSwipeableTabs';
 import TabInput from '../TabInput/TabInput';

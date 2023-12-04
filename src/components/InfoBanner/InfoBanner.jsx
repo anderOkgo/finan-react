@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { moneyFormat } from '../../helpers/operations';
-import './Bank.css';
+import './InfoBanner.css';
 
 export default function Bank({ label, data }) {
   Bank.propTypes = {

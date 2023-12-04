@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import Form from '../Form/Form';
-import Bank from '../Bank/Bank';
+import Bank from '../InfoBanner/InfoBanner';
 
 function TabInput({ setInit, init, setProc, proc, totalDay, setForm, form, edit, setEdit }) {
   return (

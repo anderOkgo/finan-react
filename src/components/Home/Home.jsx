@@ -1,5 +1,5 @@
 import AuthService from '../../services/auth.service';
-import Tabs from '../Tabs/Tabs';
+import Tabs from '../Tab/Tab';
 import Login from '../Login/Login';
 
 // eslint-disable-next-line react/prop-types

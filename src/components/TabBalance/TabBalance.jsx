@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import Table from '../Table/Table';
-import Bank from '../Bank/Bank';
+import Bank from '../InfoBanner/InfoBanner';
 import LineChart from '../Charts/LineChart';
 import CountDownEnd from '../CountDownEnd/CountDownEnd';
 

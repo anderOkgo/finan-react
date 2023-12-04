@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import Table from '../Table/Table';
 import { useState } from 'react';
-import Bank from '../Bank/Bank';
+import Bank from '../InfoBanner/InfoBanner';
 
 function TabGeneral({ moviments, generalInfo, setForm, setEdit, setSelectedOption }) {
   const [selectedRow, setSelectedRow] = useState(null);
