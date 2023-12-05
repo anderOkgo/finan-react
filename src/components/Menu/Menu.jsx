@@ -67,16 +67,16 @@ const Menu = ({ init, proc }) => {
                     <ul className="dropdown">
                       {menuItem.child.map((subMenu) =>
                         subMenu.isSessionNeeded === true && currentUser ? (
-                          <li key={subMenu.label} className="nav-item">
-                            <a href={subMenu.url} className="nav-link" onClick={subMenu.trigger}>
+                          <li key={subMenu.label}>
+                            <a href={subMenu.url} onClick={subMenu.trigger}>
                               {subMenu.label}
                             </a>
                           </li>
                         ) : (
                           !subMenu.isSessionNeeded &&
                           !currentUser && (
-                            <li key={subMenu.label} className="nav-item">
-                              <a href={subMenu.url} className="nav-link" onClick={subMenu?.trigger}>
+                            <li key={subMenu.label}>
+                              <a href={subMenu.url} onClick={subMenu?.trigger}>
                                 {subMenu.label}
                               </a>
                             </li>
@@ -87,7 +87,7 @@ const Menu = ({ init, proc }) => {
                   </li>
                 </>
               ) : (
-                <li key={menuItem.label} className="nav-item">
+                <li key={menuItem.label}>
                   <a href={menuItem.url}>{menuItem.label}</a>
                 </li>
               )}
