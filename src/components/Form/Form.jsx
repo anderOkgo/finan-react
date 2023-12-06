@@ -161,7 +161,7 @@ function Form({ setInit, init, setForm, form, proc, setProc, edit, setEdit }) {
 
   return (
     <div>
-      <AutoDismissMessage msg={msg} bgColor={bgColor} duration={3000} visible={visible} setVisible={setVisible} />
+      <AutoDismissMessage msg={msg} bgColor={bgColor} duration={2000} visible={visible} setVisible={setVisible} />
       <form onSubmit={(e) => handleAction(e, '')}>
         <div className="form-group">
           <label className="form-label" htmlFor="name">

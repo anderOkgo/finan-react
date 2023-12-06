@@ -6,12 +6,13 @@ const AutoDismissMessage = ({ msg, bgColor, duration, setVisible, visible }) => 
     setVisible(visible);
 
     if (visible) {
-      const timer = setTimeout(() => {
+      // Set initial opacity after the delay
+      const initialOpacityTimeout = setTimeout(() => {
         setVisible(false);
       }, duration);
 
       return () => {
-        clearTimeout(timer);
+        clearTimeout(initialOpacityTimeout);
       };
     }
   }, [visible, duration, setVisible]);
@@ -22,7 +23,7 @@ const AutoDismissMessage = ({ msg, bgColor, duration, setVisible, visible }) => 
   useEffect(() => {
     // Gradually reduce the opacity to 0 over the duration
     if (visible) {
-      const start = Date.now();
+      const start = Date.now() + 1000; // Add the delay to the start time
       const animate = () => {
         const now = Date.now();
         const elapsed = now - start;
