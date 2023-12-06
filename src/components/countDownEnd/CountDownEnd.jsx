@@ -2,28 +2,27 @@ import { useEffect, useState } from 'react';
 import './countDownEnd.css';
 import { monthDiff } from '../../helpers/operations';
 import Table from '../Table/Table';
+import cyfer from '../../helpers/cyfer';
 
 export default function CountDownEnd() {
-  const [timeTotal, setTimeTotal] = useState(0);
-  const [timeLeft, setTimeLeft] = useState(0);
-  const [timeNow, setTimeNow] = useState(0);
-  const [timeMonthLeft, setTimeMonthLeft] = useState(0);
-  const [timeMonthNow, setTimeMonthNow] = useState(0);
+  const dayIni = new Date('03/14/2022 00:00:00');
+  const dayEnd = new Date('03/15/2024 24:00:00');
+
+  const [timeTotal, setTimeTotal] = useState(calculateTime(dayEnd, dayIni));
+  const [timeLeft, setTimeLeft] = useState(calculateTime(dayEnd, new Date()));
+  const [timeNow, setTimeNow] = useState(calculateTime(new Date(), dayIni));
+  const [timeMonthLeft, setTimeMonthLeft] = useState(monthDiff(new Date(), dayEnd));
+  const [timeMonthNow, setTimeMonthNow] = useState(monthDiff(dayIni, new Date()));
   const [data, setdData] = useState([]);
 
   useEffect(() => {
     let id = setInterval(() => {
-      let dayIni = new Date('03/14/2022 00:00:00');
-      let dayEnd = new Date('03/15/2024 24:00:00');
-      let now = new Date();
-      const calculateTime = (d1, d2) => Math.abs(d1 - d2) / (1000 * 3600 * 24);
+      setTimeLeft(calculateTime(dayEnd, new Date()));
+      setTimeNow(calculateTime(new Date(), dayIni));
+      setTimeMonthLeft(monthDiff(new Date(), dayEnd));
+      setTimeMonthNow(monthDiff(dayIni, new Date()));
 
-      setTimeLeft(calculateTime(dayEnd, now));
-      setTimeNow(calculateTime(now, dayIni));
-      setTimeTotal(calculateTime(dayEnd, dayIni));
-      setTimeMonthLeft(monthDiff(now, dayEnd));
-      setTimeMonthNow(monthDiff(dayIni, now));
-      let json = [
+      var json = [
         {
           Total: timeTotal,
           Elapsed: timeNow.toFixed(5),
@@ -41,12 +40,28 @@ export default function CountDownEnd() {
         },
       ];
       setdData(json);
+      localStorage.setItem('times', cyfer().cy(JSON.stringify(data), 'hola'));
     }, 1000);
+
+    try {
+      var localResp = localStorage.getItem('times');
+      localResp && (localResp = JSON.parse(cyfer().dcy(localResp, 'hola')));
+      if (Object.keys(localResp || {}).length !== 0) {
+        setdData(localResp);
+        localStorage.setItem('times', cyfer().cy(JSON.stringify(data), 'hola'));
+      }
+    } catch (error) {
+      console.log(error);
+    }
 
     return () => {
       clearInterval(id);
     };
-  }, [timeTotal, timeLeft, timeNow, timeMonthLeft, timeMonthNow]);
+  }, [timeTotal, timeLeft, timeNow, timeMonthLeft, timeMonthNow, setTimeTotal]);
+
+  function calculateTime(date1, date2) {
+    return Math.abs(date1 - date2) / (1000 * 3600 * 24);
+  }
 
   return <Table label={'Remaining Time Table'} data={data} />;
 }
