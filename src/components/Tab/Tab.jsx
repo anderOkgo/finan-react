@@ -38,21 +38,25 @@ function Tabs({ setInit, init, setProc, proc }) {
   const tabsData = [
     {
       id: 1,
+      icon: '&#9776;',
       label: 'Input',
       component: <TabInput {...{ setInit, init, setProc, proc, totalDay, setForm, form, edit, setEdit }} />,
     },
     {
       id: 2,
+      icon: '&#9783;',
       label: 'General',
       component: <TabGeneral {...{ moviments, generalInfo, setForm, form, setEdit, setSelectedOption }} />,
     },
     {
       id: 3,
+      icon: '&#9872;',
       label: 'Tag',
       component: <TabTag {...{ movimentTag, exchangeCol }} />,
     },
     {
       id: 4,
+      icon: '&#10070;',
       label: 'Balance',
       component: <TabBalance {...{ setInit, init, setProc, proc, bankTotal, balance, movimentSources }} />,
     },
@@ -116,7 +120,10 @@ function Tabs({ setInit, init, setProc, proc }) {
             id={`tab-${tab.id}`}
           />
           <label className="label-tab" htmlFor={`tab-${tab.id}`}>
-            {tab.label}
+            <pre>
+              <span dangerouslySetInnerHTML={{ __html: tab.icon }} />
+              <p className="small-text">{tab.label}</p>
+            </pre>
           </label>
           <div className="panel-tab">
             <div className="section-tab">
