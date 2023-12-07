@@ -9,6 +9,8 @@ function TabBalance({ setInit, init, setProc, proc, bankTotal, balance, moviment
     <div>
       <Bank {...{ setInit, init, setProc, proc, data: bankTotal, label: 'Total Bank' }} />
       <br />
+      <CountDownEnd />
+      <br />
       <LineChart dataI={balance} />
       <br />
       <Table
@@ -16,8 +18,6 @@ function TabBalance({ setInit, init, setProc, proc, bankTotal, balance, moviment
         data={balance}
         columns={['#', 'Year', 'Month', 'Incomes', 'Bills', 'TotalGain']}
       />
-      <br />
-      <CountDownEnd />
       <br />
       <Table label={'Source Table'} data={movimentSources} columns={['Total', 'Year', '#', 'Month', 'Source']} />
     </div>
