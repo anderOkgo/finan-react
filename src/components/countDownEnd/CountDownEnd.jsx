@@ -16,6 +16,19 @@ export default function CountDownEnd() {
   const [data, setdData] = useState([]);
 
   useEffect(() => {
+    try {
+      var localResp = localStorage.getItem('times');
+      localResp && (localResp = JSON.parse(cyfer().dcy(localResp, 'hola')));
+      if (Object.keys(localResp || {}).length !== 0) {
+        setdData(localResp);
+        localStorage.setItem('times', cyfer().cy(JSON.stringify(data), 'hola'));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }, [setdData]);
+
+  useEffect(() => {
     let id = setInterval(() => {
       setTimeLeft(calculateTime(dayEnd, new Date()));
       setTimeNow(calculateTime(new Date(), dayIni));
@@ -41,18 +54,7 @@ export default function CountDownEnd() {
       ];
       setdData(json);
       localStorage.setItem('times', cyfer().cy(JSON.stringify(data), 'hola'));
-    }, 1000);
-
-    try {
-      var localResp = localStorage.getItem('times');
-      localResp && (localResp = JSON.parse(cyfer().dcy(localResp, 'hola')));
-      if (Object.keys(localResp || {}).length !== 0) {
-        setdData(localResp);
-        localStorage.setItem('times', cyfer().cy(JSON.stringify(data), 'hola'));
-      }
-    } catch (error) {
-      console.log(error);
-    }
+    }, 10);
 
     return () => {
       clearInterval(id);
