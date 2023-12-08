@@ -2,14 +2,7 @@ import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import './Table.css';
 
-function Table({ data, columns, onRowDoubleClick = false, label }) {
-  Table.propTypes = {
-    data: PropTypes.arrayOf(PropTypes.object),
-    onRowDoubleClick: PropTypes.any,
-    columns: PropTypes.any,
-    label: PropTypes.any,
-  };
-
+function Table({ data, columns, hiddenColumns = [], onRowDoubleClick = false, label }) {
   const [dataset, setdataset] = useState([]);
   const [header, setHeader] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -24,9 +17,11 @@ function Table({ data, columns, onRowDoubleClick = false, label }) {
   }, [data]);
 
   const renderTableHeader = (header) => {
+    const filteredHeader = header.filter((item) => !hiddenColumns.includes(item));
+
     return (
       <tr>
-        {header.map((item, index) => (
+        {filteredHeader.map((item, index) => (
           <th key={index}>{item}</th>
         ))}
       </tr>
@@ -34,13 +29,17 @@ function Table({ data, columns, onRowDoubleClick = false, label }) {
   };
 
   const renderTableRow = (row) => {
-    return row.map((item, index) => <td key={index}>{item}</td>);
+    return Object.keys(row).map((key, index) => (
+      <td key={index} className={hiddenColumns.includes(key) ? 'hidden-column' : ''}>
+        {row[key]}
+      </td>
+    ));
   };
 
   const renderTableRows = () => {
     return dataset.map((item, index) => (
       <tr key={index} onDoubleClick={() => (onRowDoubleClick ? onRowDoubleClick(item) : false)}>
-        {renderTableRow(Object.values(item))}
+        {renderTableRow(item)}
       </tr>
     ));
   };
@@ -55,7 +54,7 @@ function Table({ data, columns, onRowDoubleClick = false, label }) {
           <hr />
           <table>
             <thead>
-              {columns === undefined || columns.length == 0
+              {columns === undefined || columns.length === 0
                 ? renderTableHeader(header)
                 : renderTableHeader(columns)}
             </thead>
@@ -67,5 +66,13 @@ function Table({ data, columns, onRowDoubleClick = false, label }) {
     </>
   );
 }
+
+Table.propTypes = {
+  data: PropTypes.arrayOf(PropTypes.object),
+  onRowDoubleClick: PropTypes.any,
+  columns: PropTypes.any,
+  hiddenColumns: PropTypes.arrayOf(PropTypes.string),
+  label: PropTypes.any,
+};
 
 export default Table;

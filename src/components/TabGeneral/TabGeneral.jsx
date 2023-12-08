@@ -68,7 +68,8 @@ function TabGeneral({ moviments, generalInfo, setForm, setEdit, setSelectedOptio
       <br />
       <Table
         label={'Movement Table'}
-        columns={['Id', 'Name', 'Value', 'Tag', 'Source', 'Date Movement']}
+        columns={['Id', 'Name', 'Value', 'Tag', 'Source', 'Date']}
+        hiddenColumns={['Id', 'id']}
         data={moviments}
         onRowDoubleClick={handleRowDoubleClick}
       />

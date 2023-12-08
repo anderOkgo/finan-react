@@ -43,3 +43,8 @@ table tr:nth-child(odd) {
 tbody tr:hover {
   background-color: var(--tertiary-color);
 }
+
+.table-container table td.hidden-column,
+.table-container table th.hidden-column {
+  display: none;
+}
