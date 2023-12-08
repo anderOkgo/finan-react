@@ -10,7 +10,7 @@
 }
 
 .container {
-  max-width: 1200px;
+  max-width: 800px;
   margin: auto;
 }
 
@@ -66,10 +66,6 @@ input[type='datetime-local'] {
   padding: 10px;
   background-color: var(--white);
   font-size: 16px;
-}
-
-.panel-tab:hover {
-  box-shadow: 0px 1px 1px var(--dark-gray);
 }
 
 .radio-tab:checked + .label-tab {

@@ -40,7 +40,7 @@ function Tabs({ setInit, init, setProc, proc }) {
       id: 1,
       icon: '☰',
       label: 'Input',
-      component: selectedOption === 1 && (
+      component: true && (
         <TabInput {...{ setInit, init, setProc, proc, totalDay, setForm, form, edit, setEdit }} />
       ),
     },
@@ -49,7 +49,7 @@ function Tabs({ setInit, init, setProc, proc }) {
       icon: '☷',
       label: 'General',
       component: selectedOption === 2 && (
-        <TabGeneral {...{ moviments, generalInfo, setForm, form, setEdit, selectedOption }} />
+        <TabGeneral {...{ moviments, generalInfo, setForm, form, setEdit, setSelectedOption }} />
       ),
     },
     {
