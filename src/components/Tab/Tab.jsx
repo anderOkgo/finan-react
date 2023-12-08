@@ -11,6 +11,7 @@ import TabBalance from '../TabBalance/TabBalance';
 import cyfer from '../../helpers/cyfer';
 
 function Tabs({ setInit, init, setProc, proc }) {
+  const [selectedTab, setSelectedTab] = useState(1);
   const [bankTotal, setBankTotal] = useState(0);
   const [balance, setBalance] = useState([]);
   const [movimentSources, setMovimentSources] = useState([]);
@@ -38,27 +39,33 @@ function Tabs({ setInit, init, setProc, proc }) {
   const tabsData = [
     {
       id: 1,
-      icon: '&#9776;',
+      icon: '☰',
       label: 'Input',
-      component: <TabInput {...{ setInit, init, setProc, proc, totalDay, setForm, form, edit, setEdit }} />,
+      component: selectedTab === 1 && (
+        <TabInput {...{ setInit, init, setProc, proc, totalDay, setForm, form, edit, setEdit }} />
+      ),
     },
     {
       id: 2,
-      icon: '&#9783;',
+      icon: '☷',
       label: 'General',
-      component: <TabGeneral {...{ moviments, generalInfo, setForm, form, setEdit, setSelectedOption }} />,
+      component: selectedTab === 2 && (
+        <TabGeneral {...{ moviments, generalInfo, setForm, form, setEdit, selectedOption }} />
+      ),
     },
     {
       id: 3,
-      icon: '&#9872;',
+      icon: '♞',
       label: 'Tag',
-      component: <TabTag {...{ movimentTag, exchangeCol }} />,
+      component: selectedTab === 3 && <TabTag {...{ movimentTag, exchangeCol }} />,
     },
     {
       id: 4,
-      icon: '&#10070;',
+      icon: '❆',
       label: 'Balance',
-      component: <TabBalance {...{ setInit, init, setProc, proc, bankTotal, balance, movimentSources }} />,
+      component: selectedTab === 4 && (
+        <TabBalance {...{ setInit, init, setProc, proc, bankTotal, balance, movimentSources }} />
+      ),
     },
   ];
 
@@ -101,8 +108,9 @@ function Tabs({ setInit, init, setProc, proc }) {
     fetchData();
   }, [init, setProc]);
 
-  const handleRadioChange = (option) => {
-    setSelectedOption(option);
+  const handleTabClick = (tabId) => {
+    setSelectedTab(tabId);
+    setSelectedOption(tabId);
   };
 
   return (
@@ -110,9 +118,9 @@ function Tabs({ setInit, init, setProc, proc }) {
       {tabsData.map((tab) => (
         <React.Fragment key={tab.id}>
           <input
-            onChange={() => handleRadioChange(tab.id)}
-            onClick={() => handleRadioChange(tab.id)}
-            checked={selectedOption === tab.id}
+            onChange={() => handleTabClick(tab.id)}
+            onClick={() => handleTabClick(tab.id)}
+            checked={selectedTab === tab.id}
             value={tab.id}
             className="radio-tab"
             name="tab"
@@ -141,7 +149,6 @@ Tabs.propTypes = {
   init: PropTypes.any,
   setProc: PropTypes.func.isRequired,
   proc: PropTypes.any,
-  setEdit: PropTypes.any,
 };
 
 export default Tabs;
