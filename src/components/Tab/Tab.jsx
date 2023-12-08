@@ -11,7 +11,6 @@ import TabBalance from '../TabBalance/TabBalance';
 import cyfer from '../../helpers/cyfer';
 
 function Tabs({ setInit, init, setProc, proc }) {
-  const [selectedTab, setSelectedTab] = useState(1);
   const [bankTotal, setBankTotal] = useState(0);
   const [balance, setBalance] = useState([]);
   const [movimentSources, setMovimentSources] = useState([]);
@@ -41,7 +40,7 @@ function Tabs({ setInit, init, setProc, proc }) {
       id: 1,
       icon: '☰',
       label: 'Input',
-      component: selectedTab === 1 && (
+      component: selectedOption === 1 && (
         <TabInput {...{ setInit, init, setProc, proc, totalDay, setForm, form, edit, setEdit }} />
       ),
     },
@@ -49,7 +48,7 @@ function Tabs({ setInit, init, setProc, proc }) {
       id: 2,
       icon: '☷',
       label: 'General',
-      component: selectedTab === 2 && (
+      component: selectedOption === 2 && (
         <TabGeneral {...{ moviments, generalInfo, setForm, form, setEdit, selectedOption }} />
       ),
     },
@@ -57,13 +56,13 @@ function Tabs({ setInit, init, setProc, proc }) {
       id: 3,
       icon: '♞',
       label: 'Tag',
-      component: selectedTab === 3 && <TabTag {...{ movimentTag, exchangeCol }} />,
+      component: selectedOption === 3 && <TabTag {...{ movimentTag, exchangeCol }} />,
     },
     {
       id: 4,
       icon: '❆',
       label: 'Balance',
-      component: selectedTab === 4 && (
+      component: selectedOption === 4 && (
         <TabBalance {...{ setInit, init, setProc, proc, bankTotal, balance, movimentSources }} />
       ),
     },
@@ -109,7 +108,6 @@ function Tabs({ setInit, init, setProc, proc }) {
   }, [init, setProc]);
 
   const handleTabClick = (tabId) => {
-    setSelectedTab(tabId);
     setSelectedOption(tabId);
   };
 
@@ -120,7 +118,7 @@ function Tabs({ setInit, init, setProc, proc }) {
           <input
             onChange={() => handleTabClick(tab.id)}
             onClick={() => handleTabClick(tab.id)}
-            checked={selectedTab === tab.id}
+            checked={selectedOption === tab.id}
             value={tab.id}
             className="radio-tab"
             name="tab"
@@ -149,6 +147,7 @@ Tabs.propTypes = {
   init: PropTypes.any,
   setProc: PropTypes.func.isRequired,
   proc: PropTypes.any,
+  setEdit: PropTypes.any,
 };
 
 export default Tabs;
