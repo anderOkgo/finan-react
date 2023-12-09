@@ -8,7 +8,7 @@ export default function CountDownEnd() {
   const dayIni = new Date('03/14/2022 00:00:00');
   const dayEnd = new Date('03/15/2024 24:00:00');
 
-  const [timeTotal, setTimeTotal] = useState(calculateTime(dayEnd, dayIni));
+  const [timeTotal] = useState(calculateTime(dayEnd, dayIni));
   const [timeLeft, setTimeLeft] = useState(calculateTime(dayEnd, new Date()));
   const [timeNow, setTimeNow] = useState(calculateTime(new Date(), dayIni));
   const [timeMonthLeft, setTimeMonthLeft] = useState(monthDiff(new Date(), dayEnd));
@@ -21,7 +21,6 @@ export default function CountDownEnd() {
       localResp && (localResp = JSON.parse(cyfer().dcy(localResp, 'hola')));
       if (Object.keys(localResp || {}).length !== 0) {
         setdData(localResp);
-        localStorage.setItem('times', cyfer().cy(JSON.stringify(data), 'hola'));
       }
     } catch (error) {
       console.log(error);
@@ -53,13 +52,13 @@ export default function CountDownEnd() {
         },
       ];
       setdData(json);
-      localStorage.setItem('times', cyfer().cy(JSON.stringify(data), 'hola'));
-    }, 10);
+      localStorage.setItem('times', cyfer().cy(JSON.stringify(json), 'hola'));
+    }, 1000);
 
     return () => {
       clearInterval(id);
     };
-  }, [timeTotal, timeLeft, timeNow, timeMonthLeft, timeMonthNow, setTimeTotal]);
+  }, [timeTotal, timeLeft, timeNow, timeMonthLeft, timeMonthNow]);
 
   function calculateTime(date1, date2) {
     return Math.abs(date1 - date2) / (1000 * 3600 * 24);

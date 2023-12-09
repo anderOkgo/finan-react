@@ -7,7 +7,13 @@ function TabTag({ movimentTag, exchangeCol }) {
     <div>
       <Bank {...{ data: exchangeCol['total'], label: 'Total Exchange Col' }} />
       <br />
-      <Table label={'Tag Table'} data={movimentTag} columns={['Value', 'Year', '#', 'Month', 'Source', 'Tag']} />
+      <Table
+        label={'Tag Table'}
+        data={movimentTag}
+        columns={['Year', 'Month', 'Source', 'Tag', 'Value']}
+        hiddenColumns={['month_number_mov']}
+        orderColums={['year_mov', 'month_mov', 'name_source', 'tag', 'montly_sum']}
+      />
     </div>
   );
 }

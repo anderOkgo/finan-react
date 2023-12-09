@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import './Table.css';
 
-function Table({ data, columns, hiddenColumns = [], onRowDoubleClick = false, label }) {
+function Table({ data, columns, orderColums = [], hiddenColumns = [], onRowDoubleClick = false, label }) {
   const [dataset, setdataset] = useState([]);
   const [header, setHeader] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -11,10 +11,25 @@ function Table({ data, columns, hiddenColumns = [], onRowDoubleClick = false, la
     setLoading(false);
 
     if (data && data.length > 0) {
-      setdataset(data);
+      console.log(orderColums.length);
+      if (orderColums.length > 0) {
+        console.log(orderColums.length);
+        setdataset(reorderArray(data, orderColums));
+      } else {
+        setdataset(data);
+      }
+
       setHeader(Object.keys(data[0]));
     }
   }, [data]);
+
+  const reorderArray = (data, orderColums) => {
+    return data.map((item) => {
+      const reorderedItem = {};
+      orderColums.forEach((prop) => (reorderedItem[prop] = item[prop]));
+      return reorderedItem;
+    });
+  };
 
   const renderTableHeader = (header) => {
     const filteredHeader = header.filter((item) => !hiddenColumns.includes(item));
@@ -73,6 +88,7 @@ Table.propTypes = {
   columns: PropTypes.any,
   hiddenColumns: PropTypes.arrayOf(PropTypes.string),
   label: PropTypes.any,
+  orderColums: PropTypes.any,
 };
 
 export default Table;

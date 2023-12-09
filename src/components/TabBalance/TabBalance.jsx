@@ -16,10 +16,16 @@ function TabBalance({ setInit, init, setProc, proc, bankTotal, balance, moviment
       <Table
         label={'Annual Table'}
         data={balance}
-        columns={['#', 'Year', 'Month', 'Incomes', 'Bills', 'TotalGain']}
+        columns={['#', 'Year', 'Month', 'Incomes', 'Bills', 'TotalSave']}
       />
       <br />
-      <Table label={'Source Table'} data={movimentSources} columns={['Total', 'Year', '#', 'Month', 'Source']} />
+      <Table
+        label={'Source Table'}
+        data={movimentSources}
+        columns={['Year', 'Month', 'Source', 'Total']}
+        hiddenColumns={['month_number_mov']}
+        orderColums={['year_mov', 'month_mov', 'name_source', 'total_monthly_sum']}
+      />
     </div>
   );
 }
