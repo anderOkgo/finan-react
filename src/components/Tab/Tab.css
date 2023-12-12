@@ -72,7 +72,7 @@ input[type='datetime-local'] {
 }
 
 .radio-tab:checked + .label-tab {
-  color: var(--main-color);
+  color: var(--second-color);
   border-bottom: 3px solid var(--second-color);
 }
 
