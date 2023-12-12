@@ -11,9 +11,7 @@ function Table({ data, columns, orderColums = [], hiddenColumns = [], onRowDoubl
     setLoading(false);
 
     if (data && data.length > 0) {
-      console.log(orderColums.length);
       if (orderColums.length > 0) {
-        console.log(orderColums.length);
         setdataset(reorderArray(data, orderColums));
       } else {
         setdataset(data);
