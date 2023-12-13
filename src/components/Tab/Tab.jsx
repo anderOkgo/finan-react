@@ -112,34 +112,32 @@ function Tabs({ setInit, init, setProc, proc }) {
   };
 
   return (
-    <div className="tabs-area" onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
-      <div className="tab-label">
-        {tabsData.map((tab) => (
-          <React.Fragment key={tab.id}>
-            <input
-              onChange={() => handleTabClick(tab.id)}
-              onClick={() => handleTabClick(tab.id)}
-              checked={selectedOption === tab.id}
-              value={tab.id}
-              className="radio-tab"
-              name="tab"
-              type="radio"
-              id={`tab-${tab.id}`}
-            />
-            <label className="label-tab" htmlFor={`tab-${tab.id}`}>
-              <pre>
-                <span dangerouslySetInnerHTML={{ __html: tab.icon }} />
-                <p className="small-text">{tab.label}</p>
-              </pre>
-            </label>
-            <div className="panel-tab">
-              <div className="section-tab">
-                <div className="container">{tab.component}</div>
-              </div>
+    <div className="area-tab" onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
+      {tabsData.map((tab) => (
+        <React.Fragment key={tab.id}>
+          <input
+            onChange={() => handleTabClick(tab.id)}
+            onClick={() => handleTabClick(tab.id)}
+            checked={selectedOption === tab.id}
+            value={tab.id}
+            className="radio-tab"
+            name="tab"
+            type="radio"
+            id={`tab-${tab.id}`}
+          />
+          <label className="label-tab" htmlFor={`tab-${tab.id}`}>
+            <pre>
+              <span dangerouslySetInnerHTML={{ __html: tab.icon }} />
+              <p className="small-text">{tab.label}</p>
+            </pre>
+          </label>
+          <div className="panel-tab">
+            <div className="section-tab">
+              <div className="container-tab">{tab.component}</div>
             </div>
-          </React.Fragment>
-        ))}
-      </div>
+          </div>
+        </React.Fragment>
+      ))}
     </div>
   );
 }
