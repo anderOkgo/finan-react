@@ -19,8 +19,8 @@ const Message = ({ msg, bgColor }) => {
 };
 
 Message.propTypes = {
-  msg: PropTypes.string.isRequired, // Change to the appropriate type
-  bgColor: PropTypes.string.isRequired, // Change to the appropriate type
+  msg: PropTypes.string.isRequired,
+  bgColor: PropTypes.string.isRequired,
 };
 
 export default Message;

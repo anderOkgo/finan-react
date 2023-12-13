@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import './countDownEnd.css';
 import { monthDiff } from '../../helpers/operations';
 import Table from '../Table/Table';
@@ -6,8 +6,8 @@ import cyfer from '../../helpers/cyfer';
 import set from '../../helpers/set.json';
 
 export default function CountDownEnd() {
-  const dayIni = new Date('03/14/2022 00:00:00');
-  const dayEnd = new Date('03/15/2024 24:00:00');
+  const dayIni = useMemo(() => new Date('03/14/2022 00:00:00'), []);
+  const dayEnd = useMemo(() => new Date('03/15/2024 23:59:59'), []);
 
   const [timeTotal] = useState(calculateTime(dayEnd, dayIni));
   const [timeLeft, setTimeLeft] = useState(calculateTime(dayEnd, new Date()));
@@ -59,7 +59,7 @@ export default function CountDownEnd() {
     return () => {
       clearInterval(id);
     };
-  }, [timeTotal, timeLeft, timeNow, timeMonthLeft, timeMonthNow]);
+  }, [timeTotal, timeLeft, timeNow, timeMonthLeft, timeMonthNow, dayEnd, dayIni]);
 
   function calculateTime(date1, date2) {
     return Math.abs(date1 - date2) / (1000 * 3600 * 24);
