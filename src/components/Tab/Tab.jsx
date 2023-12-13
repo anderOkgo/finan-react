@@ -9,6 +9,7 @@ import TabGeneral from '../TabGeneral/TabGeneral';
 import TabTag from '../TabTag/TabTag';
 import TabBalance from '../TabBalance/TabBalance';
 import cyfer from '../../helpers/cyfer';
+import set from '../../helpers/set.json';
 
 function Tab({ setInit, init, setProc, proc }) {
   const [bankTotal, setBankTotal] = useState(0);
@@ -86,7 +87,7 @@ function Tab({ setInit, init, setProc, proc }) {
 
       try {
         var localResp = localStorage.getItem('resp');
-        localResp && (localResp = JSON.parse(cyfer().dcy(localResp, 'hola')));
+        localResp && (localResp = JSON.parse(cyfer().dcy(localResp, set.salt)));
         if (Object.keys(localResp || {}).length !== 0) {
           writeData(localResp);
         }
@@ -97,7 +98,7 @@ function Tab({ setInit, init, setProc, proc }) {
       if (init) {
         const resp = await DataService.totalBank({ date: formattedDate() });
         if (!resp?.err) {
-          localStorage.setItem('resp', cyfer().cy(JSON.stringify(resp), 'hola'));
+          localStorage.setItem('resp', cyfer().cy(JSON.stringify(resp), set.salt));
           writeData(resp);
         }
       }

@@ -3,6 +3,7 @@ import './countDownEnd.css';
 import { monthDiff } from '../../helpers/operations';
 import Table from '../Table/Table';
 import cyfer from '../../helpers/cyfer';
+import set from '../../helpers/set.json';
 
 export default function CountDownEnd() {
   const dayIni = new Date('03/14/2022 00:00:00');
@@ -18,7 +19,7 @@ export default function CountDownEnd() {
   useEffect(() => {
     try {
       var localResp = localStorage.getItem('times');
-      localResp && (localResp = JSON.parse(cyfer().dcy(localResp, 'hola')));
+      localResp && (localResp = JSON.parse(cyfer().dcy(localResp, set.salt)));
       if (Object.keys(localResp || {}).length !== 0) {
         setdData(localResp);
       }
@@ -52,7 +53,7 @@ export default function CountDownEnd() {
         },
       ];
       setdData(json);
-      localStorage.setItem('times', cyfer().cy(JSON.stringify(json), 'hola'));
+      localStorage.setItem('times', cyfer().cy(JSON.stringify(json), set.salt));
     }, 1000);
 
     return () => {
