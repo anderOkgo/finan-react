@@ -10,7 +10,7 @@ import TabTag from '../TabTag/TabTag';
 import TabBalance from '../TabBalance/TabBalance';
 import cyfer from '../../helpers/cyfer';
 
-function Tabs({ setInit, init, setProc, proc }) {
+function Tab({ setInit, init, setProc, proc }) {
   const [bankTotal, setBankTotal] = useState(0);
   const [balance, setBalance] = useState([]);
   const [movimentSources, setMovimentSources] = useState([]);
@@ -142,7 +142,7 @@ function Tabs({ setInit, init, setProc, proc }) {
   );
 }
 
-Tabs.propTypes = {
+Tab.propTypes = {
   setInit: PropTypes.func.isRequired,
   init: PropTypes.any,
   setProc: PropTypes.func.isRequired,
@@ -150,4 +150,4 @@ Tabs.propTypes = {
   setEdit: PropTypes.any,
 };
 
-export default Tabs;
+export default Tab;

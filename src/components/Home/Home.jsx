@@ -1,8 +1,8 @@
+import PropTypes from 'prop-types';
 import AuthService from '../../services/auth.service';
-import Tabs from '../Tab/Tab';
+import Tab from '../Tab/Tab';
 import Login from '../Login/Login';
 
-// eslint-disable-next-line react/prop-types
 const Home = ({ setInit, init, setProc, proc }) => {
   const currentUser = AuthService.getCurrentUser();
   return (
@@ -10,10 +10,17 @@ const Home = ({ setInit, init, setProc, proc }) => {
       {!currentUser ? (
         <Login {...{ setInit, init, setProc, proc }} />
       ) : (
-        <Tabs {...{ setInit, init, setProc, proc }} />
+        <Tab {...{ setInit, init, setProc, proc }} />
       )}
     </>
   );
+};
+
+Home.propTypes = {
+  setInit: PropTypes.func.isRequired,
+  init: PropTypes.oneOfType([PropTypes.bool, PropTypes.number]),
+  setProc: PropTypes.func.isRequired,
+  proc: PropTypes.oneOfType([PropTypes.bool, PropTypes.number]),
 };
 
 export default Home;
