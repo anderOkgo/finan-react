@@ -36,10 +36,10 @@ const App = () => {
     const darkModeColors = {
       '--main-color': '#333333', // Deep charcoal
       '--second-color': '#287098', // Deep navy
-      '--tertiary-color': '#5b80ad', // Almost black for background elements
+      '--tertiary-color': '#516a89', // Almost black for background elements
       '--opposite-color': '#f44336', // Keep red for accents
       '--opposite-dark-color': '#ff3c0b', // Keep dark red for accents
-      '--warning': '#fc9847', // Orange instead of navajowhite for warnings
+      '--warning': '#c3814c', // Orange instead of navajowhite for warnings
       '--background': '#dcdcdc', // Light gray instead of white
       '--black': '#000',
       '--dark-gray': '#555', // Change dark gray to a slightly lighter tone
