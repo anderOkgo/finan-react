@@ -54,6 +54,7 @@ const App = () => {
     for (const [key, value] of Object.entries(colors)) {
       root.style.setProperty(key, value);
     }
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', colors['--main-color']);
   }, [isDarkMode]);
 
   return (

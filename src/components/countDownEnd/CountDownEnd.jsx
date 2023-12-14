@@ -37,7 +37,7 @@ export default function CountDownEnd() {
 
       var json = [
         {
-          Total: timeTotal,
+          Total: timeTotal.toFixed(0),
           Elapsed: timeNow.toFixed(5),
           Remaining: timeLeft.toFixed(5),
         },

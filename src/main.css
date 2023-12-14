@@ -16,4 +16,5 @@ p {
 body {
   font-family: 'Roboto', Arial, sans-serif;
   background-color: var(--background);
+  color: var(--text);
 }
