@@ -12,23 +12,8 @@ p {
   padding: 0;
 }
 
-/* Colors */
-:root {
-  --main-color: #01579b;
-  --second-color: #086bb8;
-  --tertiary-color: #d4f1f7;
-  --opposite-color: #f44336;
-  --opposite-dark-color: #ff3c0b;
-  --warning: navajowhite;
-  --white: #fff;
-  --black: #000;
-  --dark-gray: #333;
-  --light-gray: #e4e9ee;
-  --soft-gray: #ccc;
-}
-
 /* Typography */
 body {
   font-family: 'Roboto', Arial, sans-serif;
-  background-color: var(--white);
+  background-color: var(--background);
 }

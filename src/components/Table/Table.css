@@ -14,7 +14,7 @@ table {
 /* Table Header Styles */
 thead th {
   background-color: var(--second-color);
-  color: var(--white);
+  color: var(--background);
   padding: 0.4em;
 }
 

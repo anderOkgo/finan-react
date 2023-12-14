@@ -18,7 +18,7 @@
   height: 8%;
   min-height: 2.2em;
   padding: 0.3em;
-  background: var(--white);
+  background: var(--background);
   cursor: pointer;
   font-weight: bold;
   font-size: 20px;
@@ -46,7 +46,7 @@
   order: 99;
   display: none;
   padding: 23px 15px 15px;
-  background: var(--white);
+  background: var(--background);
   width: 100%;
   border-left: 1px solid var(--soft-gray);
   border-bottom: 1px solid var(--soft-gray);

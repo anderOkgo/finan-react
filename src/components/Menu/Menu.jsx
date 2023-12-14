@@ -4,7 +4,7 @@ import './Menu.css';
 import AuthService from '../../services/auth.service';
 import Status from '../Status/Status';
 
-const Menu = ({ init, proc }) => {
+const Menu = ({ init, proc, toggleDarkMode }) => {
   const [currentUser, setCurrentUser] = useState(undefined);
 
   useEffect(() => {
@@ -96,7 +96,7 @@ const Menu = ({ init, proc }) => {
         </ul>
       </div>
       <div className="logo insetshadow">
-        <span className="icon-activity">
+        <span className="icon-activity" onClick={toggleDarkMode}>
           <Status {...{ init, proc }} />
         </span>
         {title}
@@ -108,6 +108,7 @@ const Menu = ({ init, proc }) => {
 Menu.propTypes = {
   init: PropTypes.any.isRequired,
   proc: PropTypes.any.isRequired,
+  toggleDarkMode: PropTypes.any.isRequired,
 };
 
 export default Menu;

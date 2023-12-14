@@ -10,6 +10,7 @@
   padding: 8px 12px;
   border: 1px solid var(--soft-gray);
   border-radius: 4px;
+  background-color: inherit;
 }
 
 .form-group {
@@ -22,7 +23,7 @@
   padding: 12px 0;
   font-size: 15px;
   font-weight: bold;
-  color: var(--white);
+  color: var(--background);
   background-color: var(--main-color);
   border: none;
   cursor: pointer;
@@ -58,6 +59,6 @@ input[type='datetime-local'] {
   border: 1px solid var(--soft-gray);
   border-radius: 5px;
   padding: 10px;
-  background-color: var(--white);
+  background-color: var(--background);
   font-size: 16px;
 }
