@@ -6,12 +6,35 @@ import { useAlive } from '../src/hooks/useAlive';
 
 const App = () => {
   const { init, setInit, proc, setProc } = useAlive();
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(window.matchMedia('(prefers-color-scheme: dark)').matches);
 
   // Function to toggle between light and dark modes
   const toggleDarkMode = () => {
     setIsDarkMode(!isDarkMode);
   };
+
+  useEffect(() => {
+    const darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+
+    const handleChange = (event) => {
+      setIsDarkMode(event.matches);
+    };
+
+    // Initial check
+    handleChange(darkModeMediaQuery);
+
+    // Listen for changes
+    darkModeMediaQuery.addEventListener('change', handleChange);
+
+    // Cleanup: Remove event listener when component unmounts
+    return () => {
+      darkModeMediaQuery.removeEventListener('change', handleChange);
+    };
+  }, []);
+
+  useEffect(() => {
+    setIsDarkMode(window.matchMedia('(prefers-color-scheme: dark)').matches);
+  }, [setIsDarkMode]);
 
   // Set up effect to update colors when dark mode is toggled
   useEffect(() => {
