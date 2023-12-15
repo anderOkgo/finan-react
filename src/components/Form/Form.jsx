@@ -109,15 +109,15 @@ function Form({ setInit, init, setForm, form, proc, setProc, edit, setEdit }) {
         let sum = [...updatedUpdateArray, ...updatedInsertArray, ...UpdatedDeleteArray];
         setOff(sum);
         if (sum?.length === 0) {
-          message('Transaction successful', 'green', true);
+          message('Transaction successful', 'var(--success)', true);
           setInit(Date.now());
         } else {
-          message('Offline', 'red', true);
+          message('Offline', 'var(--opposite-color)', true);
           setInit(false);
         }
         setProc(false);
       } else {
-        message('Transaction waiting', '#ab9f09', true);
+        message('Transaction waiting', 'var(--warning)', true);
       }
     }
     syncOfflineData();
@@ -133,18 +133,18 @@ function Form({ setInit, init, setForm, form, proc, setProc, edit, setEdit }) {
           off.length !== 0 && handleRowDoubleClick();
           const response = await DataService[actionType](form);
           if (response?.err) {
-            message('Transaction failed', 'red', true);
+            message('Transaction failed', 'var(--opposite-color)', true);
             handleOfflineData(actionType, form);
             setInit(false);
           } else {
-            message('Transaction successful', 'green', true);
+            message('Transaction successful', 'var(--success)', true);
             setInit(Date.now());
           }
           setDisabled(false);
           setProc(false);
         } else {
           handleOfflineData(actionType, form);
-          message('Transaction waiting', '#ab9f09', true);
+          message('Transaction waiting', 'var(--warning)', true);
         }
         handleResetForm();
       }

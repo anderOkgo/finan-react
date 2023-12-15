@@ -37,7 +37,7 @@ td:first-child {
 }
 
 table tr:nth-child(odd) {
-  background-color: var(--light-gray);
+  background-color: var(--soft-gray);
 }
 
 tbody tr:hover {

@@ -57,7 +57,7 @@ input:-webkit-autofill:focus {
 }
 
 .delete-button:hover {
-  background-color: var(--opposite-dark-color);
+  background-color: var(--opposite-second-color);
 }
 
 input[type='datetime-local'] {
