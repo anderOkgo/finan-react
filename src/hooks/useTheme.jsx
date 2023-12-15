@@ -36,7 +36,7 @@ export const useTheme = () => {
       '--background': '#fff',
       '--text': '#000',
       '--text-alt': '#fff',
-      '--soft-gray': '#ccc',
+      '--soft-gray': '#ddd',
     };
 
     const darkModeColors = {
