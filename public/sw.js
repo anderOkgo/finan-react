@@ -1,4 +1,4 @@
-const VERSION = '1.2.63';
+const VERSION = '1.2.67';
 const CACHE_NAME = `finan-${VERSION}`;
 const appfiles = [
   './icon/icon-48x48.png',
@@ -10,6 +10,8 @@ const appfiles = [
   './icon/icon-192x192.png',
   './icon/icon-284x284.png',
   './icon/icon-512x512.png',
+  './icon/screen.png',
+  './icon/screenWide.png',
 ];
 
 self.addEventListener('install', (e) => {

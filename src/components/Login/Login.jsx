@@ -2,9 +2,8 @@ import { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import AuthService from '../../services/auth.service';
 import './Login.css';
-import Status from '../Status/Status';
 
-const Login = ({ setInit, init, setProc, proc }) => {
+const Login = ({ setInit, init, setProc }) => {
   Login.propTypes = {
     setInit: PropTypes.func.isRequired,
     init: PropTypes.any,
@@ -39,11 +38,7 @@ const Login = ({ setInit, init, setProc, proc }) => {
   return (
     <div className="col-md-12">
       <div className="card card-container">
-        <img
-          src="https://yt3.googleusercontent.com/iwymRBmnJnWYtYeRPq4Eq1vYOAZboixRqAQQgtM8uL0JAhDTkFUN_iZH9cfnKKEiahNoNiPxAw=s176-c-k-c0x00ffffff-no-rj"
-          alt="profile-img"
-          className="profile-img-card"
-        />
+        <img src="./icon/icon-512x512.png" alt="profile-img" className="profile-img-card" />
         <form onSubmit={handleLogin} ref={form}>
           <div className="form-group">
             <label className="label" htmlFor="username">
@@ -76,7 +71,6 @@ const Login = ({ setInit, init, setProc, proc }) => {
           <div className="form-group">
             <button className="btn-primary btn-block">
               <span>Login</span>
-              <Status init={init} proc={proc} />
             </button>
           </div>
         </form>
