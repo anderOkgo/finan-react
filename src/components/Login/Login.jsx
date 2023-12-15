@@ -74,7 +74,7 @@ const Login = ({ setInit, init, setProc, proc }) => {
           </div>
 
           <div className="form-group">
-            <button className="btn btn-primary btn-block">
+            <button className="btn-primary btn-block">
               <span>Login</span>
               <Status init={init} proc={proc} />
             </button>
