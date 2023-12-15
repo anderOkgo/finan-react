@@ -22,7 +22,6 @@
   cursor: pointer;
   font-weight: bold;
   font-size: 20px;
-  color: #161515;
   transition: border-bottom 0.1s, color 0.5s;
   text-align: center;
 }
@@ -48,9 +47,7 @@
   padding: 23px 15px 15px;
   background: var(--background);
   width: 100%;
-  border-left: 1px solid var(--soft-gray);
   border-bottom: 1px solid var(--soft-gray);
-  border-right: 1px solid var(--soft-gray);
   min-height: 92%;
   overflow-y: scroll;
   height: 92%;

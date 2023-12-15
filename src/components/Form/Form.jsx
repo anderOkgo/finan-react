@@ -218,6 +218,7 @@ function Form({ setInit, init, setForm, form, proc, setProc, edit, setEdit }) {
             Date:
           </label>
           <input
+            className="form-control"
             type="datetime-local"
             id="datemov"
             name="datemov"

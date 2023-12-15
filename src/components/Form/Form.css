@@ -1,8 +1,14 @@
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 1000px var(--soft-gray) inset !important;
+  -webkit-text-fill-color: var(--text);
+}
+
 .form-label {
   display: block;
   margin-bottom: 5px;
   font-weight: bold;
-  color: var(--dark-gray);
 }
 
 .form-control {
@@ -11,6 +17,7 @@
   border: 1px solid var(--soft-gray);
   border-radius: 4px;
   background-color: inherit;
+  color: var(--text);
 }
 
 .form-group {
@@ -23,7 +30,7 @@
   padding: 12px 0;
   font-size: 15px;
   font-weight: bold;
-  color: var(--background);
+  color: var(--text-alt);
   background-color: var(--main-color);
   border: none;
   cursor: pointer;
