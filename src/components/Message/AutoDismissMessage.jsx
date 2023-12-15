@@ -47,10 +47,9 @@ const AutoDismissMessage = ({ msg, bgColor, duration, setVisible, visible }) => 
             top: '10vh',
             right: '0',
             width: '100%',
-            marginBottom: '5px',
             padding: '0.099rem',
             textAlign: 'center',
-            color: '#fff',
+            color: 'var(--text)',
             fontWeight: 'bold',
             backgroundColor: bgColor,
             opacity: opacity, // Set the opacity based on the state
