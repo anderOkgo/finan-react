@@ -4,13 +4,6 @@ import AuthService from '../../services/auth.service';
 import './Login.css';
 
 const Login = ({ setInit, init, setProc }) => {
-  Login.propTypes = {
-    setInit: PropTypes.func.isRequired,
-    init: PropTypes.any,
-    setProc: PropTypes.func.isRequired,
-    proc: PropTypes.any,
-  };
-
   const form = useRef();
 
   const [username, setUsername] = useState('');
@@ -30,7 +23,7 @@ const Login = ({ setInit, init, setProc }) => {
     if (init) {
       setProc(true);
       let resp = await AuthService.login(username, password);
-      resp.err ? setInit(false) : window.location.reload() & setInit(true);
+      resp.err ? setInit(false) : setInit(Date.now());
       setProc(false);
     }
   };
@@ -77,6 +70,13 @@ const Login = ({ setInit, init, setProc }) => {
       </div>
     </div>
   );
+};
+
+Login.propTypes = {
+  setInit: PropTypes.func.isRequired,
+  init: PropTypes.any,
+  setProc: PropTypes.func.isRequired,
+  proc: PropTypes.any,
 };
 
 export default Login;

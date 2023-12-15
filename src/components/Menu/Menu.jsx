@@ -4,15 +4,19 @@ import './Menu.css';
 import AuthService from '../../services/auth.service';
 import Status from '../Status/Status';
 
-const Menu = ({ init, proc, toggleDarkMode }) => {
+const Menu = ({ init, setInit, proc, toggleDarkMode }) => {
   const [currentUser, setCurrentUser] = useState(undefined);
 
   useEffect(() => {
     const user = AuthService.getCurrentUser();
     user && setCurrentUser(user);
-  }, []);
+  }, [init]);
 
-  const handleLogout = () => AuthService.logout();
+  const handleLogout = () => {
+    AuthService.logout();
+    setInit(Date.now());
+    checkboxRef.current.checked = false;
+  };
 
   const title = 'Finanz';
   const menuItems = [
@@ -24,8 +28,8 @@ const Menu = ({ init, proc, toggleDarkMode }) => {
       label: 'session',
       url: '#',
       child: [
-        { isSessionNeeded: false, label: 'login', url: '/' },
-        { isSessionNeeded: true, label: 'logout', url: '/', trigger: handleLogout },
+        { isSessionNeeded: false, label: 'login', url: '#' },
+        { isSessionNeeded: true, label: 'logout', url: '#', trigger: handleLogout },
       ],
     },
   ];
@@ -48,7 +52,7 @@ const Menu = ({ init, proc, toggleDarkMode }) => {
     return () => {
       document.removeEventListener('click', handleClick);
     };
-  }, []);
+  }, [init]);
 
   return (
     <nav className="navbar">
@@ -107,6 +111,7 @@ const Menu = ({ init, proc, toggleDarkMode }) => {
 
 Menu.propTypes = {
   init: PropTypes.any.isRequired,
+  setInit: PropTypes.any.isRequired,
   proc: PropTypes.any.isRequired,
   toggleDarkMode: PropTypes.any.isRequired,
 };

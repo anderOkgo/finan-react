@@ -9,7 +9,7 @@ const App = () => {
   const { toggleDarkMode } = useTheme();
   return (
     <div className="app">
-      <Menu {...{ init, proc, toggleDarkMode }} />
+      <Menu {...{ init, setInit, proc, toggleDarkMode }} />
       <Home {...{ setInit, init, setProc, proc }} />
     </div>
   );

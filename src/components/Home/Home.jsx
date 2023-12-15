@@ -18,9 +18,9 @@ const Home = ({ setInit, init, setProc, proc }) => {
 
 Home.propTypes = {
   setInit: PropTypes.func.isRequired,
-  init: PropTypes.oneOfType([PropTypes.bool, PropTypes.number]),
+  init: PropTypes.any,
   setProc: PropTypes.func.isRequired,
-  proc: PropTypes.oneOfType([PropTypes.bool, PropTypes.number]),
+  proc: PropTypes.any,
 };
 
 export default Home;
