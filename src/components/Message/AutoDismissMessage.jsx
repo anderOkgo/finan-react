@@ -44,15 +44,16 @@ const AutoDismissMessage = ({ msg, bgColor, duration, setVisible, visible }) => 
         <div
           style={{
             position: 'fixed',
-            top: '10vh',
+            top: '9.9vh',
             right: '0',
             width: '100%',
-            padding: '0.099rem',
+            padding: '0.2rem',
             textAlign: 'center',
-            color: 'var(--text)',
+            color: 'var(--text-alt)',
             fontWeight: 'bold',
             backgroundColor: bgColor,
-            opacity: opacity, // Set the opacity based on the state
+            opacity: opacity,
+            textShadow: '2px 2px 2px black',
           }}
         >
           <p dangerouslySetInnerHTML={{ __html: msg }} />
