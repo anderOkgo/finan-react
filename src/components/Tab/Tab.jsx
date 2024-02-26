@@ -10,6 +10,7 @@ import TabTag from '../TabTag/TabTag';
 import TabBalance from '../TabBalance/TabBalance';
 import cyfer from '../../helpers/cyfer';
 import set from '../../helpers/set.json';
+import TabInfo from '../TabInfo/TabInfo';
 
 function Tab({ setInit, init, setProc, proc }) {
   const [bankTotal, setBankTotal] = useState(0);
@@ -21,6 +22,7 @@ function Tab({ setInit, init, setProc, proc }) {
   const [edit, setEdit] = useState(false);
   const [generalInfo, setGeneralInfo] = useState([]);
   const [exchangeCol, setExchangeCol] = useState([]);
+  const [tripInfo, setTripInfo] = useState([]);
   const { selectedOption, setSelectedOption, handleTouchStart, handleTouchEnd } = useSwipeableTabs(1, 4, 170);
 
   const initialForm = useMemo(
@@ -67,6 +69,14 @@ function Tab({ setInit, init, setProc, proc }) {
         <TabBalance {...{ setInit, init, setProc, proc, bankTotal, balance, movimentSources }} />
       ),
     },
+    {
+      id: 5,
+      icon: '⚅',
+      label: 'Info',
+      component: selectedOption === 5 && (
+        <TabInfo {...{ setInit, init, setProc, proc, bankTotal, balance, tripInfo }} />
+      ),
+    },
   ];
 
   useEffect(() => {
@@ -74,7 +84,8 @@ function Tab({ setInit, init, setProc, proc }) {
       setProc(true);
 
       const writeData = (resp) => {
-        const { tota_bank, balance, movimentSources, movimentTag, moviments, totalDay, generalInfo } = resp;
+        const { tota_bank, balance, movimentSources, movimentTag, moviments, totalDay, generalInfo, tripInfo } =
+          resp;
         setMovimentSources(movimentSources);
         setMovimentTag(movimentTag);
         setMoviments(moviments);
@@ -83,6 +94,7 @@ function Tab({ setInit, init, setProc, proc }) {
         setTotalDay(totalDay?.[0]?.Total_day ?? 0);
         setGeneralInfo(generalInfo?.find((item) => item.detail === 'total-save-au'));
         setExchangeCol(generalInfo?.find((item) => item.detail === 'Exchange Colombia'));
+        setTripInfo(tripInfo);
       };
 
       try {
