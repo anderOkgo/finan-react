@@ -1,15 +1,15 @@
 import PropTypes from 'prop-types';
 import Table from '../Table/Table';
 import { useState } from 'react';
-//import Bank from '../InfoBanner/InfoBanner';
+import Bank from '../InfoBanner/InfoBanner';
 
 function TabInfo({ tripInfo, setForm, setEdit, setSelectedOption }) {
   const [selectedRow, setSelectedRow] = useState(null);
 
+  console.log(tripInfo);
+
   const handleRowDoubleClick = (row) => {
     setSelectedRow(row);
-
-    console.log(tripInfo);
 
     let type;
     switch (row.source.toLowerCase()) {
@@ -66,14 +66,14 @@ function TabInfo({ tripInfo, setForm, setEdit, setSelectedOption }) {
   };
   return (
     <div>
-      {/* <Bank {...{ data: tripInfo['detail'], label: 'Total Save AU' }} /> */}
+      <Bank {...{ data: tripInfo[5]['total'], label: 'Total Final Trip' }} />
       <br />
       <Table
         label={'Trips Table'}
-        columns={['detail', 'total']}
+        columns={['Type Trip', 'Total']}
         hiddenColumns={[]}
         orderColums={['detail', 'total']}
-        data={tripInfo}
+        data={tripInfo.filter((item) => item.detail !== 'final-trip')}
         onRowDoubleClick={handleRowDoubleClick}
       />
       {selectedRow && true}
