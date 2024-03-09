@@ -23,6 +23,7 @@ function Tab({ setInit, init, setProc, proc }) {
   const [generalInfo, setGeneralInfo] = useState([]);
   const [exchangeCol, setExchangeCol] = useState([]);
   const [tripInfo, setTripInfo] = useState([]);
+  const [balanceUntilDate, setBalanceUntilDate] = useState([]);
   const { selectedOption, setSelectedOption, handleTouchStart, handleTouchEnd } = useSwipeableTabs(1, 5, 170);
 
   const initialForm = useMemo(
@@ -74,7 +75,7 @@ function Tab({ setInit, init, setProc, proc }) {
       icon: '⚅',
       label: 'Info',
       component: selectedOption === 5 && (
-        <TabInfo {...{ setInit, init, setProc, proc, bankTotal, balance, tripInfo }} />
+        <TabInfo {...{ setInit, init, setProc, proc, bankTotal, balance, tripInfo, balanceUntilDate }} />
       ),
     },
   ];
@@ -84,8 +85,17 @@ function Tab({ setInit, init, setProc, proc }) {
       setProc(true);
 
       const writeData = (resp) => {
-        const { tota_bank, balance, movimentSources, movimentTag, moviments, totalDay, generalInfo, tripInfo } =
-          resp;
+        const {
+          tota_bank,
+          balance,
+          movimentSources,
+          movimentTag,
+          moviments,
+          totalDay,
+          generalInfo,
+          tripInfo,
+          balanceUntilDate,
+        } = resp;
         setMovimentSources(movimentSources);
         setMovimentTag(movimentTag);
         setMoviments(moviments);
@@ -95,6 +105,7 @@ function Tab({ setInit, init, setProc, proc }) {
         setGeneralInfo(generalInfo?.find((item) => item.detail === 'total-save-au'));
         setExchangeCol(generalInfo?.find((item) => item.detail === 'Exchange Colombia'));
         setTripInfo(tripInfo);
+        setBalanceUntilDate(balanceUntilDate);
       };
 
       try {

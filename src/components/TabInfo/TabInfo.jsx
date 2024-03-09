@@ -3,7 +3,7 @@ import Table from '../Table/Table';
 import { useState } from 'react';
 import Bank from '../InfoBanner/InfoBanner';
 
-function TabInfo({ tripInfo, setForm, setEdit, setSelectedOption }) {
+function TabInfo({ tripInfo, balanceUntilDate, setForm, setEdit, setSelectedOption }) {
   const [selectedRow, setSelectedRow] = useState(null);
 
   console.log(tripInfo);
@@ -76,6 +76,15 @@ function TabInfo({ tripInfo, setForm, setEdit, setSelectedOption }) {
         data={tripInfo.filter((item) => item.detail !== 'final-trip')}
         onRowDoubleClick={handleRowDoubleClick}
       />
+      <br />
+      <Table
+        label={'Daily Balance'}
+        columns={['Date', 'Balance', 'Total']}
+        hiddenColumns={[]}
+        orderColums={[]}
+        data={balanceUntilDate.filter((item) => item.detail !== 'final-trip')}
+        onRowDoubleClick={handleRowDoubleClick}
+      />
       {selectedRow && true}
     </div>
   );
@@ -83,6 +92,7 @@ function TabInfo({ tripInfo, setForm, setEdit, setSelectedOption }) {
 
 TabInfo.propTypes = {
   tripInfo: PropTypes.any,
+  balanceUntilDate: PropTypes.any,
   setForm: PropTypes.any,
   form: PropTypes.any,
   setEdit: PropTypes.any,
