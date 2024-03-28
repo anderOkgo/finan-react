@@ -20,10 +20,8 @@ export const useTheme = () => {
 
     handleChange(darkModeMediaQuery);
 
-    // Add event listener for changes in dark mode preference
     darkModeMediaQuery.addEventListener('change', handleChange);
 
-    // Cleanup function to remove event listener when component unmounts
     return () => {
       darkModeMediaQuery.removeEventListener('change', handleChange);
     };
@@ -31,10 +29,8 @@ export const useTheme = () => {
 
   // Effect hook to apply theme styles
   useEffect(() => {
-    // Root element of the document
     const root = document.documentElement;
 
-    // Color variables for light mode
     const lightModeColors = {
       '--main-color': '#01579b',
       '--second-color': '#086bb8',
@@ -49,7 +45,6 @@ export const useTheme = () => {
       '--soft-gray': '#ddd',
     };
 
-    // Color variables for dark mode
     const darkModeColors = {
       '--main-color': '#023965',
       '--second-color': '#367bb9',
