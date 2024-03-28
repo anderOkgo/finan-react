@@ -1,13 +1,17 @@
 import { useEffect, useState } from 'react';
 
 export const useTheme = () => {
+  // State to manage dark mode, initialized based on system preference
   const [isDarkMode, setIsDarkMode] = useState(window.matchMedia('(prefers-color-scheme: dark)').matches);
 
+  // Function to toggle dark mode
   const toggleDarkMode = () => {
     setIsDarkMode(!isDarkMode);
   };
 
+  // Effect hook to monitor system preference changes
   useEffect(() => {
+    // Match media query for dark mode
     const darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
 
     const handleChange = (event) => {
@@ -16,15 +20,21 @@ export const useTheme = () => {
 
     handleChange(darkModeMediaQuery);
 
+    // Add event listener for changes in dark mode preference
     darkModeMediaQuery.addEventListener('change', handleChange);
 
+    // Cleanup function to remove event listener when component unmounts
     return () => {
       darkModeMediaQuery.removeEventListener('change', handleChange);
     };
   }, []);
 
+  // Effect hook to apply theme styles
   useEffect(() => {
+    // Root element of the document
     const root = document.documentElement;
+
+    // Color variables for light mode
     const lightModeColors = {
       '--main-color': '#01579b',
       '--second-color': '#086bb8',
@@ -39,6 +49,7 @@ export const useTheme = () => {
       '--soft-gray': '#ddd',
     };
 
+    // Color variables for dark mode
     const darkModeColors = {
       '--main-color': '#023965',
       '--second-color': '#367bb9',
@@ -55,16 +66,21 @@ export const useTheme = () => {
 
     const colors = isDarkMode ? darkModeColors : lightModeColors;
 
+    // Apply color variables as CSS custom properties
     for (const [key, value] of Object.entries(colors)) {
       root.style.setProperty(key, value);
     }
+
+    // Update theme color meta tag
     document.querySelector('meta[name="theme-color"]').setAttribute('content', colors['--main-color']);
   }, [isDarkMode]);
 
+  // Object containing theme state and toggle function
   const themeValues = {
     isDarkMode,
     toggleDarkMode,
   };
 
+  // Return theme values to be used by components
   return themeValues;
 };
