@@ -4,7 +4,7 @@ import Bank from '../InfoBanner/InfoBanner';
 import LineChart from '../Charts/LineChart';
 import CountDownEnd from '../CountDownEnd/CountDownEnd';
 
-function TabBalance({ setInit, init, setProc, proc, bankTotal, balance, movimentSources }) {
+function TabBalance({ setInit, init, setProc, proc, bankTotal, balance, movementSources }) {
   return (
     <div>
       <Bank {...{ setInit, init, setProc, proc, data: bankTotal, label: 'Total Bank' }} />
@@ -21,7 +21,7 @@ function TabBalance({ setInit, init, setProc, proc, bankTotal, balance, moviment
       <br />
       <Table
         label={'Source Table'}
-        data={movimentSources}
+        data={movementSources}
         columns={['Year', 'Month', 'Source', 'Total']}
         hiddenColumns={['month_number_mov']}
         orderColums={['year_mov', 'month_mov', 'name_source', 'total_monthly_sum']}
@@ -37,7 +37,7 @@ TabBalance.propTypes = {
   proc: PropTypes.any,
   bankTotal: PropTypes.any,
   balance: PropTypes.array.isRequired,
-  movimentSources: PropTypes.array.isRequired,
+  movementSources: PropTypes.array.isRequired,
 };
 
 export default TabBalance;

@@ -2,14 +2,14 @@ import PropTypes from 'prop-types';
 import Table from '../Table/Table';
 import Bank from '../InfoBanner/InfoBanner';
 
-function TabTag({ movimentTag, exchangeCol }) {
+function TabTag({ movementTag, exchangeCol }) {
   return (
     <div>
       <Bank {...{ data: exchangeCol['total'], label: 'Total Exchange Col' }} />
       <br />
       <Table
         label={'Tag Table'}
-        data={movimentTag}
+        data={movementTag}
         columns={['Year', 'Month', 'Source', 'Tag', 'Value']}
         hiddenColumns={['month_number_mov']}
         orderColums={['year_mov', 'month_mov', 'name_source', 'tag', 'montly_sum']}
@@ -19,7 +19,7 @@ function TabTag({ movimentTag, exchangeCol }) {
 }
 
 TabTag.propTypes = {
-  movimentTag: PropTypes.any,
+  movementTag: PropTypes.any,
   exchangeCol: PropTypes.any,
 };
 

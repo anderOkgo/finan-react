@@ -15,9 +15,9 @@ import TabInfo from '../TabInfo/TabInfo';
 function Tab({ setInit, init, setProc, proc }) {
   const [bankTotal, setBankTotal] = useState(0);
   const [balance, setBalance] = useState([]);
-  const [movimentSources, setMovimentSources] = useState([]);
-  const [movimentTag, setMovimentTag] = useState([]);
-  const [moviments, setMoviments] = useState([]);
+  const [movementSources, setMovementSources] = useState([]);
+  const [movementTag, setMovementTag] = useState([]);
+  const [movements, setMovements] = useState([]);
   const [totalDay, setTotalDay] = useState([]);
   const [edit, setEdit] = useState(false);
   const [generalInfo, setGeneralInfo] = useState([]);
@@ -53,21 +53,21 @@ function Tab({ setInit, init, setProc, proc }) {
       icon: '☷',
       label: 'General',
       component: selectedOption === 2 && (
-        <TabGeneral {...{ moviments, generalInfo, setForm, form, setEdit, setSelectedOption }} />
+        <TabGeneral {...{ movements, generalInfo, setForm, form, setEdit, setSelectedOption }} />
       ),
     },
     {
       id: 3,
       icon: '♞',
       label: 'Tag',
-      component: selectedOption === 3 && <TabTag {...{ movimentTag, exchangeCol }} />,
+      component: selectedOption === 3 && <TabTag {...{ movementTag, exchangeCol }} />,
     },
     {
       id: 4,
       icon: '❆',
       label: 'Balance',
       component: selectedOption === 4 && (
-        <TabBalance {...{ setInit, init, setProc, proc, bankTotal, balance, movimentSources }} />
+        <TabBalance {...{ setInit, init, setProc, proc, bankTotal, balance, movementSources }} />
       ),
     },
     {
@@ -88,17 +88,18 @@ function Tab({ setInit, init, setProc, proc }) {
         const {
           tota_bank,
           balance,
-          movimentSources,
-          movimentTag,
-          moviments,
+          movementSources,
+          movementTag,
+          movements,
           totalDay,
           generalInfo,
           tripInfo,
           balanceUntilDate,
         } = resp;
-        setMovimentSources(movimentSources);
-        setMovimentTag(movimentTag);
-        setMoviments(moviments);
+        console.log(generalInfo?.find((item) => item.detail === 'total-save-au'));
+        setMovementSources(movementSources);
+        setMovementTag(movementTag);
+        setMovements(movements);
         setBankTotal(tota_bank?.[0]?.total_bank ?? 0);
         setBalance(balance);
         setTotalDay(totalDay?.[0]?.Total_day ?? 0);

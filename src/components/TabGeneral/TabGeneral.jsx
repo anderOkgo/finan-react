@@ -3,7 +3,7 @@ import Table from '../Table/Table';
 import { useState } from 'react';
 import Bank from '../InfoBanner/InfoBanner';
 
-function TabGeneral({ moviments, generalInfo, setForm, setEdit, setSelectedOption }) {
+function TabGeneral({ movements, generalInfo, setForm, setEdit, setSelectedOption }) {
   const [selectedRow, setSelectedRow] = useState(null);
 
   const handleRowDoubleClick = (row) => {
@@ -71,7 +71,7 @@ function TabGeneral({ moviments, generalInfo, setForm, setEdit, setSelectedOptio
         columns={['Id', 'Date', 'Name', 'Value', 'Tag', 'Source']}
         hiddenColumns={['Id', 'id']}
         orderColums={['id', 'datemov', 'name', 'val', 'tag', 'source']}
-        data={moviments}
+        data={movements}
         onRowDoubleClick={handleRowDoubleClick}
       />
       {selectedRow && true}
@@ -80,7 +80,7 @@ function TabGeneral({ moviments, generalInfo, setForm, setEdit, setSelectedOptio
 }
 
 TabGeneral.propTypes = {
-  moviments: PropTypes.any,
+  movements: PropTypes.any,
   generalInfo: PropTypes.any,
   setForm: PropTypes.any,
   form: PropTypes.any,
