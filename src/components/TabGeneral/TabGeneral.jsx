@@ -3,7 +3,7 @@ import Table from '../Table/Table';
 import { useState } from 'react';
 import Bank from '../InfoBanner/InfoBanner';
 
-function TabGeneral({ movements, generalInfo, setForm, setEdit, setSelectedOption }) {
+function TabGeneral({ movements, generalInfo, setForm, setEdit, setSelectedOption, currency }) {
   const [selectedRow, setSelectedRow] = useState(null);
 
   const handleRowDoubleClick = (row) => {
@@ -56,6 +56,7 @@ function TabGeneral({ movements, generalInfo, setForm, setEdit, setSelectedOptio
       ...row,
       datemov: row.datemov,
       type: type,
+      currency: currency,
     };
 
     setForm(outputObject);
@@ -86,6 +87,7 @@ TabGeneral.propTypes = {
   form: PropTypes.any,
   setEdit: PropTypes.any,
   setSelectedOption: PropTypes.any,
+  currency: PropTypes.any,
 };
 
 export default TabGeneral;

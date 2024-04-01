@@ -57,7 +57,7 @@ function Tab({ setInit, init, setProc, proc }) {
       icon: '☷',
       label: 'General',
       component: selectedOption === 2 && (
-        <TabGeneral {...{ movements, generalInfo, setForm, form, setEdit, setSelectedOption }} />
+        <TabGeneral {...{ movements, generalInfo, setForm, form, setEdit, setSelectedOption, currency }} />
       ),
     },
     {
