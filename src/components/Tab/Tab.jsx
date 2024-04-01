@@ -90,7 +90,7 @@ function Tab({ setInit, init, setProc, proc }) {
 
       const writeData = (resp) => {
         const {
-          tota_bank,
+          total_bank,
           balance,
           movementSources,
           movementTag,
@@ -103,7 +103,7 @@ function Tab({ setInit, init, setProc, proc }) {
         setMovementSources(movementSources);
         setMovementTag(movementTag);
         setMovements(movements);
-        setBankTotal(tota_bank?.[0]?.total_bank ?? 0);
+        setBankTotal(total_bank?.[0]?.total_bank ?? 0);
         setBalance(balance);
         setTotalDay(totalDay?.[0]?.Total_day ?? 0);
         setGeneralInfo(generalInfo?.find((item) => item.detail === 'total-save-au'));
