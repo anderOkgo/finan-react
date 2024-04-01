@@ -78,7 +78,7 @@ function TabInfo({ tripInfo, balanceUntilDate, setForm, setEdit, setSelectedOpti
       <Table
         label={'Daily Balance'}
         columns={['Date', 'Balance', 'Total']}
-        hiddenColumns={[]}
+        hiddenColumns={['currency']}
         orderColums={[]}
         data={balanceUntilDate.filter((item) => item.detail !== 'final-trip')}
         onRowDoubleClick={handleRowDoubleClick}

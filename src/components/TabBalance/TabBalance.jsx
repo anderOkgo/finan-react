@@ -17,6 +17,7 @@ function TabBalance({ setInit, init, setProc, proc, bankTotal, balance, movement
         label={'Annual Table'}
         data={balance}
         columns={['#', 'Year', 'Month', 'Incomes', 'Bills', 'TotalSave']}
+        hiddenColumns={['currency']}
       />
       <br />
       <Table
