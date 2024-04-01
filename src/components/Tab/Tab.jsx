@@ -24,6 +24,7 @@ function Tab({ setInit, init, setProc, proc }) {
   const [exchangeCol, setExchangeCol] = useState([]);
   const [tripInfo, setTripInfo] = useState([]);
   const [balanceUntilDate, setBalanceUntilDate] = useState([]);
+  const [currency, setCurrency] = useState('AUD');
   const { selectedOption, setSelectedOption, handleTouchStart, handleTouchEnd } = useSwipeableTabs(1, 5, 170);
 
   const initialForm = useMemo(
@@ -33,8 +34,9 @@ function Tab({ setInit, init, setProc, proc }) {
       type: '',
       datemov: '',
       tag: '',
+      currency: currency,
     }),
-    []
+    [currency]
   );
 
   const [form, setForm] = useState(initialForm);
@@ -45,7 +47,9 @@ function Tab({ setInit, init, setProc, proc }) {
       icon: '☰',
       label: 'Input',
       component: true && (
-        <TabInput {...{ setInit, init, setProc, proc, totalDay, setForm, form, edit, setEdit }} />
+        <TabInput
+          {...{ setInit, init, setProc, proc, totalDay, setForm, form, edit, setEdit, setCurrency, currency }}
+        />
       ),
     },
     {
@@ -96,7 +100,6 @@ function Tab({ setInit, init, setProc, proc }) {
           tripInfo,
           balanceUntilDate,
         } = resp;
-        console.log(generalInfo?.find((item) => item.detail === 'total-save-au'));
         setMovementSources(movementSources);
         setMovementTag(movementTag);
         setMovements(movements);
@@ -120,7 +123,7 @@ function Tab({ setInit, init, setProc, proc }) {
       }
 
       if (init) {
-        const resp = await DataService.totalBank({ date: formattedDate() });
+        const resp = await DataService.totalBank({ date: formattedDate(), currency: currency });
         if (!resp?.err) {
           localStorage.setItem('resp', cyfer().cy(JSON.stringify(resp), set.salt));
           writeData(resp);
@@ -130,7 +133,7 @@ function Tab({ setInit, init, setProc, proc }) {
     };
 
     fetchData();
-  }, [init, setProc]);
+  }, [init, setProc, currency]);
 
   const handleTabClick = (tabId) => {
     setSelectedOption(tabId);

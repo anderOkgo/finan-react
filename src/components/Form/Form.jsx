@@ -5,7 +5,7 @@ import AutoDismissMessage from '../Message/AutoDismissMessage.jsx';
 import Table from '../Table/Table';
 import './Form.css';
 
-function Form({ setInit, init, setForm, form, proc, setProc, edit, setEdit }) {
+function Form({ setInit, init, setForm, form, proc, setProc, edit, setEdit, currency }) {
   const [msg, setMsg] = useState('');
   const [bgColor, setBgColor] = useState('');
   const [visible, setVisible] = useState(false);
@@ -19,6 +19,7 @@ function Form({ setInit, init, setForm, form, proc, setProc, edit, setEdit }) {
       type: '',
       datemov: '',
       tag: '',
+      currency: '',
     }),
     []
   );
@@ -70,13 +71,22 @@ function Form({ setInit, init, setForm, form, proc, setProc, edit, setEdit }) {
 
   const handleChangeInput = useCallback(
     (e) => {
-      setForm({
-        ...form,
-        [e.target.name]: e.target.value,
-      });
+      const { name, value } = e.target;
+      setForm((prevForm) => ({
+        ...prevForm,
+        [name]: value,
+        currency: currency,
+      }));
     },
-    [form, setForm]
+    [currency, setForm]
   );
+
+  useEffect(() => {
+    setForm((prevForm) => ({
+      ...prevForm,
+      currency: currency,
+    }));
+  }, [currency, setForm]);
 
   const handleOfflineData = useCallback((type, data) => {
     data = formatOffData([data]);
@@ -163,6 +173,7 @@ function Form({ setInit, init, setForm, form, proc, setProc, edit, setEdit }) {
     <div>
       <AutoDismissMessage msg={msg} bgColor={bgColor} duration={2000} visible={visible} setVisible={setVisible} />
       <form onSubmit={(e) => handleAction(e, '')}>
+        <input type="hidden" name="currency" onChange={handleChangeInput} value={currency} />
         <div className="form-group">
           <label className="form-label" htmlFor="name">
             Name
@@ -277,6 +288,7 @@ Form.propTypes = {
   form: PropTypes.any,
   edit: PropTypes.any,
   setEdit: PropTypes.any,
+  currency: PropTypes.any,
 };
 
 export default Form;

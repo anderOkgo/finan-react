@@ -1,16 +1,30 @@
 import PropTypes from 'prop-types';
 import Form from '../Form/Form';
 import Bank from '../InfoBanner/InfoBanner';
+import CurrencySelector from '../currencySelector/currencySelector';
 
-function TabInput({ setInit, init, setProc, proc, totalDay, setForm, form, edit, setEdit }) {
+function TabInput({
+  setInit,
+  init,
+  setProc,
+  proc,
+  totalDay,
+  setForm,
+  form,
+  edit,
+  setEdit,
+  setCurrency,
+  currency,
+}) {
   return (
     <div>
+      <CurrencySelector {...{ setCurrency }} />
       <Bank {...{ setInit, init, setProc, proc, data: totalDay, label: 'Total Day' }} />
       <br />
       <h2>Movement Input</h2>
       <hr />
       <br />
-      <Form {...{ setInit, init, setProc, proc, setForm, form, edit, setEdit }} />
+      <Form {...{ setInit, init, setProc, proc, setForm, form, edit, setEdit, currency }} />
       <br />
     </div>
   );
@@ -28,6 +42,8 @@ TabInput.propTypes = {
   form: PropTypes.any,
   edit: PropTypes.any,
   setEdit: PropTypes.any,
+  setCurrency: PropTypes.any,
+  currency: PropTypes.any,
 };
 
 export default TabInput;

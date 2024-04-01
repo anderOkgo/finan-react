@@ -6,8 +6,6 @@ import Bank from '../InfoBanner/InfoBanner';
 function TabInfo({ tripInfo, balanceUntilDate, setForm, setEdit, setSelectedOption }) {
   const [selectedRow, setSelectedRow] = useState(null);
 
-  console.log(tripInfo);
-
   const handleRowDoubleClick = (row) => {
     setSelectedRow(row);
 
