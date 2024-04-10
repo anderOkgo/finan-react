@@ -1,11 +1,10 @@
 import { useState } from 'react';
 
-const MIN = 1;
 const SWIPE_THRESHOLD = 170;
 const NUM_OPTIONS = 4;
 
-function useSwipeableTabs(initialOption = MIN, numOptions = NUM_OPTIONS, swipeThreshold = SWIPE_THRESHOLD) {
-  const [selectedOption, setSelectedOption] = useState(initialOption);
+function useSwipeableTabs(numOptions = NUM_OPTIONS, swipeThreshold = SWIPE_THRESHOLD) {
+  const [selectedOption, setSelectedOption] = useState(1);
 
   let startX;
   const handleTouchStart = (e) => {
