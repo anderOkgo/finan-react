@@ -24,7 +24,7 @@ function Tab({ setInit, init, setProc, proc }) {
   const [exchangeCol, setExchangeCol] = useState([]);
   const [tripInfo, setTripInfo] = useState([]);
   const [balanceUntilDate, setBalanceUntilDate] = useState([]);
-  const [currency, setCurrency] = useState('AUD');
+  const [currency, setCurrency] = useState('COP');
   const { selectedOption, setSelectedOption, handleTouchStart, handleTouchEnd } = useSwipeableTabs(1, 5, 170);
 
   const initialForm = useMemo(

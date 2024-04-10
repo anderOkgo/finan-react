@@ -27,7 +27,6 @@ function Table({
       const initialData = orderColums.length > 0 ? reorderArray(data, orderColums) : data;
       setDataset(initialData);
       setFilteredData(initialData); // Initialize filtered data
-
       setHeader(Object.keys(data[0]));
     }
   }, [data]);
@@ -65,20 +64,33 @@ function Table({
 
   const renderPagination = () => {
     const pages = [];
-    for (let i = 1; i <= totalPages; i++) {
+    const maxButtons = 5;
+    let startPage = Math.max(1, currentPage - Math.floor(maxButtons / 2));
+    let endPage = Math.min(totalPages, startPage + maxButtons - 1);
+
+    if (endPage - startPage < maxButtons - 1) {
+      startPage = Math.max(1, endPage - maxButtons + 1);
+    }
+
+    for (let i = startPage; i <= endPage; i++) {
       pages.push(
-        <button key={i} onClick={() => goToPage(i)} className={currentPage === i ? 'active' : ''}>
+        <button
+          key={i}
+          onClick={() => goToPage(i)}
+          className={`pagination-button ${currentPage === i ? 'active' : ''}`}
+        >
           {i}
         </button>
       );
     }
+
     return (
       <div className="pagination">
-        <button onClick={prevPage} disabled={currentPage === 1}>
+        <button onClick={prevPage} disabled={currentPage === 1} className="pagination-button">
           Prev
         </button>
         {pages}
-        <button onClick={nextPage} disabled={currentPage === totalPages}>
+        <button onClick={nextPage} disabled={currentPage === totalPages} className="pagination-button">
           Next
         </button>
       </div>
@@ -136,6 +148,7 @@ function Table({
           <h2>{label}</h2>
           <hr />
           <input
+            className="form-control"
             type="text"
             value={searchTerm}
             onChange={(e) => handleSearch(e.target.value)}
@@ -149,7 +162,7 @@ function Table({
             </thead>
             <tbody>{renderTableRows()}</tbody>
           </table>
-          {renderPagination()}
+          <div className="pagination-container">{renderPagination()}</div>
           <br />
         </div>
       )}

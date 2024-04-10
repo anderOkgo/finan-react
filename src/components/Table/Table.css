@@ -48,3 +48,39 @@ tbody tr:hover {
 .table-container table th.hidden-column {
   display: none;
 }
+
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  align-items: center;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: var(--background);
+  padding: 1px;
+  z-index: 2;
+  overflow-x: auto;
+}
+
+.pagination-button {
+  display: inline;
+  padding: 8px 16px;
+  margin: 0;
+  border: 1px solid var(--soft-gray);
+  background-color: var(--text-alt);
+  cursor: pointer;
+}
+
+.pagination-button:hover {
+  color: var(--main-color);
+}
+
+.pagination-button.active {
+  background-color: var(--main-color);
+  color: var(--text-alt);
+}
+
+.pagination-button:disabled {
+  cursor: not-allowed;
+}
