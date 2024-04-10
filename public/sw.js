@@ -1,4 +1,4 @@
-const VERSION = '1.2.98';
+const VERSION = '1.2.92';
 const CACHE_NAME = `finan-${VERSION}`;
 const appfiles = [
   './icon/icon-48x48.png',
@@ -33,7 +33,12 @@ self.addEventListener('fetch', (e) => {
         .then((response) => {
           const responseClone = response.clone(); // Clone the response to use it and store it in the cache
           caches.open(CACHE_NAME).then((cache) => {
-            if (e.request.method === 'GET' && e.request.url.startsWith('http')) {
+            console.log(e.request);
+            if (
+              e.request.method === 'GET' &&
+              e.request.url.startsWith('http') &&
+              e.request.url !== 'https://info.animecream.com/'
+            ) {
               cache.put(e.request, responseClone);
             }
           });
