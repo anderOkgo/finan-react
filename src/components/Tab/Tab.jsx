@@ -11,6 +11,7 @@ import TabBalance from '../TabBalance/TabBalance';
 import cyfer from '../../helpers/cyfer';
 import set from '../../helpers/set.json';
 import TabInfo from '../TabInfo/TabInfo';
+import CurrencySelector from '../currencySelector/currencySelector';
 
 function Tab({ setInit, init, setProc, proc }) {
   const [bankTotal, setBankTotal] = useState(0);
@@ -161,7 +162,10 @@ function Tab({ setInit, init, setProc, proc }) {
           </label>
           <div className="panel-tab">
             <div className="section-tab">
-              <div className="container-tab">{tab.component}</div>
+              <div className="container-tab">
+                <CurrencySelector {...{ setCurrency, currency }} />
+                {tab.component}
+              </div>
             </div>
           </div>
         </React.Fragment>

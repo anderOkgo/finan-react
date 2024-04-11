@@ -1,18 +1,14 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
-const CurrencySelector = ({ setCurrency }) => {
-  const [selectedCurrency, setSelectedCurrency] = useState('COP');
-
+const CurrencySelector = ({ setCurrency, currency }) => {
   // Function to handle currency change
   const handleCurrencyChange = (event) => {
-    setSelectedCurrency(event.target.value);
     setCurrency(event.target.value);
   };
 
   return (
     <div>
       <label htmlFor="currencySelector">Select Currency:</label>
-      <select id="currencySelector" value={selectedCurrency} onChange={handleCurrencyChange}>
+      <select id="currencySelector" value={currency} onChange={handleCurrencyChange}>
         <option value="COP">COP</option>
         <option value="AUD">AUD</option>
       </select>
@@ -22,6 +18,7 @@ const CurrencySelector = ({ setCurrency }) => {
 
 CurrencySelector.propTypes = {
   setCurrency: PropTypes.func.isRequired,
+  currency: PropTypes.func.isRequired,
 };
 
 export default CurrencySelector;
