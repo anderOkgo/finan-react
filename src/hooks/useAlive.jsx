@@ -3,7 +3,6 @@ import DataService from '../services/data.service';
 
 // Custom hook for managing application initialization and online status
 export const useAlive = () => {
-  // State variables to manage initialization, processing, and online status
   const [init, setInit] = useState(0); // Indicates if application recived response of server
   const [proc, setProc] = useState(1); // Indicates if initialization process is ongoing
   const [online, setOnline] = useState(true); // Indicates if application is online

@@ -1,6 +1,5 @@
 import { useState } from 'react';
 
-// Default swipe threshold and number of options
 const SWIPE_THRESHOLD = 170;
 const NUM_OPTIONS = 4;
 
@@ -9,7 +8,6 @@ function useSwipeableTabs(numOptions = NUM_OPTIONS, swipeThreshold = SWIPE_THRES
   const [selectedOption, setSelectedOption] = useState(1);
 
   let startX;
-  // Event handler for touch start
   const handleTouchStart = (e) => {
     startX = e.touches[0].clientX; // Store the X position of touch start
   };
