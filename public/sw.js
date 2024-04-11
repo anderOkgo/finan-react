@@ -1,5 +1,5 @@
 // Define the version of the cache
-const VERSION = '1.3.07';
+const VERSION = '1.3.09';
 // Create a unique cache name using the version
 const CACHE_NAME = `finan-${VERSION}`;
 // List of files to cache
@@ -55,7 +55,7 @@ self.addEventListener('fetch', (e) => {
             if (
               e.request.method === 'GET' &&
               e.request.url.startsWith('http') &&
-              e.request.url == self.location.origin
+              e.request.url !== 'https://info.animecream.com/'
             ) {
               cache.put(e.request, responseClone);
             }
