@@ -7,7 +7,6 @@
 table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 20px;
   font-size: 15px;
 }
 
@@ -65,7 +64,7 @@ tbody tr:hover {
 
 .pagination-button {
   display: inline;
-  padding: 5px 10px;
+  padding: 7px 14px;
   color: var(--text);
   margin: 0;
   border: 1px solid var(--soft-gray);
@@ -84,4 +83,9 @@ tbody tr:hover {
 
 .pagination-button:disabled {
   cursor: not-allowed;
+}
+
+.search-box {
+  display: flex;
+  justify-content: space-between;
 }

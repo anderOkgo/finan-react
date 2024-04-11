@@ -10,7 +10,7 @@ function Table({
   onRowDoubleClick = false,
   label,
   onSearch,
-  itemsPerPage = 100, // Default items per page//
+  itemsPerPages = 20, // Default items per page
 }) {
   const [dataset, setDataset] = useState([]);
   const [header, setHeader] = useState([]);
@@ -19,6 +19,7 @@ function Table({
   const [filteredData, setFilteredData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1); // Current page of pagination
   const [totalPages, setTotalPages] = useState(1); // Total number of pages
+  const [itemsPerPage, setItemsPerPage] = useState(itemsPerPages);
 
   useEffect(() => {
     setLoading(false);
@@ -60,6 +61,12 @@ function Table({
 
   const prevPage = () => {
     setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
+  };
+
+  const handleItemsPerPageChange = (event) => {
+    const newItemsPerPage = parseInt(event.target.value);
+    setCurrentPage(1); // Reset current page when items per page changes
+    setItemsPerPage(newItemsPerPage);
   };
 
   const renderPagination = () => {
@@ -147,13 +154,28 @@ function Table({
         <div className="table-container">
           <h2>{label}</h2>
           <hr />
-          <input
-            className="form-control"
-            type="text"
-            value={searchTerm}
-            onChange={(e) => handleSearch(e.target.value)}
-            placeholder="Search..."
-          />
+
+          <div className="search-box">
+            <label>
+              Rows per page:{' '}
+              <select value={itemsPerPage} onChange={handleItemsPerPageChange}>
+                <option value={5}>5</option>
+                <option value={10}>10</option>
+                <option value={20}>20</option>
+                <option value={50}>50</option>
+                <option value={100}>100</option>
+                <option value={1000}>1000</option>
+                <option value={10000}>10000</option>
+              </select>
+            </label>
+            <input
+              type="text"
+              value={searchTerm}
+              onChange={(e) => handleSearch(e.target.value)}
+              placeholder="Search..."
+            />
+          </div>
+
           <table>
             <thead>
               {columns === undefined || columns.length === 0
@@ -179,6 +201,7 @@ Table.propTypes = {
   orderColums: PropTypes.any,
   onSearch: PropTypes.func,
   itemsPerPage: PropTypes.number, // Added prop type for items per page
+  itemsPerPages: PropTypes.number, // Added prop type for items per page
 };
 
 export default Table;
