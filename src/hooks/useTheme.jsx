@@ -75,12 +75,10 @@ export const useTheme = () => {
     document.querySelector('meta[name="theme-color"]').setAttribute('content', colors['--main-color']);
   }, [isDarkMode]); // Re-run effect whenever isDarkMode changes
 
-  // Object containing theme state and toggle function
   const themeValues = {
     isDarkMode,
     toggleDarkMode,
   };
 
-  // Return theme values to be used by components
   return themeValues;
 };
