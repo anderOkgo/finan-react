@@ -91,16 +91,25 @@ function Table({
       );
     }
 
+    const startIndex = (currentPage - 1) * itemsPerPage + 1;
+    const endIndex = Math.min(currentPage * itemsPerPage, filteredData.length);
+    const totalRecords = filteredData.length;
+
     return (
-      <div className="pagination">
-        <button onClick={prevPage} disabled={currentPage === 1} className="pagination-button">
-          Prev
-        </button>
-        {pages}
-        <button onClick={nextPage} disabled={currentPage === totalPages} className="pagination-button">
-          Next
-        </button>
-      </div>
+      <>
+        <div className="pagination-label">
+          Showing {startIndex}-{endIndex} of {totalRecords} records
+        </div>
+        <div className="pagination">
+          <button onClick={prevPage} disabled={currentPage === 1} className="pagination-button">
+            Prev
+          </button>
+          {pages}
+          <button onClick={nextPage} disabled={currentPage === totalPages} className="pagination-button">
+            Next
+          </button>
+        </div>
+      </>
     );
   };
 
@@ -157,7 +166,7 @@ function Table({
 
           <div className="search-box">
             <label>
-              Rows per page:{' '}
+              Rows:{' '}
               <select value={itemsPerPage} onChange={handleItemsPerPageChange} className="search-box-input">
                 <option value={5}>5</option>
                 <option value={10}>10</option>

@@ -101,3 +101,8 @@ tbody tr:hover {
 .search-box-input::placeholder {
   color: var(--text);
 }
+
+.pagination-label {
+  margin-bottom: 1em;
+  margin-right: 5px;
+}
