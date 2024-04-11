@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 
+// Custom React hook for managing theme state
 export const useTheme = () => {
   // State to manage dark mode, initialized based on system preference
   const [isDarkMode, setIsDarkMode] = useState(window.matchMedia('(prefers-color-scheme: dark)').matches);
@@ -14,23 +15,26 @@ export const useTheme = () => {
     // Match media query for dark mode
     const darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
 
+    // Handler function to update dark mode state
     const handleChange = (event) => {
       setIsDarkMode(event.matches);
     };
 
+    // Initialize dark mode state and add event listener for changes
     handleChange(darkModeMediaQuery);
-
     darkModeMediaQuery.addEventListener('change', handleChange);
 
+    // Cleanup function to remove event listener when component unmounts
     return () => {
       darkModeMediaQuery.removeEventListener('change', handleChange);
     };
-  }, []);
+  }, []); // Empty dependency array ensures effect runs only once on component mount
 
   // Effect hook to apply theme styles
   useEffect(() => {
     const root = document.documentElement;
 
+    // Define colors for light and dark modes
     const lightModeColors = {
       '--main-color': '#01579b',
       '--second-color': '#086bb8',
@@ -59,16 +63,17 @@ export const useTheme = () => {
       '--soft-gray': '#333',
     };
 
+    // Determine current mode and select corresponding colors
     const colors = isDarkMode ? darkModeColors : lightModeColors;
 
-    // Apply color variables as CSS custom properties
+    // Apply color variables as CSS custom properties to root element
     for (const [key, value] of Object.entries(colors)) {
       root.style.setProperty(key, value);
     }
 
     // Update theme color meta tag
     document.querySelector('meta[name="theme-color"]').setAttribute('content', colors['--main-color']);
-  }, [isDarkMode]);
+  }, [isDarkMode]); // Re-run effect whenever isDarkMode changes
 
   // Object containing theme state and toggle function
   const themeValues = {
