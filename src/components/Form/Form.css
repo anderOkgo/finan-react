@@ -20,6 +20,10 @@ input:-webkit-autofill:focus {
   color: var(--text);
 }
 
+.form-control::placeholder {
+  color: var(--text);
+}
+
 .form-group {
   margin-bottom: 20px;
 }
