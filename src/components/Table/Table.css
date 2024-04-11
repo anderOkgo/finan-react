@@ -89,3 +89,15 @@ tbody tr:hover {
   display: flex;
   justify-content: space-between;
 }
+
+.search-box-input {
+  padding: 5px;
+  border: 1px solid var(--soft-gray);
+  border-radius: 4px;
+  background-color: inherit;
+  color: var(--text);
+}
+
+.search-box-input::placeholder {
+  color: var(--text);
+}

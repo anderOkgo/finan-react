@@ -158,7 +158,7 @@ function Table({
           <div className="search-box">
             <label>
               Rows per page:{' '}
-              <select value={itemsPerPage} onChange={handleItemsPerPageChange}>
+              <select value={itemsPerPage} onChange={handleItemsPerPageChange} className="search-box-input">
                 <option value={5}>5</option>
                 <option value={10}>10</option>
                 <option value={20}>20</option>
@@ -169,6 +169,7 @@ function Table({
               </select>
             </label>
             <input
+              className="search-box-input"
               type="text"
               value={searchTerm}
               onChange={(e) => handleSearch(e.target.value)}
