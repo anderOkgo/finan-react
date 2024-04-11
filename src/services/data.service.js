@@ -3,7 +3,7 @@ import helpHttp from '../helpers/helpHttp';
 import AuthService from './auth.service';
 
 const BASE_URL = set.baseUrl;
-const API_URL = BASE_URL + 'api/finan/';
+const API_URL = BASE_URL + set.api_url;
 
 const balanceMonthly = async () => {
   return await helpHttp.get(API_URL + 'totalbank', {});
