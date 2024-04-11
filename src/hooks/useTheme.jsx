@@ -63,7 +63,6 @@ export const useTheme = () => {
       '--soft-gray': '#333',
     };
 
-    // Determine current mode and select corresponding colors
     const colors = isDarkMode ? darkModeColors : lightModeColors;
 
     // Apply color variables as CSS custom properties to root element
@@ -73,7 +72,7 @@ export const useTheme = () => {
 
     // Update theme color meta tag
     document.querySelector('meta[name="theme-color"]').setAttribute('content', colors['--main-color']);
-  }, [isDarkMode]); // Re-run effect whenever isDarkMode changes
+  }, [isDarkMode]);
 
   const themeValues = {
     isDarkMode,
