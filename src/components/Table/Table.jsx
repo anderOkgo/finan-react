@@ -97,9 +97,9 @@ function Table({
 
     return (
       <>
-        <div className="pagination-label">
+        <small className="pagination-label">
           Showing {startIndex}-{endIndex} of {totalRecords} records
-        </div>
+        </small>
         <div className="pagination">
           <button onClick={prevPage} disabled={currentPage === 1} className="pagination-button">
             Prev
