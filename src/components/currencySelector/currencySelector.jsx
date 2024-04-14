@@ -18,7 +18,7 @@ const CurrencySelector = ({ setCurrency, currency }) => {
 
 CurrencySelector.propTypes = {
   setCurrency: PropTypes.func.isRequired,
-  currency: PropTypes.func.isRequired,
+  currency: PropTypes.string.isRequired,
 };
 
 export default CurrencySelector;
