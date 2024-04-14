@@ -270,7 +270,7 @@ function Form({ setInit, init, setForm, form, proc, setProc, edit, setEdit, curr
       {off.length !== 0 && (
         <Table
           label={'Offline Table'}
-          columns={['Queue', '', '', '', '', '', '...']}
+          columns={['Queue', '', '', '', '', '', '', '...']}
           data={off}
           onRowDoubleClick={handleRowDoubleClick}
         />
