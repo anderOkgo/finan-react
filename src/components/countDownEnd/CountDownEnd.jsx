@@ -14,19 +14,19 @@ export default function CountDownEnd() {
   const [timeNow, setTimeNow] = useState(calculateTime(new Date(), dayIni));
   const [timeMonthLeft, setTimeMonthLeft] = useState(monthDiff(new Date(), dayEnd));
   const [timeMonthNow, setTimeMonthNow] = useState(monthDiff(dayIni, new Date()));
-  const [data, setdData] = useState([]);
+  const [data, setData] = useState([]);
 
   useEffect(() => {
     try {
       var localResp = localStorage.getItem('times');
       localResp && (localResp = JSON.parse(cyfer().dcy(localResp, set.salt)));
       if (Object.keys(localResp || {}).length !== 0) {
-        setdData(localResp);
+        setData(localResp);
       }
     } catch (error) {
       console.log(error);
     }
-  }, [setdData]);
+  }, [setData]);
 
   useEffect(() => {
     let id = setInterval(() => {
@@ -52,7 +52,7 @@ export default function CountDownEnd() {
           Remaining: `${((timeLeft / timeTotal) * 100).toFixed(2)}%`,
         },
       ];
-      setdData(json);
+      setData(json);
       localStorage.setItem('times', cyfer().cy(JSON.stringify(json), set.salt));
     }, 1000);
 
