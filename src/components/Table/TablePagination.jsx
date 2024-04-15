@@ -1,8 +1,9 @@
 import PropTypes from 'prop-types';
+import set from '../../helpers/set.json';
 
 function TablePagination({ currentPage, totalPages, goToPage, startIndex, endIndex, totalRecords }) {
   const renderPaginationButtons = () => {
-    const maxButtons = 5;
+    const maxButtons = set.paginationMaxButtons;
     const buttons = [];
     let startPage = Math.max(1, currentPage - Math.floor(maxButtons / 2));
     let endPage = Math.min(totalPages, startPage + maxButtons - 1);

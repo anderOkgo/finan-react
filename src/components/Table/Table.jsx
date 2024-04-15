@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import './Table.css';
 import TablePagination from './TablePagination';
+import set from '../../helpers/set.json';
 
 function Table({
   data,
@@ -11,7 +12,7 @@ function Table({
   onRowDoubleClick = false,
   label,
   onSearch,
-  defaultItemsPerPage = 20,
+  defaultItemsPerPage = set.PaginationDefaultItemsPerPage,
 }) {
   const [dataset, setDataset] = useState([]);
   const [header, setHeader] = useState([]);
@@ -47,7 +48,6 @@ function Table({
   const handleSearch = (newSearchTerm) => {
     setCurrentPage(1);
     setSearchTerm(newSearchTerm);
-
     // Filter data based on search term
     const filteredResults = dataset.filter((item) =>
       Object.values(item).some((value) => value.toString().toLowerCase().includes(newSearchTerm.toLowerCase()))
@@ -69,7 +69,6 @@ function Table({
   // Rendering functions
   const renderTableHeader = (header) => {
     const filteredHeader = header.filter((item) => !hiddenColumns.includes(item));
-
     return (
       <tr>
         {filteredHeader.map((item, index) => (
@@ -110,13 +109,11 @@ function Table({
               onChange={(e) => setItemsPerPage(parseInt(e.target.value))}
               className="search-box-input"
             >
-              <option value={5}>5</option>
-              <option value={10}>10</option>
-              <option value={20}>20</option>
-              <option value={50}>50</option>
-              <option value={100}>100</option>
-              <option value={1000}>1000</option>
-              <option value={10000}>10000</option>
+              {set.TableSelectRowNumbers.map((value) => (
+                <option key={value} value={value}>
+                  {value}
+                </option>
+              ))}
             </select>
           </label>
           <input
