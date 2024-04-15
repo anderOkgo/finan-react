@@ -7,7 +7,7 @@ import set from '../../helpers/set.json';
 function Table({
   data,
   columns,
-  orderColums = [],
+  orderColums = false,
   hiddenColumns = [],
   onRowDoubleClick = false,
   label,
