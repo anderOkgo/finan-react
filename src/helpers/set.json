@@ -2,10 +2,22 @@
   "api_url": "api/finan/",
   "baseUrl": "https://info.animecream.com/",
   "baseUrl_": "http://localhost:3001/",
-  "boot_timeout": 30000,
-  "defaul_fetch_request": 17000,
+  "boot_timeout": 20000,
+  "defaul_fetch_request": 10000,
   "paginationMaxButtons": 5,
   "PaginationDefaultItemsPerPage": 20,
   "TableSelectRowNumbers": [5, 10, 20, 50, 100, 500, 1000, 10000],
+  "FormTypeOptions": [
+    { "value": "", "label": "---" },
+    { "value": "1", "label": "Income" },
+    { "value": "2", "label": "Bill" },
+    { "value": "7", "label": "Saving" },
+    { "value": "8", "label": "Balance" },
+    { "value": "9", "label": "Tax return" },
+    { "value": "10", "label": "GYG payment" },
+    { "value": "11", "label": "Interest" },
+    { "value": "12", "label": "Visa refund" },
+    { "value": "13", "label": "Cash exchange" }
+  ],
   "salt": "PDk9ND03PTA="
 }
