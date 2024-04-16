@@ -204,7 +204,7 @@ function Form({ setInit, init, setForm, form, proc, setProc, edit, setEdit, curr
             value={form.type}
             ref={buttonRef}
           >
-            {set.FormTypeOptions.map((option) => (
+            {set.form_type_options.map((option) => (
               <option key={option.value} value={option.value}>
                 {option.label}
               </option>

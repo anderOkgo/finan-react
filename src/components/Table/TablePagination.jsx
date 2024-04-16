@@ -18,7 +18,7 @@ function TablePagination({ currentPage, setCurrentPage, filteredData, itemsPerPa
   }, [filteredData, itemsPerPage, currentPage]);
 
   const renderPaginationButtons = () => {
-    const maxButtons = set.paginationMaxButtons;
+    const maxButtons = set.pagination_max_buttons;
     const buttons = [];
     let startPage = Math.max(1, currentPage - Math.floor(maxButtons / 2));
     let endPage = Math.min(totalPages, startPage + maxButtons - 1);

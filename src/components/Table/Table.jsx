@@ -10,7 +10,7 @@ function Table({ data, columns, orderColums = false, hiddenColumns = [], onRowDo
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredData, setFilteredData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(set.PaginationDefaultItemsPerPage);
+  const [itemsPerPage, setItemsPerPage] = useState(set.pagination_default_items_per_page);
 
   // Helper function useEffect to reorder data to print the table based on orderColums array
   const reorderTableHeader = (data, orderColumns) => {
@@ -84,7 +84,7 @@ function Table({ data, columns, orderColums = false, hiddenColumns = [], onRowDo
               onChange={(e) => setItemsPerPage(parseInt(e.target.value))}
               className="search-box-input"
             >
-              {set.TableSelectRowNumbers.map((value) => (
+              {set.table_select_row_numbers.map((value) => (
                 <option key={value} value={value}>
                   {value}
                 </option>

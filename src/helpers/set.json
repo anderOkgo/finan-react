@@ -1,16 +1,16 @@
 {
   "api_url": "api/finan/",
-  "baseUrl": "https://info.animecream.com/",
-  "baseUrl_": "http://localhost:3001/",
+  "base_url": "https://info.animecream.com/",
+  "base_url_": "http://localhost:3001/",
   "boot_timeout": 20000,
   "defaul_fetch_request": 10000,
-  "paginationMaxButtons": 5,
-  "PaginationDefaultItemsPerPage": 20,
-  "TableSelectRowNumbers": [5, 10, 20, 50, 100, 500, 1000, 10000],
-  "FormTypeOptions": [
+  "pagination_max_buttons": 5,
+  "pagination_default_items_per_page": 20,
+  "table_select_row_numbers": [5, 10, 20, 50, 100, 500, 1000, 10000],
+  "form_type_options": [
     { "value": "", "label": "---" },
     { "value": "1", "label": "Income" },
     { "value": "2", "label": "Bill" }
   ],
-  "salt": "PDk9ND03PTA="
+  "salt": "9k9ND03PTA=MD0zPTs+MD0zPTQ9PD0zPD89OMz01PTM+MT0zPT4+Mz4xPjI9Ojw/PjE9Mz40PD89Oj06PTc9PD4xPTM8Pz4yPjE9Mwj09PTY6MjoxOjA5Pzw/PjA"
 }

@@ -3,7 +3,7 @@ import helpHttp from '../helpers/helpHttp';
 import cyfer from '../helpers/cyfer';
 import { formattedDate } from '../helpers/operations';
 
-const BASE_URL = set.baseUrl;
+const BASE_URL = set.base_url;
 const API_URL = BASE_URL + 'api/users/';
 
 const register = (username, email, password) => {
