@@ -1,7 +1,22 @@
 import PropTypes from 'prop-types';
 import set from '../../helpers/set.json';
+import { useEffect, useState } from 'react';
 
-function TablePagination({ currentPage, totalPages, goToPage, startIndex, endIndex, totalRecords }) {
+function TablePagination({ currentPage, goToPage, filteredData, itemsPerPage }) {
+  const [totalPages, setTotalPages] = useState(1);
+  const [startIndex, setStartIndex] = useState(0);
+  const [endIndex, setEndIndex] = useState(0);
+
+  useEffect(() => {
+    // Calculate total pages whenever filtered data changes
+    setTotalPages(Math.ceil(filteredData.length / itemsPerPage));
+    // Calculate startIndex and endIndex whenever currentPage or itemsPerPage changes
+    const newStartIndex = (currentPage - 1) * itemsPerPage + 1;
+    const newEndIndex = Math.min(currentPage * itemsPerPage, filteredData.length);
+    setStartIndex(newStartIndex);
+    setEndIndex(newEndIndex);
+  }, [filteredData, itemsPerPage, currentPage]);
+
   const renderPaginationButtons = () => {
     const maxButtons = set.paginationMaxButtons;
     const buttons = [];
@@ -38,7 +53,7 @@ function TablePagination({ currentPage, totalPages, goToPage, startIndex, endInd
   return (
     <>
       <small className="pagination-label">
-        Showing {startIndex}-{endIndex} of {totalRecords} records
+        Showing {startIndex}-{endIndex} of {filteredData.length} records
       </small>
       <div className="pagination">
         <button onClick={prevPage} disabled={currentPage === 1} className="pagination-button">
@@ -55,11 +70,9 @@ function TablePagination({ currentPage, totalPages, goToPage, startIndex, endInd
 
 TablePagination.propTypes = {
   currentPage: PropTypes.number.isRequired,
-  totalPages: PropTypes.number.isRequired,
   goToPage: PropTypes.func.isRequired,
-  startIndex: PropTypes.number.isRequired,
-  endIndex: PropTypes.number.isRequired,
-  totalRecords: PropTypes.number.isRequired,
+  filteredData: PropTypes.any.isRequired,
+  itemsPerPage: PropTypes.number.isRequired,
 };
 
 export default TablePagination;

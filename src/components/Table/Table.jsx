@@ -4,60 +4,15 @@ import './Table.css';
 import TablePagination from './TablePagination';
 import set from '../../helpers/set.json';
 
-function Table({
-  data,
-  columns,
-  orderColums = false,
-  hiddenColumns = [],
-  onRowDoubleClick = false,
-  label,
-  onSearch,
-  defaultItemsPerPage = set.PaginationDefaultItemsPerPage,
-}) {
+function Table({ data, columns, orderColums = false, hiddenColumns = [], onRowDoubleClick = false, label }) {
   const [dataset, setDataset] = useState([]);
   const [header, setHeader] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredData, setFilteredData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(defaultItemsPerPage);
-  const [startIndex, setStartIndex] = useState(0);
-  const [endIndex, setEndIndex] = useState(0);
+  const [itemsPerPage, setItemsPerPage] = useState(set.PaginationDefaultItemsPerPage);
 
-  // reorder columns based on orderColums array
-  useEffect(() => {
-    if (data && data.length > 0) {
-      const initialData = orderColums.length > 0 ? reorderTableHeader(data, orderColums) : data;
-      setDataset(initialData);
-      setFilteredData(initialData); // Initialize filtered data
-      setHeader(Object.keys(data[0]));
-    }
-  }, [data, orderColums]);
-
-  useEffect(() => {
-    // Calculate total pages whenever filtered data changes
-    setTotalPages(Math.ceil(filteredData.length / itemsPerPage));
-    // Calculate startIndex and endIndex whenever currentPage or itemsPerPage changes
-    const newStartIndex = (currentPage - 1) * itemsPerPage + 1;
-    const newEndIndex = Math.min(currentPage * itemsPerPage, filteredData.length);
-    setStartIndex(newStartIndex);
-    setEndIndex(newEndIndex);
-  }, [filteredData, itemsPerPage, currentPage]);
-
-  // Search functionality
-  const handleSearch = (newSearchTerm) => {
-    setCurrentPage(1);
-    setSearchTerm(newSearchTerm);
-    // Filter data based on search term
-    const filteredResults = dataset.filter((item) =>
-      Object.values(item).some((value) => value.toString().toLowerCase().includes(newSearchTerm.toLowerCase()))
-    );
-    setFilteredData(filteredResults);
-
-    onSearch && onSearch(filteredResults);
-  };
-
-  // Helper function to reorder data to print the new table
+  // Helper function to reorder data to print the table based on orderColums array
   const reorderTableHeader = (data, orderColumns) => {
     return data.map((item) => {
       const reorderedItem = {};
@@ -66,7 +21,17 @@ function Table({
     });
   };
 
-  // Rendering functions
+  // reorder columns based on orderColums array
+  useEffect(() => {
+    if (data && data.length > 0) {
+      const initialData = orderColums.length > 0 ? reorderTableHeader(data, orderColums) : data;
+      setDataset(initialData);
+      setFilteredData(initialData);
+      setHeader(Object.keys(data[0]));
+    }
+  }, [data, orderColums]);
+
+  // Rendering Table header functions
   const renderTableHeader = (header) => {
     const filteredHeader = header.filter((item) => !hiddenColumns.includes(item));
     return (
@@ -88,12 +53,22 @@ function Table({
 
   const renderTableRows = () => {
     const currentData = filteredData.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
-
     return currentData.map((item, index) => (
       <tr key={index} onDoubleClick={() => (onRowDoubleClick ? onRowDoubleClick(item) : false)}>
         {renderTableRow(item)}
       </tr>
     ));
+  };
+
+  // Search functionality
+  const handleSearch = (newSearchTerm) => {
+    setCurrentPage(1);
+    setSearchTerm(newSearchTerm);
+    // Filter data based on search term
+    const filteredResults = dataset.filter((item) =>
+      Object.values(item).some((value) => value.toString().toLowerCase().includes(newSearchTerm.toLowerCase()))
+    );
+    setFilteredData(filteredResults);
   };
 
   return (
@@ -135,11 +110,9 @@ function Table({
         <div className="pagination-container">
           <TablePagination
             currentPage={currentPage}
-            totalPages={totalPages}
             goToPage={setCurrentPage}
-            startIndex={startIndex}
-            endIndex={endIndex}
-            totalRecords={filteredData.length}
+            filteredData={filteredData}
+            itemsPerPage={itemsPerPage}
           />
         </div>
         <br />
@@ -155,7 +128,6 @@ Table.propTypes = {
   hiddenColumns: PropTypes.arrayOf(PropTypes.string),
   label: PropTypes.any,
   orderColums: PropTypes.any,
-  onSearch: PropTypes.func,
   defaultItemsPerPage: PropTypes.number,
 };
 
