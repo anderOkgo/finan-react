@@ -110,7 +110,7 @@ function Table({ data, columns, orderColums = false, hiddenColumns = [], onRowDo
         <div className="pagination-container">
           <TablePagination
             currentPage={currentPage}
-            goToPage={setCurrentPage}
+            setCurrentPage={setCurrentPage}
             filteredData={filteredData}
             itemsPerPage={itemsPerPage}
           />

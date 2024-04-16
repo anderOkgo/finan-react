@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import set from '../../helpers/set.json';
 import { useEffect, useState } from 'react';
 
-function TablePagination({ currentPage, goToPage, filteredData, itemsPerPage }) {
+function TablePagination({ currentPage, setCurrentPage, filteredData, itemsPerPage }) {
   const [totalPages, setTotalPages] = useState(1);
   const [startIndex, setStartIndex] = useState(0);
   const [endIndex, setEndIndex] = useState(0);
@@ -31,7 +31,7 @@ function TablePagination({ currentPage, goToPage, filteredData, itemsPerPage }) 
       buttons.push(
         <button
           key={i}
-          onClick={() => goToPage(i)}
+          onClick={() => setCurrentPage(i)}
           className={`pagination-button ${currentPage === i ? 'active' : ''}`}
         >
           {i}
@@ -43,11 +43,11 @@ function TablePagination({ currentPage, goToPage, filteredData, itemsPerPage }) 
   };
 
   const nextPage = () => {
-    goToPage((prevPage) => Math.min(prevPage + 1, totalPages));
+    setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages));
   };
 
   const prevPage = () => {
-    goToPage((prevPage) => Math.max(prevPage - 1, 1));
+    setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
   };
 
   return (
@@ -70,7 +70,7 @@ function TablePagination({ currentPage, goToPage, filteredData, itemsPerPage }) 
 
 TablePagination.propTypes = {
   currentPage: PropTypes.number.isRequired,
-  goToPage: PropTypes.func.isRequired,
+  setCurrentPage: PropTypes.func.isRequired,
   filteredData: PropTypes.any.isRequired,
   itemsPerPage: PropTypes.number.isRequired,
 };
