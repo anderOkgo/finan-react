@@ -1,5 +1,5 @@
 // Define the version of the cache
-const VERSION = '1.3.26';
+const VERSION = '1.3.27';
 // Create a unique cache name using the version
 const CACHE_NAME = `finan-${VERSION}`;
 // List of files to cache

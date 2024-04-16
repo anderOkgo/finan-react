@@ -8,42 +8,13 @@ function TabGeneral({ movements, generalInfo, setForm, setEdit, setSelectedOptio
 
   const handleRowDoubleClick = (row) => {
     setSelectedRow(row);
-
     let type;
     switch (row.source.toLowerCase()) {
-      case 'Expense':
+      case 'bill':
         document.querySelector('#type').selectedIndex = 2;
         type = 2;
         break;
       case 'income':
-        document.querySelector('#type').selectedIndex = 1;
-        type = 1;
-        break;
-      case 'saving':
-        document.querySelector('#type').selectedIndex = 7;
-        type = 7;
-        break;
-      case 'balance':
-        document.querySelector('#type').selectedIndex = 8;
-        type = 8;
-        break;
-      case 'tax return':
-        document.querySelector('#type').selectedIndex = 9;
-        type = 9;
-        break;
-      case 'gyg payment':
-        document.querySelector('#type').selectedIndex = 1;
-        type = 1;
-        break;
-      case 'interest':
-        document.querySelector('#type').selectedIndex = 1;
-        type = 1;
-        break;
-      case 'visa refund':
-        document.querySelector('#type').selectedIndex = 1;
-        type = 1;
-        break;
-      case 'cash exchange':
         document.querySelector('#type').selectedIndex = 1;
         type = 1;
         break;
