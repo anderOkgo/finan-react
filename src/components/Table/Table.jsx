@@ -12,7 +12,7 @@ function Table({ data, columns, orderColums = false, hiddenColumns = [], onRowDo
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(set.PaginationDefaultItemsPerPage);
 
-  // Helper function to reorder data to print the table based on orderColums array
+  // Helper function useEffect to reorder data to print the table based on orderColums array
   const reorderTableHeader = (data, orderColumns) => {
     return data.map((item) => {
       const reorderedItem = {};
@@ -43,7 +43,7 @@ function Table({ data, columns, orderColums = false, hiddenColumns = [], onRowDo
     );
   };
 
-  const renderTableRow = (row) => {
+  const renderTableColumns = (row) => {
     return Object.keys(row).map((key, index) => (
       <td key={index} className={hiddenColumns.includes(key) ? 'hidden-column' : ''}>
         {row[key]}
@@ -55,7 +55,7 @@ function Table({ data, columns, orderColums = false, hiddenColumns = [], onRowDo
     const currentData = filteredData.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
     return currentData.map((item, index) => (
       <tr key={index} onDoubleClick={() => (onRowDoubleClick ? onRowDoubleClick(item) : false)}>
-        {renderTableRow(item)}
+        {renderTableColumns(item)}
       </tr>
     ));
   };

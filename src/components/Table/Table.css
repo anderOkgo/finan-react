@@ -115,3 +115,8 @@ tbody tr:hover {
   margin-right: 5px;
   font-style: italic;
 }
+
+.pagination-range {
+  display: block;
+  width: 100%;
+}

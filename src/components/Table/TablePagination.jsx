@@ -50,8 +50,20 @@ function TablePagination({ currentPage, setCurrentPage, filteredData, itemsPerPa
     setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
   };
 
+  const handleRangeChange = (e) => {
+    setCurrentPage(parseInt(e.target.value));
+  };
+
   return (
     <>
+      <input
+        type="range"
+        min="1"
+        max={totalPages}
+        value={currentPage}
+        onChange={handleRangeChange}
+        className="pagination-range"
+      />
       <small className="pagination-label">
         Showing {startIndex}-{endIndex} of {filteredData.length} records
       </small>
