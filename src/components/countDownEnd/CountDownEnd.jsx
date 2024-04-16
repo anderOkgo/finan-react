@@ -18,7 +18,7 @@ export default function CountDownEnd() {
 
   useEffect(() => {
     try {
-      var localResp = localStorage.getItem('times');
+      var localResp = localStorage.getItem('count_down');
       localResp && (localResp = JSON.parse(cyfer().dcy(localResp, set.salt)));
       if (Object.keys(localResp || {}).length !== 0) {
         setData(localResp);
@@ -53,7 +53,7 @@ export default function CountDownEnd() {
         },
       ];
       setData(json);
-      localStorage.setItem('times', cyfer().cy(JSON.stringify(json), set.salt));
+      localStorage.setItem('count_down', cyfer().cy(JSON.stringify(json), set.salt));
     }, 1000);
 
     return () => {
