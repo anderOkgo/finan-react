@@ -16,7 +16,6 @@ import CurrencySelector from '../currencySelector/currencySelector';
 function Tab({ setInit, init, setProc, proc }) {
   const [bankTotal, setBankTotal] = useState(0);
   const [balance, setBalance] = useState([]);
-  const [movementSources, setMovementSources] = useState([]);
   const [movementTag, setMovementTag] = useState([]);
   const [movements, setMovements] = useState([]);
   const [totalDay, setTotalDay] = useState([]);
@@ -71,9 +70,7 @@ function Tab({ setInit, init, setProc, proc }) {
       id: 4,
       icon: '❆',
       label: 'Balance',
-      component: selectedOption === 4 && (
-        <TabBalance {...{ setInit, init, setProc, proc, bankTotal, balance, movementSources }} />
-      ),
+      component: selectedOption === 4 && <TabBalance {...{ setInit, init, setProc, proc, bankTotal, balance }} />,
     },
     {
       id: 5,
@@ -90,18 +87,8 @@ function Tab({ setInit, init, setProc, proc }) {
       setProc(true);
 
       const writeData = (resp) => {
-        const {
-          totalBank,
-          balance,
-          movementSources,
-          movementTag,
-          movements,
-          totalDay,
-          generalInfo,
-          tripInfo,
-          balanceUntilDate,
-        } = resp;
-        setMovementSources(movementSources);
+        const { totalBank, balance, movementTag, movements, totalDay, generalInfo, tripInfo, balanceUntilDate } =
+          resp;
         setMovementTag(movementTag);
         setMovements(movements);
         setBankTotal(totalBank?.[0]?.total_bank ?? 0);

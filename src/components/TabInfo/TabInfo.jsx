@@ -11,7 +11,7 @@ function TabInfo({ tripInfo, balanceUntilDate, setForm, setEdit, setSelectedOpti
 
     let type;
     switch (row.source.toLowerCase()) {
-      case 'bill':
+      case 'Expense':
         document.querySelector('#type').selectedIndex = 2;
         type = 2;
         break;

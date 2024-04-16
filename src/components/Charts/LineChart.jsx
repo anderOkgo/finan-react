@@ -1,5 +1,7 @@
 /* eslint-disable react-refresh/only-export-components */
+import { useState, useEffect } from 'react';
 import { Line } from 'react-chartjs-2';
+import PropTypes from 'prop-types';
 import './LineChart.css';
 import {
   Chart as ChartJS,
@@ -27,13 +29,28 @@ export const options = {
   },
 };
 
-// eslint-disable-next-line react/prop-types
-function LineChart({ dataI }) {
+function LineChart({ dataI, height }) {
+  const [selectedYear, setSelectedYear] = useState('');
+
+  useEffect(() => {
+    const currentYear = new Date().getFullYear();
+    setSelectedYear(currentYear.toString());
+  }, []);
+
   const dataFromAPI = dataI;
-  const filteredData = dataFromAPI.filter((item) => item.year_number !== 2022);
+  const filteredData =
+    selectedYear === ''
+      ? dataFromAPI.filter((item) => item.year_number !== 2022)
+      : dataFromAPI.filter((item) => item.year_number === parseInt(selectedYear));
   const labels = filteredData.map((item) => item.month_name);
   const dataset1Data = filteredData.map((item) => item.incomes);
   const dataset2Data = filteredData.map((item) => item.bills);
+
+  const handleYearChange = (event) => {
+    setSelectedYear(event.target.value);
+  };
+
+  const years = [...new Set(dataFromAPI.map((item) => item.year_number))];
 
   const data = {
     labels,
@@ -45,15 +62,35 @@ function LineChart({ dataI }) {
         backgroundColor: 'rgba(53, 162, 235, 0.5)',
       },
       {
-        label: 'Bills',
+        label: 'Expenses',
         data: dataset2Data,
-
         borderColor: 'rgb(255, 99, 132)',
         backgroundColor: 'rgba(255, 99, 132, 0.5)',
       },
     ],
   };
-  return <Line className="line-chart" options={options} data={data} />;
+
+  return (
+    <div>
+      <select value={selectedYear} onChange={handleYearChange}>
+        <option value="">All Years</option>
+        {years.map(
+          (year) =>
+            year !== 2022 && (
+              <option key={year} value={year}>
+                {year}
+              </option>
+            )
+        )}
+      </select>
+      <Line className="line-chart" options={options} data={data} height={height} />
+    </div>
+  );
 }
+
+LineChart.propTypes = {
+  dataI: PropTypes.array.isRequired,
+  height: PropTypes.number.isRequired,
+};
 
 export default LineChart;
