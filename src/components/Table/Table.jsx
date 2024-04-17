@@ -36,7 +36,7 @@ function Table({ data, columns, orderColumnsList = false, hiddenColumns = [], on
   const handleHeaderClick = (columnIndex) => {
     const descending = sortOrder.columnIndex === columnIndex ? !sortOrder.descending : false;
     setSortOrder({ columnIndex, descending });
-    const reorderedData = dataset.slice().sort((a, b) => {
+    const reorderedData = filteredData.slice().sort((a, b) => {
       const valueA = Object.values(a)[columnIndex];
       const valueB = Object.values(b)[columnIndex];
       if (descending) {
@@ -45,8 +45,6 @@ function Table({ data, columns, orderColumnsList = false, hiddenColumns = [], on
         return valueA < valueB ? -1 : valueA > valueB ? 1 : 0;
       }
     });
-
-    setDataset(reorderedData);
     setFilteredData(reorderedData);
   };
 
