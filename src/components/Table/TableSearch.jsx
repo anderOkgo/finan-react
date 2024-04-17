@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 import set from '../../helpers/set.json';
+import './TableSearch.css';
 
 function TableSearch({ setCurrentPage, setFilteredData, setItemsPerPage, dataset, itemsPerPage }) {
   const [searchTerm, setSearchTerm] = useState('');

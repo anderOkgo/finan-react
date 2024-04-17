@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import './Table.css';
+import './TablePagination.css';
 import TablePagination from './TablePagination';
 import set from '../../helpers/set.json';
 import TableSearch from './TableSearch';
