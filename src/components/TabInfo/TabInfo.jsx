@@ -70,7 +70,7 @@ function TabInfo({ tripInfo, balanceUntilDate, setForm, setEdit, setSelectedOpti
         label={'Trips Table'}
         columns={['Type Trip', 'Total']}
         hiddenColumns={[]}
-        orderColums={['detail', 'total']}
+        orderColumnsList={['detail', 'total']}
         data={tripInfo.filter((item) => item.detail !== 'final-trip')}
         onRowDoubleClick={handleRowDoubleClick}
       />
@@ -79,7 +79,7 @@ function TabInfo({ tripInfo, balanceUntilDate, setForm, setEdit, setSelectedOpti
         label={'Daily Balance'}
         columns={['Date', 'Balance', 'Total']}
         hiddenColumns={['currency']}
-        orderColums={[]}
+        orderColumnsList={[]}
         data={balanceUntilDate.filter((item) => item.detail !== 'final-trip')}
         onRowDoubleClick={handleRowDoubleClick}
       />

@@ -42,7 +42,7 @@ function TabGeneral({ movements, generalInfo, setForm, setEdit, setSelectedOptio
         label={'Movement Table'}
         columns={['Id', 'Date', 'Name', 'Value', 'Tag', 'Source']}
         hiddenColumns={['Id', 'id']}
-        orderColums={['id', 'datemov', 'name', 'val', 'tag', 'source']}
+        orderColumnsList={['id', 'datemov', 'name', 'val', 'tag', 'source']}
         data={movements}
         onRowDoubleClick={handleRowDoubleClick}
       />

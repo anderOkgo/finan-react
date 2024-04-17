@@ -12,7 +12,7 @@ function TabTag({ movementTag, exchangeCol }) {
         data={movementTag}
         columns={['Year', 'Month', 'Source', 'Tag', 'Value']}
         hiddenColumns={['month_number_mov']}
-        orderColums={['year_mov', 'month_mov', 'name_source', 'tag', 'montly_sum']}
+        orderColumnsList={['year_mov', 'month_mov', 'name_source', 'tag', 'montly_sum']}
       />
     </div>
   );

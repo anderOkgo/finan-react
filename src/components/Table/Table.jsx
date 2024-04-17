@@ -4,7 +4,7 @@ import './Table.css';
 import TablePagination from './TablePagination';
 import set from '../../helpers/set.json';
 
-function Table({ data, columns, orderColums = false, hiddenColumns = [], onRowDoubleClick = false, label }) {
+function Table({ data, columns, orderColumnsList = false, hiddenColumns = [], onRowDoubleClick = false, label }) {
   const [dataset, setDataset] = useState([]);
   const [header, setHeader] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -12,24 +12,24 @@ function Table({ data, columns, orderColums = false, hiddenColumns = [], onRowDo
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(set.pagination_default_items_per_page);
 
-  // Helper function useEffect to reorder data to print the table based on orderColums array
-  const reorderTableHeader = (data, orderColumns) => {
+  // Helper function useEffect to reorder data to print the table based on orderColumnsList array
+  const reorderTableHeader = (data, orderColumnsList) => {
     return data.map((item) => {
       const reorderedItem = {};
-      orderColumns.forEach((prop) => (reorderedItem[prop] = item[prop]));
+      orderColumnsList.forEach((prop) => (reorderedItem[prop] = item[prop]));
       return reorderedItem;
     });
   };
 
-  // reorder columns based on orderColums array
+  // reorder columns based on orderColumnsList array
   useEffect(() => {
     if (data && data.length > 0) {
-      const initialData = orderColums.length > 0 ? reorderTableHeader(data, orderColums) : data;
+      const initialData = orderColumnsList.length > 0 ? reorderTableHeader(data, orderColumnsList) : data;
       setDataset(initialData);
       setFilteredData(initialData);
       setHeader(Object.keys(data[0]));
     }
-  }, [data, orderColums]);
+  }, [data, orderColumnsList]);
 
   // Rendering Table header functions
   const renderTableHeader = (header) => {
@@ -127,7 +127,7 @@ Table.propTypes = {
   columns: PropTypes.any,
   hiddenColumns: PropTypes.arrayOf(PropTypes.string),
   label: PropTypes.any,
-  orderColums: PropTypes.any,
+  orderColumnsList: PropTypes.any,
   defaultItemsPerPage: PropTypes.number,
 };
 
