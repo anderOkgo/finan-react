@@ -11,6 +11,7 @@ function Table({ data, columns, orderColumnsList = false, hiddenColumns = [], on
   const [filteredData, setFilteredData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(set.pagination_default_items_per_page);
+  const [sortOrder, setSortOrder] = useState({ columnIndex: null, descending: false });
 
   // Helper function useEffect to reorder data to print the table based on orderColumnsList array
   const reorderTableHeader = (data, orderColumnsList) => {
@@ -31,7 +32,25 @@ function Table({ data, columns, orderColumnsList = false, hiddenColumns = [], on
     }
   }, [data, orderColumnsList]);
 
-  // Rendering Table header functions
+  // Function to handle header click for sorting
+  const handleHeaderClick = (columnIndex) => {
+    const descending = sortOrder.columnIndex === columnIndex ? !sortOrder.descending : false;
+    setSortOrder({ columnIndex, descending });
+    const reorderedData = dataset.slice().sort((a, b) => {
+      const valueA = Object.values(a)[columnIndex];
+      const valueB = Object.values(b)[columnIndex];
+      if (descending) {
+        return valueA < valueB ? 1 : valueA > valueB ? -1 : 0;
+      } else {
+        return valueA < valueB ? -1 : valueA > valueB ? 1 : 0;
+      }
+    });
+
+    setDataset(reorderedData);
+    setFilteredData(reorderedData);
+  };
+
+  // Render the table header with sorting capability
   const renderTableHeader = (header) => {
     const filteredHeader = header.filter((item) => !hiddenColumns.includes(item));
     return (
@@ -39,28 +58,15 @@ function Table({ data, columns, orderColumnsList = false, hiddenColumns = [], on
         {filteredHeader.map((item, index) => (
           <th key={index} onClick={() => handleHeaderClick(index)}>
             {item}
+            {sortOrder.columnIndex === index && sortOrder.descending
+              ? ' ▼'
+              : sortOrder.columnIndex === index
+              ? ' ▲'
+              : ''}
           </th>
         ))}
       </tr>
     );
-  };
-
-  // Function to handle header click for sorting
-  const handleHeaderClick = (columnIndex) => {
-    // Log the index of the clicked column to the console
-    console.log('Clicked Column Index:', columnIndex);
-
-    // Reorder dataset based on the clicked column index
-    const reorderedData = dataset.slice().sort((a, b) => {
-      const valueA = Object.values(a)[columnIndex];
-      const valueB = Object.values(b)[columnIndex];
-      return valueA < valueB ? -1 : valueA > valueB ? 1 : 0;
-    });
-
-    // Update the state with the reordered data
-    setDataset(reorderedData);
-    setFilteredData(reorderedData);
-    console.log(reorderedData);
   };
 
   const renderTableColumns = (row) => {
