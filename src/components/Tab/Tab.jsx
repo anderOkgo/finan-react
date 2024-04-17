@@ -4,13 +4,13 @@ import DataService from '../../services/data.service';
 import './Tab.css';
 import { formattedDate } from '../../helpers/operations';
 import useSwipeableTabs from '../../hooks/useSwipeableTabs';
-import TabInput from '../TabInput/TabInput';
-import TabGeneral from '../TabGeneral/TabGeneral';
-import TabTag from '../TabTag/TabTag';
-import TabBalance from '../TabBalance/TabBalance';
+import TabInput from './TabInput';
+import TabGeneral from './TabGeneral';
+import TabTag from './TabTag';
+import TabBalance from './TabBalance';
+import TabInfo from './TabInfo';
 import cyfer from '../../helpers/cyfer';
 import set from '../../helpers/set.json';
-import TabInfo from '../TabInfo/TabInfo';
 import CurrencySelector from '../currencySelector/currencySelector';
 
 function Tab({ setInit, init, setProc, proc }) {
