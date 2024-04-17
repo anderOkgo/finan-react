@@ -15,6 +15,7 @@ thead th {
   background-color: var(--main-color);
   color: var(--text-alt);
   padding: 0.4em;
+  cursor: pointer;
 }
 
 thead th:first-child {
@@ -95,11 +96,18 @@ tbody tr:hover {
 .search-box {
   display: flex;
   justify-content: space-between;
+  padding-bottom: 2px;
+  background-color: var(--background);
+}
+
+.search-box option {
+  color: var(--text);
+  background-color: var(--background);
 }
 
 .search-box-input {
   padding: 5px;
-  border: 1px solid var(--soft-gray);
+  border: 2px solid var(--soft-gray);
   border-radius: 4px;
   background-color: inherit;
   color: var(--text);
@@ -119,4 +127,23 @@ tbody tr:hover {
 .pagination-range {
   display: block;
   width: 100%;
+}
+
+.pagination-range {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 2px;
+  background: var(--soft-gray);
+  border-radius: 5px;
+  outline: none;
+  margin: 20px 0;
+}
+
+.pagination-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 15px;
+  height: 15px;
+  background: var(--main-color);
+  border-radius: 50%;
+  cursor: pointer;
 }
