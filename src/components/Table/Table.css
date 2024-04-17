@@ -136,7 +136,7 @@ tbody tr:hover {
   background: var(--soft-gray);
   border-radius: 5px;
   outline: none;
-  margin: 20px 0;
+  margin: 10px 0;
 }
 
 .pagination-range::-webkit-slider-thumb {
