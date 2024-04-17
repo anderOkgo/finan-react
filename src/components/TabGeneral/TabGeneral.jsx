@@ -40,9 +40,9 @@ function TabGeneral({ movements, generalInfo, setForm, setEdit, setSelectedOptio
       <br />
       <Table
         label={'Movement Table'}
-        columns={['Id', 'Date', 'Name', 'Value', 'Tag', 'Source']}
+        columns={['Date', 'Name', 'Value', 'Tag', 'Source']}
         hiddenColumns={['Id', 'id']}
-        orderColumnsList={['id', 'datemov', 'name', 'val', 'tag', 'source']}
+        orderColumnsList={['datemov', 'name', 'val', 'tag', 'source']}
         data={movements}
         onRowDoubleClick={handleRowDoubleClick}
       />

@@ -27,7 +27,7 @@ function Table({ data, columns, orderColumnsList = false, hiddenColumns = [], on
       const initialData = orderColumnsList.length > 0 ? reorderTableHeader(data, orderColumnsList) : data;
       setDataset(initialData);
       setFilteredData(initialData);
-      setHeader(Object.keys(data[0]));
+      setHeader(Object.keys(initialData[0]));
     }
   }, [data, orderColumnsList]);
 
@@ -37,10 +37,30 @@ function Table({ data, columns, orderColumnsList = false, hiddenColumns = [], on
     return (
       <tr>
         {filteredHeader.map((item, index) => (
-          <th key={index}>{item}</th>
+          <th key={index} onClick={() => handleHeaderClick(index)}>
+            {item}
+          </th>
         ))}
       </tr>
     );
+  };
+
+  // Function to handle header click for sorting
+  const handleHeaderClick = (columnIndex) => {
+    // Log the index of the clicked column to the console
+    console.log('Clicked Column Index:', columnIndex);
+
+    // Reorder dataset based on the clicked column index
+    const reorderedData = dataset.slice().sort((a, b) => {
+      const valueA = Object.values(a)[columnIndex];
+      const valueB = Object.values(b)[columnIndex];
+      return valueA < valueB ? -1 : valueA > valueB ? 1 : 0;
+    });
+
+    // Update the state with the reordered data
+    setDataset(reorderedData);
+    setFilteredData(reorderedData);
+    console.log(reorderedData);
   };
 
   const renderTableColumns = (row) => {
