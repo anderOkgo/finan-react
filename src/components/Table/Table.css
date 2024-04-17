@@ -107,7 +107,7 @@ tbody tr:hover {
 
 .search-box-input {
   padding: 5px;
-  border: 2px solid var(--soft-gray);
+  border: 1px solid var(--soft-gray);
   border-radius: 4px;
   background-color: inherit;
   color: var(--text);
