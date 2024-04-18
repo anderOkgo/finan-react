@@ -9,10 +9,11 @@ import TableSearch from './TableSearch';
 function Table({ data, columns, orderColumnsList = false, hiddenColumns = [], onRowDoubleClick = false, label }) {
   const [dataset, setDataset] = useState([]);
   const [header, setHeader] = useState([]);
-  const [filteredData, setFilteredData] = useState([]);
+  const [filteredData, setFilteredData] = useState(data);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(set.pagination_default_items_per_page);
   const [sortOrder, setSortOrder] = useState({ columnIndex: null, descending: false });
+  const currentData = filteredData.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
   // Helper function useEffect to reorder data to print the table based on orderColumnsList array
   const reorderTableHeader = (data, orderColumnsList) => {
@@ -77,7 +78,6 @@ function Table({ data, columns, orderColumnsList = false, hiddenColumns = [], on
   };
 
   const renderTableRows = () => {
-    const currentData = filteredData.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
     return currentData.map((item, index) => (
       <tr key={index} onDoubleClick={() => (onRowDoubleClick ? onRowDoubleClick(item) : false)}>
         {renderTableColumns(item)}
@@ -90,13 +90,7 @@ function Table({ data, columns, orderColumnsList = false, hiddenColumns = [], on
       <div className="table-container">
         <h2>{label}</h2>
         <hr />
-        <TableSearch
-          setCurrentPage={setCurrentPage}
-          setFilteredData={setFilteredData}
-          setItemsPerPage={setItemsPerPage}
-          dataset={dataset}
-          itemsPerPage={itemsPerPage}
-        />
+        <TableSearch {...{ setCurrentPage, setFilteredData, setItemsPerPage, dataset, itemsPerPage }} />
         <table>
           <thead>
             {columns === undefined || columns.length === 0
@@ -106,12 +100,7 @@ function Table({ data, columns, orderColumnsList = false, hiddenColumns = [], on
           <tbody>{renderTableRows()}</tbody>
         </table>
         <div className="pagination-container">
-          <TablePagination
-            currentPage={currentPage}
-            setCurrentPage={setCurrentPage}
-            filteredData={filteredData}
-            itemsPerPage={itemsPerPage}
-          />
+          <TablePagination {...{ currentPage, setCurrentPage, filteredData, itemsPerPage }} />
         </div>
         <br />
       </div>
