@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import Table from '../Table/Table';
 import { useState } from 'react';
-import Bank from '../InfoBanner/InfoBanner';
+import InfoBanner from '../InfoBanner/InfoBanner';
 
 function TabInfo({ tripInfo, balanceUntilDate, setForm, setEdit, setSelectedOption }) {
   const [selectedRow, setSelectedRow] = useState(null);
@@ -64,7 +64,7 @@ function TabInfo({ tripInfo, balanceUntilDate, setForm, setEdit, setSelectedOpti
   };
   return (
     <div>
-      <Bank {...{ data: tripInfo[5]['total'], label: 'Total Final Trip' }} />
+      <InfoBanner {...{ data: tripInfo[5]['total'], label: 'Total Final Trip' }} />
       <br />
       <Table
         label={'Trips Table'}

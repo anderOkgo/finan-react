@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types';
 import Table from '../Table/Table';
-import Bank from '../InfoBanner/InfoBanner';
+import InfoBanner from '../InfoBanner/InfoBanner';
 
 function TabTag({ movementTag, exchangeCol }) {
   return (
     <div>
-      <Bank {...{ data: exchangeCol['total'], label: 'Total Exchange Col' }} />
+      <InfoBanner {...{ data: exchangeCol['total'], label: 'Total Exchange Col' }} />
       <br />
       <Table
         label={'Tag Table'}

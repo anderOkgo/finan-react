@@ -2,14 +2,14 @@ import PropTypes from 'prop-types';
 import { moneyFormat } from '../../helpers/operations';
 import './InfoBanner.css';
 
-export default function Bank({ label, data }) {
+export default function InfoBanner({ label, data }) {
   return (
-    <div className="label-bank">
+    <div className="label-InfoBanner">
       {label}: {moneyFormat(data)}
     </div>
   );
 }
-Bank.propTypes = {
+InfoBanner.propTypes = {
   init: PropTypes.any,
   proc: PropTypes.any,
   data: PropTypes.any,

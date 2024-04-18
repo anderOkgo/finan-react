@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import Table from '../Table/Table';
 import { useState } from 'react';
-import Bank from '../InfoBanner/InfoBanner';
+import InfoBanner from '../InfoBanner/InfoBanner';
 
 function TabGeneral({ movements, generalInfo, setForm, setEdit, setSelectedOption, currency }) {
   const [selectedRow, setSelectedRow] = useState(null);
@@ -36,7 +36,7 @@ function TabGeneral({ movements, generalInfo, setForm, setEdit, setSelectedOptio
   };
   return (
     <div>
-      <Bank {...{ data: generalInfo['total'], label: 'Total Save AU' }} />
+      <InfoBanner {...{ data: generalInfo['total'], label: 'Total Save AU' }} />
       <br />
       <Table
         label={'Movement Table'}

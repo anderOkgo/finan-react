@@ -1,13 +1,13 @@
 import PropTypes from 'prop-types';
 import Table from '../Table/Table';
-import Bank from '../InfoBanner/InfoBanner';
+import InfoBanner from '../InfoBanner/InfoBanner';
 import LineChart from '../Charts/LineChart';
 import CountDownEnd from '../CountDownEnd/CountDownEnd';
 
 function TabBalance({ setInit, init, setProc, proc, bankTotal, balance }) {
   return (
     <div>
-      <Bank {...{ setInit, init, setProc, proc, data: bankTotal, label: 'Total Bank' }} />
+      <InfoBanner {...{ setInit, init, setProc, proc, data: bankTotal, label: 'Total InfoBanner' }} />
       <br />
       <CountDownEnd />
       <br />
