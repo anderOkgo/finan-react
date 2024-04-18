@@ -6,13 +6,13 @@ const BASE_URL = set.base_url;
 const API_URL = BASE_URL + set.api_url;
 
 const balanceMonthly = async () => {
-  return await helpHttp.get(API_URL + 'totalbank', {});
+  return await helpHttp.get(API_URL + 'initial-load', {});
 };
 
 const formatToken = (token) => 'Bearer ' + token;
 
-const totalBank = async (data) => {
-  return await helpHttp.post(API_URL + 'totalbank', {
+const initialLoad = async (data) => {
+  return await helpHttp.post(API_URL + 'initial-load', {
     body: data,
     token: formatToken(AuthService.getCurrentUser().token),
   });
@@ -42,6 +42,6 @@ const del = async (par) => {
   });
 };
 
-const DataService = { totalBank, insert, update, del, boot, balanceMonthly };
+const DataService = { initialLoad, insert, update, del, boot, balanceMonthly };
 
 export default DataService;

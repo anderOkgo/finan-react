@@ -111,7 +111,7 @@ function Tab({ setInit, init, setProc, proc }) {
       }
 
       if (init) {
-        const resp = await DataService.totalBank({ date: formattedDate(), currency: currency });
+        const resp = await DataService.initialLoad({ date: formattedDate(), currency: currency });
         if (!resp?.err) {
           localStorage.setItem('resp', cyfer().cy(JSON.stringify(resp), set.salt));
           writeData(resp);
