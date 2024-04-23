@@ -44,7 +44,7 @@ function TableSearch({ setCurrentPage, setFilteredData, setItemsPerPage, dataset
         id={uniqueId + '1'}
         className="search-box-input"
         type="text"
-        value={searchTerm + '1'}
+        value={searchTerm}
         onChange={(e) => handleSearch(e.target.value)}
         placeholder="Search..."
       />
