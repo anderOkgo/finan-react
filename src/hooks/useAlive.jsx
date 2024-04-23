@@ -8,10 +8,7 @@ export const useAlive = () => {
   const [online, setOnline] = useState(true); // Indicates if application is online
 
   useEffect(() => {
-    const boot = async () => {
-      const resp = await DataService.boot();
-      setInit(resp?.err ? false : true);
-    };
+    boot();
 
     // If online and not initialized, trigger the boot process
     if (online && !init) setProc(true) & boot() & setProc(false);
@@ -34,5 +31,10 @@ export const useAlive = () => {
     };
   }, [init, online]);
 
-  return { init, setInit, proc, setProc };
+  const boot = async () => {
+    const resp = await DataService.boot();
+    setInit(resp?.err ? false : true);
+  };
+
+  return { init, setInit, proc, setProc, boot };
 };

@@ -1,8 +1,8 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
-import DataService from '../../services/data.service';
-import './Tab.css';
 import { formattedDate } from '../../helpers/operations';
+import set from '../../helpers/set.json';
+import DataService from '../../services/data.service';
 import useSwipeableTabs from '../../hooks/useSwipeableTabs';
 import TabInput from './TabInput';
 import TabGeneral from './TabGeneral';
@@ -10,18 +10,18 @@ import TabTag from './TabTag';
 import TabBalance from './TabBalance';
 import TabInfo from './TabInfo';
 import cyfer from '../../helpers/cyfer';
-import set from '../../helpers/set.json';
 import CurrencySelector from '../currencySelector/currencySelector';
+import './Tab.css';
 
 function Tab({ setInit, init, setProc, proc }) {
   const [bankTotal, setBankTotal] = useState(0);
   const [balance, setBalance] = useState([]);
   const [movementTag, setMovementTag] = useState([]);
   const [movements, setMovements] = useState([]);
-  const [totalDay, setTotalDay] = useState([]);
+  const [totalDay, setTotalDay] = useState(0);
   const [edit, setEdit] = useState(false);
-  const [generalInfo, setGeneralInfo] = useState([]);
-  const [exchangeCol, setExchangeCol] = useState([]);
+  const [generalInfo, setGeneralInfo] = useState({});
+  const [exchangeCol, setExchangeCol] = useState({});
   const [tripInfo, setTripInfo] = useState([]);
   const [balanceUntilDate, setBalanceUntilDate] = useState([]);
   const [currency, setCurrency] = useState('COP');
@@ -172,7 +172,6 @@ Tab.propTypes = {
   init: PropTypes.any,
   setProc: PropTypes.func.isRequired,
   proc: PropTypes.any,
-  setEdit: PropTypes.func,
 };
 
 export default Tab;

@@ -23,12 +23,12 @@ TabInput.propTypes = {
   init: PropTypes.any,
   setProc: PropTypes.func.isRequired,
   proc: PropTypes.any,
-  totalDay: PropTypes.any,
-  setForm: PropTypes.any,
-  form: PropTypes.any,
-  edit: PropTypes.any,
-  setEdit: PropTypes.any,
-  currency: PropTypes.any,
+  totalDay: PropTypes.number,
+  setForm: PropTypes.func.isRequired,
+  form: PropTypes.objectOf(PropTypes.string),
+  edit: PropTypes.bool,
+  setEdit: PropTypes.func.isRequired,
+  currency: PropTypes.string,
 };
 
 export default TabInput;

@@ -5,7 +5,7 @@ import InfoBanner from '../InfoBanner/InfoBanner';
 function TabTag({ movementTag, exchangeCol }) {
   return (
     <div>
-      <InfoBanner {...{ data: exchangeCol?.['total'] ?? -1, label: 'Total Exchange Col' }} />
+      <InfoBanner {...{ data: parseInt(exchangeCol?.['total']) ?? -1, label: 'Total Exchange Col' }} />
       <br />
       <Table
         label={'Tag Table'}
@@ -19,8 +19,8 @@ function TabTag({ movementTag, exchangeCol }) {
 }
 
 TabTag.propTypes = {
-  movementTag: PropTypes.any,
-  exchangeCol: PropTypes.any,
+  movementTag: PropTypes.arrayOf(PropTypes.object).isRequired,
+  exchangeCol: PropTypes.object.isRequired,
 };
 
 export default TabTag;

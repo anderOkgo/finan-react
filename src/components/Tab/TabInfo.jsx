@@ -27,8 +27,8 @@ function TabInfo({ tripInfo, balanceUntilDate }) {
 }
 
 TabInfo.propTypes = {
-  tripInfo: PropTypes.array,
-  balanceUntilDate: PropTypes.array,
+  tripInfo: PropTypes.PropTypes.arrayOf(PropTypes.object).isRequired,
+  balanceUntilDate: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export default TabInfo;

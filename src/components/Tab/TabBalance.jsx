@@ -25,8 +25,8 @@ function TabBalance({ bankTotal, balance }) {
 }
 
 TabBalance.propTypes = {
-  bankTotal: PropTypes.any,
-  balance: PropTypes.array.isRequired,
+  bankTotal: PropTypes.number,
+  balance: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export default TabBalance;

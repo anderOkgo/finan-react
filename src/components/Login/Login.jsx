@@ -74,9 +74,9 @@ const Login = ({ setInit, init, setProc }) => {
 
 Login.propTypes = {
   setInit: PropTypes.func.isRequired,
-  init: PropTypes.any,
+  init: PropTypes.any.isRequired,
   setProc: PropTypes.func.isRequired,
-  proc: PropTypes.any,
+  proc: PropTypes.any.isRequired,
 };
 
 export default Login;

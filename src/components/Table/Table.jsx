@@ -34,7 +34,7 @@ function Table({
   // reorder columns based on orderColumnsList array
   useEffect(() => {
     if (data && data.length > 0) {
-      const initialData = orderColumnsList.length > 0 ? reorderTableHeader(data, orderColumnsList) : data;
+      const initialData = orderColumnsList?.length ?? 0 > 0 ? reorderTableHeader(data, orderColumnsList) : data;
       setDataset(initialData);
       setFilteredData(initialData);
       setHeader(Object.keys(initialData[0]));
@@ -114,10 +114,10 @@ function Table({
 Table.propTypes = {
   data: PropTypes.arrayOf(PropTypes.object),
   onRowDoubleClick: PropTypes.any,
-  columns: PropTypes.any,
+  columns: PropTypes.array,
   hiddenColumns: PropTypes.arrayOf(PropTypes.string),
-  label: PropTypes.any,
-  orderColumnsList: PropTypes.any,
+  label: PropTypes.string,
+  orderColumnsList: PropTypes.array,
   defaultItemsPerPage: PropTypes.number,
 };
 

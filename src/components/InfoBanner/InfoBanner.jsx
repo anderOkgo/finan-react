@@ -10,6 +10,6 @@ export default function InfoBanner({ label, data }) {
   );
 }
 InfoBanner.propTypes = {
-  data: PropTypes.any,
-  label: PropTypes.any,
+  data: PropTypes.number,
+  label: PropTypes.string,
 };

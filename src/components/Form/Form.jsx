@@ -272,11 +272,11 @@ Form.propTypes = {
   init: PropTypes.any,
   setProc: PropTypes.func.isRequired,
   proc: PropTypes.any,
-  setForm: PropTypes.any,
-  form: PropTypes.any,
-  edit: PropTypes.any,
-  setEdit: PropTypes.any,
-  currency: PropTypes.any,
+  setForm: PropTypes.func,
+  form: PropTypes.objectOf(PropTypes.string),
+  edit: PropTypes.bool,
+  setEdit: PropTypes.func,
+  currency: PropTypes.string,
 };
 
 export default Form;

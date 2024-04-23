@@ -36,7 +36,7 @@ function TabGeneral({ movements, generalInfo, setForm, setEdit, setSelectedOptio
   };
   return (
     <div>
-      <InfoBanner {...{ data: generalInfo?.['total'] ?? -1, label: 'Total Save AU' }} />
+      <InfoBanner {...{ data: parseInt(generalInfo?.['total']) ?? -1, label: 'Total Save AU' }} />
       <br />
       <Table
         label={'Movement Table'}
@@ -52,12 +52,12 @@ function TabGeneral({ movements, generalInfo, setForm, setEdit, setSelectedOptio
 }
 
 TabGeneral.propTypes = {
-  movements: PropTypes.any,
-  generalInfo: PropTypes.any,
-  setForm: PropTypes.any,
-  setEdit: PropTypes.any,
-  setSelectedOption: PropTypes.any,
-  currency: PropTypes.any,
+  movements: PropTypes.arrayOf(PropTypes.object).isRequired,
+  generalInfo: PropTypes.object.isRequired,
+  setForm: PropTypes.func,
+  setEdit: PropTypes.func,
+  setSelectedOption: PropTypes.func,
+  currency: PropTypes.string,
 };
 
 export default TabGeneral;
