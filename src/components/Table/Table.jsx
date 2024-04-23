@@ -39,7 +39,8 @@ function Table({
       setFilteredData(initialData);
       setHeader(Object.keys(initialData[0]));
     }
-  }, [data, orderColumnsList]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data]);
 
   // Function to handle header click for sorting
   const handleHeaderClick = (columnIndex) => {
