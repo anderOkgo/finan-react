@@ -173,6 +173,7 @@ function Form({ setInit, init, setForm, form, proc, setProc, edit, setEdit, curr
             name="name"
             value={form.name}
             onChange={handleChangeInput}
+            autoComplete="off"
             required
           />
         </div>

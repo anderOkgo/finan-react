@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { Line } from 'react-chartjs-2';
 import PropTypes from 'prop-types';
 import './LineChart.css';
+import { generateUniqueId } from '../../helpers/operations';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -70,9 +71,11 @@ function LineChart({ dataI = [], height }) {
     ],
   };
 
+  const uniqueId = generateUniqueId();
+
   return (
     <div>
-      <select value={selectedYear} onChange={handleYearChange}>
+      <select className="search-box-input" id={uniqueId} value={selectedYear} onChange={handleYearChange}>
         <option value="">All Years</option>
         {years.map(
           (year) =>
