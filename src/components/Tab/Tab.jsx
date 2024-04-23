@@ -99,7 +99,7 @@ function Tab({ setInit, init, setProc, proc }) {
         setMovements(movements);
         setBankTotal(totalBank?.[0]?.total_bank ?? -1);
         setBalance(balance);
-        setTotalDay(totalDay?.[0]?.Total_day ?? -1);
+        setTotalDay(totalDay?.[0]?.Total_day ?? 0);
         setGeneralInfo(generalInfo?.find((item) => item.detail === 'total-save-au'));
         setExchangeCol(generalInfo?.find((item) => item.detail === 'Exchange Colombia'));
         setTripInfo(tripInfo);
