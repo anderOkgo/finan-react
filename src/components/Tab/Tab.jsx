@@ -56,29 +56,27 @@ function Tab({ setInit, init, setProc, proc }) {
       id: 2,
       icon: '☷',
       label: 'General',
-      component: selectedOption === 2 && (
-        <TabGeneral {...{ movements, generalInfo, setForm, form, setEdit, setSelectedOption, currency }} />
+      component: true && (
+        <TabGeneral {...{ movements, generalInfo, setForm, setEdit, setSelectedOption, currency }} />
       ),
     },
     {
       id: 3,
       icon: '♞',
       label: 'Tag',
-      component: selectedOption === 3 && <TabTag {...{ movementTag, exchangeCol }} />,
+      component: true && <TabTag {...{ movementTag, exchangeCol }} />,
     },
     {
       id: 4,
       icon: '❆',
       label: 'Balance',
-      component: selectedOption === 4 && <TabBalance {...{ setInit, init, setProc, proc, bankTotal, balance }} />,
+      component: true && <TabBalance {...{ bankTotal, balance }} />,
     },
     {
       id: 5,
       icon: '⚅',
       label: 'Info',
-      component: selectedOption === 5 && (
-        <TabInfo {...{ setInit, init, setProc, proc, bankTotal, balance, tripInfo, balanceUntilDate }} />
-      ),
+      component: true && <TabInfo {...{ tripInfo, balanceUntilDate }} />,
     },
   ];
 
@@ -87,13 +85,21 @@ function Tab({ setInit, init, setProc, proc }) {
       setProc(true);
 
       const writeData = (resp) => {
-        const { totalBank, balance, movementTag, movements, totalDay, generalInfo, tripInfo, balanceUntilDate } =
-          resp;
+        const {
+          totalBank = [],
+          balance = [],
+          movementTag = [],
+          movements = [],
+          totalDay = [],
+          generalInfo = [],
+          tripInfo = [],
+          balanceUntilDate = [],
+        } = resp;
         setMovementTag(movementTag);
         setMovements(movements);
-        setBankTotal(totalBank?.[0]?.total_bank ?? 0);
+        setBankTotal(totalBank?.[0]?.total_bank ?? -1);
         setBalance(balance);
-        setTotalDay(totalDay?.[0]?.Total_day ?? 0);
+        setTotalDay(totalDay?.[0]?.Total_day ?? -1);
         setGeneralInfo(generalInfo?.find((item) => item.detail === 'total-save-au'));
         setExchangeCol(generalInfo?.find((item) => item.detail === 'Exchange Colombia'));
         setTripInfo(tripInfo);
@@ -166,7 +172,7 @@ Tab.propTypes = {
   init: PropTypes.any,
   setProc: PropTypes.func.isRequired,
   proc: PropTypes.any,
-  setEdit: PropTypes.any,
+  setEdit: PropTypes.func,
 };
 
 export default Tab;

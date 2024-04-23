@@ -6,10 +6,17 @@ import TablePagination from './TablePagination';
 import set from '../../helpers/set.json';
 import TableSearch from './TableSearch';
 
-function Table({ data, columns, orderColumnsList = false, hiddenColumns = [], onRowDoubleClick = false, label }) {
+function Table({
+  data = [],
+  columns = [],
+  orderColumnsList = false,
+  hiddenColumns = [],
+  onRowDoubleClick = false,
+  label = 'No label',
+}) {
   const [dataset, setDataset] = useState([]);
   const [header, setHeader] = useState([]);
-  const [filteredData, setFilteredData] = useState(data);
+  const [filteredData, setFilteredData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(set.pagination_default_items_per_page);
   const [sortOrder, setSortOrder] = useState({ columnIndex: null, descending: false });
@@ -92,11 +99,7 @@ function Table({ data, columns, orderColumnsList = false, hiddenColumns = [], on
         <hr />
         <TableSearch {...{ setCurrentPage, setFilteredData, setItemsPerPage, dataset, itemsPerPage }} />
         <table>
-          <thead>
-            {columns === undefined || columns.length === 0
-              ? renderTableHeader(header)
-              : renderTableHeader(columns)}
-          </thead>
+          <thead>{columns.length === 0 ? renderTableHeader(header) : renderTableHeader(columns)}</thead>
           <tbody>{renderTableRows()}</tbody>
         </table>
         <div className="pagination-container">

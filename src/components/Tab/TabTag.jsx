@@ -5,7 +5,7 @@ import InfoBanner from '../InfoBanner/InfoBanner';
 function TabTag({ movementTag, exchangeCol }) {
   return (
     <div>
-      <InfoBanner {...{ data: exchangeCol['total'], label: 'Total Exchange Col' }} />
+      <InfoBanner {...{ data: exchangeCol?.['total'] ?? -1, label: 'Total Exchange Col' }} />
       <br />
       <Table
         label={'Tag Table'}

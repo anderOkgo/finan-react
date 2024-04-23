@@ -36,7 +36,7 @@ function TabGeneral({ movements, generalInfo, setForm, setEdit, setSelectedOptio
   };
   return (
     <div>
-      <InfoBanner {...{ data: generalInfo['total'], label: 'Total Save AU' }} />
+      <InfoBanner {...{ data: generalInfo?.['total'] ?? -1, label: 'Total Save AU' }} />
       <br />
       <Table
         label={'Movement Table'}
@@ -55,7 +55,6 @@ TabGeneral.propTypes = {
   movements: PropTypes.any,
   generalInfo: PropTypes.any,
   setForm: PropTypes.any,
-  form: PropTypes.any,
   setEdit: PropTypes.any,
   setSelectedOption: PropTypes.any,
   currency: PropTypes.any,

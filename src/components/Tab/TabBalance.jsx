@@ -4,10 +4,10 @@ import InfoBanner from '../InfoBanner/InfoBanner';
 import LineChart from '../Charts/LineChart';
 import CountDownEnd from '../CountDownEnd/CountDownEnd';
 
-function TabBalance({ setInit, init, setProc, proc, bankTotal, balance }) {
+function TabBalance({ bankTotal, balance }) {
   return (
     <div>
-      <InfoBanner {...{ setInit, init, setProc, proc, data: bankTotal, label: 'Total InfoBanner' }} />
+      <InfoBanner {...{ data: bankTotal, label: 'Total Bank' }} />
       <br />
       <CountDownEnd />
       <br />
@@ -25,10 +25,6 @@ function TabBalance({ setInit, init, setProc, proc, bankTotal, balance }) {
 }
 
 TabBalance.propTypes = {
-  setInit: PropTypes.func.isRequired,
-  init: PropTypes.any,
-  setProc: PropTypes.func.isRequired,
-  proc: PropTypes.any,
   bankTotal: PropTypes.any,
   balance: PropTypes.array.isRequired,
 };

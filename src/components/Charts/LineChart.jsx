@@ -29,7 +29,7 @@ export const options = {
   },
 };
 
-function LineChart({ dataI, height }) {
+function LineChart({ dataI = [], height }) {
   const [selectedYear, setSelectedYear] = useState('');
 
   useEffect(() => {
