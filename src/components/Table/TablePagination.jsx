@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import set from '../../helpers/set.json';
 import { useEffect, useState } from 'react';
+import './TablePagination.css';
 
 function TablePagination({ currentPage, setCurrentPage, filteredData, itemsPerPage }) {
   const [totalPages, setTotalPages] = useState(1);
