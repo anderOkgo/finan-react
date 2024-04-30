@@ -25,7 +25,7 @@ TabInput.propTypes = {
   proc: PropTypes.any,
   totalDay: PropTypes.number,
   setForm: PropTypes.func.isRequired,
-  form: PropTypes.objectOf(PropTypes.string),
+  form: PropTypes.objectOf(PropTypes.any),
   edit: PropTypes.bool,
   setEdit: PropTypes.func.isRequired,
   currency: PropTypes.string,

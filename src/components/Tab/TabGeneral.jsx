@@ -11,22 +11,24 @@ function TabGeneral({ movements, generalInfo, setForm, setEdit, setSelectedOptio
     let type;
     switch (row.source.toLowerCase()) {
       case 'bill':
-        document.querySelector('#type').selectedIndex = 2;
+        document.querySelector('#movement_type').selectedIndex = 2;
         type = 2;
         break;
       case 'income':
-        document.querySelector('#type').selectedIndex = 1;
+        document.querySelector('#movement_type').selectedIndex = 1;
         type = 1;
         break;
       default:
-        document.querySelector('#type').selectedIndex = '';
+        document.querySelector('#movement_type').selectedIndex = '';
         break;
     }
-
     const outputObject = {
-      ...row,
-      datemov: row.datemov,
-      type: type,
+      id: row.id,
+      movement_name: row.name,
+      movement_val: row.val,
+      movement_tag: row.tag,
+      movement_date: row.datemov,
+      movement_type: type,
       currency: currency,
     };
 

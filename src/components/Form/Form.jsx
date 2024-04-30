@@ -15,11 +15,11 @@ function Form({ setInit, init, setForm, form, proc, setProc, edit, setEdit, curr
   const buttonRef = useRef(null);
   const initialForm = useMemo(
     () => ({
-      name: '',
-      val: '',
-      type: '',
-      datemov: '',
-      tag: '',
+      movement_name: '',
+      movement_val: '',
+      movement_type: '',
+      movement_date: '',
+      movement_tag: '',
       currency: '',
     }),
     []
@@ -163,15 +163,15 @@ function Form({ setInit, init, setForm, form, proc, setProc, edit, setEdit, curr
       <form onSubmit={(e) => handleAction(e, '')}>
         <input type="hidden" name="currency" onChange={handleChangeInput} value={currency} />
         <div className="form-group">
-          <label className="form-label" htmlFor="name">
+          <label className="form-label" htmlFor="movement_name">
             Name
           </label>
           <input
-            id="name"
+            id="movement_name"
             type="text"
             className="form-control"
-            name="name"
-            value={form.name}
+            name="movement_name"
+            value={form.movement_name}
             onChange={handleChangeInput}
             autoComplete="off"
             required
@@ -179,30 +179,30 @@ function Form({ setInit, init, setForm, form, proc, setProc, edit, setEdit, curr
         </div>
 
         <div className="form-group">
-          <label className="form-label" htmlFor="val">
+          <label className="form-label" htmlFor="movement_val">
             Value
           </label>
           <input
-            id="val"
+            id="movement_val"
             type="number"
             className="form-control"
-            name="val"
-            value={form.val}
+            name="movement_val"
+            value={form.movement_val}
             onChange={handleChangeInput}
             required
           />
         </div>
         <div className="form-group">
-          <label className="form-label" htmlFor="type">
+          <label className="form-label" htmlFor="movement_type">
             Type
           </label>
           <select
-            id="type"
+            id="movement_type"
             className="form-control"
-            name="type"
+            name="movement_type"
             onChange={handleChangeInput}
             required
-            value={form.type}
+            value={form.movement_type}
             ref={buttonRef}
           >
             {set.form_type_options.map((option) => (
@@ -214,30 +214,30 @@ function Form({ setInit, init, setForm, form, proc, setProc, edit, setEdit, curr
         </div>
 
         <div className="form-group">
-          <label className="form-label" htmlFor="datemov">
+          <label className="form-label" htmlFor="movement_date">
             Date:
           </label>
           <input
             className="form-control"
             type="datetime-local"
-            id="datemov"
-            name="datemov"
-            value={form.datemov}
+            id="movement_date"
+            name="movement_date"
+            value={form.movement_date}
             onChange={handleChangeInput}
             required
           ></input>
         </div>
 
         <div className="form-group">
-          <label className="form-label" htmlFor="tag">
+          <label className="form-label" htmlFor="movement_tag">
             Tag:
           </label>
           <input
-            id="tag"
+            id="movement_tag"
             type="text"
             className="form-control"
-            name="tag"
-            value={form.tag}
+            name="movement_tag"
+            value={form.movement_tag}
             onChange={handleChangeInput}
             required
           />

@@ -29,11 +29,11 @@ function Tab({ setInit, init, setProc, proc }) {
 
   const initialForm = useMemo(
     () => ({
-      name: '',
-      val: '',
-      type: '',
-      datemov: '',
-      tag: '',
+      movement_name: '',
+      movement_val: '',
+      movement_type: '',
+      movement_date: '',
+      movement_tag: '',
       currency: currency,
     }),
     [currency]
