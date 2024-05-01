@@ -29,7 +29,6 @@ const insert = async (par) => {
 };
 
 const update = async (par) => {
-  console.log(par);
   return await helpHttp.put(API_URL + 'update/' + par.id, {
     body: par,
     token: formatToken(AuthService.getCurrentUser().token),

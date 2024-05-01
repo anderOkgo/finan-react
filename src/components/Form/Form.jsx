@@ -148,7 +148,7 @@ function Form({ setInit, init, setForm, form, proc, setProc, edit, setEdit, curr
       }
 
       if (actionType === 'del') {
-        window.confirm(`Are you sure to delete: '${form.name}'`) && exeAction(actionType);
+        window.confirm(`Are you sure to delete: '${form.movement_name}'`) && exeAction(actionType);
       } else {
         actionType = edit ? 'update' : 'insert';
         exeAction(actionType);
@@ -274,7 +274,7 @@ Form.propTypes = {
   setProc: PropTypes.func.isRequired,
   proc: PropTypes.any,
   setForm: PropTypes.func,
-  form: PropTypes.objectOf(PropTypes.string),
+  form: PropTypes.objectOf(PropTypes.any),
   edit: PropTypes.bool,
   setEdit: PropTypes.func,
   currency: PropTypes.string,
