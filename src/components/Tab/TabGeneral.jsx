@@ -24,6 +24,7 @@ function TabGeneral({ movements, generalInfo, setForm, setEdit, setSelectedOptio
     }
     const outputObject = {
       id: row.id,
+      source: row.source,
       movement_name: row.name,
       movement_val: row.val,
       movement_tag: row.tag,

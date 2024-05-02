@@ -49,8 +49,10 @@ function Form({ setInit, init, setForm, form, proc, setProc, edit, setEdit, curr
 
   const formatOffData = (data) => {
     return data.map((obj) => {
-      if (obj.id === undefined || obj.source === undefined) {
+      if (obj.id === undefined) {
         obj.id = null;
+      }
+      if (obj.source === undefined) {
         obj.source = null;
       }
       return obj;
