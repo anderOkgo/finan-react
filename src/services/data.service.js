@@ -14,11 +14,11 @@ const formatToken = (token) => 'Bearer ' + token;
 const formatParams = (par) => {
   const { movement_name, movement_val, movement_type, movement_date, movement_tag, currency } = par;
   return {
-    movement_name: movement_name.str.replace(/^\s+|\s+$/g, ''),
+    movement_name: movement_name.trim(),
     movement_val: parseInt(movement_val, 10),
     movement_type: parseInt(movement_type, 10),
     movement_date,
-    movement_tag: movement_tag.str.replace(/^\s+|\s+$/g, ''),
+    movement_tag: movement_tag.trim(),
     currency,
   };
 };
