@@ -60,7 +60,7 @@ const getUserName = (token) => {
     const base64 = base64Url.replace('-', '+').replace(/_/g, '/');
     const decodedPayload = atob(base64);
     const decodedJson = JSON.parse(decodedPayload);
-    return decodedJson.sub || decodedJson.username; // Assuming username is stored in "sub" or "username" claim
+    return { role: decodedJson.role, username: decodedJson.username };
   } catch (error) {
     console.error('Error decoding JWT token:', error);
     return null;

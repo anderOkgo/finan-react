@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import { formattedDate } from '../../helpers/operations';
-import set from '../../helpers/set.json';
+import set from '../../helpers/set.json'; // Ensure set.json is properly defined
 import DataService from '../../services/data.service';
 import useSwipeableTabs from '../../hooks/useSwipeableTabs';
 import TabInput from './TabInput';
@@ -12,6 +12,7 @@ import TabInfo from './TabInfo';
 import cyfer from '../../helpers/cyfer';
 import CurrencySelector from '../currencySelector/currencySelector';
 import './Tab.css';
+import AuthService from '../../services/auth.service'; // Ensure AuthService is properly defined and imported
 
 function Tab({ setInit, init, setProc, proc }) {
   const [bankTotal, setBankTotal] = useState(0);
@@ -25,7 +26,10 @@ function Tab({ setInit, init, setProc, proc }) {
   const [tripInfo, setTripInfo] = useState([]);
   const [balanceUntilDate, setBalanceUntilDate] = useState([]);
   const [currency, setCurrency] = useState('COP');
-  const { selectedOption, setSelectedOption, handleTouchStart, handleTouchEnd } = useSwipeableTabs(5, 170);
+  const { selectedOption, setSelectedOption, handleTouchStart, handleTouchEnd } = useSwipeableTabs(4, 170);
+  const { username, role } = AuthService.getUserName(AuthService.getCurrentUser().token);
+  const [userName] = useState(username);
+  const [UserRole] = useState(role);
 
   const initialForm = useMemo(
     () => ({
@@ -72,13 +76,16 @@ function Tab({ setInit, init, setProc, proc }) {
       label: 'Balance',
       component: true && <TabBalance {...{ bankTotal, balance, balanceUntilDate }} />,
     },
-    {
+  ];
+
+  if (UserRole === 'admin') {
+    tabsData.push({
       id: 5,
       icon: '⚅',
       label: 'Info',
       component: true && <TabInfo {...{ tripInfo, generalInfo, exchangeCol }} />,
-    },
-  ];
+    });
+  }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -95,19 +102,20 @@ function Tab({ setInit, init, setProc, proc }) {
           tripInfo = [],
           balanceUntilDate = [],
         } = resp;
-        setMovementTag(movementTag);
-        setMovements(movements);
-        setBankTotal(totalBank?.[0]?.total_bank ?? -1);
-        setBalance(balance);
-        setTotalDay(totalDay?.[0]?.Total_day ?? 0);
-        setGeneralInfo(generalInfo?.find((item) => item.detail === 'total-save-au'));
-        setExchangeCol(generalInfo?.find((item) => item.detail === 'Exchange Colombia'));
-        setTripInfo(tripInfo);
-        setBalanceUntilDate(balanceUntilDate);
+        const generalInfoFormat = Array.isArray(generalInfo.message) ? generalInfo.message : [];
+        setMovementTag(movementTag.message);
+        setMovements(movements.message);
+        setBankTotal(totalBank.message?.[0]?.total_bank ?? -1);
+        setBalance(balance.message);
+        setTotalDay(totalDay.message?.[0]?.Total_day ?? 0);
+        setGeneralInfo(generalInfoFormat?.find((item) => item.detail === 'total-save-au'));
+        setExchangeCol(generalInfoFormat?.find((item) => item.detail === 'Exchange Colombia'));
+        setTripInfo(Array.isArray(tripInfo.message) ? tripInfo.message : []);
+        setBalanceUntilDate(Array.isArray(balanceUntilDate.message) ? balanceUntilDate.message : []);
       };
 
       try {
-        var localResp = localStorage.getItem('resp');
+        var localResp = localStorage.getItem('storage');
         localResp && (localResp = JSON.parse(cyfer().dcy(localResp, set.salt)));
         if (Object.keys(localResp || {}).length !== 0) {
           writeData(localResp);
@@ -119,7 +127,7 @@ function Tab({ setInit, init, setProc, proc }) {
       if (init) {
         const resp = await DataService.initialLoad({ date: formattedDate(), currency: currency });
         if (!resp?.err) {
-          localStorage.setItem('resp', cyfer().cy(JSON.stringify(resp), set.salt));
+          localStorage.setItem('storage', cyfer().cy(JSON.stringify(resp), set.salt));
           writeData(resp);
         }
       }
@@ -127,7 +135,7 @@ function Tab({ setInit, init, setProc, proc }) {
     };
 
     fetchData();
-  }, [init, setProc, currency]);
+  }, [init, setProc, currency, userName]);
 
   const handleTabClick = (tabId) => {
     setSelectedOption(tabId);
@@ -156,7 +164,7 @@ function Tab({ setInit, init, setProc, proc }) {
           <div className="panel-tab">
             <div className="section-tab">
               <div className="container-tab">
-                <CurrencySelector {...{ setCurrency, currency }} />
+                {UserRole === 'admin' ? <CurrencySelector {...{ setCurrency, currency }} /> : ''}
                 {tab.component}
               </div>
             </div>

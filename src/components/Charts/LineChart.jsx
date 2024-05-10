@@ -38,7 +38,7 @@ function LineChart({ dataI = [], height }) {
     setSelectedYear(currentYear.toString());
   }, []);
 
-  const dataFromAPI = dataI;
+  const dataFromAPI = Array.isArray(dataI) ? dataI : [];
   const filteredData =
     selectedYear === ''
       ? dataFromAPI.filter((item) => item.year_number !== 2022)

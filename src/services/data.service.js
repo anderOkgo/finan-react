@@ -12,7 +12,7 @@ const balanceMonthly = async () => {
 const formatToken = (token) => 'Bearer ' + token;
 
 const formatParams = (par) => {
-  let username = AuthService.getUserName(AuthService.getCurrentUser().token);
+  let { username } = AuthService.getUserName(AuthService.getCurrentUser().token);
   const { movement_name, movement_val, movement_type, movement_date, movement_tag, currency } = par;
   return {
     movement_name: movement_name.trim(),

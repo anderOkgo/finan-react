@@ -20,7 +20,6 @@ function TabTag({ movementTag, totalDay }) {
 
 TabTag.propTypes = {
   movementTag: PropTypes.arrayOf(PropTypes.object).isRequired,
-  exchangeCol: PropTypes.object.isRequired,
   totalDay: PropTypes.number,
 };
 

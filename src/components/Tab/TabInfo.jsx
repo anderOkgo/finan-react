@@ -27,7 +27,6 @@ function TabInfo({ tripInfo, generalInfo, exchangeCol }) {
 
 TabInfo.propTypes = {
   tripInfo: PropTypes.PropTypes.arrayOf(PropTypes.object).isRequired,
-  balanceUntilDate: PropTypes.arrayOf(PropTypes.object).isRequired,
   generalInfo: PropTypes.object.isRequired,
   exchangeCol: PropTypes.object.isRequired,
 };
