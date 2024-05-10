@@ -13,7 +13,7 @@ const Home = ({ setInit, init, setProc, proc }) => {
           <h2>Login</h2>
           <Login {...{ setInit, init, setProc, proc }} />
           <h2>Register</h2>
-          <Register {...{ setInit, init, setProc, proc }} /> {/* Render the Register component */}
+          <Register {...{ setInit, init, setProc, proc }} />
         </div>
       ) : (
         <Tab {...{ setInit, init, setProc, proc }} />

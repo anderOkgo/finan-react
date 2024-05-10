@@ -23,6 +23,7 @@ const Login = ({ setInit, init, setProc }) => {
     if (init) {
       setProc(true);
       let resp = await AuthService.login(username, password);
+      console.log(resp);
       resp.err ? setInit(false) : setInit(Date.now());
       setProc(false);
     }

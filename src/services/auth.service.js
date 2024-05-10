@@ -19,7 +19,7 @@ const register = async (username, email, password, verificationCode) => {
   };
 
   const response = await helpHttp.post(API_URL + 'add', options);
-  if (!response.error) login(username, password);
+  if (!response.error) await login(username, password);
   return response;
 };
 
@@ -38,6 +38,7 @@ const login = async (username, password) => {
     return false;
   } else {
     localStorage.setItem(cyfer().cy('user', formattedDate()), JSON.stringify(response));
+    window.location.reload();
     return true;
   }
 };
@@ -50,11 +51,29 @@ const getCurrentUser = () => {
   return JSON.parse(localStorage.getItem(cyfer().cy('user', formattedDate())));
 };
 
+const getUserName = (token) => {
+  if (!token) {
+    return null;
+  }
+
+  try {
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace('-', '+').replace(/_/g, '/');
+    const decodedPayload = atob(base64);
+    const decodedJson = JSON.parse(decodedPayload);
+    return decodedJson.sub || decodedJson.username; // Assuming username is stored in "sub" or "username" claim
+  } catch (error) {
+    console.error('Error decoding JWT token:', error);
+    return null;
+  }
+};
+
 const AuthService = {
   register,
   login,
   logout,
   getCurrentUser,
+  getUserName,
 };
 
 export default AuthService;

@@ -6,14 +6,14 @@ import '../Login/Login';
 const Register = ({ setInit, init, setProc }) => {
   const form = useRef();
 
-  const [firstName, setFirstName] = useState('');
+  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [verificationCode, setVerificationCode] = useState('');
   const [isRegistering, setIsRegistering] = useState(false);
 
   const onChangeFirstName = (e) => {
-    setFirstName(e.target.value);
+    setUsername(e.target.value);
   };
 
   const onChangeEmail = (e) => {
@@ -33,7 +33,7 @@ const Register = ({ setInit, init, setProc }) => {
     if (init && !isRegistering) {
       setIsRegistering(true);
       setProc(true);
-      let resp = await AuthService.register(firstName, email, password, verificationCode);
+      let resp = await AuthService.register(username, email, password, verificationCode);
       if (resp.error) {
         resp.err ? setInit(false) : setInit(Date.now());
         console.error('Registration error:', resp.message);
@@ -52,15 +52,15 @@ const Register = ({ setInit, init, setProc }) => {
         <img src="./icon/icon-512x512.png" alt="profile-img" className="profile-img-card" />
         <form onSubmit={handleRegister} ref={form}>
           <div className="form-group">
-            <label className="label" htmlFor="firstName">
-              First Name
+            <label className="label" htmlFor="username">
+              Username
             </label>
             <input
-              id="firstName"
+              id="username"
               type="text"
               className="form-control"
-              name="firstName"
-              value={firstName}
+              name="username"
+              value={username}
               onChange={onChangeFirstName}
             />
           </div>
