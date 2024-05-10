@@ -19,7 +19,7 @@ const register = async (username, email, password, verificationCode) => {
   };
 
   const response = await helpHttp.post(API_URL + 'add', options);
-  if (response?.message?.[0] === 'User created successful') await login(username, password);
+  if (response?.message === 'User created successfully') await login(username, password);
   return response;
 };
 
