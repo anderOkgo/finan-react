@@ -2,13 +2,19 @@ import PropTypes from 'prop-types';
 import AuthService from '../../services/auth.service';
 import Tab from '../Tab/Tab';
 import Login from '../Login/Login';
+import Register from '../Register/Register'; // Import the Register component
 
 const Home = ({ setInit, init, setProc, proc }) => {
   const currentUser = AuthService.getCurrentUser();
   return (
     <>
       {!currentUser ? (
-        <Login {...{ setInit, init, setProc, proc }} />
+        <div>
+          <h2>Login</h2>
+          <Login {...{ setInit, init, setProc, proc }} />
+          <h2>Register</h2>
+          <Register {...{ setInit, init, setProc, proc }} /> {/* Render the Register component */}
+        </div>
       ) : (
         <Tab {...{ setInit, init, setProc, proc }} />
       )}
