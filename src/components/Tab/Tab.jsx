@@ -57,26 +57,26 @@ function Tab({ setInit, init, setProc, proc }) {
       icon: '☷',
       label: 'General',
       component: true && (
-        <TabGeneral {...{ movements, generalInfo, setForm, setEdit, setSelectedOption, currency }} />
+        <TabGeneral {...{ movements, totalDay, setForm, setEdit, setSelectedOption, currency }} />
       ),
     },
     {
       id: 3,
       icon: '♞',
       label: 'Tag',
-      component: true && <TabTag {...{ movementTag, exchangeCol }} />,
+      component: true && <TabTag {...{ movementTag, totalDay }} />,
     },
     {
       id: 4,
       icon: '❆',
       label: 'Balance',
-      component: true && <TabBalance {...{ bankTotal, balance }} />,
+      component: true && <TabBalance {...{ bankTotal, balance, balanceUntilDate }} />,
     },
     {
       id: 5,
       icon: '⚅',
       label: 'Info',
-      component: true && <TabInfo {...{ tripInfo, balanceUntilDate }} />,
+      component: true && <TabInfo {...{ tripInfo, generalInfo, exchangeCol }} />,
     },
   ];
 

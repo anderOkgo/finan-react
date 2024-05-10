@@ -2,24 +2,28 @@ import PropTypes from 'prop-types';
 import Table from '../Table/Table';
 import InfoBanner from '../InfoBanner/InfoBanner';
 import LineChart from '../Charts/LineChart';
-import CountDownEnd from '../CountDownEnd/CountDownEnd';
 
-function TabBalance({ bankTotal, balance }) {
+function TabBalance({ bankTotal, balance, balanceUntilDate }) {
   return (
     <div>
-      <InfoBanner {...{ data: bankTotal, label: 'Total Bank' }} />
-      <br />
-      <CountDownEnd />
+      <InfoBanner {...{ data: bankTotal, label: 'Total Balance' }} />
       <br />
       <LineChart dataI={balance} height={280} />
       <br />
       <Table
-        label={'Annual Table'}
+        label={'Annual Table Balance'}
         data={balance}
         columns={['#', 'Year', 'Month', 'Incomes', 'Expenses', 'TotalSave']}
-        hiddenColumns={['currency']}
+        hiddenColumns={['currency', 'user']}
       />
       <br />
+      <Table
+        label={'Daily Balance'}
+        columns={['Date', 'Balance', 'Total']}
+        hiddenColumns={['currency', 'user']}
+        orderColumnsList={[]}
+        data={balanceUntilDate?.filter((item) => item.detail !== 'final-trip') ?? []}
+      />
     </div>
   );
 }
@@ -27,6 +31,7 @@ function TabBalance({ bankTotal, balance }) {
 TabBalance.propTypes = {
   bankTotal: PropTypes.number,
   balance: PropTypes.arrayOf(PropTypes.object).isRequired,
+  balanceUntilDate: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export default TabBalance;

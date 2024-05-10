@@ -2,10 +2,10 @@ import PropTypes from 'prop-types';
 import Table from '../Table/Table';
 import InfoBanner from '../InfoBanner/InfoBanner';
 
-function TabTag({ movementTag, exchangeCol }) {
+function TabTag({ movementTag, totalDay }) {
   return (
     <div>
-      <InfoBanner {...{ data: parseInt(exchangeCol?.['total']) ?? -1, label: 'Total Exchange Col' }} />
+      <InfoBanner {...{ data: totalDay, label: 'Total Day' }} />
       <br />
       <Table
         label={'Tag Table'}
@@ -21,6 +21,7 @@ function TabTag({ movementTag, exchangeCol }) {
 TabTag.propTypes = {
   movementTag: PropTypes.arrayOf(PropTypes.object).isRequired,
   exchangeCol: PropTypes.object.isRequired,
+  totalDay: PropTypes.number,
 };
 
 export default TabTag;

@@ -3,7 +3,7 @@ import Table from '../Table/Table';
 import { useState } from 'react';
 import InfoBanner from '../InfoBanner/InfoBanner';
 
-function TabGeneral({ movements, generalInfo, setForm, setEdit, setSelectedOption, currency }) {
+function TabGeneral({ movements, totalDay, setForm, setEdit, setSelectedOption, currency }) {
   const [selectedRow, setSelectedRow] = useState(null);
 
   const handleRowDoubleClick = (row) => {
@@ -39,7 +39,7 @@ function TabGeneral({ movements, generalInfo, setForm, setEdit, setSelectedOptio
   };
   return (
     <div>
-      <InfoBanner {...{ data: parseInt(generalInfo?.['total']) ?? -1, label: 'Total Save AU' }} />
+      <InfoBanner {...{ data: totalDay, label: 'Total Day' }} />
       <br />
       <Table
         label={'Movement Table'}
@@ -56,11 +56,11 @@ function TabGeneral({ movements, generalInfo, setForm, setEdit, setSelectedOptio
 
 TabGeneral.propTypes = {
   movements: PropTypes.arrayOf(PropTypes.object).isRequired,
-  generalInfo: PropTypes.object.isRequired,
   setForm: PropTypes.func,
   setEdit: PropTypes.func,
   setSelectedOption: PropTypes.func,
   currency: PropTypes.string,
+  totalDay: PropTypes.number,
 };
 
 export default TabGeneral;
