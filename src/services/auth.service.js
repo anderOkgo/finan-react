@@ -19,7 +19,7 @@ const register = async (username, email, password, verificationCode) => {
   };
 
   const response = await helpHttp.post(API_URL + 'add', options);
-  if (!response.error) await login(username, password);
+  if (response?.message?.[0] === 'User created successful') await login(username, password);
   return response;
 };
 
@@ -38,7 +38,6 @@ const login = async (username, password) => {
     return false;
   } else {
     localStorage.setItem(cyfer().cy('user', formattedDate()), JSON.stringify(response));
-    window.location.reload();
     return true;
   }
 };

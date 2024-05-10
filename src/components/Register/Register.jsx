@@ -35,11 +35,11 @@ const Register = ({ setInit, init, setProc }) => {
       setProc(true);
       let resp = await AuthService.register(username, email, password, verificationCode);
       if (resp.error) {
-        resp.err ? setInit(false) : setInit(Date.now());
+        setInit(false);
         console.error('Registration error:', resp.message);
       } else {
+        setInit(Date.now());
         console.log('Registration successful:', resp.message);
-        // Optionally, you can redirect the user to a login page or display a success message
       }
       setProc(false);
       setIsRegistering(false);
