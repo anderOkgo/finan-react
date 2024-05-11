@@ -50,7 +50,9 @@ const update = async (par) => {
 };
 
 const del = async (par) => {
+  let { username } = AuthService.getUserName(AuthService.getCurrentUser().token);
   return await helpHttp.del(API_URL + 'delete/' + par.id, {
+    body: { username },
     token: formatToken(AuthService.getCurrentUser().token),
   });
 };

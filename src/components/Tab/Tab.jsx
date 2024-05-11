@@ -102,16 +102,16 @@ function Tab({ setInit, init, setProc, proc }) {
           tripInfo = [],
           balanceUntilDate = [],
         } = resp;
-        const generalInfoFormat = Array.isArray(generalInfo.message) ? generalInfo.message : [];
-        setMovementTag(movementTag.message);
-        setMovements(movements.message);
-        setBankTotal(totalBank.message?.[0]?.total_bank ?? -1);
-        setBalance(balance.message);
-        setTotalDay(totalDay.message?.[0]?.Total_day ?? 0);
+        const generalInfoFormat = Array.isArray(generalInfo) ? generalInfo : [];
+        setMovementTag(movementTag);
+        setMovements(movements);
+        setBankTotal(totalBank?.[0]?.total_bank ?? -1);
+        setBalance(balance);
+        setTotalDay(totalDay?.[0]?.Total_day ?? 0);
         setGeneralInfo(generalInfoFormat?.find((item) => item.detail === 'total-save-au'));
         setExchangeCol(generalInfoFormat?.find((item) => item.detail === 'Exchange Colombia'));
-        setTripInfo(Array.isArray(tripInfo.message) ? tripInfo.message : []);
-        setBalanceUntilDate(Array.isArray(balanceUntilDate.message) ? balanceUntilDate.message : []);
+        setTripInfo(Array.isArray(tripInfo) ? tripInfo : []);
+        setBalanceUntilDate(Array.isArray(balanceUntilDate) ? balanceUntilDate : []);
       };
 
       try {

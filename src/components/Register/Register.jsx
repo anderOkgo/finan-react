@@ -13,7 +13,7 @@ const Register = ({ setInit, init, setProc }) => {
   const [isRegistering, setIsRegistering] = useState(false);
 
   const onChangeFirstName = (e) => {
-    setUsername(e.target.value);
+    setUsername(e.target.value?.replace(/\s/g, ''));
   };
 
   const onChangeEmail = (e) => {
@@ -36,6 +36,7 @@ const Register = ({ setInit, init, setProc }) => {
       let resp = await AuthService.register(username, email, password, verificationCode);
       if (resp.error) {
         setInit(false);
+        alert(resp.message);
         console.error('Registration error:', resp.message);
       } else {
         setInit(Date.now());
