@@ -62,6 +62,7 @@ const Register = ({ setInit, init, setProc }) => {
               name="username"
               value={username}
               onChange={onChangeFirstName}
+              required
             />
           </div>
 
