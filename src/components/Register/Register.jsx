@@ -36,7 +36,6 @@ const Register = ({ setInit, init, setProc }) => {
       let resp = await AuthService.register(username, email, password, verificationCode);
       if (resp.error) {
         setInit(false);
-        alert(resp.message);
         console.error('Registration error:', resp.message);
       } else {
         setInit(Date.now());
@@ -77,6 +76,7 @@ const Register = ({ setInit, init, setProc }) => {
               name="email"
               value={email}
               onChange={onChangeEmail}
+              required
             />
           </div>
 
@@ -91,6 +91,7 @@ const Register = ({ setInit, init, setProc }) => {
               name="password"
               value={password}
               onChange={onChangePassword}
+              required
             />
           </div>
 
