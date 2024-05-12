@@ -11,14 +11,14 @@ function TabBalance({ bankTotal, balance, balanceUntilDate }) {
       <LineChart dataI={balance} height={280} />
       <br />
       <Table
-        label={'Annual Table Balance'}
+        label={'Annual Balance Table'}
         data={balance}
         columns={['#', 'Year', 'Month', 'Incomes', 'Expenses', 'TotalSave']}
         hiddenColumns={['currency', 'user']}
       />
       <br />
       <Table
-        label={'Daily Balance'}
+        label={'Daily Balance Table'}
         columns={['Date', 'Balance', 'Total']}
         hiddenColumns={['currency', 'user']}
         orderColumnsList={[]}

@@ -26,10 +26,12 @@ function Tab({ setInit, init, setProc, proc }) {
   const [tripInfo, setTripInfo] = useState([]);
   const [balanceUntilDate, setBalanceUntilDate] = useState([]);
   const [currency, setCurrency] = useState('COP');
-  const { selectedOption, setSelectedOption, handleTouchStart, handleTouchEnd } = useSwipeableTabs(4, 170);
+  const [nTab, setnTab] = useState(4);
+  const { selectedOption, setSelectedOption, handleTouchStart, handleTouchEnd } = useSwipeableTabs(nTab, 170);
   const { username, role } = AuthService.getUserName(AuthService.getCurrentUser().token);
   const [userName] = useState(username);
   const [UserRole] = useState(role);
+  const [width, setWidth] = useState('20%');
 
   const initialForm = useMemo(
     () => ({
@@ -88,6 +90,9 @@ function Tab({ setInit, init, setProc, proc }) {
   }
 
   useEffect(() => {
+    setnTab(tabsData.length);
+    const per = 100 / tabsData.length;
+    setWidth(per + '%');
     const fetchData = async () => {
       setProc(true);
 
@@ -135,7 +140,7 @@ function Tab({ setInit, init, setProc, proc }) {
     };
 
     fetchData();
-  }, [init, setProc, currency, userName]);
+  }, [init, setProc, currency, userName, tabsData.length]);
 
   const handleTabClick = (tabId) => {
     setSelectedOption(tabId);
@@ -155,7 +160,7 @@ function Tab({ setInit, init, setProc, proc }) {
             type="radio"
             id={`tab-${tab.id}`}
           />
-          <label className="label-tab" htmlFor={`tab-${tab.id}`}>
+          <label className="label-tab" style={{ width: width }} htmlFor={`tab-${tab.id}`}>
             <pre>
               <span dangerouslySetInnerHTML={{ __html: tab.icon }} />
               <p className="small-text">{tab.label}</p>

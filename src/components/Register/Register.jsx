@@ -34,10 +34,12 @@ const Register = ({ setInit, init, setProc }) => {
       setIsRegistering(true);
       setProc(true);
       let resp = await AuthService.register(username, email, password, verificationCode);
-      if (resp.error) {
+      if (resp.err) {
+        alert(resp.err.response.errors);
         setInit(false);
-        console.error('Registration error:', resp.message);
+        console.error('Registration error:', resp.resp);
       } else {
+        alert(resp.message);
         setInit(Date.now());
         console.log('Registration successful:', resp.message);
       }
