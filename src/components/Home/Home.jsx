@@ -2,7 +2,8 @@ import PropTypes from 'prop-types';
 import AuthService from '../../services/auth.service';
 import Tab from '../Tab/Tab';
 import Login from '../Login/Login';
-import Register from '../Register/Register'; // Import the Register component
+import Register from '../Register/Register';
+import './Home.css';
 
 const Home = ({ setInit, init, setProc, proc }) => {
   const currentUser = AuthService.getCurrentUser();
@@ -10,9 +11,9 @@ const Home = ({ setInit, init, setProc, proc }) => {
     <>
       {!currentUser ? (
         <div>
-          <h2>Login</h2>
+          <h2 className="title">Login</h2>
           <Login {...{ setInit, init, setProc, proc }} />
-          <h2>Register</h2>
+          <h2 className="title">Register</h2>
           <Register {...{ setInit, init, setProc, proc }} />
         </div>
       ) : (

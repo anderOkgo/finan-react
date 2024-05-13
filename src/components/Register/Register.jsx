@@ -12,7 +12,7 @@ const Register = ({ setInit, init, setProc }) => {
   const [verificationCode, setVerificationCode] = useState('');
   const [isRegistering, setIsRegistering] = useState(false);
 
-  const onChangeFirstName = (e) => {
+  const onChangeUsername = (e) => {
     setUsername(e.target.value?.replace(/\s/g, ''));
   };
 
@@ -54,26 +54,26 @@ const Register = ({ setInit, init, setProc }) => {
         <img src="./icon/icon-512x512.png" alt="profile-img" className="profile-img-card" />
         <form onSubmit={handleRegister} ref={form}>
           <div className="form-group">
-            <label className="label" htmlFor="username">
-              Username
+            <label className="label" htmlFor="register-username">
+              Username for Registration
             </label>
             <input
-              id="username"
+              id="register-username"
               type="text"
               className="form-control"
               name="username"
               value={username}
-              onChange={onChangeFirstName}
+              onChange={onChangeUsername}
               required
             />
           </div>
 
           <div className="form-group">
-            <label className="label" htmlFor="email">
+            <label className="label" htmlFor="register-email">
               Email
             </label>
             <input
-              id="email"
+              id="register-email"
               type="email"
               className="form-control"
               name="email"
@@ -84,11 +84,11 @@ const Register = ({ setInit, init, setProc }) => {
           </div>
 
           <div className="form-group">
-            <label className="label" htmlFor="password">
+            <label className="label" htmlFor="register-password">
               Password
             </label>
             <input
-              id="password"
+              id="register-password"
               type="password"
               className="form-control"
               name="password"
@@ -99,16 +99,17 @@ const Register = ({ setInit, init, setProc }) => {
           </div>
 
           <div className="form-group">
-            <label className="label" htmlFor="verificationCode">
+            <label className="label" htmlFor="register-verificationCode">
               Verification Code
             </label>
             <input
-              id="verificationCode"
+              id="register-verificationCode"
               type="text"
               className="form-control"
               name="verificationCode"
               value={verificationCode}
               onChange={onChangeVerificationCode}
+              autoComplete="off"
             />
           </div>
 

@@ -25,12 +25,12 @@ const Menu = ({ init, setInit, proc, toggleDarkMode, boot }) => {
 
   const title = 'Finanz';
   const menuItems = [
-    { label: 'Animecream', url: 'https://www.animecream.com/' },
     { label: 'Animecream App', url: 'https://react.animecream.com/' },
+    { label: 'Animecream', url: 'https://www.animecream.com/' },
     { label: 'Cyfer', url: 'https://cyfer.animecream.com/' },
     { label: 'Nabu', url: 'https://nabu.animecream.com/' },
     {
-      label: 'session',
+      label: 'User Session',
       url: '#',
       child: [
         { isSessionNeeded: false, label: 'login', url: '#' },
