@@ -43,6 +43,7 @@ const login = async (username, password) => {
 };
 
 const logout = () => {
+  localStorage.removeItem('storage');
   localStorage.removeItem(cyfer().cy('user', formattedDate()));
 };
 
