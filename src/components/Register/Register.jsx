@@ -64,6 +64,7 @@ const Register = ({ setInit, init, setProc }) => {
               name="username"
               value={username}
               onChange={onChangeUsername}
+              autoComplete="off"
               required
             />
           </div>
@@ -79,6 +80,7 @@ const Register = ({ setInit, init, setProc }) => {
               name="email"
               value={email}
               onChange={onChangeEmail}
+              autoComplete="email"
               required
             />
           </div>
@@ -94,6 +96,7 @@ const Register = ({ setInit, init, setProc }) => {
               name="password"
               value={password}
               onChange={onChangePassword}
+              autoComplete="off"
               required
             />
           </div>

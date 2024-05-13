@@ -49,6 +49,7 @@ const Login = ({ setInit, init, setProc }) => {
               name="username"
               value={username}
               onChange={onChangeUsername}
+              autoComplete="username"
             />
           </div>
 
@@ -63,6 +64,7 @@ const Login = ({ setInit, init, setProc }) => {
               name="password"
               value={password}
               onChange={onChangePassword}
+              autoComplete="off"
             />
           </div>
 
