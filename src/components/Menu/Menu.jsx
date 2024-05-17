@@ -3,10 +3,10 @@ import './Menu.css';
 import AuthService from '../../services/auth.service';
 import Status from '../Status/Status';
 import { useContext } from 'react';
-import GlobalStateContext from '../../contexts/GlobalStateContext';
+import GlobalContext from '../../contexts/GlobalContext';
 
 const Menu = () => {
-  const { init, setInit, proc, toggleDarkMode, boot } = useContext(GlobalStateContext);
+  const { init, setInit, proc, toggleDarkMode, boot } = useContext(GlobalContext);
   const [currentUser, setCurrentUser] = useState(undefined);
 
   useEffect(() => {

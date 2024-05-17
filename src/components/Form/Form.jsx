@@ -6,10 +6,10 @@ import Table from '../Table/Table';
 import './Form.css';
 import set from '../../helpers/set.json';
 import { useContext } from 'react';
-import GlobalStateContext from '../../contexts/GlobalStateContext';
+import GlobalContext from '../../contexts/GlobalContext.jsx';
 
 function Form({ setForm, form, edit, setEdit, currency }) {
-  const { setInit, init, setProc, proc } = useContext(GlobalStateContext);
+  const { setInit, init, setProc, proc } = useContext(GlobalContext);
   const [msg, setMsg] = useState('');
   const [bgColor, setBgColor] = useState('');
   const [visible, setVisible] = useState(false);

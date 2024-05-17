@@ -1,7 +1,7 @@
 import AuthService from '../../services/auth.service';
 import Tab from '../Tab/Tab';
-import Login from '../Login/Login';
-import Register from '../Register/Register';
+import Login from '../Auth/Login/Login';
+import Register from '../Auth/Register/Register';
 import './Home.css';
 
 const Home = () => {

@@ -13,10 +13,10 @@ import CurrencySelector from '../currencySelector/currencySelector';
 import './Tab.css';
 import AuthService from '../../services/auth.service';
 import { useContext } from 'react';
-import GlobalStateContext from '../../contexts/GlobalStateContext';
+import GlobalContext from '../../contexts/GlobalContext';
 
 function Tab() {
-  const { init, setProc } = useContext(GlobalStateContext);
+  const { init, setProc } = useContext(GlobalContext);
   const [bankTotal, setBankTotal] = useState(0);
   const [balance, setBalance] = useState([]);
   const [movementTag, setMovementTag] = useState([]);

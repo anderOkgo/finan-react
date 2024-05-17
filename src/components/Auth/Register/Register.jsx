@@ -1,11 +1,11 @@
 import { useState, useRef } from 'react';
-import AuthService from '../../services/auth.service';
+import AuthService from '../../../services/auth.service';
 import '../Login/Login';
 import { useContext } from 'react';
-import GlobalStateContext from '../../contexts/GlobalStateContext';
+import GlobalContext from '../../../contexts/GlobalContext';
 
 const Register = () => {
-  const { setInit, init, setProc } = useContext(GlobalStateContext);
+  const { setInit, init, setProc } = useContext(GlobalContext);
   const form = useRef();
 
   const [username, setUsername] = useState('');
