@@ -1,9 +1,11 @@
 import { useState, useRef } from 'react';
-import PropTypes from 'prop-types';
 import AuthService from '../../services/auth.service';
 import '../Login/Login';
+import { useContext } from 'react';
+import GlobalStateContext from '../../contexts/GlobalStateContext';
 
-const Register = ({ setInit, init, setProc }) => {
+const Register = () => {
+  const { setInit, init, setProc } = useContext(GlobalStateContext);
   const form = useRef();
 
   const [username, setUsername] = useState('');
@@ -125,13 +127,6 @@ const Register = ({ setInit, init, setProc }) => {
       </div>
     </div>
   );
-};
-
-Register.propTypes = {
-  setInit: PropTypes.func.isRequired,
-  init: PropTypes.any.isRequired,
-  setProc: PropTypes.func.isRequired,
-  proc: PropTypes.any.isRequired,
 };
 
 export default Register;

@@ -1,9 +1,11 @@
 import { useState, useRef } from 'react';
-import PropTypes from 'prop-types';
 import AuthService from '../../services/auth.service';
 import './Login.css';
+import { useContext } from 'react';
+import GlobalStateContext from '../../contexts/GlobalStateContext';
 
-const Login = ({ setInit, init, setProc }) => {
+const Login = () => {
+  const { setInit, init, setProc } = useContext(GlobalStateContext);
   const form = useRef();
 
   const [username, setUsername] = useState('');
@@ -77,13 +79,6 @@ const Login = ({ setInit, init, setProc }) => {
       </div>
     </div>
   );
-};
-
-Login.propTypes = {
-  setInit: PropTypes.func.isRequired,
-  init: PropTypes.any.isRequired,
-  setProc: PropTypes.func.isRequired,
-  proc: PropTypes.any.isRequired,
 };
 
 export default Login;

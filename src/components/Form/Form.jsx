@@ -5,8 +5,11 @@ import AutoDismissMessage from '../Message/AutoDismissMessage.jsx';
 import Table from '../Table/Table';
 import './Form.css';
 import set from '../../helpers/set.json';
+import { useContext } from 'react';
+import GlobalStateContext from '../../contexts/GlobalStateContext';
 
-function Form({ setInit, init, setForm, form, proc, setProc, edit, setEdit, currency }) {
+function Form({ setForm, form, edit, setEdit, currency }) {
+  const { setInit, init, setProc, proc } = useContext(GlobalStateContext);
   const [msg, setMsg] = useState('');
   const [bgColor, setBgColor] = useState('');
   const [visible, setVisible] = useState(false);
@@ -271,10 +274,6 @@ function Form({ setInit, init, setForm, form, proc, setProc, edit, setEdit, curr
 }
 
 Form.propTypes = {
-  setInit: PropTypes.func.isRequired,
-  init: PropTypes.any,
-  setProc: PropTypes.func.isRequired,
-  proc: PropTypes.any,
   setForm: PropTypes.func,
   form: PropTypes.objectOf(PropTypes.any),
   edit: PropTypes.bool,

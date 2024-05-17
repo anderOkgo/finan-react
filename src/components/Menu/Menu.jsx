@@ -1,10 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
-import PropTypes from 'prop-types';
 import './Menu.css';
 import AuthService from '../../services/auth.service';
 import Status from '../Status/Status';
+import { useContext } from 'react';
+import GlobalStateContext from '../../contexts/GlobalStateContext';
 
-const Menu = ({ init, setInit, proc, toggleDarkMode, boot }) => {
+const Menu = () => {
+  const { init, setInit, proc, toggleDarkMode, boot } = useContext(GlobalStateContext);
   const [currentUser, setCurrentUser] = useState(undefined);
 
   useEffect(() => {
@@ -112,14 +114,6 @@ const Menu = ({ init, setInit, proc, toggleDarkMode, boot }) => {
       </div>
     </nav>
   );
-};
-
-Menu.propTypes = {
-  init: PropTypes.any.isRequired,
-  setInit: PropTypes.func.isRequired,
-  proc: PropTypes.any.isRequired,
-  toggleDarkMode: PropTypes.func.isRequired,
-  boot: PropTypes.func.isRequired,
 };
 
 export default Menu;

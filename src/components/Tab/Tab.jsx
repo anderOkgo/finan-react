@@ -1,5 +1,4 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import PropTypes from 'prop-types';
 import { formattedDate } from '../../helpers/operations';
 import set from '../../helpers/set.json'; // Ensure set.json is properly defined
 import DataService from '../../services/data.service';
@@ -12,9 +11,12 @@ import TabInfo from './TabInfo';
 import cyfer from '../../helpers/cyfer';
 import CurrencySelector from '../currencySelector/currencySelector';
 import './Tab.css';
-import AuthService from '../../services/auth.service'; // Ensure AuthService is properly defined and imported
+import AuthService from '../../services/auth.service';
+import { useContext } from 'react';
+import GlobalStateContext from '../../contexts/GlobalStateContext';
 
-function Tab({ setInit, init, setProc, proc }) {
+function Tab() {
+  const { init, setProc } = useContext(GlobalStateContext);
   const [bankTotal, setBankTotal] = useState(0);
   const [balance, setBalance] = useState([]);
   const [movementTag, setMovementTag] = useState([]);
@@ -30,7 +32,7 @@ function Tab({ setInit, init, setProc, proc }) {
   const { selectedOption, setSelectedOption, handleTouchStart, handleTouchEnd } = useSwipeableTabs(nTab, 170);
   const { username, role } = AuthService.getUserName(AuthService.getCurrentUser().token);
   const [userName] = useState(username);
-  const [UserRole] = useState(role);
+  const [userRole] = useState(role);
   const [width, setWidth] = useState('20%');
 
   const initialForm = useMemo(
@@ -52,11 +54,7 @@ function Tab({ setInit, init, setProc, proc }) {
       id: 1,
       icon: '☰',
       label: 'Input',
-      component: true && (
-        <TabInput
-          {...{ setInit, init, setProc, proc, totalDay, setForm, form, edit, setEdit, setCurrency, currency }}
-        />
-      ),
+      component: true && <TabInput {...{ totalDay, setForm, form, edit, setEdit, setCurrency, currency }} />,
     },
     {
       id: 2,
@@ -80,7 +78,7 @@ function Tab({ setInit, init, setProc, proc }) {
     },
   ];
 
-  if (UserRole === 'admin') {
+  if (userRole === 'admin') {
     tabsData.push({
       id: 5,
       icon: '⚅',
@@ -169,7 +167,7 @@ function Tab({ setInit, init, setProc, proc }) {
           <div className="panel-tab">
             <div className="section-tab">
               <div className="container-tab">
-                {UserRole === 'admin' ? <CurrencySelector {...{ setCurrency, currency }} /> : ''}
+                {userRole === 'admin' ? <CurrencySelector {...{ setCurrency, currency }} /> : ''}
                 {tab.component}
               </div>
             </div>
@@ -179,12 +177,5 @@ function Tab({ setInit, init, setProc, proc }) {
     </div>
   );
 }
-
-Tab.propTypes = {
-  setInit: PropTypes.func.isRequired,
-  init: PropTypes.any,
-  setProc: PropTypes.func.isRequired,
-  proc: PropTypes.any,
-};
 
 export default Tab;
