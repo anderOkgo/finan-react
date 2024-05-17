@@ -45,7 +45,7 @@ function LineChart({ dataI = [], height }) {
       : dataFromAPI.filter((item) => item.year_number === parseInt(selectedYear));
   const labels = filteredData.map((item) => item.month_name);
   const dataset1Data = filteredData.map((item) => item.incomes);
-  const dataset2Data = filteredData.map((item) => item.bills);
+  const dataset2Data = filteredData.map((item) => item.expenses);
 
   const handleYearChange = (event) => {
     setSelectedYear(event.target.value);

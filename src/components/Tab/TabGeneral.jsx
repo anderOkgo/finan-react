@@ -10,7 +10,7 @@ function TabGeneral({ movements, totalDay, setForm, setEdit, setSelectedOption, 
     setSelectedRow(row);
     let type;
     switch (row.source.toLowerCase()) {
-      case 'bill':
+      case 'expense':
         document.querySelector('#movement_type').selectedIndex = 2;
         type = 2;
         break;
