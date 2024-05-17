@@ -12,6 +12,19 @@ p {
   padding: 0;
 }
 
+.select {
+  padding: 5px;
+  border: 1px solid var(--soft-gray);
+  border-radius: 4px;
+  background-color: inherit;
+  color: var(--text);
+}
+
+.select option {
+  color: var(--text);
+  background-color: var(--background);
+}
+
 /* Typography */
 body {
   font-family: 'Roboto', Arial, sans-serif;

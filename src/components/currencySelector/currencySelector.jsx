@@ -12,7 +12,7 @@ const CurrencySelector = ({ setCurrency, currency }) => {
   return (
     <div>
       <label htmlFor={uniqueId}>Select Currency:</label>
-      <select id={uniqueId} className="search-box-input" value={currency} onChange={handleCurrencyChange}>
+      <select id={uniqueId} className="select" value={currency} onChange={handleCurrencyChange}>
         <option value="COP">COP</option>
         <option value="AUD">AUD</option>
       </select>

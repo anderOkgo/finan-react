@@ -75,7 +75,7 @@ function LineChart({ dataI = [], height }) {
 
   return (
     <div>
-      <select className="search-box-input" id={uniqueId} value={selectedYear} onChange={handleYearChange}>
+      <select className="select" id={uniqueId} value={selectedYear} onChange={handleYearChange}>
         <option value="">All Years</option>
         {years.map(
           (year) =>
