@@ -39,11 +39,11 @@ const Register = () => {
       if (resp.err) {
         alert(resp.err.response);
         setInit(false);
-        console.error('Registration error:', resp.resp);
+        console.error('Registration error:', resp.err.response);
       } else {
-        alert(resp.message);
+        alert(resp);
         setInit(Date.now());
-        console.log('Registration successful:', resp.message);
+        console.log('Registration successful:', resp);
       }
       setProc(false);
       setIsRegistering(false);
