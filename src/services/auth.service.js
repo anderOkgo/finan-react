@@ -19,7 +19,7 @@ const register = async (username, email, password, verificationCode) => {
   };
 
   const response = await helpHttp.post(API_URL + 'add', options);
-  if (response?.message === 'User created successfully') await login(username, password);
+  if (response === 'User created successfully') await login(username, password);
   return response;
 };
 
@@ -35,7 +35,7 @@ const login = async (username, password) => {
 
   const response = await helpHttp.post(API_URL + 'login', options);
   if (response.token === undefined) {
-    return { err: true, message: response.err.response.message };
+    return { err: true, message: response.err.response };
   } else {
     localStorage.setItem(cyfer().cy('user', formattedDate()), JSON.stringify(response));
     return { err: false };
