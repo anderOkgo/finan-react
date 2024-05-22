@@ -19,6 +19,7 @@ function Tab() {
   const { init, setProc } = useContext(GlobalContext);
   const [bankTotal, setBankTotal] = useState(0);
   const [balance, setBalance] = useState([]);
+  const [yearlyBalance, setYearlyBalance] = useState([]);
   const [movementTag, setMovementTag] = useState([]);
   const [movements, setMovements] = useState([]);
   const [totalDay, setTotalDay] = useState(0);
@@ -74,7 +75,7 @@ function Tab() {
       id: 4,
       icon: '❆',
       label: 'Balance',
-      component: true && <TabBalance {...{ bankTotal, balance, balanceUntilDate }} />,
+      component: true && <TabBalance {...{ bankTotal, balance, yearlyBalance, balanceUntilDate }} />,
     },
   ];
 
@@ -98,6 +99,7 @@ function Tab() {
         const {
           totalBank = [],
           balance = [],
+          yearlyBalance = [],
           movementTag = [],
           movements = [],
           totalDay = [],
@@ -110,6 +112,7 @@ function Tab() {
         setMovements(movements);
         setBankTotal(totalBank?.[0]?.total_bank ?? -1);
         setBalance(balance);
+        setYearlyBalance(yearlyBalance);
         setTotalDay(totalDay?.[0]?.Total_day ?? 0);
         setGeneralInfo(generalInfoFormat?.find((item) => item.detail === 'total-save-au'));
         setExchangeCol(generalInfoFormat?.find((item) => item.detail === 'Exchange Colombia'));

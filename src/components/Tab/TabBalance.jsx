@@ -3,7 +3,7 @@ import Table from '../Table/Table';
 import InfoBanner from '../InfoBanner/InfoBanner';
 import LineChart from '../Charts/LineChart';
 
-function TabBalance({ bankTotal, balance, balanceUntilDate }) {
+function TabBalance({ bankTotal, balance, yearlyBalance, balanceUntilDate }) {
   return (
     <div>
       <InfoBanner {...{ data: bankTotal, label: 'Total Balance' }} />
@@ -12,6 +12,13 @@ function TabBalance({ bankTotal, balance, balanceUntilDate }) {
       <br />
       <Table
         label={'Annual Balance Table'}
+        data={yearlyBalance}
+        columns={['Year', 'Incomes', 'Expenses', 'TotalSave']}
+        hiddenColumns={['currency', 'user']}
+      />
+      <br />
+      <Table
+        label={'Monthly Balance Table'}
         data={balance}
         columns={['#', 'Year', 'Month', 'Incomes', 'Expenses', 'TotalSave']}
         hiddenColumns={['currency', 'user']}
@@ -31,6 +38,7 @@ function TabBalance({ bankTotal, balance, balanceUntilDate }) {
 TabBalance.propTypes = {
   bankTotal: PropTypes.number,
   balance: PropTypes.arrayOf(PropTypes.object).isRequired,
+  yearlyBalance: PropTypes.arrayOf(PropTypes.object).isRequired,
   balanceUntilDate: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
