@@ -6,7 +6,7 @@ import CountDownEnd from '../CountDownEnd/CountDownEnd';
 function TabInfo({ tripInfo, generalInfo, exchangeCol }) {
   return (
     <div>
-      <InfoBanner {...{ data: parseInt(generalInfo?.['total']) ?? -1, label: 'Total Save AU' }} />
+      <InfoBanner {...{ data: parseFloat(generalInfo?.['total']) ?? -1, label: 'Total Save AU' }} />
       <br />
       <CountDownEnd />
       <br />
