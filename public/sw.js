@@ -1,5 +1,5 @@
 // Define the version of the cache
-const VERSION = '1.3.81';
+const VERSION = '1.3.82';
 // Create a unique cache name using the version
 const CACHE_NAME = `finan-${VERSION}`;
 // List of files to cache
@@ -52,11 +52,7 @@ self.addEventListener('fetch', (e) => {
           // Open the cache and store the response
           caches.open(CACHE_NAME).then((cache) => {
             // If the request is a GET request, starts with 'http' and belongs to the same origin, cache the response
-            if (
-              e.request.method === 'GET' &&
-              e.request.url.startsWith('http') &&
-              e.request.url !== 'https://info.animecream.com/'
-            ) {
+            if (e.request.method === 'GET' && e.request.url.startsWith('http') && e.request.mode !== 'cors') {
               cache.put(e.request, responseClone);
             }
           });
