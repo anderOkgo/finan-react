@@ -11,12 +11,11 @@ import TabInfo from './TabInfo';
 import cyfer from '../../helpers/cyfer';
 import CurrencySelector from '../currencySelector/currencySelector';
 import './Tab.css';
-import AuthService from '../../services/auth.service';
 import { useContext } from 'react';
 import GlobalContext from '../../contexts/GlobalContext';
 
 function Tab() {
-  const { init, setProc } = useContext(GlobalContext);
+  const { init, setProc, username, role } = useContext(GlobalContext);
   const [bankTotal, setBankTotal] = useState(0);
   const [balance, setBalance] = useState([]);
   const [yearlyBalance, setYearlyBalance] = useState([]);
@@ -31,7 +30,6 @@ function Tab() {
   const [currency, setCurrency] = useState('COP');
   const [nTab, setnTab] = useState(4);
   const { selectedOption, setSelectedOption, handleTouchStart, handleTouchEnd } = useSwipeableTabs(nTab, 170);
-  const { username, role } = AuthService.getUserName(AuthService.getCurrentUser().token);
   const [userName] = useState(username);
   const [userRole] = useState(role);
   const [width, setWidth] = useState('20%');
@@ -40,6 +38,7 @@ function Tab() {
     () => ({
       movement_name: '',
       movement_val: '',
+      substract_to: '',
       movement_type: '',
       movement_date: '',
       movement_tag: '',

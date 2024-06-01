@@ -12,5 +12,10 @@
     { "value": "2", "label": "Expense" },
     { "value": "1", "label": "Income" }
   ],
+  "form_substract_options": [
+    { "value": "", "label": "---" },
+    { "value": "1261", "label": "Nequi" },
+    { "value": "1166", "label": "Cash" }
+  ],
   "salt": "9k9ND03PTA=MD0zPTs+MD0zPTQ9PD0zPD89OMz01PTM+MT0zPT4+Mz4xPjI9Ojw/PjE9Mz40PD89Oj06PTc9PD4xPTM8Pz4yPjE9Mwj09PTY6MjoxOjA5Pzw/PjA"
 }

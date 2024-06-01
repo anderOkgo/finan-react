@@ -9,7 +9,7 @@ import { useContext } from 'react';
 import GlobalContext from '../../contexts/GlobalContext.jsx';
 
 function Form({ setForm, form, edit, setEdit, currency }) {
-  const { setInit, init, setProc, proc } = useContext(GlobalContext);
+  const { setInit, init, setProc, proc, role } = useContext(GlobalContext);
   const [msg, setMsg] = useState('');
   const [bgColor, setBgColor] = useState('');
   const [visible, setVisible] = useState(false);
@@ -20,6 +20,7 @@ function Form({ setForm, form, edit, setEdit, currency }) {
     () => ({
       movement_name: '',
       movement_val: '',
+      substract_to: '',
       movement_type: '',
       movement_date: '',
       movement_tag: '',
@@ -197,6 +198,29 @@ function Form({ setForm, form, edit, setEdit, currency }) {
             required
           />
         </div>
+
+        {role === 'admin' && (
+          <div className="form-group">
+            <label className="form-label" htmlFor="substract_to">
+              Substract to
+            </label>
+            <select
+              id="substract_to"
+              className="form-control"
+              name="substract_to"
+              onChange={handleChangeInput}
+              value={form.substract_to}
+              ref={buttonRef}
+            >
+              {set.form_substract_options.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
+
         <div className="form-group">
           <label className="form-label" htmlFor="movement_type">
             Type
