@@ -20,7 +20,7 @@ function Form({ setForm, form, edit, setEdit, currency }) {
     () => ({
       movement_name: '',
       movement_val: '',
-      substract_to: '',
+      subtract_from: '',
       movement_type: '',
       movement_date: '',
       movement_tag: '',
@@ -179,7 +179,6 @@ function Form({ setForm, form, edit, setEdit, currency }) {
             name="movement_name"
             value={form.movement_name}
             onChange={handleChangeInput}
-            autoComplete="off"
             required
           />
         </div>
@@ -201,15 +200,15 @@ function Form({ setForm, form, edit, setEdit, currency }) {
 
         {role === 'admin' && (
           <div className="form-group">
-            <label className="form-label" htmlFor="substract_to">
-              Substract to
+            <label className="form-label" htmlFor="subtract_from">
+              Subtract from
             </label>
             <select
-              id="substract_to"
+              id="subtract_from"
               className="form-control"
-              name="substract_to"
+              name="subtract_from"
               onChange={handleChangeInput}
-              value={form.substract_to}
+              value={form.subtract_from}
               ref={buttonRef}
             >
               {set.form_substract_options.map((option) => (
