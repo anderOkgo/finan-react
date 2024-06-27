@@ -38,7 +38,7 @@ function Tab() {
     () => ({
       movement_name: '',
       movement_val: '',
-      substract_to: '',
+      subtract_from: '',
       movement_type: '',
       movement_date: '',
       movement_tag: '',
