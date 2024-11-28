@@ -26,8 +26,4 @@ dist-ssr
 # settings and release folders
 com
 keys
-
-com/*
-keys/*
-
 0.symbolics.bat
