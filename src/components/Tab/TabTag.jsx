@@ -10,9 +10,9 @@ function TabTag({ movementTag, totalDay }) {
       <Table
         label={'Tag Table'}
         data={movementTag}
-        columns={['Year', 'Month', 'Source', 'Tag', 'Value']}
-        hiddenColumns={['month_number_mov']}
-        orderColumnsList={['year_mov', 'month_mov', 'name_source', 'tag', 'montly_sum']}
+        columns={['Year', '#', 'Month', 'Source', 'Tag', 'Value']}
+        hiddenColumns={['']}
+        orderColumnsList={['year_mov', 'month_number_mov', 'month_mov', 'name_source', 'tag', 'montly_sum']}
       />
     </div>
   );
