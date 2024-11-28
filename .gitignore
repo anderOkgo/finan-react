@@ -27,4 +27,7 @@ dist-ssr
 com
 keys
 
+com/*
+keys/*
+
 0.symbolics.bat

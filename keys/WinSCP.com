@@ -1,1 +1,1 @@
-G:/Mi unidad/Documents/Variant/Notes/Dev/Codes/Commands/FTPSync/finan-react/keys/WinSCP.com
+G:/My drive/Documents/Variant/Notes/Dev/Codes/Commands/FTPSync/finan-react/keys/WinSCP.com
