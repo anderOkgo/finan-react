@@ -7,7 +7,7 @@ import set from '../../helpers/set.json';
 
 export default function CountDownEnd() {
   const dayIni = useMemo(() => new Date('11/20/2024 00:00:00'), []);
-  const dayEnd = useMemo(() => new Date('11/19/2025 23:59:59'), []);
+  const dayEnd = useMemo(() => new Date('01/20/2025 23:59:59'), []);
 
   const [timeTotal] = useState(calculateTime(dayEnd, dayIni));
   const [timeLeft, setTimeLeft] = useState(calculateTime(dayEnd, new Date()));
