@@ -1,6 +1,6 @@
 {
-  "name": "Finanz Personal",
-  "short_name": "Finan",
+  "name": "Personal Finanz",
+  "short_name": "Finanz",
   "description": "An app to control personal financial movements, track expenses, and manage budgets easily.",
   "start_url": "./?utm_source=homescreen",
   "background_color": "#01579b",
