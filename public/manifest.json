@@ -1,48 +1,51 @@
 {
-  "name": "Finan Personal",
+  "name": "Finanz Personal",
   "short_name": "Finan",
-  "description": "APP to control personal financial movements",
+  "description": "An app to control personal financial movements, track expenses, and manage budgets easily.",
   "start_url": "./?utm_source=homescreen",
   "background_color": "#01579b",
   "display": "standalone",
   "scope": "./",
   "orientation": "portrait",
   "theme_color": "#01579b",
+  "display_override": ["window-controls-overlay"],
+  "categories": ["finance", "productivity", "budgeting"],
+
   "screenshots": [
     {
       "src": "./icon/screen.png",
       "sizes": "320x640",
       "type": "image/png",
-      "form_factor": "narrow"
+      "form_factor": "narrow",
+      "label": "Expense tracking interface"
     },
     {
       "src": "./icon/screenWide.png",
       "type": "image/png",
       "sizes": "480x320",
-      "form_factor": "wide"
+      "form_factor": "wide",
+      "label": "Budget management overview"
     }
   ],
 
   "icons": [
     {
-      "src": "./icon/icon-48x48.png",
-      "sizes": "48x48",
-      "type": "image/png"
-    },
-    {
       "src": "./icon/icon-72x72.png",
       "sizes": "72x72",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
     },
     {
       "src": "./icon/icon-96x96.png",
       "sizes": "96x96",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
     },
     {
       "src": "./icon/icon-128x128.png",
       "sizes": "128x128",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
     },
     {
       "src": "./icon/icon-144x144.png",
@@ -60,9 +63,10 @@
       "type": "image/png"
     },
     {
-      "src": "./icon/icon-284x284.png",
-      "sizes": "284x284",
-      "type": "image/png"
+      "src": "./icon/icon-384x384.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "any"
     },
     {
       "src": "./icon/icon-512x512.png",
@@ -70,5 +74,12 @@
       "type": "image/png",
       "backgroundColor": "#ffffff"
     }
-  ]
+  ],
+  "related_applications": [
+    {
+      "platform": "play",
+      "id": "com.example.finan"
+    }
+  ],
+  "prefer_related_applications": false
 }
