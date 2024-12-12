@@ -1,14 +1,14 @@
-const VERSION = '1.4.00';
+const VERSION = '1.4.01';
 const CACHE_NAME = `finan-${VERSION}`;
 const appfiles = [
-  './icon/icon-72x72.png',
-  './icon/icon-96x96.png',
-  './icon/icon-128x128.png',
-  './icon/icon-144x144.png',
-  './icon/icon-152x152.png',
-  './icon/icon-192x192.png',
-  './icon/icon-384x384.png',
-  './icon/icon-512x512.png',
+  './icon/ico-72x72.png',
+  './icon/ico-96x96.png',
+  './icon/ico-128x128.png',
+  './icon/ico-144x144.png',
+  './icon/ico-152x152.png',
+  './icon/ico-192x192.png',
+  './icon/ico-384x384.png',
+  './icon/ico-512x512.png',
   './icon/screen.png',
   './icon/screenWide.png',
 ];
