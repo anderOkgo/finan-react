@@ -13,6 +13,7 @@ const Register = () => {
   const [password, setPassword] = useState('');
   const [verificationCode, setVerificationCode] = useState('');
   const [isRegistering, setIsRegistering] = useState(false);
+  const [showVerificationCode, setShowVerificationCode] = useState(false);
 
   const onChangeUsername = (e) => {
     setUsername(e.target.value?.replace(/\s/g, ''));
@@ -42,6 +43,7 @@ const Register = () => {
         console.error('Registration error:', resp.err.response);
       } else {
         alert(resp);
+        if (!showVerificationCode) setShowVerificationCode(true);
         setInit(Date.now());
         console.log('Registration successful:', resp);
       }
@@ -103,24 +105,26 @@ const Register = () => {
             />
           </div>
 
-          <div className="form-group">
-            <label className="label" htmlFor="register-verificationCode">
-              Verification Code
-            </label>
-            <input
-              id="register-verificationCode"
-              type="text"
-              className="form-control"
-              name="verificationCode"
-              value={verificationCode}
-              onChange={onChangeVerificationCode}
-              autoComplete="off"
-            />
-          </div>
+          {showVerificationCode && (
+            <div className="form-group">
+              <label className="label" htmlFor="register-verificationCode">
+                Verification Code
+              </label>
+              <input
+                id="register-verificationCode"
+                type="text"
+                className="form-control"
+                name="verificationCode"
+                value={verificationCode}
+                onChange={onChangeVerificationCode}
+                autoComplete="off"
+              />
+            </div>
+          )}
 
           <div className="form-group">
             <button className="btn-primary btn-block" disabled={isRegistering}>
-              <span>{isRegistering ? 'Registering...' : 'Register'}</span>
+              <span>{isRegistering ? 'Registering...' : showVerificationCode ? 'Submit' : 'Register'}</span>
             </button>
           </div>
         </form>
