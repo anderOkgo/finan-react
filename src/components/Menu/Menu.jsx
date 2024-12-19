@@ -30,7 +30,6 @@ const Menu = () => {
     { label: 'Animecream App', url: 'https://react.animecream.com/' },
     { label: 'Animecream', url: 'https://www.animecream.com/' },
     { label: 'Cyfer', url: 'https://cyfer.animecream.com/' },
-    { label: 'Nabu', url: 'https://nabu.animecream.com/' },
     {
       label: 'User Session',
       url: '#',
