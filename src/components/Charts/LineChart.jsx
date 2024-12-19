@@ -1,9 +1,10 @@
 /* eslint-disable react-refresh/only-export-components */
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Line } from 'react-chartjs-2';
 import PropTypes from 'prop-types';
 import './LineChart.css';
 import { generateUniqueId } from '../../helpers/operations';
+//import { options } from './chartOptions'; // Import the options from the separate file
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -17,71 +18,34 @@ import {
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
-export const options = {
-  responsive: true,
-  plugins: {
-    legend: {
-      position: 'top',
-    },
-    title: {
-      display: true,
-      text: 'Balances',
-    },
-  },
-  /*   scales: {
-    x: {
-      grid: {
-        color: 'rgba(20, 13, 124, 0.1)', // Light gray grid lines
-        lineWidth: 1, // Set grid line width
-      },
-      ticks: {
-        color: 'rgb(0, 0, 0)', // Black labels for X axis
-        font: {
-          size: 14, // Font size for X axis labels
-          family: 'Arial', // Font family for X axis labels
-          weight: 'bold', // Font weight for X axis labels
-        },
-      },
-    },
-    y: {
-      grid: {
-        color: 'rgba(34, 43, 35, 0.1)', // Light gray grid lines
-        lineWidth: 1, // Set grid line width
-      },
-      ticks: {
-        color: 'rgb(46, 37, 37)', // Black labels for Y axis
-        font: {
-          size: 14, // Font size for Y axis labels
-          family: 'Arial', // Font family for Y axis labels
-          weight: 'bold', // Font weight for Y axis labels
-        },
-      },
-    },
-  }, */
-};
-
 function LineChart({ dataI = [], height }) {
   const [selectedYear, setSelectedYear] = useState('');
+  const uniqueId = generateUniqueId();
 
   useEffect(() => {
-    const currentYear = new Date().getFullYear();
-    setSelectedYear(currentYear.toString());
+    setSelectedYear(new Date().getFullYear().toString());
   }, []);
 
-  const dataFromAPI = Array.isArray(dataI) ? dataI : [];
-  const filteredData =
-    selectedYear === ''
-      ? dataFromAPI.filter((item) => item.year_number !== 2022)
-      : dataFromAPI.filter((item) => item.year_number === parseInt(selectedYear));
+  const sortedData = useMemo(() => {
+    return [...dataI].sort((a, b) => {
+      if (a.year_number === b.year_number) {
+        return a.month_number - b.month_number;
+      }
+      return a.year_number - b.year_number;
+    });
+  }, [dataI]);
+
+  const filteredData = useMemo(() => {
+    return selectedYear === ''
+      ? sortedData.filter((item) => item.year_number !== 2022)
+      : sortedData.filter((item) => item.year_number === parseInt(selectedYear));
+  }, [selectedYear, sortedData]);
+
   const labels = filteredData.map((item) => item.month_name);
   const dataset1Data = filteredData.map((item) => item.incomes);
   const dataset2Data = filteredData.map((item) => item.expenses);
 
-  const handleYearChange = (event) => {
-    setSelectedYear(event.target.value);
-  };
-
-  const years = [...new Set(dataFromAPI.map((item) => item.year_number))];
+  const years = useMemo(() => [...new Set(dataI.map((item) => item.year_number))], [dataI]);
 
   const data = {
     labels,
@@ -101,22 +65,24 @@ function LineChart({ dataI = [], height }) {
     ],
   };
 
-  const uniqueId = generateUniqueId();
-
   return (
     <div>
-      <select className="select" id={uniqueId} value={selectedYear} onChange={handleYearChange}>
+      <select
+        className="select"
+        id={uniqueId}
+        value={selectedYear}
+        onChange={(e) => setSelectedYear(e.target.value)}
+      >
         <option value="">All Years</option>
-        {years.map(
-          (year) =>
-            year !== 2022 && (
-              <option key={year} value={year}>
-                {year}
-              </option>
-            )
+        {years.map((year) =>
+          year !== 2022 ? (
+            <option key={year} value={year}>
+              {year}
+            </option>
+          ) : null
         )}
       </select>
-      <Line className="line-chart" options={options} data={data} height={height} />
+      <Line className="line-chart" /* options={options} */ data={data} height={height} />
     </div>
   );
 }
