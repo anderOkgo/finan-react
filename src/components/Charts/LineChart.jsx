@@ -74,13 +74,11 @@ function LineChart({ dataI = [], height }) {
         onChange={(e) => setSelectedYear(e.target.value)}
       >
         <option value="">All Years</option>
-        {years.map((year) =>
-          year !== 2022 ? (
-            <option key={year} value={year}>
-              {year}
-            </option>
-          ) : null
-        )}
+        {years.map((year) => (
+          <option key={year} value={year}>
+            {year}
+          </option>
+        ))}
       </select>
       <Line className="line-chart" /* options={options} */ data={data} height={height} />
     </div>
