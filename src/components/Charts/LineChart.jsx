@@ -28,6 +28,36 @@ export const options = {
       text: 'Balances',
     },
   },
+  /*   scales: {
+    x: {
+      grid: {
+        color: 'rgba(20, 13, 124, 0.1)', // Light gray grid lines
+        lineWidth: 1, // Set grid line width
+      },
+      ticks: {
+        color: 'rgb(0, 0, 0)', // Black labels for X axis
+        font: {
+          size: 14, // Font size for X axis labels
+          family: 'Arial', // Font family for X axis labels
+          weight: 'bold', // Font weight for X axis labels
+        },
+      },
+    },
+    y: {
+      grid: {
+        color: 'rgba(34, 43, 35, 0.1)', // Light gray grid lines
+        lineWidth: 1, // Set grid line width
+      },
+      ticks: {
+        color: 'rgb(46, 37, 37)', // Black labels for Y axis
+        font: {
+          size: 14, // Font size for Y axis labels
+          family: 'Arial', // Font family for Y axis labels
+          weight: 'bold', // Font weight for Y axis labels
+        },
+      },
+    },
+  }, */
 };
 
 function LineChart({ dataI = [], height }) {
