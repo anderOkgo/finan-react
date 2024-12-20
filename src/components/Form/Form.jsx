@@ -1,11 +1,10 @@
-import { useState, useCallback, useMemo, useRef, useEffect } from 'react';
+import { useState, useCallback, useMemo, useRef, useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
 import DataService from '../../services/data.service';
 import AutoDismissMessage from '../Message/AutoDismissMessage.jsx';
 import Table from '../Table/Table';
 import './Form.css';
 import set from '../../helpers/set.json';
-import { useContext } from 'react';
 import GlobalContext from '../../contexts/GlobalContext.jsx';
 
 function Form({ setForm, form, edit, setEdit, currency }) {
@@ -15,6 +14,7 @@ function Form({ setForm, form, edit, setEdit, currency }) {
   const [visible, setVisible] = useState(false);
   const [off, setOff] = useState([]);
   const [disabled, setDisabled] = useState(false);
+  const [showSubtractFrom, setShowSubtractFrom] = useState(false);
   const buttonRef = useRef(null);
   const initialForm = useMemo(
     () => ({
@@ -43,6 +43,7 @@ function Form({ setForm, form, edit, setEdit, currency }) {
   const handleResetForm = useCallback(() => {
     setForm(initialForm);
     setEdit(false);
+    setShowSubtractFrom(false);
   }, [initialForm, setForm, setEdit]);
 
   const message = (msgText, msgColor, msgVisible) => {
@@ -71,6 +72,8 @@ function Form({ setForm, form, edit, setEdit, currency }) {
         [name]: value,
         currency: currency,
       }));
+
+      if (name === 'movement_type') setShowSubtractFrom(value === '2');
     },
     [currency, setForm]
   );
@@ -198,28 +201,6 @@ function Form({ setForm, form, edit, setEdit, currency }) {
           />
         </div>
 
-        {role === 'admin' && (
-          <div className="form-group">
-            <label className="form-label" htmlFor="subtract_from">
-              Subtract from
-            </label>
-            <select
-              id="subtract_from"
-              className="form-control"
-              name="subtract_from"
-              onChange={handleChangeInput}
-              value={form.subtract_from}
-              ref={buttonRef}
-            >
-              {set.form_substract_options.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
-          </div>
-        )}
-
         <div className="form-group">
           <label className="form-label" htmlFor="movement_type">
             Type
@@ -240,6 +221,28 @@ function Form({ setForm, form, edit, setEdit, currency }) {
             ))}
           </select>
         </div>
+
+        {showSubtractFrom && role === 'admin' && (
+          <div className="form-group">
+            <label className="form-label" htmlFor="subtract_from">
+              Subtract from
+            </label>
+            <select
+              id="subtract_from"
+              className="form-control"
+              name="subtract_from"
+              onChange={handleChangeInput}
+              value={form.subtract_from}
+              ref={buttonRef}
+            >
+              {set.form_substract_options.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
 
         <div className="form-group">
           <label className="form-label" htmlFor="movement_date">
@@ -297,11 +300,11 @@ function Form({ setForm, form, edit, setEdit, currency }) {
 }
 
 Form.propTypes = {
-  setForm: PropTypes.func,
-  form: PropTypes.objectOf(PropTypes.any),
-  edit: PropTypes.bool,
-  setEdit: PropTypes.func,
-  currency: PropTypes.string,
+  setForm: PropTypes.func.isRequired,
+  form: PropTypes.object.isRequired,
+  edit: PropTypes.bool.isRequired,
+  setEdit: PropTypes.func.isRequired,
+  currency: PropTypes.string.isRequired,
 };
 
 export default Form;
