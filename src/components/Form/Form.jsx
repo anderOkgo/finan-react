@@ -98,7 +98,7 @@ function Form({ setForm, form, edit, setEdit, currency }) {
       const updatedData = [];
       for (const item of JSON.parse(localStorage.getItem(type)) || []) {
         const response = await DataService[type](item);
-        message(response?.err.response.errors, 'var(--opposite-color)', true);
+        message(response?.err?.response?.errors, 'var(--opposite-color)', true);
         response.err && updatedData.push(item) & setInit(false);
       }
       localStorage.setItem(type, JSON.stringify(updatedData));
@@ -183,6 +183,7 @@ function Form({ setForm, form, edit, setEdit, currency }) {
             name="movement_name"
             value={form.movement_name}
             onChange={handleChangeInput}
+            maxLength="50"
             required
           />
         </div>
@@ -272,6 +273,7 @@ function Form({ setForm, form, edit, setEdit, currency }) {
             name="movement_tag"
             value={form.movement_tag}
             onChange={handleChangeInput}
+            maxLength="30"
             required
           />
         </div>
