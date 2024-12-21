@@ -199,6 +199,7 @@ function Form({ setForm, form, edit, setEdit, currency }) {
             value={form.movement_val}
             onChange={handleChangeInput}
             required
+            max="10000000000"
           />
         </div>
 
