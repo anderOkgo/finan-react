@@ -98,6 +98,7 @@ function Form({ setForm, form, edit, setEdit, currency }) {
       const updatedData = [];
       for (const item of JSON.parse(localStorage.getItem(type)) || []) {
         const response = await DataService[type](item);
+        message(response?.err.response.errors, 'var(--opposite-color)', true);
         response.err && updatedData.push(item) & setInit(false);
       }
       localStorage.setItem(type, JSON.stringify(updatedData));
@@ -119,7 +120,7 @@ function Form({ setForm, form, edit, setEdit, currency }) {
           message('Transaction successful', 'var(--success)', true);
           setInit(Date.now());
         } else {
-          message('Offline', 'var(--opposite-color)', true);
+          alert('Transaction failed');
           setInit(false);
         }
         setProc(false);
@@ -140,7 +141,7 @@ function Form({ setForm, form, edit, setEdit, currency }) {
           off.length !== 0 && handleRowDoubleClick();
           const response = await DataService[actionType](form);
           if (response?.err) {
-            message('Transaction failed', 'var(--opposite-color)', true);
+            message(response?.err.response.errors, 'var(--opposite-color)', true);
             handleOfflineData(actionType, form);
             setInit(false);
           } else {
