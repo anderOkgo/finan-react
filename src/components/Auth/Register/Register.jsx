@@ -69,6 +69,7 @@ const Register = () => {
               value={username}
               onChange={onChangeUsername}
               autoComplete="off"
+              maxLength={20}
               required
             />
           </div>
@@ -85,6 +86,7 @@ const Register = () => {
               value={email}
               onChange={onChangeEmail}
               autoComplete="email"
+              maxLength={30}
               required
             />
           </div>
@@ -101,6 +103,7 @@ const Register = () => {
               value={password}
               onChange={onChangePassword}
               autoComplete="off"
+              maxLength={20}
               required
             />
           </div>

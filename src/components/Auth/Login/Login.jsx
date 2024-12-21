@@ -51,7 +51,9 @@ const Login = () => {
               name="username"
               value={username}
               onChange={onChangeUsername}
+              maxLength={20}
               autoComplete="username"
+              required
             />
           </div>
 
@@ -66,7 +68,9 @@ const Login = () => {
               name="password"
               value={password}
               onChange={onChangePassword}
+              maxLength={20}
               autoComplete="off"
+              required
             />
           </div>
 
