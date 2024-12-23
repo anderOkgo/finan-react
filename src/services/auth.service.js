@@ -43,7 +43,7 @@ const login = async (username, password) => {
 };
 
 const logout = () => {
-  localStorage.removeItem('storage');
+  localStorage.clear();
   localStorage.removeItem(cyfer().cy('user', formattedDate()));
 };
 
@@ -51,6 +51,7 @@ const getCurrentUser = () => {
   try {
     return JSON.parse(cyfer().dcy(localStorage.getItem(cyfer().cy('user', formattedDate())), set.salt));
   } catch (error) {
+    logout();
     console.error('Error parsing user data:', error);
     return null;
   }
