@@ -37,7 +37,7 @@ const login = async (username, password) => {
   if (response.token === undefined) {
     return { err: true, message: response.err.response };
   } else {
-    localStorage.setItem(cyfer().cy('user', formattedDate()), cyfer().cy(JSON.stringify(response), set.salt));
+    localStorage.setItem(cyfer().cy('user-in', formattedDate()), cyfer().cy(JSON.stringify(response), set.salt));
     return { err: false };
   }
 };
@@ -47,7 +47,7 @@ const logout = () => {
 };
 
 const getCurrentUser = () => {
-  const storage = localStorage.getItem(cyfer().cy('user', formattedDate()));
+  const storage = localStorage.getItem(cyfer().cy('user-in', formattedDate()));
 
   if (storage !== null) {
     try {
