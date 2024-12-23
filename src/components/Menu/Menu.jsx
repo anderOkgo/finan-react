@@ -6,13 +6,13 @@ import { useContext } from 'react';
 import GlobalContext from '../../contexts/GlobalContext';
 
 const Menu = () => {
-  const { init, setInit, proc, toggleDarkMode, boot } = useContext(GlobalContext);
+  const { init, setInit, proc, toggleDarkMode, boot, username } = useContext(GlobalContext);
   const [currentUser, setCurrentUser] = useState(undefined);
 
+  // Update currentUser whenever username changes
   useEffect(() => {
-    const user = AuthService.getCurrentUser();
-    user && setCurrentUser(user);
-  }, [init]);
+    setCurrentUser(username);
+  }, [username]);
 
   const handleStatusClick = () => {
     boot();
@@ -23,9 +23,11 @@ const Menu = () => {
     AuthService.logout();
     setInit(Date.now());
     checkboxRef.current.checked = false;
+    setCurrentUser(undefined);
   };
 
   const title = 'Finanz';
+
   const menuItems = [
     { label: 'Animecream App', url: 'https://react.animecream.com/' },
     { label: 'Animecream', url: 'https://www.animecream.com/' },
@@ -39,15 +41,16 @@ const Menu = () => {
       ],
     },
   ];
+
   const checkboxRef = useRef(null);
   const spanRef = useRef(null);
 
   useEffect(() => {
     const handleClick = (e) => {
-      if (checkboxRef.current == e.target || spanRef.current == e.target) {
-        checkboxRef.current.checked ? false : true;
+      if (checkboxRef.current === e.target || spanRef.current === e.target) {
+        checkboxRef.current.checked = !checkboxRef.current.checked;
       } else if (e.target.closest('.navbar') !== null) {
-        //nothig to do
+        // Do nothing if clicked inside the navbar
       } else {
         checkboxRef.current.checked = false;
       }

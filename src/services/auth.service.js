@@ -44,24 +44,25 @@ const login = async (username, password) => {
 
 const logout = () => {
   localStorage.clear();
-  localStorage.removeItem(cyfer().cy('user', formattedDate()));
 };
 
 const getCurrentUser = () => {
-  try {
-    return JSON.parse(cyfer().dcy(localStorage.getItem(cyfer().cy('user', formattedDate())), set.salt));
-  } catch (error) {
-    logout();
-    console.error('Error parsing user data:', error);
+  const storage = localStorage.getItem(cyfer().cy('user', formattedDate()));
+
+  if (storage !== null) {
+    try {
+      return JSON.parse(cyfer().dcy(storage, set.salt));
+    } catch (error) {
+      console.error('Failed to parse decrypted data:', error);
+      return null;
+    }
+  } else {
     return null;
   }
 };
 
 const getUserName = (token) => {
-  if (!token) {
-    return null;
-  }
-
+  if (!token) return null;
   try {
     const base64Url = token.split('.')[1];
     const base64 = base64Url.replace('-', '+').replace(/_/g, '/');

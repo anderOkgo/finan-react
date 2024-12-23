@@ -1,15 +1,16 @@
-import AuthService from '../../services/auth.service';
 import Tab from '../Tab/Tab';
 import Login from '../Auth/Login/Login';
 import Register from '../Auth/Register/Register';
 import './Home.css';
+import GlobalContext from '../../contexts/GlobalContext';
+import { useContext } from 'react';
 
 const Home = () => {
-  const currentUser = AuthService.getCurrentUser();
+  const { username } = useContext(GlobalContext);
 
   return (
     <>
-      {!currentUser ? (
+      {!username ? (
         <div>
           <h2 className="title">Login</h2>
           <Login />
