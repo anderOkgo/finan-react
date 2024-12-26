@@ -70,6 +70,5 @@ input[type='datetime-local'] {
   border: 1px solid var(--soft-gray);
   border-radius: 5px;
   padding: 10px;
-  background-color: var(--background);
   font-size: 16px;
 }

@@ -13,7 +13,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  max-width: 8em;
+  max-width: 100%;
   width: 20%;
   height: 8%;
   min-height: 2.2em;
@@ -63,7 +63,7 @@
 }
 
 .container-tab {
-  max-width: 800px;
+  max-width: 900px;
   margin: auto;
 }
 
