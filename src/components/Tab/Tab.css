@@ -1,6 +1,5 @@
 /* smallest screen first */
 .area-tab {
-  height: 90vh;
   display: flex;
   flex-wrap: wrap-reverse;
   margin: 0 auto 20px;
@@ -15,8 +14,9 @@
   justify-content: center;
   max-width: 100%;
   width: 20%;
-  height: 8%;
-  min-height: 2.2em;
+  max-height: 4em;
+  height: 7vh;
+  min-height: 2.5em;
   padding: 0.3em;
   background: var(--background);
   cursor: pointer;
@@ -48,9 +48,8 @@
   background: var(--background);
   width: 100%;
   border-bottom: 1px solid var(--soft-gray);
-  min-height: 92%;
+  height: 83vh;
   overflow-y: scroll;
-  height: 92%;
 }
 
 .section-tab > p {
