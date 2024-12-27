@@ -49,7 +49,7 @@ function TabGeneral({ movements, totalDay, setForm, setEdit, setSelectedOption, 
       <Table
         label={'Movement Table'}
         columns={['Date', 'Name', 'Value', 'Tag', 'Source', 'Id', 'log']}
-        hiddenColumns={['Id', 'id']}
+        hiddenColumns={['Id', 'id', 'log']}
         orderColumnsList={['datemov', 'name', 'val', 'tag', 'source', 'id', 'log']}
         data={movements}
         onRowDoubleClick={handleRowDoubleClick}
