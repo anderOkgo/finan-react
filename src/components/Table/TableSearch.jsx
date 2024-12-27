@@ -13,7 +13,9 @@ function TableSearch({ setCurrentPage, setFilteredData, setItemsPerPage, dataset
     setSearchTerm(newSearchTerm);
     // Filter data based on search term
     const filteredResults = dataset.filter((item) =>
-      Object.values(item).some((value) => value.toString().toLowerCase().includes(newSearchTerm.toLowerCase()))
+      Object.values(item)
+        .filter((value) => value !== null && value !== undefined) // Exclude null or undefined values
+        .some((value) => value.toString().toLowerCase().includes(newSearchTerm.toLowerCase()))
     );
     setFilteredData(filteredResults);
   };
