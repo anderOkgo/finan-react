@@ -35,6 +35,7 @@ function TabGeneral({ movements, totalDay, setForm, setEdit, setSelectedOption, 
       movement_date: row.datemov,
       movement_type: type,
       currency: currency,
+      operate_for: row.log,
     };
 
     setForm(outputObject);
@@ -47,9 +48,9 @@ function TabGeneral({ movements, totalDay, setForm, setEdit, setSelectedOption, 
       <br />
       <Table
         label={'Movement Table'}
-        columns={['Date', 'Name', 'Value', 'Tag', 'Source', 'Id']}
+        columns={['Date', 'Name', 'Value', 'Tag', 'Source', 'Id', 'log']}
         hiddenColumns={['Id', 'id']}
-        orderColumnsList={['datemov', 'name', 'val', 'tag', 'source', 'id']}
+        orderColumnsList={['datemov', 'name', 'val', 'tag', 'source', 'id', 'log']}
         data={movements}
         onRowDoubleClick={handleRowDoubleClick}
       />

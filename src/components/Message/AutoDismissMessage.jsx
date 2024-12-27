@@ -64,7 +64,7 @@ const AutoDismissMessage = ({ msg, bgColor, duration, setVisible, visible }) => 
 };
 
 AutoDismissMessage.propTypes = {
-  msg: PropTypes.string.isRequired,
+  msg: PropTypes.any.isRequired,
   bgColor: PropTypes.string.isRequired,
   duration: PropTypes.number.isRequired,
   visible: PropTypes.bool,
