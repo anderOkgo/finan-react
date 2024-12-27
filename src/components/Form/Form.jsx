@@ -20,7 +20,7 @@ function Form({ setForm, form, edit, setEdit, currency }) {
     () => ({
       movement_name: '',
       movement_val: '',
-      subtract_from: '',
+      operate_for: '',
       movement_type: '',
       movement_date: '',
       movement_tag: '',
@@ -227,15 +227,15 @@ function Form({ setForm, form, edit, setEdit, currency }) {
 
         {showSubtractFrom && role === 'admin' && (
           <div className="form-group">
-            <label className="form-label" htmlFor="subtract_from">
-              To
+            <label className="form-label" htmlFor="operate_for">
+              For
             </label>
             <select
-              id="subtract_from"
+              id="operate_for"
               className="form-control"
-              name="subtract_from"
+              name="operate_for"
               onChange={handleChangeInput}
-              value={form.subtract_from}
+              value={form.operate_for}
               ref={buttonRef}
             >
               {set.form_substract_options.map((option) => (

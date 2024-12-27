@@ -13,11 +13,11 @@ const formatToken = (token) => 'Bearer ' + token;
 
 const formatParams = (par) => {
   let { username } = AuthService.getUserName(AuthService.getCurrentUser().token);
-  const { movement_name, movement_val, subtract_from, movement_type, movement_date, movement_tag, currency } = par;
+  const { movement_name, movement_val, operate_for, movement_type, movement_date, movement_tag, currency } = par;
   return {
     movement_name: movement_name.trim(),
     movement_val: parseFloat(parseFloat(movement_val).toFixed(2)),
-    subtract_from,
+    operate_for,
     movement_type: parseInt(movement_type, 10),
     movement_date,
     movement_tag: movement_tag.trim(),

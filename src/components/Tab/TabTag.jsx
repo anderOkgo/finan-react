@@ -5,7 +5,7 @@ import InfoBanner from '../InfoBanner/InfoBanner';
 function TabTag({ movementTag, totalDay }) {
   return (
     <div>
-      <InfoBanner {...{ data: totalDay, label: 'Total Day' }} />
+      <InfoBanner {...{ data: totalDay, label: 'Total Daily Expenses' }} />
       <br />
       <Table
         label={'Tag Table'}
