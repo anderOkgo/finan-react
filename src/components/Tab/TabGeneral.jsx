@@ -18,6 +18,10 @@ function TabGeneral({ movements, totalDay, setForm, setEdit, setSelectedOption, 
         document.querySelector('#movement_type').selectedIndex = 1;
         type = 1;
         break;
+      case 'balance':
+        document.querySelector('#movement_type').selectedIndex = 8;
+        type = 8;
+        break;
       default:
         document.querySelector('#movement_type').selectedIndex = '';
         break;

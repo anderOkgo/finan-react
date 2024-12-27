@@ -73,7 +73,7 @@ function Form({ setForm, form, edit, setEdit, currency }) {
         currency: currency,
       }));
 
-      if (name === 'movement_type') setShowSubtractFrom(value === '2');
+      if (name === 'movement_type') setShowSubtractFrom(value !== '');
     },
     [currency, setForm]
   );
@@ -228,7 +228,7 @@ function Form({ setForm, form, edit, setEdit, currency }) {
         {showSubtractFrom && role === 'admin' && (
           <div className="form-group">
             <label className="form-label" htmlFor="subtract_from">
-              Subtract from
+              To
             </label>
             <select
               id="subtract_from"

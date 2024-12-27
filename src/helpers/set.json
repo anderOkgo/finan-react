@@ -1,7 +1,7 @@
 {
   "api_url": "api/finan/",
-  "base_url": "https://info.animecream.com/",
-  "base_url_": "http://localhost:3001/",
+  "base_url_": "https://info.animecream.com/",
+  "base_url": "http://localhost:3001/",
   "boot_timeout": 20000,
   "defaul_fetch_request": 10000,
   "pagination_max_buttons": 5,
@@ -10,12 +10,15 @@
   "form_type_options": [
     { "value": "", "label": "---" },
     { "value": "2", "label": "Expense" },
-    { "value": "1", "label": "Income" }
+    { "value": "1", "label": "Income" },
+    { "value": "8", "label": "Balance" }
   ],
   "form_substract_options": [
     { "value": "", "label": "---" },
     { "value": "1261", "label": "Nequi" },
-    { "value": "1166", "label": "Cash" }
+    { "value": "1166", "label": "Cash" },
+    { "value": "1650", "label": "Lulo" },
+    { "value": "1651", "label": "BBogota" }
   ],
   "salt": "9k9ND03PTA=MD0zPTs+MD0zPTQ9PD0zPD89OMz01PTM+MT0zPT4+Mz4xPjI9Ojw/PjE9Mz40PD89Oj06PTc9PD4xPTM8Pz4yPjE9Mwj09PTY6MjoxOjA5Pzw/PjA"
 }
