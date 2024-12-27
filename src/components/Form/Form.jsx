@@ -7,14 +7,13 @@ import './Form.css';
 import set from '../../helpers/set.json';
 import GlobalContext from '../../contexts/GlobalContext.jsx';
 
-function Form({ setForm, form, edit, setEdit, currency }) {
-  const { setInit, init, setProc, proc, role } = useContext(GlobalContext);
+function Form({ setForm, form, edit, setEdit, currency, operateFor }) {
+  const { setInit, init, setProc, proc } = useContext(GlobalContext);
   const [msg, setMsg] = useState('');
   const [bgColor, setBgColor] = useState('');
   const [visible, setVisible] = useState(false);
   const [off, setOff] = useState([]);
   const [disabled, setDisabled] = useState(false);
-  const [showSubtractFrom, setShowSubtractFrom] = useState(false);
   const buttonRef = useRef(null);
   const initialForm = useMemo(
     () => ({
@@ -43,7 +42,6 @@ function Form({ setForm, form, edit, setEdit, currency }) {
   const handleResetForm = useCallback(() => {
     setForm(initialForm);
     setEdit(false);
-    setShowSubtractFrom(false);
   }, [initialForm, setForm, setEdit]);
 
   const message = (msgText, msgColor, msgVisible) => {
@@ -72,8 +70,6 @@ function Form({ setForm, form, edit, setEdit, currency }) {
         [name]: value,
         currency: currency,
       }));
-
-      if (name === 'movement_type') setShowSubtractFrom(value !== '');
     },
     [currency, setForm]
   );
@@ -167,6 +163,8 @@ function Form({ setForm, form, edit, setEdit, currency }) {
     [edit, proc, setProc, handleResetForm, form, handleOfflineData, setInit, init, off, handleRowDoubleClick]
   );
 
+  const options = [...set.form_operatefor_options, ...operateFor];
+
   return (
     <div>
       <AutoDismissMessage msg={msg} bgColor={bgColor} duration={2000} visible={visible} setVisible={setVisible} />
@@ -225,27 +223,25 @@ function Form({ setForm, form, edit, setEdit, currency }) {
           </select>
         </div>
 
-        {showSubtractFrom && role === 'admin' && (
-          <div className="form-group">
-            <label className="form-label" htmlFor="operate_for">
-              For
-            </label>
-            <select
-              id="operate_for"
-              className="form-control"
-              name="operate_for"
-              onChange={handleChangeInput}
-              value={form.operate_for}
-              ref={buttonRef}
-            >
-              {set.form_substract_options.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
-          </div>
-        )}
+        <div className="form-group">
+          <label className="form-label" htmlFor="operate_for">
+            From
+          </label>
+          <select
+            id="operate_for"
+            className="form-control"
+            name="operate_for"
+            onChange={handleChangeInput}
+            value={form.operate_for}
+            ref={buttonRef}
+          >
+            {options.map((option) => (
+              <option key={option.id} value={option.id}>
+                {option.name}
+              </option>
+            ))}
+          </select>
+        </div>
 
         <div className="form-group">
           <label className="form-label" htmlFor="movement_date">
@@ -309,6 +305,7 @@ Form.propTypes = {
   edit: PropTypes.bool.isRequired,
   setEdit: PropTypes.func.isRequired,
   currency: PropTypes.string.isRequired,
+  operateFor: PropTypes.any.isRequired,
 };
 
 export default Form;

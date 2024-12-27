@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import Form from '../Form/Form';
 import InfoBanner from '../InfoBanner/InfoBanner';
 
-function TabInput({ totalDay, setForm, form, edit, setEdit, currency }) {
+function TabInput({ totalDay, setForm, form, edit, setEdit, currency, operateFor }) {
   return (
     <div>
       <InfoBanner {...{ data: totalDay, label: 'Total Daily Expenses' }} />
@@ -10,7 +10,7 @@ function TabInput({ totalDay, setForm, form, edit, setEdit, currency }) {
       <h2>Movement Input</h2>
       <hr />
       <br />
-      <Form {...{ setForm, form, edit, setEdit, currency }} />
+      <Form {...{ setForm, form, edit, setEdit, currency, operateFor }} />
       <br />
     </div>
   );
@@ -23,6 +23,7 @@ TabInput.propTypes = {
   edit: PropTypes.bool,
   setEdit: PropTypes.func.isRequired,
   currency: PropTypes.string,
+  operateFor: PropTypes.any,
 };
 
 export default TabInput;

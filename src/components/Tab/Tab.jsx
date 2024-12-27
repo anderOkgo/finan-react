@@ -33,6 +33,7 @@ function Tab() {
   const [userName] = useState(username);
   const [userRole] = useState(role);
   const [width, setWidth] = useState('20%');
+  const [operateFor, setOperatefor] = useState('');
 
   const initialForm = useMemo(
     () => ({
@@ -54,7 +55,9 @@ function Tab() {
       id: 1,
       icon: '☰',
       label: 'Input',
-      component: true && <TabInput {...{ totalDay, setForm, form, edit, setEdit, setCurrency, currency }} />,
+      component: true && (
+        <TabInput {...{ totalDay, setForm, form, edit, setEdit, setCurrency, currency, operateFor }} />
+      ),
     },
     {
       id: 2,
@@ -91,9 +94,9 @@ function Tab() {
     setnTab(tabsData.length);
     const per = 100 / tabsData.length;
     setWidth(per + '%');
+
     const fetchData = async () => {
       setProc(true);
-
       const writeData = (resp) => {
         const {
           totalBank = [],
@@ -109,6 +112,7 @@ function Tab() {
         const generalInfoFormat = Array.isArray(generalInfo) ? generalInfo : [];
         setMovementTag(movementTag);
         setMovements(movements);
+        setOperatefor(movements.filter((item) => item.source === 'balance'));
         setBankTotal(totalBank?.[0]?.total_bank ?? -1);
         setBalance(balance);
         setYearlyBalance(yearlyBalance);
@@ -122,9 +126,7 @@ function Tab() {
       try {
         var localResp = localStorage.getItem('storage');
         localResp && (localResp = JSON.parse(cyfer().dcy(localResp, set.salt)));
-        if (Object.keys(localResp || {}).length !== 0) {
-          writeData(localResp);
-        }
+        if (Object.keys(localResp || {}).length !== 0) writeData(localResp);
       } catch (error) {
         console.log(error);
       }
