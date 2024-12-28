@@ -44,7 +44,7 @@ function TabGeneral({ movements, totalDay, setForm, setEdit, setSelectedOption, 
   };
   return (
     <div>
-      <InfoBanner {...{ data: totalDay, label: 'Total Daily Expenses' }} />
+      <InfoBanner {...{ data: totalDay, label: 'Daily Expenses' }} />
       <br />
       <Table
         label={'Movement Table'}

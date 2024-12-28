@@ -5,7 +5,7 @@ import InfoBanner from '../InfoBanner/InfoBanner';
 function TabInput({ totalDay, setForm, form, edit, setEdit, currency, operateFor }) {
   return (
     <div>
-      <InfoBanner {...{ data: totalDay, label: 'Total Daily Expenses' }} />
+      <InfoBanner {...{ data: totalDay, label: 'Daily Expenses' }} />
       <br />
       <h2>Movement Input</h2>
       <hr />
