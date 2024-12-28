@@ -14,9 +14,7 @@
   justify-content: center;
   max-width: 100%;
   width: 20%;
-  max-height: 5em;
-  height: 8vh;
-  min-height: 2em;
+  height: 9vh;
   padding: 0.3em;
   background: var(--background);
   cursor: pointer;
@@ -34,7 +32,7 @@
 
 .radio-tab:checked + .label-tab {
   color: var(--second-color);
-  border-bottom: 3px solid var(--second-color);
+  border-top: 1px solid var(--second-color);
 }
 
 .radio-tab:checked + .label-tab + .panel-tab {
@@ -48,7 +46,7 @@
   background: var(--background);
   width: 100%;
   border-bottom: 1px solid var(--soft-gray);
-  height: 82vh;
+  height: 81vh;
   overflow-y: scroll;
 }
 
