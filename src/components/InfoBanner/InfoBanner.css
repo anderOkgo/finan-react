@@ -2,7 +2,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background: var(--warning);
+  background: var(--tertiary-color);
   font-size: larger;
   font-weight: bold;
   padding: 0.5em;
