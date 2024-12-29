@@ -208,7 +208,7 @@ function Form({ setForm, form, edit, setEdit, currency, operateFor }) {
           </label>
           <select
             id="movement_type"
-            className="form-control"
+            className="form-control select"
             name="movement_type"
             onChange={handleChangeInput}
             required
@@ -229,7 +229,7 @@ function Form({ setForm, form, edit, setEdit, currency, operateFor }) {
           </label>
           <select
             id="operate_for"
-            className="form-control"
+            className="form-control select"
             name="operate_for"
             onChange={handleChangeInput}
             value={form.operate_for}
