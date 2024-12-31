@@ -2,8 +2,11 @@ import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import './TablePagination.css';
 import set from '../../helpers/set.json';
+import { useContext } from 'react';
+import GlobalContext from '../../contexts/GlobalContext';
 
 function TablePagination({ currentPage, setCurrentPage, filteredData, itemsPerPage, elemet = '' }) {
+  const { t } = useContext(GlobalContext); // Use the translation function from context
   const [totalPages, setTotalPages] = useState(1);
   const [startIndex, setStartIndex] = useState(0);
   const [endIndex, setEndIndex] = useState(0);
@@ -78,15 +81,15 @@ function TablePagination({ currentPage, setCurrentPage, filteredData, itemsPerPa
         className="pagination-range"
       />
       <small className="pagination-label">
-        Showing {startIndex}-{endIndex} of {filteredData.length} records
+        {t('showing')} {startIndex}-{endIndex} {t('of')} {filteredData.length} {t('records')}
       </small>
       <div className="pagination">
         <button onClick={prevPage} disabled={currentPage === 1} className="pagination-button">
-          Prev
+          {t('prev')}
         </button>
         {renderPaginationButtons()}
         <button onClick={nextPage} disabled={currentPage === totalPages} className="pagination-button">
-          Next
+          {t('next')}
         </button>
       </div>
     </>

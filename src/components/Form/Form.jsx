@@ -8,7 +8,7 @@ import set from '../../helpers/set.json';
 import GlobalContext from '../../contexts/GlobalContext.jsx';
 
 function Form({ setForm, form, edit, setEdit, currency, operateFor }) {
-  const { setInit, init, setProc, proc } = useContext(GlobalContext);
+  const { setInit, init, setProc, proc, t } = useContext(GlobalContext);
   const [msg, setMsg] = useState('');
   const [bgColor, setBgColor] = useState('');
   const [visible, setVisible] = useState(false);
@@ -154,13 +154,13 @@ function Form({ setForm, form, edit, setEdit, currency, operateFor }) {
       }
 
       if (actionType === 'del') {
-        window.confirm(`Are you sure to delete: '${form.movement_name}'`) && exeAction(actionType);
+        window.confirm(`${t('areYouSure')} '${form.movement_name}'`) && exeAction(actionType);
       } else {
         actionType = edit ? 'update' : 'insert';
         exeAction(actionType);
       }
     },
-    [edit, proc, setProc, handleResetForm, form, handleOfflineData, setInit, init, off, handleRowDoubleClick]
+    [edit, proc, setProc, handleResetForm, form, handleOfflineData, setInit, init, off, handleRowDoubleClick, t]
   );
 
   const options = [...set.form_operatefor_options, ...operateFor];
@@ -172,7 +172,7 @@ function Form({ setForm, form, edit, setEdit, currency, operateFor }) {
         <input type="hidden" name="currency" onChange={handleChangeInput} value={currency} />
         <div className="form-group">
           <label className="form-label" htmlFor="movement_name">
-            Name
+            {t('name')}
           </label>
           <input
             id="movement_name"
@@ -188,7 +188,7 @@ function Form({ setForm, form, edit, setEdit, currency, operateFor }) {
 
         <div className="form-group">
           <label className="form-label" htmlFor="movement_val">
-            Value
+            {t('value')}
           </label>
           <input
             id="movement_val"
@@ -204,7 +204,7 @@ function Form({ setForm, form, edit, setEdit, currency, operateFor }) {
 
         <div className="form-group">
           <label className="form-label" htmlFor="movement_type">
-            Type
+            {t('type')}
           </label>
           <select
             id="movement_type"
@@ -225,7 +225,7 @@ function Form({ setForm, form, edit, setEdit, currency, operateFor }) {
 
         <div className="form-group">
           <label className="form-label" htmlFor="operate_for">
-            From
+            {t('from')}
           </label>
           <select
             id="operate_for"
@@ -245,7 +245,7 @@ function Form({ setForm, form, edit, setEdit, currency, operateFor }) {
 
         <div className="form-group">
           <label className="form-label" htmlFor="movement_date">
-            Date:
+            {t('date')}
           </label>
           <input
             className="form-control"
@@ -255,12 +255,12 @@ function Form({ setForm, form, edit, setEdit, currency, operateFor }) {
             value={form.movement_date}
             onChange={handleChangeInput}
             required
-          ></input>
+          />
         </div>
 
         <div className="form-group">
           <label className="form-label" htmlFor="movement_tag">
-            Tag:
+            {t('tag')}
           </label>
           <input
             id="movement_tag"
@@ -275,13 +275,13 @@ function Form({ setForm, form, edit, setEdit, currency, operateFor }) {
         </div>
 
         <div className="form-group">
-          <input type="submit" className="btn-primarys" disabled={disabled}></input>
-          <input className="btn-primarys" type="reset" value="Reset" onClick={handleResetForm} />
+          <input type="submit" className="btn-primarys" value={t('submit')} disabled={disabled}></input>
+          <input className="btn-primarys" type="reset" value={t('reset')} onClick={handleResetForm} />
           {edit && (
             <input
               className="delete-button"
               type="button"
-              value="Delete"
+              value={t('delete')}
               onClick={(e) => handleAction(e, 'del')}
             />
           )}
@@ -289,8 +289,8 @@ function Form({ setForm, form, edit, setEdit, currency, operateFor }) {
       </form>
       {off.length !== 0 && (
         <Table
-          label={'Offline Table'}
-          columns={['Queue', '', '', '', '', '', '', '...']}
+          label={t('offlineTable')}
+          columns={[t('queue'), '', '', '', '', '', '', '', '...']}
           data={off}
           onRowDoubleClick={handleRowDoubleClick}
         />

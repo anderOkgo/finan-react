@@ -1,8 +1,7 @@
 import PropTypes from 'prop-types';
 import { generateUniqueId } from '../../helpers/operations';
 
-const CurrencySelector = ({ setCurrency, currency }) => {
-  // Function to handle currency change
+const CurrencySelector = ({ setCurrency, currency, t }) => {
   const handleCurrencyChange = (event) => {
     setCurrency(event.target.value);
   };
@@ -12,7 +11,7 @@ const CurrencySelector = ({ setCurrency, currency }) => {
   return (
     <div>
       <label style={{ fontWeight: 'bold', marginRight: '2px' }} htmlFor={uniqueId}>
-        Select Currency:
+        {t('selectCurrency')}
       </label>
       <select id={uniqueId} className="select" value={currency} onChange={handleCurrencyChange}>
         <option value="COP">COP</option>
@@ -25,6 +24,7 @@ const CurrencySelector = ({ setCurrency, currency }) => {
 CurrencySelector.propTypes = {
   setCurrency: PropTypes.func.isRequired,
   currency: PropTypes.string.isRequired,
+  t: PropTypes.any.isRequired,
 };
 
 export default CurrencySelector;

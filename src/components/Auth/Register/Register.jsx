@@ -1,10 +1,11 @@
 import { useState, useRef } from 'react';
+import PropTypes from 'prop-types';
 import AuthService from '../../../services/auth.service';
 import '../Login/Login';
 import { useContext } from 'react';
 import GlobalContext from '../../../contexts/GlobalContext';
 
-const Register = () => {
+const Register = ({ t }) => {
   const { setInit, init, setProc } = useContext(GlobalContext);
   const form = useRef();
 
@@ -38,7 +39,7 @@ const Register = () => {
       setProc(true);
       let resp = await AuthService.register(username, email, password, verificationCode);
       if (resp.err) {
-        alert(resp.err.response);
+        alert(resp.err.response); // Using the passed `alert` prop
         setInit(false);
         console.error('Registration error:', resp.err.response);
       } else {
@@ -59,7 +60,7 @@ const Register = () => {
         <form onSubmit={handleRegister} ref={form}>
           <div className="form-group">
             <label className="label" htmlFor="register-username">
-              Username for Registration
+              {t('usernameForRegistration')}
             </label>
             <input
               id="register-username"
@@ -76,7 +77,7 @@ const Register = () => {
 
           <div className="form-group">
             <label className="label" htmlFor="register-email">
-              Email
+              {t('email')}
             </label>
             <input
               id="register-email"
@@ -93,7 +94,7 @@ const Register = () => {
 
           <div className="form-group">
             <label className="label" htmlFor="register-password">
-              Password
+              {t('password')}
             </label>
             <input
               id="register-password"
@@ -111,7 +112,7 @@ const Register = () => {
           {showVerificationCode && (
             <div className="form-group">
               <label className="label" htmlFor="register-verificationCode">
-                Verification Code
+                {t('verificationCode')}
               </label>
               <input
                 id="register-verificationCode"
@@ -127,13 +128,17 @@ const Register = () => {
 
           <div className="form-group">
             <button className="btn-primary btn-block" disabled={isRegistering}>
-              <span>{isRegistering ? 'Registering...' : showVerificationCode ? 'Submit' : 'Register'}</span>
+              <span>{isRegistering ? t('registering') : showVerificationCode ? t('submit') : t('register')}</span>
             </button>
           </div>
         </form>
       </div>
     </div>
   );
+};
+
+Register.propTypes = {
+  t: PropTypes.func.isRequired,
 };
 
 export default Register;

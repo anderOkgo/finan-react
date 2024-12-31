@@ -6,7 +6,7 @@ import { useContext } from 'react';
 import GlobalContext from '../../contexts/GlobalContext';
 
 const Menu = () => {
-  const { init, setInit, proc, toggleDarkMode, boot, username } = useContext(GlobalContext);
+  const { init, setInit, proc, toggleDarkMode, boot, username, t } = useContext(GlobalContext);
   const [currentUser, setCurrentUser] = useState(undefined);
 
   // Update currentUser whenever username changes
@@ -26,18 +26,18 @@ const Menu = () => {
     setCurrentUser(undefined);
   };
 
-  const title = 'Finanz';
+  const title = t('finanzTitle'); // Use translation for the title
 
   const menuItems = [
-    { label: 'Animecream App', url: 'https://react.animecream.com/' },
-    { label: 'Animecream', url: 'https://www.animecream.com/' },
-    { label: 'Cyfer', url: 'https://cyfer.animecream.com/' },
+    { label: t('animecreamApp'), url: 'https://react.animecream.com/' },
+    { label: t('animecream'), url: 'https://www.animecream.com/' },
+    { label: t('cyfer'), url: 'https://cyfer.animecream.com/' },
     {
-      label: 'User Session',
+      label: t('userSession'),
       url: '#',
       child: [
-        { isSessionNeeded: false, label: 'login', url: '#' },
-        { isSessionNeeded: true, label: 'logout', url: '#', trigger: handleLogout },
+        { isSessionNeeded: false, label: t('login'), url: '#' },
+        { isSessionNeeded: true, label: t('logout'), url: '#', trigger: handleLogout },
       ],
     },
   ];

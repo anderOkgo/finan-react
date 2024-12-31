@@ -67,3 +67,12 @@
 .small-text {
   font-size: small;
 }
+
+.lang {
+  font-size: 1em;
+  text-align: end;
+  background-color: var(--main-color);
+  color: var(--text-alt);
+  padding: 5px;
+  cursor: pointer;
+}

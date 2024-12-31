@@ -15,7 +15,7 @@ import { useContext } from 'react';
 import GlobalContext from '../../contexts/GlobalContext';
 
 function Tab() {
-  const { init, setProc, username, role } = useContext(GlobalContext);
+  const { init, setProc, username, role, language, toggleLanguage, t } = useContext(GlobalContext);
   const [bankTotal, setBankTotal] = useState(0);
   const [balance, setBalance] = useState([]);
   const [yearlyBalance, setYearlyBalance] = useState([]);
@@ -54,30 +54,30 @@ function Tab() {
     {
       id: 1,
       icon: '☰',
-      label: 'Input',
+      label: t('inputTab'),
       component: true && (
-        <TabInput {...{ totalDay, setForm, form, edit, setEdit, setCurrency, currency, operateFor }} />
+        <TabInput {...{ totalDay, setForm, form, edit, setEdit, setCurrency, currency, operateFor, t }} />
       ),
     },
     {
       id: 2,
       icon: '☷',
-      label: 'General',
+      label: t('generalTab'),
       component: true && (
-        <TabGeneral {...{ movements, totalDay, setForm, setEdit, setSelectedOption, currency }} />
+        <TabGeneral {...{ movements, totalDay, setForm, setEdit, setSelectedOption, currency, t }} />
       ),
     },
     {
       id: 3,
       icon: '♞',
-      label: 'Tag',
-      component: true && <TabTag {...{ movementTag, totalDay }} />,
+      label: t('tagTab'),
+      component: true && <TabTag {...{ movementTag, totalDay, t }} />,
     },
     {
       id: 4,
       icon: '❆',
-      label: 'Balance',
-      component: true && <TabBalance {...{ bankTotal, balance, yearlyBalance, balanceUntilDate }} />,
+      label: t('balanceTab'),
+      component: true && <TabBalance {...{ bankTotal, balance, yearlyBalance, balanceUntilDate, t }} />,
     },
   ];
 
@@ -85,8 +85,8 @@ function Tab() {
     tabsData.push({
       id: 5,
       icon: '⚅',
-      label: 'Info',
-      component: true && <TabInfo {...{ tripInfo, generalInfo, exchangeCol }} />,
+      label: t('infoTab'),
+      component: true && <TabInfo {...{ tripInfo, generalInfo, exchangeCol, t }} />,
     });
   }
 
@@ -171,7 +171,10 @@ function Tab() {
           <div className="panel-tab">
             <div className="section-tab">
               <div className="container-tab">
-                {userRole === 'admin' ? <CurrencySelector {...{ setCurrency, currency }} /> : ''}
+                <span className="lang" onClick={toggleLanguage}>
+                  {language === 'en' ? t('switchToSpanish') : t('switchToEnglish')}
+                </span>
+                {userRole === 'admin' ? <CurrencySelector {...{ setCurrency, currency, t }} /> : ''}
                 {tab.component}
               </div>
             </div>

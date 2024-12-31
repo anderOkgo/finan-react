@@ -1,11 +1,12 @@
 import { useEffect, useMemo, useState } from 'react';
 import './countDownEnd.css';
+import PropTypes from 'prop-types'; // Import PropTypes
 import { monthDiff } from '../../helpers/operations';
 import Table from '../Table/Table';
 import cyfer from '../../helpers/cyfer';
 import set from '../../helpers/set.json';
 
-export default function CountDownEnd() {
+export default function CountDownEnd({ t }) {
   const dayIni = useMemo(() => new Date('11/20/2024 00:00:00'), []);
   const dayEnd = useMemo(() => new Date('01/20/2025 23:59:59'), []);
 
@@ -18,7 +19,7 @@ export default function CountDownEnd() {
 
   useEffect(() => {
     try {
-      var localResp = localStorage.getItem('count_down');
+      let localResp = localStorage.getItem('count_down');
       localResp && (localResp = JSON.parse(cyfer().dcy(localResp, set.salt)));
       if (Object.keys(localResp || {}).length !== 0) {
         setData(localResp);
@@ -35,21 +36,21 @@ export default function CountDownEnd() {
       setTimeMonthLeft(monthDiff(new Date(), dayEnd));
       setTimeMonthNow(monthDiff(dayIni, new Date()));
 
-      var json = [
+      const json = [
         {
-          Total: timeTotal.toFixed(0),
-          Elapsed: timeNow.toFixed(5),
-          Remaining: timeLeft.toFixed(5),
+          [t('total')]: timeTotal.toFixed(0),
+          [t('elapsed')]: timeNow.toFixed(5),
+          [t('remaining')]: timeLeft.toFixed(5),
         },
         {
-          Total: (timeMonthNow + timeMonthLeft).toFixed(0),
-          Elapsed: timeMonthNow.toFixed(2),
-          Remaining: timeMonthLeft.toFixed(2),
+          [t('total')]: (timeMonthNow + timeMonthLeft).toFixed(0),
+          [t('elapsed')]: timeMonthNow.toFixed(2),
+          [t('remaining')]: timeMonthLeft.toFixed(2),
         },
         {
-          Total: '100%',
-          Elapsed: `${((timeNow / timeTotal) * 100).toFixed(2)}%`,
-          Remaining: `${((timeLeft / timeTotal) * 100).toFixed(2)}%`,
+          [t('total')]: '100%',
+          [t('elapsed')]: `${((timeNow / timeTotal) * 100).toFixed(2)}%`,
+          [t('remaining')]: `${((timeLeft / timeTotal) * 100).toFixed(2)}%`,
         },
       ];
       setData(json);
@@ -59,11 +60,15 @@ export default function CountDownEnd() {
     return () => {
       clearInterval(id);
     };
-  }, [timeTotal, timeLeft, timeNow, timeMonthLeft, timeMonthNow, dayEnd, dayIni]);
+  }, [t, timeTotal, timeLeft, timeNow, timeMonthLeft, timeMonthNow, dayEnd, dayIni]);
 
   function calculateTime(date1, date2) {
     return Math.abs(date1 - date2) / (1000 * 3600 * 24);
   }
 
-  return <Table label={'Remaining Time Table'} data={data} />;
+  return <Table label={t('remainingTimeTable')} data={data} />;
 }
+
+CountDownEnd.propTypes = {
+  t: PropTypes.func.isRequired,
+};

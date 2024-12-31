@@ -3,8 +3,11 @@ import PropTypes from 'prop-types';
 import set from '../../helpers/set.json';
 import './TableSearch.css';
 import { generateUniqueId } from '../../helpers/operations';
+import { useContext } from 'react';
+import GlobalContext from '../../contexts/GlobalContext';
 
 function TableSearch({ setCurrentPage, setFilteredData, setItemsPerPage, dataset, itemsPerPage }) {
+  const { t } = useContext(GlobalContext);
   const [searchTerm, setSearchTerm] = useState('');
 
   // Search functionality
@@ -25,7 +28,7 @@ function TableSearch({ setCurrentPage, setFilteredData, setItemsPerPage, dataset
   return (
     <div className="search-box">
       <label id={uniqueId}>
-        Rows:{' '}
+        {t('rows')}{' '}
         <select
           id={uniqueId}
           value={itemsPerPage}
@@ -48,7 +51,7 @@ function TableSearch({ setCurrentPage, setFilteredData, setItemsPerPage, dataset
         type="search"
         value={searchTerm}
         onChange={(e) => handleSearch(e.target.value)}
-        placeholder="Search..."
+        placeholder={t('searchPlaceholder')}
       />
     </div>
   );

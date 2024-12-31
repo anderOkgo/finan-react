@@ -1,15 +1,17 @@
 import { useState, useRef } from 'react';
+import PropTypes from 'prop-types';
 import AuthService from '../../../services/auth.service';
 import './Login.css';
 import { useContext } from 'react';
 import GlobalContext from '../../../contexts/GlobalContext';
 
-const Login = () => {
+const Login = ({ t }) => {
   const { setInit, init, setProc } = useContext(GlobalContext);
   const form = useRef();
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+
   const onChangeUsername = (e) => {
     const username = e.target.value;
     setUsername(username);
@@ -42,7 +44,7 @@ const Login = () => {
         <form onSubmit={handleLogin} ref={form}>
           <div className="form-group">
             <label className="label" htmlFor="username">
-              Username
+              {t('username')}
             </label>
             <input
               id="username"
@@ -59,7 +61,7 @@ const Login = () => {
 
           <div className="form-group">
             <label className="label" htmlFor="password">
-              Password
+              {t('password')}
             </label>
             <input
               id="password"
@@ -76,13 +78,17 @@ const Login = () => {
 
           <div className="form-group">
             <button className="btn-primary btn-block">
-              <span>Login</span>
+              <span>{t('login')}</span>
             </button>
           </div>
         </form>
       </div>
     </div>
   );
+};
+
+Login.propTypes = {
+  t: PropTypes.func.isRequired,
 };
 
 export default Login;
