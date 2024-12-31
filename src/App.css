@@ -33,3 +33,7 @@ body {
 .app {
   height: 100vh;
 }
+
+.lang-container {
+  margin-bottom: 0.3em;
+}
