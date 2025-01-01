@@ -4,7 +4,6 @@ import DataService from '../../services/data.service';
 import AutoDismissMessage from '../Message/AutoDismissMessage.jsx';
 import Table from '../Table/Table';
 import './Form.css';
-import set from '../../helpers/set.json';
 import GlobalContext from '../../contexts/GlobalContext.jsx';
 
 function Form({ setForm, form, edit, setEdit, currency, operateFor }) {
@@ -163,8 +162,6 @@ function Form({ setForm, form, edit, setEdit, currency, operateFor }) {
     [edit, proc, setProc, handleResetForm, form, handleOfflineData, setInit, init, off, handleRowDoubleClick, t]
   );
 
-  const options = [...set.form_operatefor_options, ...operateFor];
-
   return (
     <div>
       <AutoDismissMessage msg={msg} bgColor={bgColor} duration={2000} visible={visible} setVisible={setVisible} />
@@ -215,11 +212,10 @@ function Form({ setForm, form, edit, setEdit, currency, operateFor }) {
             value={form.movement_type}
             ref={buttonRef}
           >
-            {set.form_type_options.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
+            <option value="0">---</option>
+            <option value="2">{t('expenses')}</option>
+            <option value="1">{t('incomes')}</option>
+            <option value="8">{t('balance')}</option>
           </select>
         </div>
 
@@ -235,7 +231,8 @@ function Form({ setForm, form, edit, setEdit, currency, operateFor }) {
             value={form.operate_for}
             ref={buttonRef}
           >
-            {options.map((option) => (
+            <option value="">---</option>
+            {[...operateFor].map((option) => (
               <option key={option.id} value={option.id}>
                 {option.name}
               </option>

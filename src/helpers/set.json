@@ -6,13 +6,6 @@
   "defaul_fetch_request": 10000,
   "pagination_max_buttons": 3,
   "pagination_default_items_per_page": 20,
-  "table_select_row_numbers": [5, 10, 20, 50, 100, 500, 1000, 10000],
-  "form_type_options": [
-    { "value": "", "label": "---" },
-    { "value": "2", "label": "Expense" },
-    { "value": "1", "label": "Income" },
-    { "value": "8", "label": "Balance" }
-  ],
-  "form_operatefor_options": [{ "id": "0", "name": "---" }],
+  "table_select_row_numbers": [1, 3, 5, 10, 20, 50, 100, 500, 1000, 10000],
   "salt": "9k9ND03PTA=MD0zPTs+MD0zPTQ9PD0zPD89OMz01PTM+MT0zPT4+Mz4xPjI9Ojw/PjE9Mz40PD89Oj06PTc9PD4xPTM8Pz4yPjE9Mwj09PTY6MjoxOjA5Pzw/PjA"
 }
