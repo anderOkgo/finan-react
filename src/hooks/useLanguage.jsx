@@ -6,7 +6,7 @@ const translations = {
     generalTab: 'General',
     tagTab: 'Tag',
     balanceTab: 'Balance',
-    infoTab: 'Info',
+    infoTab: 'Information',
     switchToSpanish: 'ENG',
     switchToEnglish: 'ESP',
     name: 'Name',
