@@ -99,28 +99,28 @@ function Tab() {
       setProc(true);
       const writeData = (resp) => {
         const {
-          totalBank = [],
-          balance = [],
-          yearlyBalance = [],
-          movementTag = [],
+          totalExpenseDay = [],
           movements = [],
-          totalDay = [],
+          movementTag = [],
+          totalBalance = [],
+          yearlyBalance = [],
+          monthlyBalance = [],
+          balanceUntilDate = [],
           generalInfo = [],
           tripInfo = [],
-          balanceUntilDate = [],
         } = resp;
         const generalInfoFormat = Array.isArray(generalInfo) ? generalInfo : [];
-        setMovementTag(movementTag);
+        setTotalDay(totalExpenseDay?.[0]?.Total_day ?? 0);
         setMovements(movements);
-        setOperatefor(movements.filter((item) => item.source === 'balance'));
-        setBankTotal(totalBank?.[0]?.total_bank ?? -1);
-        setBalance(balance);
+        setMovementTag(movementTag);
+        setBankTotal(totalBalance?.[0]?.total_bank ?? -1);
         setYearlyBalance(yearlyBalance);
-        setTotalDay(totalDay?.[0]?.Total_day ?? 0);
+        setBalance(monthlyBalance);
+        setBalanceUntilDate(Array.isArray(balanceUntilDate) ? balanceUntilDate : []);
         setGeneralInfo(generalInfoFormat?.find((item) => item.detail === 'total-save-au'));
         setExchangeCol(generalInfoFormat?.find((item) => item.detail === 'Exchange Colombia'));
         setTripInfo(Array.isArray(tripInfo) ? tripInfo : []);
-        setBalanceUntilDate(Array.isArray(balanceUntilDate) ? balanceUntilDate : []);
+        setOperatefor(movements.filter((item) => item.source === 'balance'));
       };
 
       try {
