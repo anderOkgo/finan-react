@@ -20,8 +20,8 @@ function TabBalance({ bankTotal, balance, yearlyBalance, balanceUntilDate, t }) 
       <Table
         label={t('monthlyBalanceTable')} // Translated label for the monthly balance table
         data={balance}
-        columns={[t('hashtag'), t('year'), t('month'), t('incomes'), t('expenses'), t('totalSave')]}
-        hiddenColumns={['currency', 'user']}
+        columns={[t('year'), t('month'), t('incomes'), t('expenses'), t('totalSave')]}
+        hiddenColumns={['currency', 'user', 'month_number']}
       />
       <br />
       <Table

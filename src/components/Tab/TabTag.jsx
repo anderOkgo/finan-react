@@ -8,11 +8,11 @@ function TabTag({ movementTag, totalDay, t }) {
       <InfoBanner {...{ data: totalDay, label: t('dailyExpenses') }} />
       <br />
       <Table
-        label={t('tagTable')} // Translated label for the table
+        label={t('tagTable')}
         data={movementTag}
-        columns={[t('year'), t('hashtag'), t('month'), t('source'), t('tag'), t('value')]} // Translated column headers
-        hiddenColumns={['']}
-        orderColumnsList={['year_mov', 'month_number_mov', 'month_mov', 'name_source', 'tag', 'montly_sum']}
+        columns={[t('year'), t('month'), t('source'), t('tag'), t('value')]}
+        hiddenColumns={['month_number_mov']}
+        orderColumnsList={['month_number_mov', 'year_mov', 'month_mov', 'name_source', 'tag', 'montly_sum']}
       />
     </div>
   );
