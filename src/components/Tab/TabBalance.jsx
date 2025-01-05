@@ -26,7 +26,7 @@ function TabBalance({ bankTotal, balance, yearlyBalance, balanceUntilDate, t }) 
       <br />
       <Table
         label={t('dailyBalanceTable')}
-        columns={[t('date'), t('balance'), t('total')]}
+        columns={[t('date'), t('Balance'), t('total')]}
         hiddenColumns={['currency', 'user']}
         orderColumnsList={[]}
         data={balanceUntilDate?.filter((item) => item.detail !== 'final-trip') ?? []}

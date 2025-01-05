@@ -73,7 +73,7 @@ function LineChart({ dataI = [], height, t }) {
         value={selectedYear}
         onChange={(e) => setSelectedYear(e.target.value)}
       >
-        <option value="">All Years</option>
+        <option value="">{t('allYears')}</option>
         {years.map((year) => (
           <option key={year} value={year}>
             {year}
