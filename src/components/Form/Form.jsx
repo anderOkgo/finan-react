@@ -315,7 +315,7 @@ Form.propTypes = {
   edit: PropTypes.bool.isRequired,
   setEdit: PropTypes.func.isRequired,
   currency: PropTypes.string.isRequired,
-  operateFor: PropTypes.array.isRequired,
+  operateFor: PropTypes.any.isRequired,
 };
 
 export default Form;
