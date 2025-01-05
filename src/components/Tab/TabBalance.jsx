@@ -8,17 +8,17 @@ function TabBalance({ bankTotal, balance, yearlyBalance, balanceUntilDate, t }) 
     <div>
       <InfoBanner {...{ data: bankTotal, label: t('totalBalance') }} />
       <br />
-      <LineChart dataI={balance} height={280} />
+      <LineChart dataI={balance} height={280} t={t} />
       <br />
       <Table
-        label={t('annualBalanceTable')} // Translated label for the annual balance table
+        label={t('annualBalanceTable')}
         data={yearlyBalance}
-        columns={[t('year'), t('incomes'), t('expenses'), t('totalSave')]} // Translated columns
+        columns={[t('year'), t('incomes'), t('expenses'), t('totalSave')]}
         hiddenColumns={['currency', 'user']}
       />
       <br />
       <Table
-        label={t('monthlyBalanceTable')} // Translated label for the monthly balance table
+        label={t('monthlyBalanceTable')}
         data={balance}
         columns={[t('year'), t('month'), t('incomes'), t('expenses'), t('totalSave')]}
         hiddenColumns={['currency', 'user', 'month_number']}

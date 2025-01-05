@@ -18,7 +18,7 @@ import {
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
-function LineChart({ dataI = [], height }) {
+function LineChart({ dataI = [], height, t }) {
   const [selectedYear, setSelectedYear] = useState('');
   const uniqueId = generateUniqueId();
 
@@ -51,13 +51,13 @@ function LineChart({ dataI = [], height }) {
     labels,
     datasets: [
       {
-        label: 'Incomes',
+        label: t('incomes'),
         data: dataset1Data,
         borderColor: 'rgb(53, 162, 235)',
         backgroundColor: 'rgba(53, 162, 235, 0.5)',
       },
       {
-        label: 'Expenses',
+        label: t('expenses'),
         data: dataset2Data,
         borderColor: 'rgb(255, 99, 132)',
         backgroundColor: 'rgba(255, 99, 132, 0.5)',
@@ -88,6 +88,7 @@ function LineChart({ dataI = [], height }) {
 LineChart.propTypes = {
   dataI: PropTypes.array.isRequired,
   height: PropTypes.number.isRequired,
+  t: PropTypes.any.isRequired,
 };
 
 export default LineChart;

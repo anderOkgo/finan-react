@@ -1,4 +1,4 @@
-const VERSION = '2.0.08';
+const VERSION = '2.0.09';
 const CACHE_NAME = `finan-${VERSION}`;
 const appfiles = [
   './icon/ico-32x32.png',
