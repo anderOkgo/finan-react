@@ -125,19 +125,19 @@ function Form({ setForm, form, edit, setEdit, currency, operateFor }) {
         let sum = [...updatedUpdateArray, ...updatedInsertArray, ...UpdatedDeleteArray];
         setOff(sum);
         if (sum?.length === 0) {
-          message('Transaction successful', 'var(--success)', true);
+          message(t('transactionSuccessful'), 'var(--success)', true);
           setInit(Date.now());
         } else {
-          alert('Transaction failed');
+          alert(t('transactionFailed'));
           setInit(false);
         }
         setProc(false);
       } else {
-        message('Transaction waiting', 'var(--warning)', true);
+        message(t('transactionWaiting'), 'var(--warning)', true);
       }
     }
     syncOfflineData();
-  }, [handleBulkData, proc, setInit, setProc, init]);
+  }, [handleBulkData, proc, setInit, setProc, init, t]);
 
   const handleAction = useCallback(
     async (e, actionType) => {
@@ -153,14 +153,14 @@ function Form({ setForm, form, edit, setEdit, currency, operateFor }) {
             handleOfflineData(actionType, form);
             setInit(false);
           } else {
-            message('Transaction successful', 'var(--success)', true);
+            message(t('transactionSuccessful'), 'var(--success)', true);
             setInit(Date.now());
           }
           setDisabled(false);
           setProc(false);
         } else {
           handleOfflineData(actionType, form);
-          message('Transaction waiting', 'var(--warning)', true);
+          message(t('transactionWaiting'), 'var(--warning)', true);
         }
         handleResetForm();
       }

@@ -39,7 +39,7 @@ const Register = ({ t }) => {
       setProc(true);
       let resp = await AuthService.register(username, email, password, verificationCode);
       if (resp.err) {
-        alert(resp.err.response); // Using the passed `alert` prop
+        alert(resp.err.response);
         setInit(false);
         console.error('Registration error:', resp.err.response);
       } else {
