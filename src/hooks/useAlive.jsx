@@ -5,12 +5,9 @@ import DataService from '../services/data.service';
 export const useAlive = () => {
   const [init, setInit] = useState(0); // Indicates if application recived response of server
   const [proc, setProc] = useState(1); // Indicates if initialization process is ongoing
-  const [online, setOnline] = useState(true); // Indicates if application is online
+  const [online, setOnline] = useState(true);
 
   useEffect(() => {
-    //boot();
-
-    // If online and not initialized, trigger the boot process
     if (online && !init) setProc(true) & boot() & setProc(false);
 
     // Event handlers for online, offline, and visibility change events
