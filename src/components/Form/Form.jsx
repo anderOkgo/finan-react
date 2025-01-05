@@ -83,7 +83,7 @@ function Form({ setForm, form, edit, setEdit, currency, operateFor }) {
         currency: currency,
       }));
     },
-    [currency, setForm]
+    [currency, setForm, t]
   );
 
   useEffect(() => {
