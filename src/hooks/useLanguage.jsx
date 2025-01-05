@@ -69,6 +69,7 @@ const translations = {
     verificationCode: 'Verification Code',
     registering: 'Registering...',
     register: 'Register',
+    noEmoji: 'No Emojis Allowed',
   },
   es: {
     inputTab: 'Entrada',
@@ -138,6 +139,7 @@ const translations = {
     verificationCode: 'Código de verificación',
     registering: 'Registrando...',
     register: 'Registrar',
+    noEmoji: 'Emojis No Permitidos',
   },
 };
 
