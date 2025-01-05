@@ -5,6 +5,8 @@ import './TablePagination.css';
 import TablePagination from './TablePagination';
 import set from '../../helpers/set.json';
 import TableSearch from './TableSearch';
+import { useContext } from 'react';
+import GlobalContext from '../../contexts/GlobalContext';
 
 function Table({
   data = [],
@@ -21,6 +23,7 @@ function Table({
   const [itemsPerPage, setItemsPerPage] = useState(set.pagination_default_items_per_page);
   const [sortOrder, setSortOrder] = useState({ columnIndex: null, descending: false });
   const currentData = filteredData.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+  const { t } = useContext(GlobalContext);
 
   // Helper function useEffect to reorder data to print the table based on orderColumnsList array
   const reorderTableHeader = (data, orderColumnsList) => {
@@ -80,7 +83,7 @@ function Table({
   const renderTableColumns = (row) => {
     return Object.keys(row).map((key, index) => (
       <td key={index} className={hiddenColumns.includes(key) ? 'hidden-column' : ''}>
-        {row[key]}
+        {t(row[key])}
       </td>
     ));
   };

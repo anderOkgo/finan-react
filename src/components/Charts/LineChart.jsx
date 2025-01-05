@@ -41,7 +41,7 @@ function LineChart({ dataI = [], height, t }) {
       : sortedData.filter((item) => item.year_number === parseInt(selectedYear));
   }, [selectedYear, sortedData]);
 
-  const labels = filteredData.map((item) => item.month_name);
+  const labels = filteredData.map((item) => t(item.month_name));
   const dataset1Data = filteredData.map((item) => item.incomes);
   const dataset2Data = filteredData.map((item) => item.expenses);
 
