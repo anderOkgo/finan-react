@@ -141,7 +141,7 @@ function Form({ setForm, form, edit, setEdit, currency, operateFor }) {
             setInit(false);
           } else {
             message('Transaction successful', 'var(--success)', true);
-            setInit(Date.now());
+            setInit(false);
           }
           setDisabled(false);
           setProc(false);

@@ -5,10 +5,6 @@ import AuthService from './auth.service';
 const BASE_URL = set.base_url;
 const API_URL = BASE_URL + set.api_url;
 
-const balanceMonthly = async () => {
-  return await helpHttp.get(API_URL + 'initial-load', {});
-};
-
 const formatToken = (token) => 'Bearer ' + token;
 
 const formatParams = (par) => {
@@ -58,6 +54,6 @@ const del = async (par) => {
   });
 };
 
-const DataService = { initialLoad, insert, update, del, boot, balanceMonthly };
+const DataService = { initialLoad, insert, update, del, boot };
 
 export default DataService;
