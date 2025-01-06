@@ -106,7 +106,6 @@ function Form({ setForm, form, edit, setEdit, currency, operateFor }) {
       const updatedData = [];
       for (const item of JSON.parse(localStorage.getItem(type)) || []) {
         const response = await DataService[type](item);
-        message(response?.err?.message, 'var(--opposite-color)', true);
         response.err && updatedData.push(item) & setInit(false);
       }
       localStorage.setItem(type, JSON.stringify(updatedData));
@@ -149,7 +148,13 @@ function Form({ setForm, form, edit, setEdit, currency, operateFor }) {
           off.length !== 0 && handleRowDoubleClick();
           const response = await DataService[actionType](form);
           if (response?.err) {
-            message(response?.err?.message, 'var(--opposite-color)', true);
+            let error = '';
+            if (Array.isArray(response?.err?.message)) {
+              error = response?.err?.message.map((msg) => t(msg)).join(', ');
+            } else {
+              error = t(response?.err?.message || 'Unknown error');
+            }
+            message(error, 'var(--opposite-color)', true);
             handleOfflineData(actionType, form);
             setInit(false);
           } else {
@@ -177,7 +182,7 @@ function Form({ setForm, form, edit, setEdit, currency, operateFor }) {
 
   return (
     <div>
-      <AutoDismissMessage msg={msg} bgColor={bgColor} duration={2000} visible={visible} setVisible={setVisible} />
+      <AutoDismissMessage msg={msg} bgColor={bgColor} duration={4000} visible={visible} setVisible={setVisible} />
       <form onSubmit={(e) => handleAction(e, '')}>
         <input type="hidden" name="currency" onChange={handleChangeInput} value={currency} />
         <div className="form-group">
@@ -210,6 +215,7 @@ function Form({ setForm, form, edit, setEdit, currency, operateFor }) {
             required
             max="10000000000"
             min="0"
+            step="any"
           />
         </div>
 
