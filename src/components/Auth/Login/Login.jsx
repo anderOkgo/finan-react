@@ -27,8 +27,8 @@ const Login = ({ t }) => {
     if (init) {
       setProc(true);
       let resp = await AuthService.login(username, password);
-      if (resp.err) {
-        alert(resp.message);
+      if (resp?.err) {
+        alert(resp?.err?.message);
         setInit(false);
       } else {
         setInit(Date.now());

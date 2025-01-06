@@ -26,13 +26,9 @@ const customFetch = async (endpoint, options = {}) => {
       return await (res.ok
         ? responseBody
         : Promise.reject({
-            err: true,
             status: res.status || '00',
             statusText: res.statusText || 'An error has occurred',
-            message:
-              (Array.isArray(responseBody?.errors) ? responseBody.errors.join(', ') : responseBody?.errors) ||
-              (Array.isArray(responseBody) ? responseBody.join(', ') : responseBody) ||
-              'Unknown error',
+            message: (Array.isArray(responseBody) ? responseBody.join(', ') : responseBody) || 'Unknown error',
           }));
     } catch (err) {
       console.log({ err });
@@ -40,10 +36,7 @@ const customFetch = async (endpoint, options = {}) => {
     }
   } else {
     return {
-      err: true,
-      status: '00',
-      statusText: 'Offline',
-      message: 'Offline',
+      err: { status: '00', statusText: 'Offline', message: 'Offline' },
     };
   }
 };

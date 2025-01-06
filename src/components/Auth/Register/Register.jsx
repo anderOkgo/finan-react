@@ -38,8 +38,8 @@ const Register = ({ t }) => {
       setIsRegistering(true);
       setProc(true);
       let resp = await AuthService.register(username, email, password, verificationCode);
-      if (resp.err) {
-        alert(resp.err.message);
+      if (resp?.err) {
+        alert(resp?.err?.message);
         setInit(false);
         console.error('Registration error:', resp.err.message);
       } else {

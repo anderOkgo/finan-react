@@ -149,7 +149,7 @@ function Form({ setForm, form, edit, setEdit, currency, operateFor }) {
           off.length !== 0 && handleRowDoubleClick();
           const response = await DataService[actionType](form);
           if (response?.err) {
-            message(response?.err.message, 'var(--opposite-color)', true);
+            message(response?.err?.message, 'var(--opposite-color)', true);
             handleOfflineData(actionType, form);
             setInit(false);
           } else {
