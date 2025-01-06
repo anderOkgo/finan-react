@@ -22,13 +22,14 @@ const customFetch = async (endpoint, options = {}) => {
   if (navigator.onLine) {
     try {
       const res = await fetch(endpoint, options);
+      const responseBody = await res.json();
       return await (res.ok
-        ? res.json()
+        ? responseBody
         : Promise.reject({
             err: true,
             status: res.status || '00',
             statusText: res.statusText || 'An error has occurred',
-            message: ((await res.json()).errors || []).join(', ') || 'Unknown error',
+            message: responseBody?.errors?.join(', ') || responseBody?.join(', ') || 'Unknown error',
           }));
     } catch (err) {
       console.log({ err });
