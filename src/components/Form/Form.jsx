@@ -128,7 +128,7 @@ function Form({ setForm, form, edit, setEdit, currency, operateFor }) {
           message(t('transactionSuccessful'), 'var(--success)', true);
           setInit(Date.now());
         } else {
-          alert(t('transactionFailed'));
+          message(t('transactionFailed'), 'var(--opposite-color)', true);
           setInit(false);
         }
         setProc(false);
@@ -149,7 +149,11 @@ function Form({ setForm, form, edit, setEdit, currency, operateFor }) {
           off.length !== 0 && handleRowDoubleClick();
           const response = await DataService[actionType](form);
           if (response?.err) {
-            message(response?.err.response.errors, 'var(--opposite-color)', true);
+            if (response?.err.message) {
+              message(response?.err.message, 'var(--opposite-color)', true);
+            } else {
+              message(response?.err.response.errors, 'var(--opposite-color)', true);
+            }
             handleOfflineData(actionType, form);
             setInit(false);
           } else {
