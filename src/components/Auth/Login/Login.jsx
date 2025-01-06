@@ -28,12 +28,18 @@ const Login = ({ t }) => {
       setProc(true);
       let resp = await AuthService.login(username, password);
       if (resp?.err) {
-        alert(resp?.err?.message);
+        if (Array.isArray(resp?.err?.message)) {
+          resp.err.message.map((err) => alert(t(err)));
+        } else {
+          alert(t(resp?.err?.message || 'Unknown error'));
+        }
         setInit(false);
       } else {
         setInit(Date.now());
       }
       setProc(false);
+    } else {
+      alert(t('Offline'));
     }
   };
 

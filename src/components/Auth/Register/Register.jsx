@@ -39,7 +39,11 @@ const Register = ({ t }) => {
       setProc(true);
       let resp = await AuthService.register(username, email, password, verificationCode);
       if (resp?.err) {
-        alert(resp?.err?.message);
+        if (Array.isArray(resp?.err?.message)) {
+          resp.err.message.map((err) => alert(t(err)));
+        } else {
+          alert(t(resp?.err?.message || 'Unknown error'));
+        }
         setInit(false);
         console.error('Registration error:', resp.err.message);
       } else {
@@ -50,6 +54,8 @@ const Register = ({ t }) => {
       }
       setProc(false);
       setIsRegistering(false);
+    } else {
+      alert(t('Offline'));
     }
   };
 

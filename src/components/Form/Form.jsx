@@ -209,6 +209,7 @@ function Form({ setForm, form, edit, setEdit, currency, operateFor }) {
             onChange={handleChangeInput}
             required
             max="10000000000"
+            min="0"
           />
         </div>
 
@@ -221,11 +222,11 @@ function Form({ setForm, form, edit, setEdit, currency, operateFor }) {
             className="form-control select"
             name="movement_type"
             onChange={handleChangeInput}
-            required
             value={form.movement_type}
             ref={buttonRef}
+            required
           >
-            <option value="0">---</option>
+            <option value="">---</option>
             <option value="2">{t('expenses')}</option>
             <option value="1">{t('incomes')}</option>
             <option value="8">{t('balance')}</option>
