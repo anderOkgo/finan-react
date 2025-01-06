@@ -29,7 +29,10 @@ const customFetch = async (endpoint, options = {}) => {
             err: true,
             status: res.status || '00',
             statusText: res.statusText || 'An error has occurred',
-            message: responseBody?.errors?.join(', ') || responseBody?.join(', ') || 'Unknown error',
+            message:
+              (Array.isArray(responseBody?.errors) ? responseBody.errors.join(', ') : responseBody?.errors) ||
+              (Array.isArray(responseBody) ? responseBody.join(', ') : responseBody) ||
+              'Unknown error',
           }));
     } catch (err) {
       console.log({ err });
