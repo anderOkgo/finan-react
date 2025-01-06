@@ -28,7 +28,7 @@ const customFetch = async (endpoint, options = {}) => {
             err: true,
             status: res.status || '00',
             statusText: res.statusText || 'An error has occurred',
-            response: await res.json(),
+            message: ((await res.json()).errors || []).join(', ') || 'Unknown error',
           }));
     } catch (err) {
       console.log({ err });
@@ -39,6 +39,7 @@ const customFetch = async (endpoint, options = {}) => {
       err: true,
       status: '00',
       statusText: 'Offline',
+      message: 'Offline',
     };
   }
 };
