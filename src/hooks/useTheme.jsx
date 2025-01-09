@@ -43,7 +43,7 @@ export const useTheme = () => {
       '--opposite-second-color': '#ff3c0b',
       '--warning': 'navajowhite',
       '--success': 'green',
-      '--background': '#fff',
+      '--background': '#f2f9ff',
       '--text': '#000',
       '--text-alt': '#fff',
       '--soft-gray': '#ddd',

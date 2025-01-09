@@ -175,8 +175,8 @@ function Tab() {
                   <span className="lang" onClick={toggleLanguage}>
                     {language === 'en' ? t('switchToSpanish') : t('switchToEnglish')}
                   </span>
+                  {userRole === 'admin' ? <CurrencySelector {...{ setCurrency, currency, t }} /> : ''}
                 </div>
-                {userRole === 'admin' ? <CurrencySelector {...{ setCurrency, currency, t }} /> : ''}
                 {tab.component}
               </div>
             </div>

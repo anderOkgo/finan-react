@@ -12,11 +12,11 @@ const Home = () => {
     <>
       {!username ? (
         <div>
-          <div className="lang-container">
+          <span className="lang-container">
             <span className="lang" onClick={toggleLanguage}>
               {language === 'en' ? t('switchToSpanish') : t('switchToEnglish')}
             </span>
-          </div>
+          </span>
           <h2 className="title">{t('login')}</h2>
           <Login t={t} />
           <h2 className="title">{t('register')}</h2>

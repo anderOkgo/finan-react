@@ -9,7 +9,7 @@ const CurrencySelector = ({ setCurrency, currency, t }) => {
   const uniqueId = generateUniqueId();
 
   return (
-    <div>
+    <sapn>
       <label style={{ fontWeight: 'bold', marginRight: '2px' }} htmlFor={uniqueId}>
         {t('selectCurrency')}
       </label>
@@ -17,7 +17,7 @@ const CurrencySelector = ({ setCurrency, currency, t }) => {
         <option value="COP">COP</option>
         <option value="AUD">AUD</option>
       </select>
-    </div>
+    </sapn>
   );
 };
 
