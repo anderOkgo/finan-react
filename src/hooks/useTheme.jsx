@@ -34,33 +34,32 @@ export const useTheme = () => {
   useEffect(() => {
     const root = document.documentElement;
 
-    // Define colors for light and dark modes
     const lightModeColors = {
       '--main-color': '#01579b',
-      '--second-color': '#086bb8',
-      '--tertiary-color': '#d4f1f7',
-      '--opposite-color': '#f44336',
-      '--opposite-second-color': '#ff3c0b',
-      '--warning': 'navajowhite',
-      '--success': 'green',
-      '--background': '#f2f9ff',
-      '--text': '#000',
-      '--text-alt': '#fff',
-      '--soft-gray': '#ddd',
+      '--second-color': '#0572c6',
+      '--tertiary-color': '#79b7e8',
+      '--opposite-color': '#e53935',
+      '--opposite-second-color': '#ff5722',
+      '--warning': '#ffcc80',
+      '--success': '#4caf50',
+      '--background': '#e8f4fa',
+      '--text': '#212121',
+      '--text-alt': '#ffffff',
+      '--soft-gray': '#b3d2e3',
     };
 
     const darkModeColors = {
       '--main-color': '#023965',
-      '--second-color': '#367bb9',
-      '--tertiary-color': '#516a89',
-      '--opposite-color': '#f44336',
-      '--opposite-second-color': '#ff3c0b',
-      '--warning': '#6d4a03',
-      '--success': 'darkgreen',
+      '--second-color': '#256cae',
+      '--tertiary-color': '#435c7b',
+      '--opposite-color': '#e53935',
+      '--opposite-second-color': '#ff5722',
+      '--warning': '#ffab40',
+      '--success': '#66bb6a',
       '--background': '#121212',
-      '--text': '#fff',
-      '--text-alt': '#fff',
-      '--soft-gray': '#333',
+      '--text': '#e0e0e0',
+      '--text-alt': '#ffffff',
+      '--soft-gray': '#444c56',
     };
 
     const colors = isDarkMode ? darkModeColors : lightModeColors;
