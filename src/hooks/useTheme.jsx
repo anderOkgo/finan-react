@@ -51,7 +51,7 @@ export const useTheme = () => {
     const darkModeColors = {
       '--main-color': '#023965',
       '--second-color': '#256cae',
-      '--tertiary-color': '#435c7b',
+      '--tertiary-color': '#2e435d',
       '--opposite-color': '#e53935',
       '--opposite-second-color': '#ff5722',
       '--warning': '#ffab40',
@@ -59,7 +59,7 @@ export const useTheme = () => {
       '--background': '#121212',
       '--text': '#e0e0e0',
       '--text-alt': '#ffffff',
-      '--soft-gray': '#444c56',
+      '--soft-gray': '#363c42',
     };
 
     const colors = isDarkMode ? darkModeColors : lightModeColors;
