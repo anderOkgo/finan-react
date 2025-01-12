@@ -45,13 +45,13 @@ export const useTheme = () => {
       '--background': '#e8f4fa',
       '--text': '#212121',
       '--text-alt': '#ffffff',
-      '--soft-gray': '#b3d2e3',
+      '--soft-gray': '#b5cdda',
     };
 
     const darkModeColors = {
       '--main-color': '#023965',
       '--second-color': '#256cae',
-      '--tertiary-color': '#2e435d',
+      '--tertiary-color': '#304c6e',
       '--opposite-color': '#e53935',
       '--opposite-second-color': '#ff5722',
       '--warning': '#ffab40',
