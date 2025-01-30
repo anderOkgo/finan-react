@@ -43,7 +43,7 @@ export default function CountDownEnd({ t }) {
           [t('remaining')]: timeLeft.toFixed(5),
         },
         {
-          [t('total')]: (timeMonthNow + timeMonthLeft).toFixed(0),
+          [t('total')]: (timeMonthNow + timeMonthLeft).toFixed(2),
           [t('elapsed')]: timeMonthNow.toFixed(2),
           [t('remaining')]: timeMonthLeft.toFixed(2),
         },
