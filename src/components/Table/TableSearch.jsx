@@ -14,12 +14,30 @@ function TableSearch({ setCurrentPage, setFilteredData, setItemsPerPage, dataset
   const handleSearch = (newSearchTerm) => {
     setCurrentPage(1);
     setSearchTerm(newSearchTerm);
-    // Filter data based on search term
-    const filteredResults = dataset.filter((item) =>
-      Object.values(item)
-        .filter((value) => value !== null && value !== undefined) // Exclude null or undefined values
-        .some((value) => value.toString().toLowerCase().includes(newSearchTerm.toLowerCase()))
-    );
+
+    // Split the search term by commas and trim whitespace
+    const searchTerms = newSearchTerm
+      .split(',')
+      .map((term) => term.trim().toLowerCase())
+      .filter((term) => term.length > 0);
+
+    // If no search terms, show all data
+    if (searchTerms.length === 0) {
+      setFilteredData(dataset);
+      return;
+    }
+
+    // Filter data based on search terms
+    const filteredResults = dataset.filter((item) => {
+      const itemString = Object.values(item)
+        .filter((value) => value !== null && value !== undefined)
+        .map((value) => value.toString().toLowerCase())
+        .join(' ');
+
+      // Check if ALL search terms are found in the concatenated string
+      return searchTerms.every((term) => itemString.includes(term));
+    });
+
     setFilteredData(filteredResults);
   };
 
@@ -51,7 +69,7 @@ function TableSearch({ setCurrentPage, setFilteredData, setItemsPerPage, dataset
         type="search"
         value={searchTerm}
         onChange={(e) => handleSearch(e.target.value)}
-        placeholder={t('searchPlaceholder')}
+        placeholder={`${t('searchPlaceholder')} ${t('commaSeparated')}`}
       />
     </div>
   );

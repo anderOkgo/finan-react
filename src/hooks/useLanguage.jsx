@@ -35,7 +35,7 @@ const translations = {
     id: 'Id',
     log: 'Log',
     rows: 'Rows',
-    searchPlaceholder: 'Search...',
+    searchPlaceholder: 'Search',
     prev: 'Prev',
     next: 'Next',
     showing: 'Showing',
@@ -112,6 +112,7 @@ const translations = {
     'Movement tag cannot be empty': 'Movement tag cannot be empty',
     'Movement tag exceeds 60 characters': 'Movement tag exceeds 60 characters',
     'ID is invalid': 'ID is invalid',
+    commaSeparated: 'comma separated',
   },
   es: {
     inputTab: 'Entrada',
@@ -147,7 +148,7 @@ const translations = {
     id: 'ID',
     log: 'Registro',
     rows: 'Filas',
-    searchPlaceholder: 'Buscar...',
+    searchPlaceholder: 'Buscar',
     prev: 'Anterior',
     next: 'Siguiente',
     showing: 'Mostrando',
@@ -224,6 +225,7 @@ const translations = {
     'Movement tag cannot be empty': 'La etiqueta del movimiento no puede estar vacía',
     'Movement tag exceeds 60 characters': 'La etiqueta del movimiento excede los 60 caracteres',
     'ID is invalid': 'El ID es inválido',
+    commaSeparated: 'separado por comas',
   },
 };
 
