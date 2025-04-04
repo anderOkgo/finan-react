@@ -20,7 +20,11 @@ function TabTag({ movementTag, totalDay, t }) {
     return acc;
   }, {});
 
-  const tagSummaryArray = Object.values(tagSummary);
+  // Format totals to 2 decimal places
+  const tagSummaryArray = Object.values(tagSummary).map((item) => ({
+    ...item,
+    total: Number(item.total.toFixed(2)),
+  }));
 
   return (
     <div>

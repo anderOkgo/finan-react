@@ -5,6 +5,7 @@ import InfoBanner from '../InfoBanner/InfoBanner';
 
 function TabGeneral({ movements, totalDay, setForm, setEdit, setSelectedOption, currency, t }) {
   const [selectedRow, setSelectedRow] = useState(null);
+  const [filteredData, setFilteredData] = useState(movements);
 
   const handleRowDoubleClick = (row) => {
     setSelectedRow(row);
@@ -43,6 +44,27 @@ function TabGeneral({ movements, totalDay, setForm, setEdit, setSelectedOption, 
     setSelectedOption(1);
   };
 
+  // Group data by name and calculate sum based on filtered data
+  const nameSummary = filteredData.reduce((acc, curr) => {
+    const name = curr.name;
+    if (!acc[name]) {
+      acc[name] = {
+        name: name,
+        total: 0,
+        currency: curr.currency,
+        source: curr.source,
+      };
+    }
+    acc[name].total += curr.val;
+    return acc;
+  }, {});
+
+  // Format totals to 2 decimal places
+  const nameSummaryArray = Object.values(nameSummary).map((item) => ({
+    ...item,
+    total: Number(item.total.toFixed(2)),
+  }));
+
   return (
     <div>
       <InfoBanner {...{ data: totalDay, label: t('dailyExpenses') }} />
@@ -54,6 +76,14 @@ function TabGeneral({ movements, totalDay, setForm, setEdit, setSelectedOption, 
         orderColumnsList={['datemov', 'name', 'val', 'tag', 'source', 'id', 'log']}
         data={movements}
         onRowDoubleClick={handleRowDoubleClick}
+        onFilteredDataChange={setFilteredData}
+      />
+      <br />
+      <Table
+        label={t('nameSummaryTable')}
+        data={nameSummaryArray}
+        columns={[t('name'), t('source'), t('total')]}
+        orderColumnsList={['name', 'source', 'total']}
       />
       {selectedRow && true}
     </div>
