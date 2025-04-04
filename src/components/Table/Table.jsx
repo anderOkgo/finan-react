@@ -15,6 +15,7 @@ function Table({
   hiddenColumns = [],
   onRowDoubleClick = false,
   label = 'No label',
+  onFilteredDataChange = false,
 }) {
   const [dataset, setDataset] = useState([]);
   const [header, setHeader] = useState([]);
@@ -44,6 +45,13 @@ function Table({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
+
+  // Notify parent component of filtered data changes
+  useEffect(() => {
+    if (onFilteredDataChange) {
+      onFilteredDataChange(filteredData);
+    }
+  }, [filteredData, onFilteredDataChange]);
 
   // Function to handle header click for sorting
   const handleHeaderClick = (columnIndex) => {
@@ -123,6 +131,7 @@ Table.propTypes = {
   label: PropTypes.string,
   orderColumnsList: PropTypes.array,
   defaultItemsPerPage: PropTypes.number,
+  onFilteredDataChange: PropTypes.func,
 };
 
 export default Table;
