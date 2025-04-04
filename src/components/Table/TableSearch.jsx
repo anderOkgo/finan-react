@@ -15,30 +15,52 @@ function TableSearch({ setCurrentPage, setFilteredData, setItemsPerPage, dataset
     setCurrentPage(1);
     setSearchTerm(newSearchTerm);
 
-    // Split the search term by commas and trim whitespace
-    const searchTerms = newSearchTerm
-      .split(',')
-      .map((term) => term.trim().toLowerCase())
-      .filter((term) => term.length > 0);
-
-    // If no search terms, show all data
-    if (searchTerms.length === 0) {
+    // If no search term, show all data
+    if (!newSearchTerm.trim()) {
       setFilteredData(dataset);
       return;
     }
 
-    // Filter data based on search terms
-    const filteredResults = dataset.filter((item) => {
-      const itemString = Object.values(item)
-        .filter((value) => value !== null && value !== undefined)
-        .map((value) => value.toString().toLowerCase())
-        .join(' ');
+    // Check if the search term contains a plus sign
+    if (newSearchTerm.includes('+')) {
+      // Split by plus signs for OR search
+      const searchTerms = newSearchTerm
+        .split('+')
+        .map((term) => term.trim().toLowerCase())
+        .filter((term) => term.length > 0);
 
-      // Check if ALL search terms are found in the concatenated string
-      return searchTerms.every((term) => itemString.includes(term));
-    });
+      // Filter data based on OR search terms
+      const filteredResults = dataset.filter((item) => {
+        const itemString = Object.values(item)
+          .filter((value) => value !== null && value !== undefined)
+          .map((value) => value.toString().toLowerCase())
+          .join(' ');
 
-    setFilteredData(filteredResults);
+        // Check if ANY of the search terms are found (OR)
+        return searchTerms.some((term) => itemString.includes(term));
+      });
+
+      setFilteredData(filteredResults);
+    } else {
+      // Split by commas for AND search
+      const searchTerms = newSearchTerm
+        .split(',')
+        .map((term) => term.trim().toLowerCase())
+        .filter((term) => term.length > 0);
+
+      // Filter data based on AND search terms
+      const filteredResults = dataset.filter((item) => {
+        const itemString = Object.values(item)
+          .filter((value) => value !== null && value !== undefined)
+          .map((value) => value.toString().toLowerCase())
+          .join(' ');
+
+        // Check if ALL search terms are found (AND)
+        return searchTerms.every((term) => itemString.includes(term));
+      });
+
+      setFilteredData(filteredResults);
+    }
   };
 
   const uniqueId = generateUniqueId();
@@ -69,7 +91,7 @@ function TableSearch({ setCurrentPage, setFilteredData, setItemsPerPage, dataset
         type="search"
         value={searchTerm}
         onChange={(e) => handleSearch(e.target.value)}
-        placeholder={`${t('searchPlaceholder')} ${t('commaSeparated')}`}
+        placeholder={`${t('searchPlaceholder')}`}
       />
     </div>
   );
