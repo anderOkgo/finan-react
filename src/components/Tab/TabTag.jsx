@@ -6,17 +6,18 @@ import InfoBanner from '../InfoBanner/InfoBanner';
 function TabTag({ movementTag, totalDay, t }) {
   const [filteredData, setFilteredData] = useState(movementTag);
 
-  // Group data by tag and calculate sum based on filtered data
+  // Group data by tag and source, and calculate sum based on filtered data
   const tagSummary = filteredData.reduce((acc, curr) => {
-    const tag = curr.tag;
-    if (!acc[tag]) {
-      acc[tag] = {
-        tag: tag,
+    const key = `${curr.tag}-${curr.name_source}`;
+    if (!acc[key]) {
+      acc[key] = {
+        tag: curr.tag,
+        source: curr.name_source,
         total: 0,
         currency: curr.currency,
       };
     }
-    acc[tag].total += curr.montly_sum;
+    acc[key].total += curr.montly_sum;
     return acc;
   }, {});
 
@@ -42,8 +43,8 @@ function TabTag({ movementTag, totalDay, t }) {
       <Table
         label={t('tagSummaryTable')}
         data={tagSummaryArray}
-        columns={[t('tag'), t('total')]}
-        orderColumnsList={['tag', 'total']}
+        columns={[t('tag'), t('source'), t('total')]}
+        orderColumnsList={['tag', 'source', 'total']}
       />
     </div>
   );
