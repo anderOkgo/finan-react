@@ -27,6 +27,7 @@ function Tab() {
   const [exchangeCol, setExchangeCol] = useState({});
   const [tripInfo, setTripInfo] = useState([]);
   const [balanceUntilDate, setBalanceUntilDate] = useState([]);
+  const [monthlyExpensesUntilDay, setMonthlyExpensesUntilDay] = useState([]);
   const [currency, setCurrency] = useState('COP');
   const [nTab, setnTab] = useState(4);
   const { selectedOption, setSelectedOption, handleTouchStart, handleTouchEnd } = useSwipeableTabs(nTab, 170);
@@ -77,7 +78,9 @@ function Tab() {
       id: 4,
       icon: '❆',
       label: t('balanceTab'),
-      component: true && <TabBalance {...{ bankTotal, balance, yearlyBalance, balanceUntilDate, t }} />,
+      component: true && (
+        <TabBalance {...{ bankTotal, balance, yearlyBalance, balanceUntilDate, monthlyExpensesUntilDay, t }} />
+      ),
     },
   ];
 
@@ -108,6 +111,7 @@ function Tab() {
           balanceUntilDate = [],
           generalInfo = [],
           tripInfo = [],
+          monthlyExpensesUntilDay = [],
         } = resp;
         const generalInfoFormat = Array.isArray(generalInfo) ? generalInfo : [];
         setTotalDay(totalExpenseDay?.[0]?.Total_day ?? 0);
@@ -121,6 +125,7 @@ function Tab() {
         setExchangeCol(generalInfoFormat?.find((item) => item.detail === 'Exchange Colombia'));
         setTripInfo(Array.isArray(tripInfo) ? tripInfo : []);
         setOperatefor(movements.filter((item) => item.source === 'balance'));
+        setMonthlyExpensesUntilDay(Array.isArray(monthlyExpensesUntilDay) ? monthlyExpensesUntilDay : []);
       };
 
       try {

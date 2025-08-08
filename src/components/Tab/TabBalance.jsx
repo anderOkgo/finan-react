@@ -3,7 +3,7 @@ import Table from '../Table/Table';
 import InfoBanner from '../InfoBanner/InfoBanner';
 import LineChart from '../Charts/LineChart';
 
-function TabBalance({ bankTotal, balance, yearlyBalance, balanceUntilDate, t }) {
+function TabBalance({ bankTotal, balance, yearlyBalance, balanceUntilDate, monthlyExpensesUntilDay, t }) {
   return (
     <div>
       <InfoBanner {...{ data: bankTotal, label: t('totalBalance') }} />
@@ -31,6 +31,13 @@ function TabBalance({ bankTotal, balance, yearlyBalance, balanceUntilDate, t }) 
         orderColumnsList={[]}
         data={balanceUntilDate?.filter((item) => item.detail !== 'final-trip') ?? []}
       />
+      <Table
+        label={t('monthlyExpensesUntilDay')}
+        columns={[t('month'), t('total')]}
+        hiddenColumns={['currency', 'user']}
+        orderColumnsList={[]}
+        data={monthlyExpensesUntilDay}
+      />
     </div>
   );
 }
@@ -40,6 +47,7 @@ TabBalance.propTypes = {
   balance: PropTypes.arrayOf(PropTypes.object).isRequired,
   yearlyBalance: PropTypes.arrayOf(PropTypes.object).isRequired,
   balanceUntilDate: PropTypes.arrayOf(PropTypes.object).isRequired,
+  monthlyExpensesUntilDay: PropTypes.arrayOf(PropTypes.object).isRequired,
   t: PropTypes.any.isRequired,
 };
 

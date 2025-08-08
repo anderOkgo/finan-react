@@ -116,6 +116,7 @@ const translations = {
     'Movement tag exceeds 60 characters': 'Movement tag exceeds 60 characters',
     'ID is invalid': 'ID is invalid',
     commaSeparated: 'comma separated',
+    monthlyExpensesUntilDay: 'Monthly Expenses Until Day',
   },
   es: {
     inputTab: 'Entrada',
@@ -232,6 +233,7 @@ const translations = {
     'Movement tag exceeds 60 characters': 'La etiqueta del movimiento excede los 60 caracteres',
     'ID is invalid': 'El ID es inválido',
     commaSeparated: 'separado por comas',
+    monthlyExpensesUntilDay: 'Gastos Mensuales Hasta el Día',
   },
 };
 
