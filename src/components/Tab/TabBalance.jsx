@@ -33,7 +33,7 @@ function TabBalance({ bankTotal, balance, yearlyBalance, balanceUntilDate, month
       />
       <Table
         label={t('monthlyExpensesUntilDay')}
-        columns={[t('month'), t('neame'), t('total')]}
+        columns={[t('month'), t('name'), t('total')]}
         hiddenColumns={['currency', 'user']}
         orderColumnsList={[]}
         data={monthlyExpensesUntilDay}
