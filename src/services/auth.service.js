@@ -34,11 +34,14 @@ const login = async (username, password) => {
   };
 
   const response = await helpHttp.post(API_URL + 'login', options);
-  if (response.token === undefined) {
+  if (response.data.token === undefined) {
     return response;
   } else {
-    localStorage.setItem(cyfer().cy('user-in', formattedDate()), cyfer().cy(JSON.stringify(response), set.salt));
-    return response;
+    localStorage.setItem(
+      cyfer().cy('user-in', formattedDate()),
+      cyfer().cy(JSON.stringify(response.data), set.salt)
+    );
+    return response.data;
   }
 };
 
