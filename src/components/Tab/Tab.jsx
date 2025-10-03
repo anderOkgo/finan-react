@@ -131,7 +131,7 @@ function Tab() {
       try {
         var localResp = localStorage.getItem('storage');
         localResp && (localResp = JSON.parse(cyfer().dcy(localResp, set.salt)));
-        if (Object.keys(localResp || {}).length !== 0) writeData(localResp);
+        if (Object.keys(localResp || {}).length !== 0) writeData(localResp.data);
       } catch (error) {
         console.log(error);
       }
