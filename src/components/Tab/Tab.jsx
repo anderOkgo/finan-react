@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { formattedDate } from '../../helpers/operations';
 import set from '../../helpers/set.json'; // Ensure set.json is properly defined
 import DataService from '../../services/data.service';
+import AuthService from '../../services/auth.service';
 import useSwipeableTabs from '../../hooks/useSwipeableTabs';
 import TabInput from './TabInput';
 import TabGeneral from './TabGeneral';
@@ -138,9 +139,11 @@ function Tab() {
 
       if (init) {
         const resp = await DataService.initialLoad({ date: formattedDate(), currency: currency });
-        if (!resp?.data.err) {
+        if (!resp?.err) {
           localStorage.setItem('storage', cyfer().cy(JSON.stringify(resp), set.salt));
           writeData(resp.data);
+        } else if (resp?.err?.status === 401) {
+          AuthService.logout();
         }
       }
       setProc(false);
