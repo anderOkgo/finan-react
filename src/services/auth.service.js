@@ -19,8 +19,8 @@ const register = async (username, email, password, verificationCode) => {
   };
 
   const response = await helpHttp.post(API_URL + 'add', options);
-  if (response === 'User created successfully') await login(username, password);
-  return response;
+  if (response.message === 'User created successfully') await login(username, password);
+  return response.message;
 };
 
 const login = async (username, password) => {
@@ -35,10 +35,11 @@ const login = async (username, password) => {
 
   const response = await helpHttp.post(API_URL + 'login', options);
   if (response.token === undefined) {
-    return response;
+    alert(response.err.message.message);
+    return response.err.message.message;
   } else {
     localStorage.setItem(cyfer().cy('user-in', formattedDate()), cyfer().cy(JSON.stringify(response), set.salt));
-    return response;
+    return response.message;
   }
 };
 
