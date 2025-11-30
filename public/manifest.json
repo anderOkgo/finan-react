@@ -6,7 +6,7 @@
   "background_color": "#01579b",
   "display": "standalone",
   "scope": "./",
-  "orientation": "portrait",
+  "orientation": "any",
   "theme_color": "#01579b",
   "display_override": ["window-controls-overlay"],
   "categories": ["finance", "productivity", "budgeting"],
