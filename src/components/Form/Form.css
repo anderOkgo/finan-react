@@ -24,6 +24,9 @@ input:-webkit-autofill:focus {
   color: var(--text);
 }
 
+.form-group {
+  margin-bottom: 18px;
+}
 
 .btn-primarys {
   box-sizing: border-box;
