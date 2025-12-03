@@ -6,8 +6,6 @@ function TabInput({ totalDay, setForm, form, edit, setEdit, currency, operateFor
   return (
     <div>
       <InfoBanner {...{ data: totalDay, label: t('dailyExpenses') }} />
-      <br />
-      <h2>{t('movementInput')}</h2>
       <hr />
       <br />
       <Form {...{ setForm, form, edit, setEdit, currency, operateFor }} />
