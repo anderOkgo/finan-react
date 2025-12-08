@@ -149,7 +149,7 @@ const translations = {
     finanzTitle: 'Finanz',
     movementTable: 'Tabla de Movimientos',
     nameSummaryTable: 'Resumen por Nombre',
-    source: 'Fuente',
+    source: 'Origen',
     id: 'ID',
     log: 'Registro',
     rows: 'Filas',
