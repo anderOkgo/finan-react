@@ -118,6 +118,10 @@ const translations = {
     commaSeparated: 'comma separated',
     monthlyExpensesUntilDay: 'Monthly Expenses Until Day',
     origin: 'Origin',
+    languageSystemDefault: 'Language: System Default',
+    languageUserDefault: 'Language: User Default',
+    themeSystemDefault: 'Theme: System Default',
+    themeUserDefault: 'Theme: User Default',
   },
   es: {
     inputTab: 'Entrada',
@@ -236,6 +240,10 @@ const translations = {
     commaSeparated: 'separado por comas',
     monthlyExpensesUntilDay: 'Gastos Mensuales Hasta el Día',
     origin: 'Origen',
+    languageSystemDefault: 'Idioma: Predeterminado del Sistema',
+    languageUserDefault: 'Idioma: Predeterminado del Usuario',
+    themeSystemDefault: 'Tema: Predeterminado del Sistema',
+    themeUserDefault: 'Tema: Predeterminado del Usuario',
   },
 };
 

@@ -24,12 +24,21 @@ const Menu = () => {
     // Verificar si hay una preferencia guardada
     const hasStoredPreference = localStorage.getItem('themePreference') !== null;
 
+    // Obtener el idioma actual para mostrar el mensaje correcto
+    const currentLang = localStorage.getItem('lang') || (navigator.language.split('-')[0] === 'es' ? 'es' : 'en');
+    const messages = {
+      en: { system: 'Theme: System Default', user: 'Theme: User Default' },
+      es: { system: 'Tema: Predeterminado del Sistema', user: 'Tema: Predeterminado del Usuario' }
+    };
+
     if (hasStoredPreference) {
       // Si hay preferencia guardada, restaurar el default del sistema
       restoreThemeDefault();
+      alert(messages[currentLang]?.system || 'Theme: System Default');
     } else {
       // Si no hay preferencia guardada, guardar la actual como default
       saveThemeAsDefault();
+      alert(messages[currentLang]?.user || 'Theme: User Default');
     }
   };
 
