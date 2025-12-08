@@ -34,7 +34,7 @@ function TabTag({ movementTag, totalDay, t }) {
       <Table
         label={t('tagTable')}
         data={movementTag}
-        columns={[t('year'), t('month'), t('source'), t('tag'), t('value')]}
+        columns={[t('year'), t('month'), t('type'), t('tag'), t('value')]}
         hiddenColumns={['month_number_mov']}
         orderColumnsList={['month_number_mov', 'year_mov', 'month_mov', 'name_source', 'tag', 'montly_sum']}
         onFilteredDataChange={setFilteredData}
@@ -43,7 +43,7 @@ function TabTag({ movementTag, totalDay, t }) {
       <Table
         label={t('tagSummaryTable')}
         data={tagSummaryArray}
-        columns={[t('tag'), t('source'), t('total')]}
+        columns={[t('tag'), t('type'), t('total')]}
         orderColumnsList={['tag', 'source', 'total']}
       />
     </div>

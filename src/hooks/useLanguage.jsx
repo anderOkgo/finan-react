@@ -7,8 +7,8 @@ const translations = {
     tagTab: 'Tag',
     balanceTab: 'Balance',
     infoTab: 'Information',
-    switchToSpanish: 'ESP',
-    switchToEnglish: 'ENG',
+    switchToSpanish: 'EN',
+    switchToEnglish: 'ES',
     name: 'Name',
     value: 'Value',
     type: 'Type',
@@ -117,6 +117,7 @@ const translations = {
     'ID is invalid': 'ID is invalid',
     commaSeparated: 'comma separated',
     monthlyExpensesUntilDay: 'Monthly Expenses Until Day',
+    origin: 'Origin',
   },
   es: {
     inputTab: 'Entrada',
@@ -124,8 +125,8 @@ const translations = {
     tagTab: 'Etiqueta',
     balanceTab: 'Balance',
     infoTab: 'Información',
-    switchToSpanish: 'ESP',
-    switchToEnglish: 'ENG',
+    switchToSpanish: 'EN',
+    switchToEnglish: 'ES',
     name: 'Nombre',
     value: 'Valor',
     type: 'Tipo',
@@ -234,6 +235,7 @@ const translations = {
     'ID is invalid': 'El ID es inválido',
     commaSeparated: 'separado por comas',
     monthlyExpensesUntilDay: 'Gastos Mensuales Hasta el Día',
+    origin: 'Origen',
   },
 };
 
@@ -244,12 +246,15 @@ const getBrowserLanguage = () => {
 };
 
 const getStoredLanguage = () => {
-  return localStorage.getItem('lang') || getBrowserLanguage();
+  return localStorage.getItem('lang');
 };
 
-// eslint-disable-next-line no-unused-vars
 const setStoredLanguage = (lang) => {
   localStorage.setItem('lang', lang);
+};
+
+const removeStoredLanguage = () => {
+  localStorage.removeItem('lang');
 };
 
 // Function to handle document updates
@@ -272,11 +277,13 @@ const setLanguage = (language) => {
 
 // Custom Hook
 export const useLanguage = () => {
-  const [language, setLanguageState] = useState(getStoredLanguage());
+  const storedLang = getStoredLanguage();
+  const browserLang = getBrowserLanguage();
+  const [language, setLanguageState] = useState(storedLang ?? browserLang);
+  const [useSystemDefault, setUseSystemDefault] = useState(storedLang === null);
 
   // Update language state and document configurations
   const updateLanguage = (lang) => {
-    //setStoredLanguage(lang);
     setLanguageState(lang);
     setLanguage(lang);
   };
@@ -285,19 +292,87 @@ export const useLanguage = () => {
   const toggleLanguage = () => {
     const newLang = language === 'en' ? 'es' : 'en';
     updateLanguage(newLang);
+    // If not using system default, save the change
+    if (!useSystemDefault) {
+      setStoredLanguage(newLang);
+    }
+  };
+
+  // Function to save current language as default
+  const saveLanguageAsDefault = () => {
+    setStoredLanguage(language);
+    setUseSystemDefault(false);
+  };
+
+  // Function to restore system default
+  const restoreSystemDefault = () => {
+    removeStoredLanguage();
+    setUseSystemDefault(true);
+    const browserLang = getBrowserLanguage();
+    updateLanguage(browserLang);
   };
 
   // Translate a given key
   const t = (key) => translations[language][key] || key;
 
-  // Apply language on mount
+  // Effect hook to sync with system language when using system default
+  useEffect(() => {
+    if (useSystemDefault) {
+      // When using system default, sync with current browser language
+      const browserLang = getBrowserLanguage();
+      setLanguageState(browserLang);
+      setLanguage(browserLang);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [useSystemDefault]);
+
+  // Apply language on mount and sync with localStorage changes
   useEffect(() => {
     setLanguage(language);
-  }, [language]);
+
+    // Sync with localStorage changes (for cross-tab synchronization)
+    const handleStorageChange = (e) => {
+      if (e.key === 'lang') {
+        if (e.newValue) {
+          setLanguageState(e.newValue);
+          setLanguage(e.newValue);
+          setUseSystemDefault(false);
+        } else {
+          // If removed, restore system default
+          const browserLang = getBrowserLanguage();
+          setLanguageState(browserLang);
+          setLanguage(browserLang);
+          setUseSystemDefault(true);
+        }
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+
+    // Also check localStorage on mount/update to ensure consistency
+    const storedLang = getStoredLanguage();
+    if (storedLang && storedLang !== language) {
+      setLanguageState(storedLang);
+      setLanguage(storedLang);
+      setUseSystemDefault(false);
+    } else if (!storedLang && !useSystemDefault) {
+      // If no stored language but we're not using system default, restore it
+      const browserLang = getBrowserLanguage();
+      setLanguageState(browserLang);
+      setLanguage(browserLang);
+      setUseSystemDefault(true);
+    }
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+    };
+  }, [language, useSystemDefault]);
 
   return {
     language,
     toggleLanguage,
+    saveLanguageAsDefault,
+    restoreSystemDefault,
     t,
   };
 };

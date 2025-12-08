@@ -71,7 +71,7 @@ function TabGeneral({ movements, totalDay, setForm, setEdit, setSelectedOption, 
       <br />
       <Table
         label={t('movementTable')}
-        columns={[t('date'), t('name'), t('value'), t('tag'), t('source'), t('id'), t('log')]}
+        columns={[t('date'), t('name'), t('value'), t('tag'), t('type'), t('id'), t('log')]}
         hiddenColumns={['id', 'Id', 'ID', 'log', 'Log', 'Log', 'Registro']}
         orderColumnsList={['datemov', 'name', 'val', 'tag', 'source', 'id', 'log']}
         data={movements}
@@ -82,7 +82,7 @@ function TabGeneral({ movements, totalDay, setForm, setEdit, setSelectedOption, 
       <Table
         label={t('nameSummaryTable')}
         data={nameSummaryArray}
-        columns={[t('name'), t('source'), t('total')]}
+        columns={[t('name'), t('type'), t('total')]}
         orderColumnsList={['name', 'source', 'total']}
       />
       {selectedRow && true}

@@ -16,7 +16,7 @@ import { useContext } from 'react';
 import GlobalContext from '../../contexts/GlobalContext';
 
 function Tab() {
-  const { init, setProc, username, role, language, toggleLanguage, t } = useContext(GlobalContext);
+  const { init, setProc, username, role, language, toggleLanguage, saveLanguageAsDefault, restoreLanguageDefault, t } = useContext(GlobalContext);
   const [bankTotal, setBankTotal] = useState(0);
   const [balance, setBalance] = useState([]);
   const [yearlyBalance, setYearlyBalance] = useState([]);
@@ -156,6 +156,19 @@ function Tab() {
     setSelectedOption(tabId);
   };
 
+  const handleLanguageDoubleClick = () => {
+    // Verificar si hay una preferencia guardada
+    const hasStoredPreference = localStorage.getItem('lang') !== null;
+    
+    if (hasStoredPreference) {
+      // Si hay preferencia guardada, restaurar el default del sistema
+      restoreLanguageDefault();
+    } else {
+      // Si no hay preferencia guardada, guardar la actual como default
+      saveLanguageAsDefault();
+    }
+  };
+
   return (
     <div className="area-tab" onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
       {tabsData.map((tab) => (
@@ -180,7 +193,11 @@ function Tab() {
             <div className="section-tab">
               <div className="container-tab">
                 <div className="lang-container">
-                  <span className="lang" onClick={toggleLanguage}>
+                  <span 
+                    className="lang" 
+                    onClick={toggleLanguage}
+                    onDoubleClick={handleLanguageDoubleClick}
+                  >
                     {language === 'en' ? t('switchToSpanish') : t('switchToEnglish')}
                   </span>
                   {userRole === 'admin' ? <CurrencySelector {...{ setCurrency, currency, t }} /> : ''}

@@ -6,7 +6,8 @@ import { useContext } from 'react';
 import GlobalContext from '../../contexts/GlobalContext';
 
 const Menu = () => {
-  const { init, setInit, proc, toggleDarkMode, boot, username, t } = useContext(GlobalContext);
+  const { init, setInit, proc, toggleDarkMode, saveThemeAsDefault, restoreThemeDefault, boot, username, t } =
+    useContext(GlobalContext);
   const [currentUser, setCurrentUser] = useState(undefined);
 
   // Update currentUser whenever username changes
@@ -17,6 +18,19 @@ const Menu = () => {
   const handleStatusClick = () => {
     boot();
     toggleDarkMode();
+  };
+
+  const handleThemeDoubleClick = () => {
+    // Verificar si hay una preferencia guardada
+    const hasStoredPreference = localStorage.getItem('themePreference') !== null;
+
+    if (hasStoredPreference) {
+      // Si hay preferencia guardada, restaurar el default del sistema
+      restoreThemeDefault();
+    } else {
+      // Si no hay preferencia guardada, guardar la actual como default
+      saveThemeAsDefault();
+    }
   };
 
   const handleLogout = () => {
@@ -109,7 +123,7 @@ const Menu = () => {
         </ul>
       </div>
       <div className="logo insetshadow">
-        <span className="icon-activity" onClick={handleStatusClick}>
+        <span className="icon-activity" onClick={handleStatusClick} onDoubleClick={handleThemeDoubleClick}>
           <Status {...{ init, proc }} />
         </span>
         {title}

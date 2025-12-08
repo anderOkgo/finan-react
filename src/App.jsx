@@ -9,8 +9,14 @@ import AuthService from './services/auth.service';
 
 const App = () => {
   const { init, setInit, proc, setProc, boot } = useAlive();
-  const { language, toggleLanguage, t } = useLanguage();
-  const { toggleDarkMode } = useTheme();
+  const {
+    language,
+    toggleLanguage,
+    saveLanguageAsDefault,
+    restoreSystemDefault: restoreLanguageDefault,
+    t,
+  } = useLanguage();
+  const { toggleDarkMode, saveThemeAsDefault, restoreSystemDefault: restoreThemeDefault } = useTheme();
   if (AuthService.getCurrentUser()) {
     var { username, role } = AuthService.getUserName(AuthService.getCurrentUser()?.token);
   }
@@ -21,11 +27,15 @@ const App = () => {
     proc,
     setProc,
     toggleDarkMode,
+    saveThemeAsDefault,
+    restoreThemeDefault,
     boot,
     username,
     role,
     language,
     toggleLanguage,
+    saveLanguageAsDefault,
+    restoreLanguageDefault,
     t,
   };
 

@@ -241,7 +241,7 @@ function Form({ setForm, form, edit, setEdit, currency, operateFor }) {
 
         <div className="form-group">
           <label className="form-label" htmlFor="operate_for">
-            {t('source')}
+            {t('origin')}
           </label>
           <select
             id="operate_for"
