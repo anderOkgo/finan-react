@@ -4,6 +4,7 @@ import Menu from './components/Menu/Menu';
 import { useAlive } from './hooks/useAlive';
 import { useTheme } from './hooks/useTheme';
 import { useLanguage } from './hooks/useLanguage';
+import { useNavigationHistory } from './hooks/useNavigationHistory';
 import GlobalContext from './contexts/GlobalContext';
 import AuthService from './services/auth.service';
 
@@ -17,6 +18,7 @@ const App = () => {
     t,
   } = useLanguage();
   const { toggleDarkMode, saveThemeAsDefault, restoreSystemDefault: restoreThemeDefault } = useTheme();
+  const navigation = useNavigationHistory();
   if (AuthService.getCurrentUser()) {
     var { username, role } = AuthService.getUserName(AuthService.getCurrentUser()?.token);
   }
@@ -37,6 +39,7 @@ const App = () => {
     saveLanguageAsDefault,
     restoreLanguageDefault,
     t,
+    navigation,
   };
 
   return (

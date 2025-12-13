@@ -2,13 +2,13 @@ import { useEffect, useRef, useState, useCallback } from 'react';
 
 /**
  * Hook para manejar el historial de navegación interno en PWA
- * Solo guarda cambios de tabs en el historial
+ * Evita que el botón "atrás" del dispositivo cierre la aplicación
  */
 export const useNavigationHistory = () => {
-  const [history, setHistory] = useState([{ type: 'initial', data: { tabId: 1 } }]);
+  const [history, setHistory] = useState([{ type: 'initial', data: null }]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const isNavigatingRef = useRef(false);
-  const historyRef = useRef([{ type: 'initial', data: { tabId: 1 } }]);
+  const historyRef = useRef([{ type: 'initial', data: null }]);
   const currentIndexRef = useRef(0);
   const pushHistoryLockRef = useRef(false);
   const isProcessingPopStateRef = useRef(false);
@@ -115,7 +115,7 @@ export const useNavigationHistory = () => {
     window.addEventListener('popstate', handlePopState);
 
     if (window.history.state === null) {
-      window.history.replaceState({ index: 0, type: 'initial', data: { tabId: 1 } }, '', window.location.href);
+      window.history.replaceState({ index: 0, type: 'initial', data: null }, '', window.location.href);
     }
 
     return () => {
@@ -134,3 +134,4 @@ export const useNavigationHistory = () => {
     canGoForward: currentIndex < history.length - 1,
   };
 };
+

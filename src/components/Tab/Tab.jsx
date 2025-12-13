@@ -1,10 +1,9 @@
-import React, { useEffect, useMemo, useState, useRef } from 'react';
+import React, { useEffect, useMemo, useState, useRef, useCallback } from 'react';
 import { formattedDate } from '../../helpers/operations';
 import set from '../../helpers/set.json'; // Ensure set.json is properly defined
 import DataService from '../../services/data.service';
 import AuthService from '../../services/auth.service';
 import useSwipeableTabs from '../../hooks/useSwipeableTabs';
-import { useNavigationHistory } from '../../hooks/useNavigationHistory';
 import TabInput from './TabInput';
 import TabGeneral from './TabGeneral';
 import TabTag from './TabTag';
@@ -17,7 +16,7 @@ import { useContext } from 'react';
 import GlobalContext from '../../contexts/GlobalContext';
 
 function Tab() {
-  const { init, setProc, username, role, language, toggleLanguage, saveLanguageAsDefault, restoreLanguageDefault, t } = useContext(GlobalContext);
+  const { init, setProc, username, role, language, toggleLanguage, saveLanguageAsDefault, restoreLanguageDefault, t, navigation } = useContext(GlobalContext);
   const [bankTotal, setBankTotal] = useState(0);
   const [balance, setBalance] = useState([]);
   const [yearlyBalance, setYearlyBalance] = useState([]);
@@ -32,14 +31,57 @@ function Tab() {
   const [monthlyExpensesUntilDay, setMonthlyExpensesUntilDay] = useState([]);
   const [currency, setCurrency] = useState('COP');
   const [nTab, setnTab] = useState(4);
-  const { selectedOption, setSelectedOption, handleTouchStart, handleTouchEnd } = useSwipeableTabs(nTab, 170);
-  const navigation = useNavigationHistory();
   const isRestoringRef = useRef(false);
-  const lastSavedTabRef = useRef(navigation?.currentState?.data?.tabId ?? selectedOption);
+  const isInitialMountRef = useRef(true);
+  const lastRestoredTabIdRef = useRef(null);
+  const navigationRef = useRef(navigation);
+
+  // Sincronizar navigationRef
+  useEffect(() => {
+    navigationRef.current = navigation;
+  }, [navigation]);
+
   const [userName] = useState(username);
   const [userRole] = useState(role);
   const [width, setWidth] = useState('20%');
   const [operateFor, setOperatefor] = useState('');
+
+  // Callback para cuando se hace swipe
+  const handleSwipeChange = useCallback((newTabId) => {
+    if (isRestoringRef.current) {
+      return;
+    }
+
+    // Registrar en historial cuando se hace swipe
+    if (navigationRef.current?.pushHistory && !isInitialMountRef.current) {
+      lastRestoredTabIdRef.current = null;
+      navigationRef.current.pushHistory('tab-change', { tabId: newTabId });
+    }
+  }, []);
+
+  // Hook de swipe con callback
+  const { selectedOption, setSelectedOption, handleTouchStart, handleTouchEnd } = useSwipeableTabs(nTab, 170, handleSwipeChange);
+
+  // Función para manejar clicks en tabs
+  const handleTabClick = useCallback((tabId) => {
+    if (isRestoringRef.current) {
+      setSelectedOption(tabId);
+      return;
+    }
+
+    setSelectedOption(tabId);
+    
+    // Registrar en historial
+    if (navigationRef.current?.pushHistory && !isInitialMountRef.current) {
+      lastRestoredTabIdRef.current = null;
+      navigationRef.current.pushHistory('tab-change', { tabId });
+    }
+  }, [setSelectedOption]);
+
+  // Wrapper para clicks desde otros componentes
+  const setSelectedOptionWithHistory = useCallback((newTabId) => {
+    handleTabClick(newTabId);
+  }, [handleTabClick]);
 
   const initialForm = useMemo(
     () => ({
@@ -70,7 +112,7 @@ function Tab() {
       icon: '☷',
       label: t('generalTab'),
       component: true && (
-        <TabGeneral {...{ movements, totalDay, setForm, setEdit, setSelectedOption, currency, t }} />
+        <TabGeneral {...{ movements, totalDay, setForm, setEdit, setSelectedOption: setSelectedOptionWithHistory, currency, t }} />
       ),
     },
     {
@@ -156,36 +198,29 @@ function Tab() {
     fetchData();
   }, [init, setProc, currency, userName, tabsData.length]);
 
-  // Guardar en historial cuando cambia el tab por swipe (handleTabClick ya lo hace para clicks)
+  // Restaurar tab desde el historial
   useEffect(() => {
-    if (!isRestoringRef.current && selectedOption !== lastSavedTabRef.current && selectedOption !== undefined) {
-      navigation?.pushHistory('tab-change', { tabId: selectedOption, previousTab: lastSavedTabRef.current });
-      lastSavedTabRef.current = selectedOption;
+    if (!navigation?.currentState || navigation.currentState.type !== 'tab-change') {
+      return;
     }
-  }, [selectedOption, navigation]);
-
-  // Restaurar tab desde historial
-  useEffect(() => {
-    if (navigation?.currentState?.type === 'tab-change' && navigation.currentState.data?.tabId) {
-      const tabId = navigation.currentState.data.tabId;
-      if (tabId !== selectedOption) {
-        isRestoringRef.current = true;
-        lastSavedTabRef.current = tabId;
-        setSelectedOption(tabId);
-        setTimeout(() => {
-          isRestoringRef.current = false;
-        }, 100);
-      }
+    
+    const { tabId } = navigation.currentState.data || {};
+    
+    // Solo restaurar si el tabId es diferente al último que restauramos y al actual
+    if (tabId && tabId !== selectedOption && tabId !== lastRestoredTabIdRef.current) {
+      lastRestoredTabIdRef.current = tabId;
+      isRestoringRef.current = true;
+      setSelectedOption(tabId);
+      setTimeout(() => {
+        isRestoringRef.current = false;
+      }, 100);
     }
   }, [navigation?.currentState, selectedOption, setSelectedOption]);
 
-  const handleTabClick = (tabId) => {
-    if (!isRestoringRef.current && tabId !== lastSavedTabRef.current) {
-      navigation?.pushHistory('tab-change', { tabId, previousTab: selectedOption });
-      lastSavedTabRef.current = tabId;
-    }
-    setSelectedOption(tabId);
-  };
+  // Marcar que el componente ya se montó inmediatamente
+  useEffect(() => {
+    isInitialMountRef.current = false;
+  }, []);
 
   const handleLanguageDoubleClick = () => {
     // Verificar si hay una preferencia guardada
