@@ -278,9 +278,6 @@ const setLanguage = (language) => {
       'Finanz is your go-to personal financial planning tool to track expenses, set budgets, and achieve your financial goals with ease.';
     document.title = 'Finanz - Simplify Your Financial Journey';
   }
-
-  // Optionally log the change for debugging
-  console.log(`Language set to: ${language}`);
 };
 
 // Custom Hook
