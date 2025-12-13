@@ -1,9 +1,10 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState, useRef } from 'react';
 import { formattedDate } from '../../helpers/operations';
 import set from '../../helpers/set.json'; // Ensure set.json is properly defined
 import DataService from '../../services/data.service';
 import AuthService from '../../services/auth.service';
 import useSwipeableTabs from '../../hooks/useSwipeableTabs';
+import { useNavigationHistory } from '../../hooks/useNavigationHistory';
 import TabInput from './TabInput';
 import TabGeneral from './TabGeneral';
 import TabTag from './TabTag';
@@ -32,6 +33,9 @@ function Tab() {
   const [currency, setCurrency] = useState('COP');
   const [nTab, setnTab] = useState(4);
   const { selectedOption, setSelectedOption, handleTouchStart, handleTouchEnd } = useSwipeableTabs(nTab, 170);
+  const navigation = useNavigationHistory();
+  const isRestoringRef = useRef(false);
+  const lastSavedTabRef = useRef(navigation?.currentState?.data?.tabId ?? selectedOption);
   const [userName] = useState(username);
   const [userRole] = useState(role);
   const [width, setWidth] = useState('20%');
@@ -152,7 +156,34 @@ function Tab() {
     fetchData();
   }, [init, setProc, currency, userName, tabsData.length]);
 
+  // Guardar en historial cuando cambia el tab por swipe (handleTabClick ya lo hace para clicks)
+  useEffect(() => {
+    if (!isRestoringRef.current && selectedOption !== lastSavedTabRef.current && selectedOption !== undefined) {
+      navigation?.pushHistory('tab-change', { tabId: selectedOption, previousTab: lastSavedTabRef.current });
+      lastSavedTabRef.current = selectedOption;
+    }
+  }, [selectedOption, navigation]);
+
+  // Restaurar tab desde historial
+  useEffect(() => {
+    if (navigation?.currentState?.type === 'tab-change' && navigation.currentState.data?.tabId) {
+      const tabId = navigation.currentState.data.tabId;
+      if (tabId !== selectedOption) {
+        isRestoringRef.current = true;
+        lastSavedTabRef.current = tabId;
+        setSelectedOption(tabId);
+        setTimeout(() => {
+          isRestoringRef.current = false;
+        }, 100);
+      }
+    }
+  }, [navigation?.currentState, selectedOption, setSelectedOption]);
+
   const handleTabClick = (tabId) => {
+    if (!isRestoringRef.current && tabId !== lastSavedTabRef.current) {
+      navigation?.pushHistory('tab-change', { tabId, previousTab: selectedOption });
+      lastSavedTabRef.current = tabId;
+    }
     setSelectedOption(tabId);
   };
 
