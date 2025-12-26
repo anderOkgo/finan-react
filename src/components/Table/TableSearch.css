@@ -1,9 +1,11 @@
 .search-box {
   display: flex;
   justify-content: space-between;
-  padding-bottom: 2px;
-  padding-right: 2px;
+  padding-bottom: 8px;
+  padding-right: 0;
   background-color: var(--background);
+  gap: 6px;
+  margin-bottom: 2px;
 }
 
 .search-box option {
@@ -12,15 +14,27 @@
 }
 
 .search-box-input {
-  width: 50%;
-  padding: 5px;
-  border: 1px solid var(--soft-gray);
-  border-radius: 4px;
+  flex: 1;
+  padding: 7px 9px;
+  border: 1.5px solid var(--soft-gray);
+  border-radius: 6px;
   background-color: inherit;
   color: var(--text);
-  margin-right: 2px;
+  font-size: 15px;
+  transition: all 0.2s ease;
+}
+
+.search-box-input:hover {
+  border-color: var(--tertiary-color);
+}
+
+.search-box-input:focus {
+  outline: none;
+  border-color: var(--second-color);
+  box-shadow: 0 0 0 3px rgba(5, 114, 198, 0.1);
 }
 
 .search-box-input::placeholder {
   color: var(--text);
+  opacity: 0.6;
 }

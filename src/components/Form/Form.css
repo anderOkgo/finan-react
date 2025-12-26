@@ -7,25 +7,43 @@ input:-webkit-autofill:focus {
 
 .form-label {
   display: block;
-  margin-bottom: 5px;
-  font-weight: bold;
+  margin-bottom: 7px;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--text);
+  transition: color 0.2s ease;
 }
 
 .form-control {
   width: 100%;
-  padding: 8px 12px;
-  border: 1px solid var(--soft-gray);
-  border-radius: 4px;
+  padding: 10px 14px;
+  border: 1.5px solid var(--soft-gray);
+  border-radius: 6px;
   background-color: inherit;
   color: var(--text);
+  font-size: 15px;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+.form-control:hover {
+  border-color: var(--tertiary-color);
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: var(--second-color);
+  box-shadow: 0 0 0 3px rgba(5, 114, 198, 0.1);
+  background-color: inherit;
 }
 
 .form-control::placeholder {
   color: var(--text);
+  opacity: 0.6;
 }
 
 .form-group {
-  margin-bottom: 19px;
+  margin-bottom: 22px;
 }
 
 .btn-primarys {
@@ -33,42 +51,93 @@ input:-webkit-autofill:focus {
   width: 49%;
   padding: 12px 0;
   font-size: 15px;
-  font-weight: bold;
+  font-weight: 600;
   color: var(--text-alt);
   background-color: var(--main-color);
   border: none;
   cursor: pointer;
   margin-left: 1px;
-  border-radius: 0.4em;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btn-primarys:hover:not(:disabled) {
+  background-color: var(--second-color);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  transform: translateY(-1px);
+}
+
+.btn-primarys:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .btn-primarys:disabled {
   opacity: 0.6;
   cursor: not-allowed;
+  transform: none;
 }
 
 .delete-button {
   background-color: var(--opposite-color);
   color: #fff;
   border: none;
-  padding: 10px 20px;
+  padding: 12px 20px;
   font-size: 15px;
-  font-weight: bold;
+  font-weight: 600;
   cursor: pointer;
-  border-radius: 4px;
+  border-radius: 6px;
   width: 98.5%;
-  margin-top: 2px;
+  margin-top: 8px;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .delete-button:hover {
   background-color: var(--opposite-second-color);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  transform: translateY(-1px);
+}
+
+.delete-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 input[type='datetime-local'] {
   width: 100%;
-  height: 30px;
-  border: 1px solid var(--soft-gray);
-  border-radius: 5px;
-  padding: 10px;
-  font-size: 16px;
+  min-height: 42px;
+  border: 1.5px solid var(--soft-gray);
+  border-radius: 6px;
+  padding: 10px 14px;
+  font-size: 15px;
+  background-color: inherit;
+  color: var(--text);
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+input[type='datetime-local']:hover {
+  border-color: var(--tertiary-color);
+}
+
+input[type='datetime-local']:focus {
+  outline: none;
+  border-color: var(--second-color);
+  box-shadow: 0 0 0 3px rgba(5, 114, 198, 0.1);
+}
+
+select.form-control {
+  cursor: pointer;
+}
+
+select.form-control:hover {
+  border-color: var(--tertiary-color);
+}
+
+select.form-control:focus {
+  outline: none;
+  border-color: var(--second-color);
+  box-shadow: 0 0 0 3px rgba(5, 114, 198, 0.1);
 }

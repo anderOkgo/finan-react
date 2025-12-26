@@ -14,7 +14,7 @@ table {
 thead th {
   background-color: var(--main-color);
   color: var(--text-alt);
-  padding: 0.4em;
+  padding: 0.5em;
   cursor: pointer;
 }
 
