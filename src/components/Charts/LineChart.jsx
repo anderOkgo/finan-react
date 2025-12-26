@@ -1,9 +1,10 @@
 /* eslint-disable react-refresh/only-export-components */
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useContext } from 'react';
 import { Line } from 'react-chartjs-2';
 import PropTypes from 'prop-types';
 import './LineChart.css';
 import { generateUniqueId } from '../../helpers/operations';
+import GlobalContext from '../../contexts/GlobalContext';
 //import { options } from './chartOptions'; // Import the options from the separate file
 import {
   Chart as ChartJS,
@@ -19,6 +20,7 @@ import {
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
 function LineChart({ dataI = [], height, t }) {
+  const { isDarkMode } = useContext(GlobalContext);
   const [selectedYear, setSelectedYear] = useState('');
   const uniqueId = generateUniqueId();
 
@@ -65,6 +67,51 @@ function LineChart({ dataI = [], height, t }) {
     ],
   };
 
+  const options = useMemo(() => ({
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        labels: {
+          color: isDarkMode ? '#e0e0e0' : '#212121',
+        },
+      },
+      tooltip: {
+        backgroundColor: isDarkMode ? 'rgba(18, 18, 18, 0.9)' : 'rgba(255, 255, 255, 0.9)',
+        titleColor: isDarkMode ? '#e0e0e0' : '#212121',
+        bodyColor: isDarkMode ? '#e0e0e0' : '#212121',
+        borderColor: isDarkMode ? '#363c42' : '#b5cdda',
+        borderWidth: 1,
+      },
+    },
+    scales: {
+      x: {
+        ticks: {
+          color: isDarkMode ? '#e0e0e0' : '#212121',
+        },
+        grid: {
+          color: isDarkMode ? 'rgba(224, 224, 224, 0.2)' : 'rgba(33, 33, 33, 0.1)',
+          lineWidth: 1,
+        },
+        border: {
+          color: isDarkMode ? 'rgba(224, 224, 224, 0.3)' : 'rgba(33, 33, 33, 0.2)',
+        },
+      },
+      y: {
+        ticks: {
+          color: isDarkMode ? '#e0e0e0' : '#212121',
+        },
+        grid: {
+          color: isDarkMode ? 'rgba(224, 224, 224, 0.2)' : 'rgba(33, 33, 33, 0.1)',
+          lineWidth: 1,
+        },
+        border: {
+          color: isDarkMode ? 'rgba(224, 224, 224, 0.3)' : 'rgba(33, 33, 33, 0.2)',
+        },
+      },
+    },
+  }), [isDarkMode]);
+
   return (
     <div>
       <select
@@ -80,7 +127,7 @@ function LineChart({ dataI = [], height, t }) {
           </option>
         ))}
       </select>
-      <Line className="line-chart" /* options={options} */ data={data} height={height} />
+      <Line className="line-chart" options={options} data={data} height={height} />
     </div>
   );
 }

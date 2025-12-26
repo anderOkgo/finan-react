@@ -17,7 +17,7 @@ const App = () => {
     restoreSystemDefault: restoreLanguageDefault,
     t,
   } = useLanguage();
-  const { toggleDarkMode, saveThemeAsDefault, restoreSystemDefault: restoreThemeDefault } = useTheme();
+  const { isDarkMode, toggleDarkMode, saveThemeAsDefault, restoreSystemDefault: restoreThemeDefault } = useTheme();
   const navigation = useNavigationHistory();
   if (AuthService.getCurrentUser()) {
     var { username, role } = AuthService.getUserName(AuthService.getCurrentUser()?.token);
@@ -40,6 +40,7 @@ const App = () => {
     restoreLanguageDefault,
     t,
     navigation,
+    isDarkMode,
   };
 
   return (

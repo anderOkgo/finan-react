@@ -3,11 +3,11 @@
   "short_name": "Finanz",
   "description": "An app to control personal financial movements, track expenses, and manage budgets easily.",
   "start_url": "./?utm_source=homescreen",
-  "background_color": "#01579b",
+  "background_color": "#023965",
   "display": "standalone",
   "scope": "./",
   "orientation": "any",
-  "theme_color": "#01579b",
+  "theme_color": "#023965",
   "display_override": ["window-controls-overlay"],
   "categories": ["finance", "productivity", "budgeting"],
 
