@@ -27,6 +27,25 @@ function TabTag({ movementTag, totalDay, t }) {
     total: Number(item.total.toFixed(2)),
   }));
 
+  // Group data by type (name_source) and sum
+  const typeSummary = filteredData.reduce((acc, curr) => {
+    const key = curr.name_source;
+    if (!acc[key]) {
+      acc[key] = {
+        type: curr.name_source,
+        total: 0,
+        currency: curr.currency,
+      };
+    }
+    acc[key].total += curr.montly_sum;
+    return acc;
+  }, {});
+
+  const typeSummaryArray = Object.values(typeSummary).map((item) => ({
+    ...item,
+    total: Number(item.total.toFixed(2)),
+  }));
+
   return (
     <div>
       <InfoBanner {...{ data: totalDay, label: t('dailyExpenses') }} />
@@ -45,6 +64,13 @@ function TabTag({ movementTag, totalDay, t }) {
         data={tagSummaryArray}
         columns={[t('tag'), t('type'), t('total')]}
         orderColumnsList={['tag', 'source', 'total']}
+      />
+      <br />
+      <Table
+        label={t('typeSummaryTable')}
+        data={typeSummaryArray}
+        columns={[t('type'), t('total')]}
+        orderColumnsList={['type', 'total']}
       />
     </div>
   );
