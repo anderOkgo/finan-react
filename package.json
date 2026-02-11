@@ -9,7 +9,7 @@
     "lint": "eslint src --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "up": "node scripts/bump-sw-version.cjs && call com/db-sync-FTP-both.bat",
-    "bup": "vite build & npm run up"
+    "bup": "node scripts/bump-sw-version.cjs && npm run build & npm run up"
   },
   "dependencies": {
     "@fontsource/roboto": "^5.0.8",
