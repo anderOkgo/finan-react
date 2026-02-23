@@ -29,6 +29,9 @@ function Tab() {
   const [tripInfo, setTripInfo] = useState([]);
   const [balanceUntilDate, setBalanceUntilDate] = useState([]);
   const [monthlyExpensesUntilDay, setMonthlyExpensesUntilDay] = useState([]);
+  const [monthlyBudget, setMonthlyBudget] = useState(0);
+  const [currentMonthExpenses, setCurrentMonthExpenses] = useState(0);
+  const [remainingBudget, setRemainingBudget] = useState(0);
   const [currency, setCurrency] = useState('COP');
   const [nTab, setnTab] = useState(4);
   const isRestoringRef = useRef(false);
@@ -112,14 +115,14 @@ function Tab() {
       icon: '☷',
       label: t('generalTab'),
       component: true && (
-        <TabGeneral {...{ movements, totalDay, setForm, setEdit, setSelectedOption: setSelectedOptionWithHistory, currency, t }} />
+        <TabGeneral {...{ movements, remainingBudget, setForm, setEdit, setSelectedOption: setSelectedOptionWithHistory, currency, t }} />
       ),
     },
     {
       id: 3,
       icon: '♞',
       label: t('tagTab'),
-      component: true && <TabTag {...{ movementTag, totalDay, t }} />,
+      component: true && <TabTag {...{ movementTag, totalDay, monthlyBudget, t }} />,
     },
     {
       id: 4,
@@ -159,6 +162,9 @@ function Tab() {
           generalInfo = [],
           tripInfo = [],
           monthlyExpensesUntilDay = [],
+          monthlyBudget = 0,
+          currentMonthExpenses = 0,
+          remainingBudget = 0,
         } = resp;
         const generalInfoFormat = Array.isArray(generalInfo) ? generalInfo : [];
         setTotalDay(totalExpenseDay?.[0]?.Total_day ?? 0);
@@ -173,6 +179,11 @@ function Tab() {
         setTripInfo(Array.isArray(tripInfo) ? tripInfo : []);
         setOperatefor(movements.filter((item) => item.source === 'balance'));
         setMonthlyExpensesUntilDay(Array.isArray(monthlyExpensesUntilDay) ? monthlyExpensesUntilDay : []);
+        setMonthlyBudget(typeof monthlyBudget === 'number' ? monthlyBudget : 0);
+        setCurrentMonthExpenses(
+          typeof currentMonthExpenses === 'number' ? currentMonthExpenses : 0
+        );
+        setRemainingBudget(typeof remainingBudget === 'number' ? remainingBudget : 0);
       };
 
       try {

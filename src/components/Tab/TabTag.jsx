@@ -3,7 +3,7 @@ import { useState } from 'react';
 import Table from '../Table/Table';
 import InfoBanner from '../InfoBanner/InfoBanner';
 
-function TabTag({ movementTag, totalDay, t }) {
+function TabTag({ movementTag, totalDay, monthlyBudget, t }) {
   const [filteredData, setFilteredData] = useState(movementTag);
 
   // Group data by tag and source, and calculate sum based on filtered data
@@ -48,7 +48,7 @@ function TabTag({ movementTag, totalDay, t }) {
 
   return (
     <div>
-      <InfoBanner {...{ data: totalDay, label: t('dailyExpenses') }} />
+      <InfoBanner {...{ data: monthlyBudget ?? 0, label: t('monthlyBudget') }} />
       <br />
       <Table
         label={t('tagTable')}
@@ -79,6 +79,7 @@ function TabTag({ movementTag, totalDay, t }) {
 TabTag.propTypes = {
   movementTag: PropTypes.arrayOf(PropTypes.object).isRequired,
   totalDay: PropTypes.number,
+  monthlyBudget: PropTypes.number,
   t: PropTypes.any,
 };
 

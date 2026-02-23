@@ -3,7 +3,15 @@ import Table from '../Table/Table';
 import { useState } from 'react';
 import InfoBanner from '../InfoBanner/InfoBanner';
 
-function TabGeneral({ movements, totalDay, setForm, setEdit, setSelectedOption, currency, t }) {
+function TabGeneral({
+  movements,
+  remainingBudget = 0,
+  setForm,
+  setEdit,
+  setSelectedOption,
+  currency,
+  t,
+}) {
   const [selectedRow, setSelectedRow] = useState(null);
   const [filteredData, setFilteredData] = useState(movements);
 
@@ -67,7 +75,7 @@ function TabGeneral({ movements, totalDay, setForm, setEdit, setSelectedOption, 
 
   return (
     <div>
-      <InfoBanner {...{ data: totalDay, label: t('dailyExpenses') }} />
+      <InfoBanner {...{ data: remainingBudget, label: t('remainingBudget') }} />
       <br />
       <Table
         label={t('movementTable')}
@@ -92,11 +100,11 @@ function TabGeneral({ movements, totalDay, setForm, setEdit, setSelectedOption, 
 
 TabGeneral.propTypes = {
   movements: PropTypes.arrayOf(PropTypes.object).isRequired,
+  remainingBudget: PropTypes.number,
   setForm: PropTypes.func,
   setEdit: PropTypes.func,
   setSelectedOption: PropTypes.func,
   currency: PropTypes.string,
-  totalDay: PropTypes.number,
   t: PropTypes.any,
 };
 
