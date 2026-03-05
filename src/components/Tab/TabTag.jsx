@@ -1,50 +1,55 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import Table from '../Table/Table';
 import InfoBanner from '../InfoBanner/InfoBanner';
 
-function TabTag({ movementTag, totalDay, monthlyBudget, t }) {
+function TabTag({ movementTag, monthlyBudget, t }) {
   const [filteredData, setFilteredData] = useState(movementTag);
+  const [filteredTagData, setFilteredTagData] = useState(null);
 
   // Group data by tag and source, and calculate sum based on filtered data
-  const tagSummary = filteredData.reduce((acc, curr) => {
-    const key = `${curr.tag}-${curr.name_source}`;
-    if (!acc[key]) {
-      acc[key] = {
-        tag: curr.tag,
-        source: curr.name_source,
-        total: 0,
-        currency: curr.currency,
-      };
-    }
-    acc[key].total += curr.montly_sum;
-    return acc;
-  }, {});
+  const tagSummaryArray = useMemo(() => {
+    const tagSummary = filteredData.reduce((acc, curr) => {
+      const key = `${curr.tag}-${curr.name_source}`;
+      if (!acc[key]) {
+        acc[key] = {
+          tag: curr.tag,
+          source: curr.name_source,
+          total: 0,
+          currency: curr.currency,
+        };
+      }
+      acc[key].total += curr.montly_sum;
+      return acc;
+    }, {});
 
-  // Format totals to 2 decimal places
-  const tagSummaryArray = Object.values(tagSummary).map((item) => ({
-    ...item,
-    total: Number(item.total.toFixed(2)),
-  }));
+    return Object.values(tagSummary).map((item) => ({
+      ...item,
+      total: Number(item.total.toFixed(2)),
+    }));
+  }, [filteredData]);
 
-  // Group data by type (name_source) and sum
-  const typeSummary = filteredData.reduce((acc, curr) => {
-    const key = curr.name_source;
-    if (!acc[key]) {
-      acc[key] = {
-        type: curr.name_source,
-        total: 0,
-        currency: curr.currency,
-      };
-    }
-    acc[key].total += curr.montly_sum;
-    return acc;
-  }, {});
+  // Group data by type (name_source) and sum based on filteredTagData (or tagSummaryArray if not filtered yet)
+  const typeSummaryArray = useMemo(() => {
+    const sourceToSummarize = filteredTagData !== null ? filteredTagData : tagSummaryArray;
+    const typeSummary = sourceToSummarize.reduce((acc, curr) => {
+      const key = curr.source;
+      if (!acc[key]) {
+        acc[key] = {
+          type: curr.source,
+          total: 0,
+          currency: curr.currency,
+        };
+      }
+      acc[key].total += curr.total;
+      return acc;
+    }, {});
 
-  const typeSummaryArray = Object.values(typeSummary).map((item) => ({
-    ...item,
-    total: Number(item.total.toFixed(2)),
-  }));
+    return Object.values(typeSummary).map((item) => ({
+      ...item,
+      total: Number(item.total.toFixed(2)),
+    }));
+  }, [filteredTagData, tagSummaryArray]);
 
   return (
     <div>
@@ -64,6 +69,7 @@ function TabTag({ movementTag, totalDay, monthlyBudget, t }) {
         data={tagSummaryArray}
         columns={[t('tag'), t('type'), t('total')]}
         orderColumnsList={['tag', 'source', 'total']}
+        onFilteredDataChange={setFilteredTagData}
       />
       <br />
       <Table
@@ -78,7 +84,6 @@ function TabTag({ movementTag, totalDay, monthlyBudget, t }) {
 
 TabTag.propTypes = {
   movementTag: PropTypes.arrayOf(PropTypes.object).isRequired,
-  totalDay: PropTypes.number,
   monthlyBudget: PropTypes.number,
   t: PropTypes.any,
 };

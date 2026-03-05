@@ -3,17 +3,10 @@ import Table from '../Table/Table';
 import { useState } from 'react';
 import InfoBanner from '../InfoBanner/InfoBanner';
 
-function TabGeneral({
-  movements,
-  remainingBudget = 0,
-  setForm,
-  setEdit,
-  setSelectedOption,
-  currency,
-  t,
-}) {
+function TabGeneral({ movements, remainingBudget = 0, setForm, setEdit, setSelectedOption, currency, t }) {
   const [selectedRow, setSelectedRow] = useState(null);
   const [filteredData, setFilteredData] = useState(movements);
+  const [isDailyView, setIsDailyView] = useState(false);
 
   const handleRowDoubleClick = (row) => {
     setSelectedRow(row);
@@ -52,6 +45,21 @@ function TabGeneral({
     setSelectedOption(1);
   };
 
+  const handleBudgetDoubleClick = () => {
+    setIsDailyView(!isDailyView);
+  };
+
+  const getRemainingDays = () => {
+    const today = new Date();
+    const lastDay = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
+    const currentDay = today.getDate();
+    // Exclude today to get the count of full remaining days (e.g., 31 - 4 = 27)
+    // Use Math.max(1, ...) to avoid division by zero on the last day of the month.
+    return Math.max(1, lastDay - currentDay);
+  };
+
+  const dailyAverage = remainingBudget / getRemainingDays();
+
   // Group data by name and calculate sum based on filtered data
   const nameSummary = filteredData.reduce((acc, curr) => {
     const name = curr.name;
@@ -75,7 +83,11 @@ function TabGeneral({
 
   return (
     <div>
-      <InfoBanner {...{ data: remainingBudget, label: t('remainingBudget') }} />
+      <InfoBanner
+        data={isDailyView ? dailyAverage : remainingBudget}
+        label={isDailyView ? t('dailyAverageBudget') : t('remainingBudget')}
+        onDoubleClick={handleBudgetDoubleClick}
+      />
       <br />
       <Table
         label={t('movementTable')}
