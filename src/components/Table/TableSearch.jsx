@@ -1,30 +1,25 @@
-import { useState } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
 import set from '../../helpers/set.json';
 import './TableSearch.css';
 import { generateUniqueId } from '../../helpers/operations';
-import { useContext } from 'react';
 import GlobalContext from '../../contexts/GlobalContext';
 
 function TableSearch({ setCurrentPage, setFilteredData, setItemsPerPage, dataset, itemsPerPage }) {
   const { t } = useContext(GlobalContext);
   const [searchTerm, setSearchTerm] = useState('');
 
-  // Search functionality
-  const handleSearch = (newSearchTerm) => {
-    setCurrentPage(1);
-    setSearchTerm(newSearchTerm);
-
+  useEffect(() => {
     // If no search term, show all data
-    if (!newSearchTerm.trim()) {
+    if (!searchTerm.trim()) {
       setFilteredData(dataset);
       return;
     }
 
     // Check if the search term contains a plus sign
-    if (newSearchTerm.includes('+')) {
+    if (searchTerm.includes('+')) {
       // Split by plus signs for OR search
-      const searchTerms = newSearchTerm
+      const searchTerms = searchTerm
         .split('+')
         .map((term) => term.trim().toLowerCase())
         .filter((term) => term.length > 0);
@@ -43,7 +38,7 @@ function TableSearch({ setCurrentPage, setFilteredData, setItemsPerPage, dataset
       setFilteredData(filteredResults);
     } else {
       // Split by commas for AND search
-      const searchTerms = newSearchTerm
+      const searchTerms = searchTerm
         .split(',')
         .map((term) => term.trim().toLowerCase())
         .filter((term) => term.length > 0);
@@ -61,6 +56,12 @@ function TableSearch({ setCurrentPage, setFilteredData, setItemsPerPage, dataset
 
       setFilteredData(filteredResults);
     }
+  }, [dataset, searchTerm, setFilteredData]);
+
+  // Search functionality
+  const handleSearch = (newSearchTerm) => {
+    setCurrentPage(1);
+    setSearchTerm(newSearchTerm);
   };
 
   const uniqueId = generateUniqueId();
