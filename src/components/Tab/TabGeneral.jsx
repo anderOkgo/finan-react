@@ -53,9 +53,9 @@ function TabGeneral({ movements, remainingBudget = 0, setForm, setEdit, setSelec
     const today = new Date();
     const lastDay = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
     const currentDay = today.getDate();
-    // Exclude today to get the count of full remaining days (e.g., 31 - 4 = 27)
+    // Include today to get a more realistic daily budget (e.g., 31 - 4 + 1 = 28 days)
     // Use Math.max(1, ...) to avoid division by zero on the last day of the month.
-    return Math.max(1, lastDay - currentDay);
+    return Math.max(1, lastDay - currentDay + 1);
   };
 
   const dailyAverage = remainingBudget / getRemainingDays();
