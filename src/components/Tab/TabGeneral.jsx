@@ -6,7 +6,7 @@ import InfoBanner from '../InfoBanner/InfoBanner';
 function TabGeneral({ movements, remainingBudget = 0, setForm, setEdit, setSelectedOption, currency, t }) {
   const [selectedRow, setSelectedRow] = useState(null);
   const [filteredData, setFilteredData] = useState(movements);
-  const [isDailyView, setIsDailyView] = useState(false);
+  const [viewMode, setViewMode] = useState('monthly'); // 'monthly', 'daily', 'dailyNoToday'
 
   const handleRowDoubleClick = (row) => {
     setSelectedRow(row);
@@ -46,19 +46,41 @@ function TabGeneral({ movements, remainingBudget = 0, setForm, setEdit, setSelec
   };
 
   const handleBudgetDoubleClick = () => {
-    setIsDailyView(!isDailyView);
+    setViewMode((prev) => {
+      if (prev === 'monthly') return 'daily';
+      if (prev === 'daily') return 'dailyNoToday';
+      return 'monthly';
+    });
   };
 
-  const getRemainingDays = () => {
+  const getBudgetDisplay = () => {
     const today = new Date();
     const lastDay = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
     const currentDay = today.getDate();
-    // Include today to get a more realistic daily budget (e.g., 31 - 4 + 1 = 28 days)
-    // Use Math.max(1, ...) to avoid division by zero on the last day of the month.
-    return Math.max(1, lastDay - currentDay + 1);
+
+    if (viewMode === 'daily') {
+      const days = Math.max(1, lastDay - currentDay + 1);
+      return {
+        value: remainingBudget / days,
+        label: t('dailyAverageBudget'),
+      };
+    }
+
+    if (viewMode === 'dailyNoToday') {
+      const days = Math.max(1, lastDay - currentDay);
+      return {
+        value: remainingBudget / days,
+        label: t('dailyAverageBudgetNoToday'),
+      };
+    }
+
+    return {
+      value: remainingBudget,
+      label: t('remainingBudget'),
+    };
   };
 
-  const dailyAverage = remainingBudget / getRemainingDays();
+  const { value: displayBudget, label: displayLabel } = getBudgetDisplay();
 
   // Group data by name and calculate sum based on filtered data
   const nameSummary = filteredData.reduce((acc, curr) => {
@@ -84,8 +106,8 @@ function TabGeneral({ movements, remainingBudget = 0, setForm, setEdit, setSelec
   return (
     <div>
       <InfoBanner
-        data={isDailyView ? dailyAverage : remainingBudget}
-        label={isDailyView ? t('dailyAverageBudget') : t('remainingBudget')}
+        data={displayBudget}
+        label={displayLabel}
         onDoubleClick={handleBudgetDoubleClick}
       />
       <br />
