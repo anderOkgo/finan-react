@@ -240,22 +240,31 @@ function Tab() {
 
   // Restaurar tab desde el historial
   useEffect(() => {
-    if (!navigation?.currentState || navigation.currentState.type !== 'tab-change') {
+    if (!navigation?.currentState) {
       return;
     }
 
-    const { tabId } = navigation.currentState.data || {};
+    if (navigation.currentState.type === 'tab-change') {
+      const { tabId } = navigation.currentState.data || {};
 
-    // Solo restaurar si el tabId es diferente al último que restauramos y al actual
-    if (tabId && tabId !== selectedOption && tabId !== lastRestoredTabIdRef.current) {
-      lastRestoredTabIdRef.current = tabId;
+      // Solo restaurar si el tabId es diferente al último que restauramos y al actual
+      if (tabId && tabId !== selectedOption && tabId !== lastRestoredTabIdRef.current) {
+        lastRestoredTabIdRef.current = tabId;
+        isRestoringRef.current = true;
+        setSelectedOption(tabId);
+        setTimeout(() => {
+          isRestoringRef.current = false;
+        }, 100);
+      }
+    } else if (navigation.currentState.type === 'initial' && selectedOption !== 1) {
+      // Si volvemos al estado inicial, resetear al primer tab
       isRestoringRef.current = true;
-      setSelectedOption(tabId);
+      setSelectedOption(1);
       setTimeout(() => {
         isRestoringRef.current = false;
       }, 100);
     }
-  }, [navigation?.currentState, selectedOption, setSelectedOption]);
+  }, [navigation.currentState, selectedOption, setSelectedOption]);
 
   // Marcar que el componente ya se montó inmediatamente
   useEffect(() => {

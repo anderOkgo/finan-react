@@ -27,16 +27,24 @@ function TablePagination({ currentPage, setCurrentPage, filteredData, itemsPerPa
     setEndIndex(newEndIndex);
   }, [filteredData, itemsPerPage, currentPage]);
 
+  const isFirstRender = useRef(true);
+
   // Manejar el historial de navegación
   useEffect(() => {
     if (!navigation) return;
+
+    // No registrar en el historial en el primer render si es la página inicial (1)
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      if (currentPage === 1) return;
+    }
 
     // Cuando cambia currentPage externamente (ej: click botones), registrar en historial
     if (!isInternalChangeRef.current) {
       navigation.pushHistory('pagination', { page: currentPage, id: elemet });
     }
     isInternalChangeRef.current = false;
-  }, [currentPage, navigation, elemet]);
+  }, [currentPage, navigation.pushHistory, elemet]);
 
   useEffect(() => {
     if (!navigation) return;
@@ -47,8 +55,12 @@ function TablePagination({ currentPage, setCurrentPage, filteredData, itemsPerPa
         isInternalChangeRef.current = true;
         setCurrentPage(state.data.page);
       }
+    } else if (state?.type === 'initial' && currentPage !== 1) {
+      // Si volvemos al estado inicial, resetear a página 1
+      isInternalChangeRef.current = true;
+      setCurrentPage(1);
     }
-  }, [navigation?.currentState, navigation?.currentIndex, elemet, currentPage, setCurrentPage]);
+  }, [navigation.currentState, elemet, currentPage, setCurrentPage]);
 
   const renderPaginationButtons = () => {
     const maxButtons = set.pagination_max_buttons;
