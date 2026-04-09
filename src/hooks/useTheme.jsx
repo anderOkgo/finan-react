@@ -82,31 +82,41 @@ export const useTheme = () => {
     const root = document.documentElement;
 
     const lightModeColors = {
-      '--main-color': '#01579b',
-      '--second-color': '#0572c6',
-      '--tertiary-color': '#79b7e8',
-      '--opposite-color': '#e53935',
-      '--opposite-second-color': '#ff5722',
-      '--warning': '#ffcc80',
-      '--success': '#4caf50',
-      '--background': '#e8f4fa',
-      '--text': '#212121',
-      '--text-alt': '#ffffff',
-      '--soft-gray': '#b5cdda',
+      '--brand-primary': '#01579b',
+      '--brand-secondary': '#0572c6',
+      '--brand-accent': '#79b7e8',
+      '--color-danger': '#e53935',
+      '--color-danger-alt': '#ff5722',
+      '--color-warning': '#ffcc80',
+      '--color-success': '#4caf50',
+      '--bg-surface': '#e8f4fa',
+      '--text-body': '#212121',
+      '--text-invert': '#ffffff',
+      '--border-subtle': '#b5cdda',
+      '--shadow-sm': 'rgba(0, 0, 0, 0.1)',
+      '--shadow-md': 'rgba(0, 0, 0, 0.15)',
+      '--focus-ring': 'rgba(5, 114, 198, 0.1)',
+      '--white': '#ffffff',
+      '--black': '#000000',
     };
 
     const darkModeColors = {
-      '--main-color': '#023965',
-      '--second-color': '#256cae',
-      '--tertiary-color': '#304c6e',
-      '--opposite-color': '#e53935',
-      '--opposite-second-color': '#ff5722',
-      '--warning': '#ffab40',
-      '--success': '#66bb6a',
-      '--background': '#121212',
-      '--text': '#e0e0e0',
-      '--text-alt': '#ffffff',
-      '--soft-gray': '#363c42',
+      '--brand-primary': '#023965',
+      '--brand-secondary': '#256cae',
+      '--brand-accent': '#304c6e',
+      '--color-danger': '#e53935',
+      '--color-danger-alt': '#ff5722',
+      '--color-warning': '#ffab40',
+      '--color-success': '#66bb6a',
+      '--bg-surface': '#121212',
+      '--text-body': '#e0e0e0',
+      '--text-invert': '#ffffff',
+      '--border-subtle': '#363c42',
+      '--shadow-sm': 'rgba(0, 0, 0, 0.3)',
+      '--shadow-md': 'rgba(0, 0, 0, 0.4)',
+      '--focus-ring': 'rgba(37, 108, 174, 0.2)',
+      '--white': '#ffffff',
+      '--black': '#000000',
     };
 
     const colors = isDarkMode ? darkModeColors : lightModeColors;
@@ -117,7 +127,7 @@ export const useTheme = () => {
     }
 
     // Update theme color meta tag
-    document.querySelector('meta[name="theme-color"]').setAttribute('content', colors['--main-color']);
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', colors['--brand-primary']);
   }, [isDarkMode]);
 
   const themeValues = {
@@ -129,3 +139,4 @@ export const useTheme = () => {
 
   return themeValues;
 };
+

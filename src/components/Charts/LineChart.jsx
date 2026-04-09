@@ -67,50 +67,53 @@ function LineChart({ dataI = [], height, t }) {
     ],
   };
 
-  const options = useMemo(() => ({
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      legend: {
-        labels: {
-          color: isDarkMode ? '#e0e0e0' : '#212121',
+  const options = useMemo(
+    () => ({
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          labels: {
+            color: isDarkMode ? '#e0e0e0' : '#212121',
+          },
+        },
+        tooltip: {
+          backgroundColor: isDarkMode ? 'rgba(18, 18, 18, 0.9)' : 'rgba(255, 255, 255, 0.9)',
+          titleColor: isDarkMode ? '#e0e0e0' : '#212121',
+          bodyColor: isDarkMode ? '#e0e0e0' : '#212121',
+          borderColor: isDarkMode ? '#363c42' : '#b5cdda',
+          borderWidth: 1,
         },
       },
-      tooltip: {
-        backgroundColor: isDarkMode ? 'rgba(18, 18, 18, 0.9)' : 'rgba(255, 255, 255, 0.9)',
-        titleColor: isDarkMode ? '#e0e0e0' : '#212121',
-        bodyColor: isDarkMode ? '#e0e0e0' : '#212121',
-        borderColor: isDarkMode ? '#363c42' : '#b5cdda',
-        borderWidth: 1,
-      },
-    },
-    scales: {
-      x: {
-        ticks: {
-          color: isDarkMode ? '#e0e0e0' : '#212121',
+      scales: {
+        x: {
+          ticks: {
+            color: isDarkMode ? '#e0e0e0' : '#212121',
+          },
+          grid: {
+            color: isDarkMode ? 'rgba(224, 224, 224, 0.2)' : 'rgba(33, 33, 33, 0.1)',
+            lineWidth: 1,
+          },
+          border: {
+            color: isDarkMode ? 'rgba(224, 224, 224, 0.3)' : 'rgba(33, 33, 33, 0.2)',
+          },
         },
-        grid: {
-          color: isDarkMode ? 'rgba(224, 224, 224, 0.2)' : 'rgba(33, 33, 33, 0.1)',
-          lineWidth: 1,
-        },
-        border: {
-          color: isDarkMode ? 'rgba(224, 224, 224, 0.3)' : 'rgba(33, 33, 33, 0.2)',
-        },
-      },
-      y: {
-        ticks: {
-          color: isDarkMode ? '#e0e0e0' : '#212121',
-        },
-        grid: {
-          color: isDarkMode ? 'rgba(224, 224, 224, 0.2)' : 'rgba(33, 33, 33, 0.1)',
-          lineWidth: 1,
-        },
-        border: {
-          color: isDarkMode ? 'rgba(224, 224, 224, 0.3)' : 'rgba(33, 33, 33, 0.2)',
+        y: {
+          ticks: {
+            color: isDarkMode ? '#e0e0e0' : '#212121',
+          },
+          grid: {
+            color: isDarkMode ? 'rgba(224, 224, 224, 0.2)' : 'rgba(33, 33, 33, 0.1)',
+            lineWidth: 1,
+          },
+          border: {
+            color: isDarkMode ? 'rgba(224, 224, 224, 0.3)' : 'rgba(33, 33, 33, 0.2)',
+          },
         },
       },
-    },
-  }), [isDarkMode]);
+    }),
+    [isDarkMode]
+  );
 
   return (
     <div>

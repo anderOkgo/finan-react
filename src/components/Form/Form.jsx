@@ -70,7 +70,7 @@ function Form({ setForm, form, edit, setEdit, currency, operateFor }) {
         /[\u{1F600}-\u{1F64F}]|[\u{1F300}-\u{1F5FF}]|[\u{1F680}-\u{1F6FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]|[\u{1F1E6}-\u{1F1FF}]|[\u{1F900}-\u{1F9FF}]|[\u{1F700}-\u{1F77F}]|[\u{1F780}-\u{1F7FF}]|[\u{1F800}-\u{1F8FF}]|[\u{2500}-\u{257F}]/gu;
 
       if (emojiRegex.test(value)) {
-        message(t('noEmoji'), 'var(--opposite-second-color)', true);
+        message(t('noEmoji'), 'var(--color-danger-alt)', true);
         return;
       }
 
@@ -124,15 +124,15 @@ function Form({ setForm, form, edit, setEdit, currency, operateFor }) {
         let sum = [...updatedUpdateArray, ...updatedInsertArray, ...UpdatedDeleteArray];
         setOff(sum);
         if (sum?.length === 0) {
-          message(t('transactionSuccessful'), 'var(--success)', true);
+          message(t('transactionSuccessful'), 'var(--color-success)', true);
           setInit(Date.now());
         } else {
-          message(t('transactionFailed'), 'var(--opposite-color)', true);
+          message(t('transactionFailed'), 'var(--color-danger)', true);
           setInit(false);
         }
         setProc(false);
       } else {
-        message(t('transactionWaiting'), 'var(--warning)', true);
+        message(t('transactionWaiting'), 'var(--color-warning)', true);
       }
     }
     syncOfflineData();
@@ -154,18 +154,18 @@ function Form({ setForm, form, edit, setEdit, currency, operateFor }) {
             } else {
               error = t(response?.err?.message || 'Unknown error');
             }
-            message(error, 'var(--opposite-color)', true);
+            message(error, 'var(--color-danger)', true);
             handleOfflineData(actionType, form);
             setInit(false);
           } else {
-            message(t('transactionSuccessful'), 'var(--success)', true);
+            message(t('transactionSuccessful'), 'var(--color-success)', true);
             setInit(Date.now());
           }
           setDisabled(false);
           setProc(false);
         } else {
           handleOfflineData(actionType, form);
-          message(t('transactionWaiting'), 'var(--warning)', true);
+          message(t('transactionWaiting'), 'var(--color-warning)', true);
         }
         handleResetForm();
       }

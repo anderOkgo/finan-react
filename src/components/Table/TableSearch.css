@@ -3,38 +3,38 @@
   justify-content: space-between;
   padding-bottom: 8px;
   padding-right: 0;
-  background-color: var(--background);
+  background-color: var(--bg-surface);
   gap: 6px;
   margin-bottom: 2px;
 }
 
 .search-box option {
-  color: var(--text);
-  background-color: var(--background);
+  color: var(--text-body);
+  background-color: var(--bg-surface);
 }
 
 .search-box-input {
   flex: 1;
   max-width: 50%;
   padding: 7px 9px;
-  border: 1.5px solid var(--soft-gray);
+  border: 1.5px solid var(--border-subtle);
   border-radius: 6px;
   background-color: inherit;
-  color: var(--text);
+  color: var(--text-body);
   transition: all 0.2s ease;
 }
 
 .search-box-input:hover {
-  border-color: var(--tertiary-color);
+  border-color: var(--brand-accent);
 }
 
 .search-box-input:focus {
   outline: none;
-  border-color: var(--second-color);
-  box-shadow: 0 0 0 3px rgba(5, 114, 198, 0.1);
+  border-color: var(--brand-secondary);
+  box-shadow: 0 0 0 3px var(--focus-ring);
 }
 
 .search-box-input::placeholder {
-  color: var(--text);
+  color: var(--text-body);
   opacity: 0.6;
 }

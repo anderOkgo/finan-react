@@ -1,8 +1,8 @@
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus {
-  -webkit-box-shadow: 0 0 0 1000px var(--soft-gray) inset !important;
-  -webkit-text-fill-color: var(--text);
+  -webkit-box-shadow: 0 0 0 1000px var(--border-subtle) inset !important;
+  -webkit-text-fill-color: var(--text-body);
 }
 
 .form-label {
@@ -10,35 +10,35 @@ input:-webkit-autofill:focus {
   margin-bottom: 7px;
   font-weight: 600;
   font-size: 14px;
-  color: var(--text);
+  color: var(--text-body);
   transition: color 0.2s ease;
 }
 
 .form-control {
   width: 100%;
   padding: 10px 14px;
-  border: 1.5px solid var(--soft-gray);
+  border: 1.5px solid var(--border-subtle);
   border-radius: 6px;
   background-color: inherit;
-  color: var(--text);
+  color: var(--text-body);
   font-size: 15px;
   transition: all 0.2s ease;
   box-sizing: border-box;
 }
 
 .form-control:hover {
-  border-color: var(--tertiary-color);
+  border-color: var(--brand-accent);
 }
 
 .form-control:focus {
   outline: none;
-  border-color: var(--second-color);
-  box-shadow: 0 0 0 3px rgba(5, 114, 198, 0.1);
+  border-color: var(--brand-secondary);
+  box-shadow: 0 0 0 3px var(--focus-ring);
   background-color: inherit;
 }
 
 .form-control::placeholder {
-  color: var(--text);
+  color: var(--text-body);
   opacity: 0.6;
 }
 
@@ -52,25 +52,25 @@ input:-webkit-autofill:focus {
   padding: 12px 0;
   font-size: 15px;
   font-weight: 600;
-  color: var(--text-alt);
-  background-color: var(--main-color);
+  color: var(--text-invert);
+  background-color: var(--brand-primary);
   border: none;
   cursor: pointer;
   margin-left: 1px;
   border-radius: 6px;
   transition: all 0.2s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px var(--shadow-sm);
 }
 
 .btn-primarys:hover:not(:disabled) {
-  background-color: var(--second-color);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  background-color: var(--brand-secondary);
+  box-shadow: 0 4px 8px var(--shadow-md);
   transform: translateY(-1px);
 }
 
 .btn-primarys:active:not(:disabled) {
   transform: translateY(0);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px var(--shadow-sm);
 }
 
 .btn-primarys:disabled {
@@ -80,8 +80,8 @@ input:-webkit-autofill:focus {
 }
 
 .delete-button {
-  background-color: var(--opposite-color);
-  color: #fff;
+  background-color: var(--color-danger);
+  color: var(--text-invert);
   border: none;
   padding: 12px 20px;
   font-size: 15px;
@@ -91,41 +91,41 @@ input:-webkit-autofill:focus {
   width: 98.5%;
   margin-top: 8px;
   transition: all 0.2s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px var(--shadow-sm);
 }
 
 .delete-button:hover {
-  background-color: var(--opposite-second-color);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  background-color: var(--color-danger-alt);
+  box-shadow: 0 4px 8px var(--shadow-md);
   transform: translateY(-1px);
 }
 
 .delete-button:active {
   transform: translateY(0);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px var(--shadow-sm);
 }
 
 input[type='datetime-local'] {
   width: 100%;
   min-height: 42px;
-  border: 1.5px solid var(--soft-gray);
+  border: 1.5px solid var(--border-subtle);
   border-radius: 6px;
   padding: 10px 14px;
   font-size: 15px;
   background-color: inherit;
-  color: var(--text);
+  color: var(--text-body);
   transition: all 0.2s ease;
   box-sizing: border-box;
 }
 
 input[type='datetime-local']:hover {
-  border-color: var(--tertiary-color);
+  border-color: var(--brand-accent);
 }
 
 input[type='datetime-local']:focus {
   outline: none;
-  border-color: var(--second-color);
-  box-shadow: 0 0 0 3px rgba(5, 114, 198, 0.1);
+  border-color: var(--brand-secondary);
+  box-shadow: 0 0 0 3px var(--focus-ring);
 }
 
 select.form-control {
@@ -133,11 +133,12 @@ select.form-control {
 }
 
 select.form-control:hover {
-  border-color: var(--tertiary-color);
+  border-color: var(--brand-accent);
 }
 
 select.form-control:focus {
   outline: none;
-  border-color: var(--second-color);
-  box-shadow: 0 0 0 3px rgba(5, 114, 198, 0.1);
+  border-color: var(--brand-secondary);
+  box-shadow: 0 0 0 3px var(--focus-ring);
 }
+

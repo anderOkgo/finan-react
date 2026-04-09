@@ -4,18 +4,18 @@
   align-items: center;
   justify-content: space-between;
   padding: 15px;
-  background-color: var(--main-color);
-  color: var(--background);
+  background-color: var(--brand-primary);
+  color: var(--bg-surface);
   transition: max-height 0.5s ease-out;
 }
 
 .nav-links a {
-  color: var(--text-alt);
+  color: var(--text-invert);
   text-decoration: none;
 }
 
 .nav-links a:hover {
-  color: var(--warning);
+  color: var(--color-warning);
 }
 
 .menu {
@@ -32,13 +32,13 @@
 }
 
 .menu li:hover {
-  color: var(--warning);
+  color: var(--color-warning);
   border-radius: 5px;
   transition: 0.3s ease;
 }
 
 .dropdown {
-  background-color: var(--main-color);
+  background-color: var(--brand-primary);
   padding: 1px 0;
   position: absolute;
   display: none;
@@ -53,11 +53,11 @@
 }
 
 .dropdown li:hover {
-  background-color: var(--main-color);
+  background-color: var(--brand-primary);
 }
 
 .hamburger {
-  color: var(--tertiary-color);
+  color: var(--brand-accent);
   display: none;
   font-size: 24px;
   user-select: none;
@@ -70,7 +70,7 @@
 }
 
 .hamb-line {
-  background: var(--text-alt);
+  background: var(--text-invert);
   display: block;
   height: 3px;
   position: relative;
@@ -80,7 +80,7 @@
 
 .hamb-line::before,
 .hamb-line::after {
-  background: var(--text-alt);
+  background: var(--text-invert);
   content: '';
   display: block;
   height: 100%;
@@ -134,8 +134,10 @@
   justify-content: center;
   align-items: center;
   letter-spacing: 0.05em;
-  color: var(--text-alt);
-  text-shadow: -1px -1px 1px var(--tertiary-color), 2px 2px 1px var(--black);
+  color: var(--text-invert);
+  text-shadow:
+    -1px -1px 1px var(--brand-accent),
+    2px 2px 1px var(--black);
 }
 
 .logo {
@@ -147,7 +149,7 @@
   .menu {
     margin: 1em 0 0 0;
     display: unset;
-    background-color: var(--main-color);
+    background-color: var(--brand-primary);
     opacity: 0;
     max-height: 0;
     position: absolute;
@@ -155,7 +157,9 @@
     left: 0;
     text-align: center;
     padding: 16px 0;
-    transition: max-height 0.5s ease-in-out, opacity 0.1s ease-in-out;
+    transition:
+      max-height 0.5s ease-in-out,
+      opacity 0.1s ease-in-out;
     z-index: -1;
     overflow: hidden;
   }
@@ -164,12 +168,14 @@
     display: block;
     opacity: 1;
     max-height: 100%;
-    transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    transition:
+      max-height 0.3s ease-in-out,
+      opacity 0.3s ease-in-out;
     z-index: 2;
   }
 
   .menu li:hover {
-    background-color: var(--main-color);
+    background-color: var(--brand-primary);
     display: inline-block;
     transition: 0.3s ease;
   }

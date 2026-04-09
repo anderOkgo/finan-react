@@ -105,11 +105,7 @@ function TabGeneral({ movements, remainingBudget = 0, setForm, setEdit, setSelec
 
   return (
     <div>
-      <InfoBanner
-        data={displayBudget}
-        label={displayLabel}
-        onDoubleClick={handleBudgetDoubleClick}
-      />
+      <InfoBanner data={displayBudget} label={displayLabel} onDoubleClick={handleBudgetDoubleClick} />
       <br />
       <Table
         label={t('movementTable')}

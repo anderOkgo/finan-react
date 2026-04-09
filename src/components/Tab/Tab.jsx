@@ -16,7 +16,18 @@ import { useContext } from 'react';
 import GlobalContext from '../../contexts/GlobalContext';
 
 function Tab() {
-  const { init, setProc, username, role, language, toggleLanguage, saveLanguageAsDefault, restoreLanguageDefault, t, navigation } = useContext(GlobalContext);
+  const {
+    init,
+    setProc,
+    username,
+    role,
+    language,
+    toggleLanguage,
+    saveLanguageAsDefault,
+    restoreLanguageDefault,
+    t,
+    navigation,
+  } = useContext(GlobalContext);
   const [bankTotal, setBankTotal] = useState(0);
   const [balance, setBalance] = useState([]);
   const [yearlyBalance, setYearlyBalance] = useState([]);
@@ -63,28 +74,38 @@ function Tab() {
   }, []);
 
   // Hook de swipe con callback
-  const { selectedOption, setSelectedOption, handleTouchStart, handleTouchEnd } = useSwipeableTabs(nTab, 170, handleSwipeChange);
+  const { selectedOption, setSelectedOption, handleTouchStart, handleTouchEnd } = useSwipeableTabs(
+    nTab,
+    170,
+    handleSwipeChange
+  );
 
   // Función para manejar clicks en tabs
-  const handleTabClick = useCallback((tabId) => {
-    if (isRestoringRef.current) {
-      setSelectedOption(tabId);
-      return;
-    }
+  const handleTabClick = useCallback(
+    (tabId) => {
+      if (isRestoringRef.current) {
+        setSelectedOption(tabId);
+        return;
+      }
 
-    setSelectedOption(tabId);
-    
-    // Registrar en historial
-    if (navigationRef.current?.pushHistory && !isInitialMountRef.current) {
-      lastRestoredTabIdRef.current = null;
-      navigationRef.current.pushHistory('tab-change', { tabId });
-    }
-  }, [setSelectedOption]);
+      setSelectedOption(tabId);
+
+      // Registrar en historial
+      if (navigationRef.current?.pushHistory && !isInitialMountRef.current) {
+        lastRestoredTabIdRef.current = null;
+        navigationRef.current.pushHistory('tab-change', { tabId });
+      }
+    },
+    [setSelectedOption]
+  );
 
   // Wrapper para clicks desde otros componentes
-  const setSelectedOptionWithHistory = useCallback((newTabId) => {
-    handleTabClick(newTabId);
-  }, [handleTabClick]);
+  const setSelectedOptionWithHistory = useCallback(
+    (newTabId) => {
+      handleTabClick(newTabId);
+    },
+    [handleTabClick]
+  );
 
   const initialForm = useMemo(
     () => ({
@@ -115,7 +136,17 @@ function Tab() {
       icon: '☷',
       label: t('generalTab'),
       component: true && (
-        <TabGeneral {...{ movements, remainingBudget, setForm, setEdit, setSelectedOption: setSelectedOptionWithHistory, currency, t }} />
+        <TabGeneral
+          {...{
+            movements,
+            remainingBudget,
+            setForm,
+            setEdit,
+            setSelectedOption: setSelectedOptionWithHistory,
+            currency,
+            t,
+          }}
+        />
       ),
     },
     {
@@ -180,9 +211,7 @@ function Tab() {
         setOperatefor(movements.filter((item) => item.source === 'balance'));
         setMonthlyExpensesUntilDay(Array.isArray(monthlyExpensesUntilDay) ? monthlyExpensesUntilDay : []);
         setMonthlyBudget(typeof monthlyBudget === 'number' ? monthlyBudget : 0);
-        setCurrentMonthExpenses(
-          typeof currentMonthExpenses === 'number' ? currentMonthExpenses : 0
-        );
+        setCurrentMonthExpenses(typeof currentMonthExpenses === 'number' ? currentMonthExpenses : 0);
         setRemainingBudget(typeof remainingBudget === 'number' ? remainingBudget : 0);
       };
 
@@ -214,9 +243,9 @@ function Tab() {
     if (!navigation?.currentState || navigation.currentState.type !== 'tab-change') {
       return;
     }
-    
+
     const { tabId } = navigation.currentState.data || {};
-    
+
     // Solo restaurar si el tabId es diferente al último que restauramos y al actual
     if (tabId && tabId !== selectedOption && tabId !== lastRestoredTabIdRef.current) {
       lastRestoredTabIdRef.current = tabId;
@@ -236,7 +265,7 @@ function Tab() {
   const handleLanguageDoubleClick = () => {
     // Verificar si hay una preferencia guardada
     const hasStoredPreference = localStorage.getItem('lang') !== null;
-    
+
     if (hasStoredPreference) {
       // Si hay preferencia guardada, restaurar el default del sistema
       restoreLanguageDefault();
@@ -272,11 +301,7 @@ function Tab() {
             <div className="section-tab">
               <div className="container-tab">
                 <div className="lang-container">
-                  <span 
-                    className="lang" 
-                    onClick={toggleLanguage}
-                    onDoubleClick={handleLanguageDoubleClick}
-                  >
+                  <span className="lang" onClick={toggleLanguage} onDoubleClick={handleLanguageDoubleClick}>
                     {language === 'en' ? t('switchToSpanish') : t('switchToEnglish')}
                   </span>
                   {userRole === 'admin' ? <CurrencySelector {...{ setCurrency, currency, t }} /> : ''}

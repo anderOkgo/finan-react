@@ -49,7 +49,7 @@ const AutoDismissMessage = ({ msg, bgColor, duration, setVisible, visible }) => 
             width: '100%',
             padding: '0.2rem',
             textAlign: 'center',
-            color: 'var(--text-alt)',
+            color: 'var(--text-invert)',
             fontWeight: 'bold',
             backgroundColor: bgColor,
             opacity: opacity,

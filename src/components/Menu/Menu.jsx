@@ -28,7 +28,7 @@ const Menu = () => {
     const currentLang = localStorage.getItem('lang') || (navigator.language.split('-')[0] === 'es' ? 'es' : 'en');
     const messages = {
       en: { system: 'Theme: System Default', user: 'Theme: User Default' },
-      es: { system: 'Tema: Predeterminado del Sistema', user: 'Tema: Predeterminado del Usuario' }
+      es: { system: 'Tema: Predeterminado del Sistema', user: 'Tema: Predeterminado del Usuario' },
     };
 
     if (hasStoredPreference) {

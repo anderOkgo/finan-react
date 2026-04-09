@@ -7,7 +7,7 @@
   bottom: 0;
   left: 0;
   right: 0;
-  background-color: var(--background);
+  background-color: var(--bg-surface);
   padding: 1px;
   z-index: 2;
   overflow-x: auto;
@@ -16,20 +16,20 @@
 .pagination-button {
   display: inline;
   padding: 7px 14px;
-  color: var(--text);
+  color: var(--text-body);
   margin: 0;
-  border: 1px solid var(--soft-gray);
-  background-color: var(--background);
+  border: 1px solid var(--border-subtle);
+  background-color: var(--bg-surface);
   cursor: pointer;
 }
 
 .pagination-button:hover {
-  color: var(--main-color);
+  color: var(--brand-primary);
 }
 
 .pagination-button.active {
-  background-color: var(--main-color);
-  color: var(--text-alt);
+  background-color: var(--brand-primary);
+  color: var(--text-invert);
 }
 
 .pagination-button:disabled {
@@ -60,14 +60,14 @@
   left: 50%;
   transform: translate(-50%, -50%);
   font-size: 10px;
-  color: var(--soft-gray);
+  color: var(--border-subtle);
   pointer-events: none;
   opacity: 0.6;
   white-space: nowrap;
 }
 
 .range-status-indicator.enabled {
-  color: var(--main-color);
+  color: var(--brand-primary);
   opacity: 0.8;
 }
 
@@ -76,7 +76,7 @@
   width: 100%;
   -webkit-appearance: none;
   height: 2px;
-  background: var(--soft-gray);
+  background: var(--border-subtle);
   border-radius: 5px;
   outline: none;
   margin: 10px 0;
@@ -87,7 +87,7 @@
   -webkit-appearance: none;
   width: 15px;
   height: 15px;
-  background: var(--main-color);
+  background: var(--brand-primary);
   border-radius: 50%;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -96,7 +96,7 @@
 .pagination-range::-moz-range-thumb {
   width: 15px;
   height: 15px;
-  background: var(--main-color);
+  background: var(--brand-primary);
   border-radius: 50%;
   cursor: pointer;
   border: none;
