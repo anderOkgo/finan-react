@@ -115,7 +115,7 @@ function Table({
           <tbody>{renderTableRows()}</tbody>
         </table>
         <div className="pagination-container">
-          <TablePagination {...{ currentPage, setCurrentPage, filteredData, itemsPerPage }} />
+          <TablePagination {...{ currentPage, setCurrentPage, filteredData, itemsPerPage, elemet: label }} />
         </div>
         <br />
       </div>

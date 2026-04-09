@@ -14,6 +14,9 @@ function TablePagination({ currentPage, setCurrentPage, filteredData, itemsPerPa
   const touchStartPosRef = useRef({ x: 0, y: 0 });
   const hasMovedRef = useRef(false);
 
+  const navigation = useContext(GlobalContext)?.navigation;
+  const isInternalChangeRef = useRef(false);
+
   useEffect(() => {
     // Calculate total pages whenever filtered data changes
     setTotalPages(Math.ceil(filteredData.length / itemsPerPage));
@@ -23,6 +26,29 @@ function TablePagination({ currentPage, setCurrentPage, filteredData, itemsPerPa
     setStartIndex(newStartIndex);
     setEndIndex(newEndIndex);
   }, [filteredData, itemsPerPage, currentPage]);
+
+  // Manejar el historial de navegación
+  useEffect(() => {
+    if (!navigation) return;
+
+    // Cuando cambia currentPage externamente (ej: click botones), registrar en historial
+    if (!isInternalChangeRef.current) {
+      navigation.pushHistory('pagination', { page: currentPage, id: elemet });
+    }
+    isInternalChangeRef.current = false;
+  }, [currentPage, navigation, elemet]);
+
+  useEffect(() => {
+    if (!navigation) return;
+
+    const state = navigation.currentState;
+    if (state?.type === 'pagination' && state.data?.id === elemet) {
+      if (state.data.page !== currentPage) {
+        isInternalChangeRef.current = true;
+        setCurrentPage(state.data.page);
+      }
+    }
+  }, [navigation?.currentState, navigation?.currentIndex, elemet, currentPage, setCurrentPage]);
 
   const renderPaginationButtons = () => {
     const maxButtons = set.pagination_max_buttons;
