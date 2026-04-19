@@ -5,7 +5,7 @@ import './Login.css';
 import { useContext } from 'react';
 import GlobalContext from '../../../contexts/GlobalContext';
 
-const Login = ({ t }) => {
+const Login = ({ t, onLoginButtonClick }) => {
   const { setInit, init, setProc } = useContext(GlobalContext);
   const form = useRef();
 
@@ -83,7 +83,11 @@ const Login = ({ t }) => {
           </div>
 
           <div className="form-group">
-            <button className="btn-primary btn-block">
+            <button
+              type="submit"
+              className="btn-primary btn-block"
+              onClick={() => onLoginButtonClick?.()}
+            >
               <span>{t('login')}</span>
             </button>
           </div>
@@ -95,6 +99,7 @@ const Login = ({ t }) => {
 
 Login.propTypes = {
   t: PropTypes.func.isRequired,
+  onLoginButtonClick: PropTypes.func,
 };
 
 export default Login;
