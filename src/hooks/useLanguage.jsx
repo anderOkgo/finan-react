@@ -7,8 +7,8 @@ const translations = {
     tagTab: 'Tag',
     balanceTab: 'Balance',
     infoTab: 'Information',
-    switchToSpanish: 'EN',
-    switchToEnglish: 'ES',
+    switchToSpanish: 'ES',
+    switchToEnglish: 'EN',
     name: 'Name',
     value: 'Value',
     type: 'Type',
@@ -103,8 +103,17 @@ const translations = {
     'Verification code sent': 'Verification code sent',
     'User created successfully': 'User created successfully',
     'Internal Server Error': 'Internal Server Error',
+    'Internal server error': 'Internal server error',
     'User does not exist': 'User does not exist',
     'Wrong Password': 'Wrong Password',
+    'Username or email is required': 'Username or email is required',
+    'Invalid credentials': 'Invalid credentials',
+    'Account is inactive': 'Account is inactive',
+    'Account is temporarily locked': 'Account is temporarily locked',
+    'Too many failed attempts. Account locked for 15 minutes': 'Too many failed attempts. Account locked for 15 minutes',
+    'Invalid email format': 'Invalid email format',
+    'Invalid username format': 'Invalid username format',
+    'Password must be at least 6 characters': 'Password must be at least 6 characters',
     Offline: 'Offline',
     'Currency cannot be empty': 'Currency cannot be empty',
     'Currency must be a 3-character code': 'Currency must be a 3-character code',
@@ -127,6 +136,27 @@ const translations = {
     languageUserDefault: 'Language: User Default',
     themeSystemDefault: 'Theme: System Default',
     themeUserDefault: 'Theme: User Default',
+    'Movement already exists (duplicate prevented)': 'Movement already exists (duplicate prevented)',
+    'Movement created successfully': 'Movement created successfully',
+    'Failed to create movement': 'Failed to create movement',
+    'Movement updated successfully': 'Movement updated successfully',
+    'Failed to update movement': 'Failed to update movement',
+    'Movement deleted successfully': 'Movement deleted successfully',
+    'Failed to delete movement': 'Failed to delete movement',
+    'Movement not found': 'Movement not found',
+    'Unauthorized: Movement does not belong to this user': 'Unauthorized: Movement does not belong to this user',
+    'Movement name must be at least 2 characters': 'Movement name must be at least 2 characters',
+    'Movement value must be different from zero': 'Movement value must be different from zero',
+    'Movement date is required': 'Movement date is required',
+    'Invalid date format': 'Invalid date format',
+    'Movement type is required': 'Movement type is required',
+    'Invalid movement type': 'Invalid movement type',
+    'Currency is required': 'Currency is required',
+    'Username is required': 'Username is required',
+    'Invalid movement ID': 'Invalid movement ID',
+    'Valid username is required': 'Valid username is required',
+    'Initial load data retrieved successfully': 'Initial load data retrieved successfully',
+    areYouSure: 'Are you sure you want to delete',
   },
   es: {
     inputTab: 'Entrada',
@@ -134,8 +164,8 @@ const translations = {
     tagTab: 'Etiqueta',
     balanceTab: 'Balance',
     infoTab: 'Información',
-    switchToSpanish: 'EN',
-    switchToEnglish: 'ES',
+    switchToSpanish: 'ES',
+    switchToEnglish: 'EN',
     name: 'Nombre',
     value: 'Valor',
     type: 'Tipo',
@@ -230,8 +260,17 @@ const translations = {
     'Verification code sent': 'Código de verificación enviado',
     'User created successfully': 'Usuario creado exitosamente',
     'Internal Server Error': 'Error Interno del Servidor',
+    'Internal server error': 'Error interno del servidor',
     'User does not exist': 'El usuario no existe',
     'Wrong Password': ' Contraseña Incorrecta',
+    'Username or email is required': 'El usuario o correo es requerido',
+    'Invalid credentials': 'Credenciales inválidas',
+    'Account is inactive': 'La cuenta está inactiva',
+    'Account is temporarily locked': 'La cuenta está temporalmente bloqueada',
+    'Too many failed attempts. Account locked for 15 minutes': 'Demasiados intentos fallidos. Cuenta bloqueada por 15 minutos',
+    'Invalid email format': 'Formato de correo inválido',
+    'Invalid username format': 'Formato de usuario inválido',
+    'Password must be at least 6 characters': 'La contraseña debe tener al menos 6 caracteres',
     Offline: 'Sin Conexión',
     'Currency cannot be empty': 'La moneda no puede estar vacía',
     'Currency must be a 3-character code': 'La moneda debe ser un código de 3 caracteres',
@@ -254,6 +293,27 @@ const translations = {
     languageUserDefault: 'Idioma: Predeterminado del Usuario',
     themeSystemDefault: 'Tema: Predeterminado del Sistema',
     themeUserDefault: 'Tema: Predeterminado del Usuario',
+    'Movement already exists (duplicate prevented)': 'El movimiento ya existe (duplicado evitado)',
+    'Movement created successfully': 'Movimiento creado exitosamente',
+    'Failed to create movement': 'Fallo al crear el movimiento',
+    'Movement updated successfully': 'Movimiento actualizado exitosamente',
+    'Failed to update movement': 'Fallo al actualizar el movimiento',
+    'Movement deleted successfully': 'Movimiento eliminado exitosamente',
+    'Failed to delete movement': 'Fallo al eliminar el movimiento',
+    'Movement not found': 'Movimiento no encontrado',
+    'Unauthorized: Movement does not belong to this user': 'No autorizado: El movimiento no pertenece a este usuario',
+    'Movement name must be at least 2 characters': 'El nombre del movimiento debe tener al menos 2 caracteres',
+    'Movement value must be different from zero': 'El valor del movimiento debe ser diferente de cero',
+    'Movement date is required': 'La fecha del movimiento es requerida',
+    'Invalid date format': 'Formato de fecha inválido',
+    'Movement type is required': 'El tipo de movimiento es requerido',
+    'Invalid movement type': 'Tipo de movimiento inválido',
+    'Currency is required': 'La moneda es requerida',
+    'Username is required': 'El usuario es requerido',
+    'Invalid movement ID': 'ID de movimiento inválido',
+    'Valid username is required': 'Se requiere un usuario válido',
+    'Initial load data retrieved successfully': 'Datos de carga inicial recuperados exitosamente',
+    areYouSure: '¿Estás seguro de que deseas eliminar',
   },
 };
 
@@ -328,7 +388,16 @@ export const useLanguage = () => {
   };
 
   // Translate a given key
-  const t = (key) => translations[language][key] || key;
+  const t = (key) => {
+    if (!key) return '';
+    const currentTranslations = translations[language];
+    if (currentTranslations[key]) return currentTranslations[key];
+
+    // Case-insensitive fallback
+    const lowerKey = typeof key === 'string' ? key.toLowerCase() : String(key).toLowerCase();
+    const foundKey = Object.keys(currentTranslations).find((k) => k.toLowerCase() === lowerKey);
+    return foundKey ? currentTranslations[foundKey] : key;
+  };
 
   // Effect hook to sync with system language when using system default
   useEffect(() => {

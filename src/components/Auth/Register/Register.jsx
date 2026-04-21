@@ -47,7 +47,7 @@ const Register = ({ t }) => {
         setInit(false);
         console.error('Registration error:', resp.err.message);
       } else {
-        alert(resp);
+        alert(t(resp));
         if (!showVerificationCode) setShowVerificationCode(true);
         setInit(Date.now());
         console.log('Registration successful:', resp);

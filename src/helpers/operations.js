@@ -11,10 +11,24 @@ export const moneyFormat = (number) => {
 export const monthDiff = (date1, date2) => {
   const d1 = new Date(date1);
   const d2 = new Date(date2);
-  const diffInMilliseconds = d2 - d1;
-  const millisecondsInDay = 24 * 60 * 60 * 1000;
-  const totalDays = diffInMilliseconds / millisecondsInDay;
-  return Math.floor(totalDays) / 30.5;
+  let months = (d2.getFullYear() - d1.getFullYear()) * 12;
+  months -= d1.getMonth();
+  months += d2.getMonth();
+
+  if (d1.getDate() > d2.getDate()) {
+    months--;
+  }
+
+  // Calculate the fraction of the current month
+  const d1Copy = new Date(d1);
+  d1Copy.setFullYear(d1.getFullYear(), d1.getMonth() + months);
+
+  const diffInMs = d2 - d1Copy;
+  const nextMonth = new Date(d1.getFullYear(), d1.getMonth() + months + 1, 0);
+  const daysInMonth = nextMonth.getDate();
+  const fractionalMonth = diffInMs / (daysInMonth * 24 * 60 * 60 * 1000);
+
+  return months + fractionalMonth;
 };
 
 export const formattedDate = () => {

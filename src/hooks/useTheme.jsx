@@ -98,6 +98,7 @@ export const useTheme = () => {
       '--focus-ring': 'rgba(5, 114, 198, 0.1)',
       '--white': '#ffffff',
       '--black': '#000000',
+      '--input-bg-surface': '#ffffff',
     };
 
     const darkModeColors = {
@@ -117,6 +118,7 @@ export const useTheme = () => {
       '--focus-ring': 'rgba(37, 108, 174, 0.2)',
       '--white': '#ffffff',
       '--black': '#000000',
+      '--input-bg-surface': '#1e1e1e',
     };
 
     const colors = isDarkMode ? darkModeColors : lightModeColors;

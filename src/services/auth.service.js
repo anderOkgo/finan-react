@@ -35,8 +35,7 @@ const login = async (username, password) => {
 
   const response = await helpHttp.post(API_URL + 'login', options);
   if (response.token === undefined) {
-    alert(response.err.message.message);
-    return response.err.message.message;
+    return { err: response.err.message };
   } else {
     localStorage.setItem(cyfer().cy('user-in', formattedDate()), cyfer().cy(JSON.stringify(response), set.salt));
     return response.message;
