@@ -292,8 +292,10 @@ function Form({ setForm, form, edit, setEdit, currency, operateFor }) {
         </div>
 
         <div className="form-group">
-          <input type="submit" className="btn-primarys" value={t('submit')} disabled={disabled}></input>
-          <input className="btn-primarys" type="reset" value={t('reset')} onClick={handleResetForm} />
+          <div className="form-actions">
+            <input type="submit" className="btn-primarys" value={t('submit')} disabled={disabled}></input>
+            <input className="btn-primarys" type="reset" value={t('reset')} onClick={handleResetForm} />
+          </div>
           {edit && (
             <input
               className="delete-button"

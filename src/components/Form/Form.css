@@ -46,6 +46,13 @@ input:-webkit-autofill:focus {
   margin-bottom: 22px;
 }
 
+.form-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+
 .btn-primarys {
   box-sizing: border-box;
   width: 49%;
@@ -56,7 +63,6 @@ input:-webkit-autofill:focus {
   background-color: var(--brand-primary);
   border: none;
   cursor: pointer;
-  margin-left: 1px;
   border-radius: 6px;
   transition: all 0.2s ease;
   box-shadow: 0 2px 4px var(--shadow-sm);
@@ -141,4 +147,3 @@ select.form-control:focus {
   border-color: var(--brand-secondary);
   box-shadow: 0 0 0 3px var(--focus-ring);
 }
-
