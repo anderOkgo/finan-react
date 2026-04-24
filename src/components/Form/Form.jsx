@@ -272,6 +272,7 @@ function Form({ setForm, form, edit, setEdit, currency, operateFor }) {
             value={form.movement_name}
             onChange={handleChangeInput}
             maxLength="50"
+            minLength="2"
             required
           />
         </div>
