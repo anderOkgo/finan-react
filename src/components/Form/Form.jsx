@@ -138,6 +138,81 @@ function Form({ setForm, form, edit, setEdit, currency, operateFor }) {
     syncOfflineData();
   }, [handleBulkData, proc, setInit, setProc, init, t]);
 
+  const handleOfflineRowEdit = useCallback(
+    (itemToRemove) => {
+      const types = ['insert', 'update', 'del'];
+      for (const type of types) {
+        const data = JSON.parse(localStorage.getItem(type)) || [];
+        const index = data.findIndex(
+          (item) =>
+            item.movement_name === itemToRemove.movement_name &&
+            item.movement_val === itemToRemove.movement_val &&
+            item.movement_date === itemToRemove.movement_date
+        );
+        if (index !== -1) {
+          data.splice(index, 1);
+          localStorage.setItem(type, JSON.stringify(data));
+          break;
+        }
+      }
+
+      const insertData = JSON.parse(localStorage.getItem('insert')) || [];
+      const updateData = JSON.parse(localStorage.getItem('update')) || [];
+      const deleteData = JSON.parse(localStorage.getItem('del')) || [];
+      const mergedData = formatOffData([...insertData, ...updateData, ...deleteData]);
+      setOff(mergedData);
+
+      setForm({
+        id: itemToRemove.id || '',
+        movement_name: itemToRemove.movement_name || '',
+        movement_val: itemToRemove.movement_val || '',
+        operate_for: itemToRemove.operate_for || '',
+        movement_type: itemToRemove.movement_type || '',
+        movement_date: itemToRemove.movement_date || '',
+        movement_tag: itemToRemove.movement_tag || '',
+        currency: itemToRemove.currency || '',
+      });
+      setEdit(!!itemToRemove.id);
+    },
+    [setForm, setEdit]
+  );
+
+  const handleOfflineRowDelete = useCallback(
+    (itemToRemove) => {
+      // Pedir confirmación al usuario
+      if (!window.confirm(`${t('areYouSure')} '${itemToRemove.movement_name}'?`)) return;
+
+      const types = ['insert', 'update', 'del'];
+
+      // Buscar en cada categoría del localStorage para eliminar el registro
+      for (const type of types) {
+        const data = JSON.parse(localStorage.getItem(type)) || [];
+        const index = data.findIndex(
+          (item) =>
+            item.movement_name === itemToRemove.movement_name &&
+            item.movement_val === itemToRemove.movement_val &&
+            item.movement_date === itemToRemove.movement_date
+        );
+
+        if (index !== -1) {
+          data.splice(index, 1);
+          localStorage.setItem(type, JSON.stringify(data));
+          break; // Una vez encontrado y borrado, salimos del bucle
+        }
+      }
+
+      // Refrescar el estado 'off' para que desaparezca de la tabla inmediatamente
+      const insertData = JSON.parse(localStorage.getItem('insert')) || [];
+      const updateData = JSON.parse(localStorage.getItem('update')) || [];
+      const deleteData = JSON.parse(localStorage.getItem('del')) || [];
+      const mergedData = formatOffData([...insertData, ...updateData, ...deleteData]);
+      setOff(mergedData);
+
+      message(t('transactionSuccessful'), 'var(--color-success)', true);
+    },
+    [t, setOff]
+  );
+
   const handleAction = useCallback(
     async (e, actionType) => {
       e.target instanceof HTMLFormElement && e.preventDefault();
@@ -312,6 +387,8 @@ function Form({ setForm, form, edit, setEdit, currency, operateFor }) {
           columns={[t('queue'), '', '', '', '', '', '', '', '...']}
           data={off}
           onRowDoubleClick={handleRowDoubleClick}
+          onRowEdit={handleOfflineRowEdit}
+          onRowDelete={handleOfflineRowDelete}
         />
       )}
     </div>
@@ -325,6 +402,7 @@ Form.propTypes = {
   setEdit: PropTypes.func.isRequired,
   currency: PropTypes.string.isRequired,
   operateFor: PropTypes.any.isRequired,
+  handleOfflineRowDelete: PropTypes.func.isRequired,
 };
 
 export default Form;

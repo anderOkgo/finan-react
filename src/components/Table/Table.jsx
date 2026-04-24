@@ -16,6 +16,8 @@ function Table({
   onRowDoubleClick = false,
   label = 'No label',
   onFilteredDataChange = false,
+  onRowDelete = null,
+  onRowEdit = null,
 }) {
   const [dataset, setDataset] = useState([]);
   const [header, setHeader] = useState([]);
@@ -84,6 +86,7 @@ function Table({
                 : ''}
           </th>
         ))}
+        {(onRowEdit || onRowDelete) && <th>{t('actions') || 'Actions'}</th>}
       </tr>
     );
   };
@@ -100,6 +103,48 @@ function Table({
     return currentData.map((item, index) => (
       <tr key={index} onDoubleClick={() => (onRowDoubleClick ? onRowDoubleClick(item) : false)}>
         {renderTableColumns(item)}
+        {(onRowEdit || onRowDelete) && (
+          <td>
+            <div style={{ display: 'flex', gap: '8px' }}>
+              {onRowEdit && (
+                <button
+                  className="btn-primarys"
+                  style={{
+                    padding: '4px 8px',
+                    cursor: 'pointer',
+                    fontSize: '1.1rem',
+                  }}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onRowEdit(item);
+                  }}
+                  title={t('edit') || 'Edit'}
+                >
+                  &#9998; {/* Representa un lápiz: ✎ */}
+                </button>
+              )}
+
+              {onRowDelete && (
+                <button
+                  className="btn-primarys"
+                  style={{
+                    padding: '4px 8px',
+                    backgroundColor: 'var(--color-danger)',
+                    cursor: 'pointer',
+                    fontSize: '1.1rem',
+                  }}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onRowDelete(item);
+                  }}
+                  title={t('delete') || 'Delete'}
+                >
+                  &#128465; {/* Representa una papelera: 🗑 */}
+                </button>
+              )}
+            </div>
+          </td>
+        )}
       </tr>
     ));
   };
@@ -132,6 +177,8 @@ Table.propTypes = {
   orderColumnsList: PropTypes.array,
   defaultItemsPerPage: PropTypes.number,
   onFilteredDataChange: PropTypes.func,
+  onRowDelete: PropTypes.func,
+  onRowEdit: PropTypes.func,
 };
 
 export default Table;
