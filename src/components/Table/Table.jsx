@@ -59,9 +59,11 @@ function Table({
   const handleHeaderClick = (columnIndex) => {
     const descending = sortOrder.columnIndex === columnIndex ? !sortOrder.descending : false;
     setSortOrder({ columnIndex, descending });
+    const visibleKeys = header.filter((key) => !hiddenColumns.includes(key));
+    const sortKey = visibleKeys[columnIndex];
     const reorderedData = filteredData.slice().sort((a, b) => {
-      const valueA = Object.values(a)[columnIndex];
-      const valueB = Object.values(b)[columnIndex];
+      const valueA = a[sortKey];
+      const valueB = b[sortKey];
       if (descending) {
         return valueA < valueB ? 1 : valueA > valueB ? -1 : 0;
       } else {
