@@ -94,11 +94,14 @@ function Table({
   };
 
   const renderTableColumns = (row) => {
-    return Object.keys(row).map((key, index) => (
-      <td key={index} className={hiddenColumns.includes(key) ? 'hidden-column' : ''}>
-        {t(row[key])}
-      </td>
-    ));
+    return Object.keys(row).map((key, index) => {
+      const value = t(row[key]);
+      return (
+        <td key={index} className={hiddenColumns.includes(key) ? 'hidden-column' : ''}>
+          {value === '' ? 0 : value}
+        </td>
+      );
+    });
   };
 
   const renderTableRows = () => {

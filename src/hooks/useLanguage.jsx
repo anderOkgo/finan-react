@@ -389,7 +389,7 @@ export const useLanguage = () => {
 
   // Translate a given key
   const t = (key) => {
-    if (!key) return '';
+    if (key === undefined || key === null || key === '') return '';
     const currentTranslations = translations[language];
     if (currentTranslations[key]) return currentTranslations[key];
 
