@@ -1,10 +1,10 @@
-const VERSION = '2.0.124';
+const VERSION = '2.1.1';
 const CACHE_NAME = `finan-${VERSION}`;
 const appfiles = [
-  './icon/launchericon-32x32.png',
-  './icon/launchericon-96x96.png',
-  './icon/launchericon-192x192.png',
-  './icon/launchericon-512x512.png',
+  './icon/icon-32x32.png',
+  './icon/icon-96x96.png',
+  './icon/icon-192x192.png',
+  './icon/icon-512x512.png',
   './icon/narrow.png',
   './icon/wide.png',
 ];
