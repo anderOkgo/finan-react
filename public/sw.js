@@ -1,17 +1,11 @@
-const VERSION = '2.0.99';
+const VERSION = '2.0.108';
 const CACHE_NAME = `finan-${VERSION}`;
 const appfiles = [
-  './icon/ico-32x32.png',
-  './icon/ico-36x36.png',
-  './icon/ico-48x48.png',
-  './icon/ico-72x72.png',
-  './icon/ico-96x96.png',
-  './icon/ico-128x128.png',
-  './icon/ico-144x144.png',
-  './icon/ico-152x152.png',
-  './icon/ico-192x192.png',
-  './icon/ico-384x384.png',
-  './icon/ico-512x512.png',
+  './icon/favicon.png',
+  './icon/icon-192x192.png',
+  './icon/icon-512x512.png',
+  './icon/apple-touch-icon.png',
+  './icon/og-image.png',
   './icon/screen.png',
   './icon/screenWide.png',
 ];
