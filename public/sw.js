@@ -1,15 +1,12 @@
-const VERSION = '2.0.118';
+const VERSION = '2.0.123';
 const CACHE_NAME = `finan-${VERSION}`;
 const appfiles = [
-  './icon/favicon.png',
-  './icon/launchericon-48x48.png',
-  './icon/launchericon-72x72.png',
+  './icon/launchericon-32x32.png',
   './icon/launchericon-96x96.png',
-  './icon/launchericon-144x144.png',
   './icon/launchericon-192x192.png',
   './icon/launchericon-512x512.png',
-  './icon/screen.png',
-  './icon/screenWide.png',
+  './icon/narrow.png',
+  './icon/wide.png',
 ];
 
 self.addEventListener('install', (e) => {
