@@ -1,4 +1,4 @@
-const VERSION = '2.0.123';
+const VERSION = '2.0.124';
 const CACHE_NAME = `finan-${VERSION}`;
 const appfiles = [
   './icon/launchericon-32x32.png',
