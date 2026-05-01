@@ -49,23 +49,66 @@ function LineChart({ dataI = [], height, t }) {
 
   const years = useMemo(() => [...new Set(dataI.map((item) => item.year_number))], [dataI]);
 
-  const data = {
-    labels,
-    datasets: [
-      {
-        label: t('incomes'),
-        data: dataset1Data,
-        borderColor: 'rgb(53, 162, 235)',
-        backgroundColor: 'rgba(53, 162, 235, 0.5)',
-      },
-      {
-        label: t('expenses'),
-        data: dataset2Data,
-        borderColor: 'rgb(255, 99, 132)',
-        backgroundColor: 'rgba(255, 99, 132, 0.5)',
-      },
-    ],
-  };
+  // State to store resolved colors from CSS variables
+  const [chartColors, setChartColors] = useState({
+    incomes: 'rgb(53, 162, 235)',
+    expenses: 'rgb(255, 99, 132)',
+    text: isDarkMode ? '#e0e0e0' : '#212121',
+    border: isDarkMode ? '#363c42' : '#b5cdda',
+    tooltipBg: isDarkMode ? 'rgba(18, 18, 18, 0.9)' : 'rgba(255, 255, 255, 0.9)',
+    grid: isDarkMode ? 'rgba(224, 224, 224, 0.1)' : 'rgba(33, 33, 33, 0.1)',
+    tickBorder: isDarkMode ? 'rgba(224, 224, 224, 0.2)' : 'rgba(33, 33, 33, 0.2)',
+  });
+
+  // Effect to resolve CSS variables AFTER the theme effect has run
+  useEffect(() => {
+    // We use a small timeout or requestAnimationFrame to ensure the DOM has updated
+    // although usually a simple useEffect after the theme state change is enough
+    const resolveColors = () => {
+      const root = document.documentElement;
+      const getVar = (name) => getComputedStyle(root).getPropertyValue(name).trim();
+
+      setChartColors({
+        incomes: getVar('--chart-incomes') || 'rgb(53, 162, 235)',
+        expenses: getVar('--chart-expenses') || 'rgb(255, 99, 132)',
+        text: getVar('--text-body'),
+        border: getVar('--border-subtle'),
+        tooltipBg: getVar('--white-alpha-90'),
+        grid: isDarkMode ? getVar('--white-alpha-10') : getVar('--black-alpha-10'),
+        tickBorder: isDarkMode ? getVar('--white-alpha-20') : getVar('--black-alpha-20'),
+      });
+    };
+
+    // Execute immediately and maybe again after a frame to be safe
+    resolveColors();
+    const timer = setTimeout(resolveColors, 50); // Small buffer for CSS variables to apply
+    return () => clearTimeout(timer);
+  }, [isDarkMode]);
+
+  const data = useMemo(() => {
+    const toRGBA = (rgb, alpha) => {
+      if (!rgb || !rgb.startsWith('rgb')) return rgb;
+      return rgb.replace('rgb', 'rgba').replace(')', `, ${alpha})`);
+    };
+
+    return {
+      labels,
+      datasets: [
+        {
+          label: t('incomes'),
+          data: dataset1Data,
+          borderColor: chartColors.incomes,
+          backgroundColor: toRGBA(chartColors.incomes, 0.5),
+        },
+        {
+          label: t('expenses'),
+          data: dataset2Data,
+          borderColor: chartColors.expenses,
+          backgroundColor: toRGBA(chartColors.expenses, 0.5),
+        },
+      ],
+    };
+  }, [labels, t, dataset1Data, dataset2Data, chartColors.incomes, chartColors.expenses]);
 
   const options = useMemo(
     () => ({
@@ -74,45 +117,45 @@ function LineChart({ dataI = [], height, t }) {
       plugins: {
         legend: {
           labels: {
-            color: isDarkMode ? '#e0e0e0' : '#212121',
+            color: chartColors.text,
           },
         },
         tooltip: {
-          backgroundColor: isDarkMode ? 'rgba(18, 18, 18, 0.9)' : 'rgba(255, 255, 255, 0.9)',
-          titleColor: isDarkMode ? '#e0e0e0' : '#212121',
-          bodyColor: isDarkMode ? '#e0e0e0' : '#212121',
-          borderColor: isDarkMode ? '#363c42' : '#b5cdda',
+          backgroundColor: chartColors.tooltipBg,
+          titleColor: chartColors.text,
+          bodyColor: chartColors.text,
+          borderColor: chartColors.border,
           borderWidth: 1,
         },
       },
       scales: {
         x: {
           ticks: {
-            color: isDarkMode ? '#e0e0e0' : '#212121',
+            color: chartColors.text,
           },
           grid: {
-            color: isDarkMode ? 'rgba(224, 224, 224, 0.2)' : 'rgba(33, 33, 33, 0.1)',
+            color: chartColors.grid,
             lineWidth: 1,
           },
           border: {
-            color: isDarkMode ? 'rgba(224, 224, 224, 0.3)' : 'rgba(33, 33, 33, 0.2)',
+            color: chartColors.tickBorder,
           },
         },
         y: {
           ticks: {
-            color: isDarkMode ? '#e0e0e0' : '#212121',
+            color: chartColors.text,
           },
           grid: {
-            color: isDarkMode ? 'rgba(224, 224, 224, 0.2)' : 'rgba(33, 33, 33, 0.1)',
+            color: chartColors.grid,
             lineWidth: 1,
           },
           border: {
-            color: isDarkMode ? 'rgba(224, 224, 224, 0.3)' : 'rgba(33, 33, 33, 0.2)',
+            color: chartColors.tickBorder,
           },
         },
       },
     }),
-    [isDarkMode]
+    [chartColors]
   );
 
   return (
@@ -130,7 +173,7 @@ function LineChart({ dataI = [], height, t }) {
           </option>
         ))}
       </select>
-      <Line className="line-chart" options={options} data={data} height={height} />
+      <Line key={isDarkMode} className="line-chart" options={options} data={data} height={height} />
     </div>
   );
 }

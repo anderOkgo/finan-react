@@ -95,9 +95,14 @@ export const useTheme = () => {
       '--border-subtle': '#b5cdda',
       '--shadow-sm': 'rgba(0, 0, 0, 0.1)',
       '--shadow-md': 'rgba(0, 0, 0, 0.15)',
-      '--focus-ring': 'rgba(5, 114, 198, 0.1)',
+      '--focus-ring': 'rgba(5, 114, 198, 0.15)',
       '--white': '#ffffff',
       '--black': '#000000',
+      '--white-alpha-90': 'rgba(255, 255, 255, 0.9)',
+      '--black-alpha-10': 'rgba(33, 33, 33, 0.1)',
+      '--black-alpha-20': 'rgba(33, 33, 33, 0.2)',
+      '--chart-incomes': 'rgb(53, 162, 235)',
+      '--chart-expenses': 'rgb(255, 99, 132)',
       '--input-bg-surface': '#ffffff',
     };
 
@@ -114,10 +119,15 @@ export const useTheme = () => {
       '--text-invert': '#ffffff',
       '--border-subtle': '#363c42',
       '--shadow-sm': 'rgba(0, 0, 0, 0.3)',
-      '--shadow-md': 'rgba(0, 0, 0, 0.4)',
-      '--focus-ring': 'rgba(37, 108, 174, 0.2)',
+      '--shadow-md': 'rgba(0, 0, 0, 0.45)',
+      '--focus-ring': 'rgba(37, 108, 174, 0.25)',
       '--white': '#ffffff',
       '--black': '#000000',
+      '--white-alpha-90': 'rgba(18, 18, 18, 0.9)',
+      '--white-alpha-10': 'rgba(224, 224, 224, 0.1)',
+      '--white-alpha-20': 'rgba(224, 224, 224, 0.2)',
+      '--chart-incomes': 'rgb(53, 162, 235)',
+      '--chart-expenses': 'rgb(255, 99, 132)',
       '--input-bg-surface': '#1e1e1e',
     };
 
