@@ -62,7 +62,7 @@ const Register = ({ t }) => {
   return (
     <div className="col-md-12">
       <div className="card card-container">
-        <img src="./icon/ico-512x512.png" alt="profile-img" className="profile-img-card" />
+        <img src="./icon/icon-512x512.png" alt="profile-img" className="profile-img-card" />
         <form onSubmit={handleRegister} ref={form}>
           <div className="form-group">
             <label className="label" htmlFor="register-username">
