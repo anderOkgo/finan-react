@@ -3,7 +3,7 @@ import Table from '../Table/Table';
 import { useState, useMemo } from 'react';
 import InfoBanner from '../InfoBanner/InfoBanner';
 
-function TabGeneral({ movements, remainingBudget = 0, setForm, setEdit, setSelectedOption, currency, t }) {
+function TabGeneral({ movements, remainingBudget = 0, setForm, setEdit, setSelectedOption, currency, t, userRole, totalDay }) {
   const [selectedRow, setSelectedRow] = useState(null);
   const [filteredData, setFilteredData] = useState(movements);
   const [filteredNameData, setFilteredNameData] = useState(null);
@@ -129,7 +129,11 @@ function TabGeneral({ movements, remainingBudget = 0, setForm, setEdit, setSelec
 
   return (
     <div>
-      <InfoBanner data={displayBudget} label={displayLabel} onDoubleClick={handleBudgetDoubleClick} />
+      {userRole === 'admin' ? (
+        <InfoBanner data={displayBudget} label={displayLabel} onDoubleClick={handleBudgetDoubleClick} />
+      ) : (
+        <InfoBanner data={totalDay} label={t('dailyExpenses')} />
+      )}
       <br />
       <Table
         label={t('movementTable')}
@@ -168,6 +172,8 @@ TabGeneral.propTypes = {
   setSelectedOption: PropTypes.func,
   currency: PropTypes.string,
   t: PropTypes.any,
+  userRole: PropTypes.string,
+  totalDay: PropTypes.number,
 };
 
 export default TabGeneral;

@@ -3,7 +3,7 @@ import { useState, useMemo } from 'react';
 import Table from '../Table/Table';
 import InfoBanner from '../InfoBanner/InfoBanner';
 
-function TabTag({ movementTag, monthlyBudget, t }) {
+function TabTag({ movementTag, monthlyBudget, totalDay, t, userRole }) {
   const [filteredData, setFilteredData] = useState(movementTag);
   const [filteredTagData, setFilteredTagData] = useState(null);
 
@@ -53,7 +53,11 @@ function TabTag({ movementTag, monthlyBudget, t }) {
 
   return (
     <div>
-      <InfoBanner {...{ data: monthlyBudget ?? 0, label: t('monthlyBudget') }} />
+      {userRole === 'admin' ? (
+        <InfoBanner {...{ data: monthlyBudget ?? 0, label: t('monthlyBudget') }} />
+      ) : (
+        <InfoBanner {...{ data: totalDay, label: t('dailyExpenses') }} />
+      )}
       <br />
       <Table
         label={t('tagTable')}
@@ -85,7 +89,9 @@ function TabTag({ movementTag, monthlyBudget, t }) {
 TabTag.propTypes = {
   movementTag: PropTypes.arrayOf(PropTypes.object).isRequired,
   monthlyBudget: PropTypes.number,
+  totalDay: PropTypes.number,
   t: PropTypes.any,
+  userRole: PropTypes.string,
 };
 
 export default TabTag;

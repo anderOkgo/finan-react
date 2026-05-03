@@ -145,6 +145,8 @@ function Tab() {
             setSelectedOption: setSelectedOptionWithHistory,
             currency,
             t,
+            userRole,
+            totalDay,
           }}
         />
       ),
@@ -153,7 +155,7 @@ function Tab() {
       id: 3,
       icon: '♞',
       label: t('tagTab'),
-      component: true && <TabTag {...{ movementTag, totalDay, monthlyBudget, t }} />,
+      component: true && <TabTag {...{ movementTag, totalDay, monthlyBudget, t, userRole }} />,
     },
     {
       id: 4,
