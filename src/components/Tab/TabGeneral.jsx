@@ -1,11 +1,12 @@
 import PropTypes from 'prop-types';
 import Table from '../Table/Table';
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import InfoBanner from '../InfoBanner/InfoBanner';
 
 function TabGeneral({ movements, remainingBudget = 0, setForm, setEdit, setSelectedOption, currency, t }) {
   const [selectedRow, setSelectedRow] = useState(null);
   const [filteredData, setFilteredData] = useState(movements);
+  const [filteredNameData, setFilteredNameData] = useState(null);
   const [viewMode, setViewMode] = useState('monthly'); // 'monthly', 'daily', 'dailyNoToday'
 
   const handleRowDoubleClick = (row) => {
@@ -83,25 +84,48 @@ function TabGeneral({ movements, remainingBudget = 0, setForm, setEdit, setSelec
   const { value: displayBudget, label: displayLabel } = getBudgetDisplay();
 
   // Group data by name and calculate sum based on filtered data
-  const nameSummary = filteredData.reduce((acc, curr) => {
-    const name = curr.name;
-    if (!acc[name]) {
-      acc[name] = {
-        name: name,
-        total: 0,
-        currency: curr.currency,
-        source: curr.source,
-      };
-    }
-    acc[name].total += curr.val;
-    return acc;
-  }, {});
+  const nameSummaryArray = useMemo(() => {
+    const nameSummary = filteredData.reduce((acc, curr) => {
+      const name = curr.name;
+      if (!acc[name]) {
+        acc[name] = {
+          name: name,
+          total: 0,
+          currency: curr.currency,
+          source: curr.source,
+        };
+      }
+      acc[name].total += curr.val;
+      return acc;
+    }, {});
 
-  // Format totals to 2 decimal places
-  const nameSummaryArray = Object.values(nameSummary).map((item) => ({
-    ...item,
-    total: Number(item.total.toFixed(2)),
-  }));
+    return Object.values(nameSummary).map((item) => ({
+      ...item,
+      total: Number(item.total.toFixed(2)),
+    }));
+  }, [filteredData]);
+
+  // Group data by type and sum based on filteredNameData (or nameSummaryArray if not filtered yet)
+  const typeSummaryArray = useMemo(() => {
+    const sourceToSummarize = filteredNameData !== null ? filteredNameData : nameSummaryArray;
+    const typeSummary = sourceToSummarize.reduce((acc, curr) => {
+      const key = curr.source;
+      if (!acc[key]) {
+        acc[key] = {
+          type: curr.source,
+          total: 0,
+          currency: curr.currency,
+        };
+      }
+      acc[key].total += curr.total;
+      return acc;
+    }, {});
+
+    return Object.values(typeSummary).map((item) => ({
+      ...item,
+      total: Number(item.total.toFixed(2)),
+    }));
+  }, [filteredNameData, nameSummaryArray]);
 
   return (
     <div>
@@ -122,6 +146,14 @@ function TabGeneral({ movements, remainingBudget = 0, setForm, setEdit, setSelec
         data={nameSummaryArray}
         columns={[t('name'), t('type'), t('total')]}
         orderColumnsList={['name', 'source', 'total']}
+        onFilteredDataChange={setFilteredNameData}
+      />
+      <br />
+      <Table
+        label={t('typeSummaryTable')}
+        data={typeSummaryArray}
+        columns={[t('type'), t('total')]}
+        orderColumnsList={['type', 'total']}
       />
       {selectedRow && true}
     </div>
