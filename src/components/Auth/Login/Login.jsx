@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import AuthService from '../../../services/auth.service';
+import { translateAuthMessage } from '../../../hooks/useLanguage';
 import './Login.css';
 import { useContext } from 'react';
 import GlobalContext from '../../../contexts/GlobalContext';
@@ -28,12 +29,8 @@ const Login = ({ t, onLoginButtonClick }) => {
       setProc(true);
       let resp = await AuthService.login(username, password);
       if (resp?.err) {
-        if (Array.isArray(resp?.err?.message)) {
-          resp.err.message.map((err) => alert(t(err)));
-        } else {
-          alert(t(resp?.err?.message || 'Unknown error'));
-        }
-        setInit(false);
+        alert(translateAuthMessage(t, resp.err.message));
+        // No llamar setInit(false) — credenciales incorrectas ≠ servidor offline
       } else {
         setInit(Date.now());
       }

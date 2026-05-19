@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import AuthService from '../../../services/auth.service';
+import { translateAuthMessage } from '../../../hooks/useLanguage';
 import '../Login/Login';
 import { useContext } from 'react';
 import GlobalContext from '../../../contexts/GlobalContext';
@@ -39,15 +40,10 @@ const Register = ({ t }) => {
       setProc(true);
       let resp = await AuthService.register(username, email, password, verificationCode);
       if (resp?.err) {
-        if (Array.isArray(resp?.err?.message)) {
-          resp.err.message.map((err) => alert(t(err)));
-        } else {
-          alert(t(resp?.err?.message || 'Unknown error'));
-        }
-        setInit(false);
+        alert(translateAuthMessage(t, resp.err.message));
         console.error('Registration error:', resp.err.message);
       } else {
-        alert(t(resp));
+        alert(translateAuthMessage(t, resp.message));
         if (!showVerificationCode) setShowVerificationCode(true);
         setInit(Date.now());
         console.log('Registration successful:', resp);

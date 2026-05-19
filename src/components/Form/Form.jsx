@@ -5,6 +5,7 @@ import AutoDismissMessage from '../Message/AutoDismissMessage.jsx';
 import Table from '../Table/Table';
 import './Form.css';
 import GlobalContext from '../../contexts/GlobalContext.jsx';
+import { translateApiMessage } from '../../hooks/useLanguage';
 
 function Form({ setForm, form, edit, setEdit, currency, operateFor }) {
   const { setInit, init, setProc, proc, t } = useContext(GlobalContext);
@@ -223,13 +224,7 @@ function Form({ setForm, form, edit, setEdit, currency, operateFor }) {
           off.length !== 0 && handleRowDoubleClick();
           const response = await DataService[actionType](form);
           if (response?.err) {
-            let error = '';
-            if (Array.isArray(response?.err?.message)) {
-              error = response?.err?.message.map((msg) => t(msg)).join(', ');
-            } else {
-              error = t(response?.err?.message || 'Unknown error');
-            }
-            message(error, 'var(--color-danger)', true);
+            message(translateApiMessage(t, response.err.message), 'var(--color-danger)', true);
             handleOfflineData(actionType, form);
             setInit(false);
           } else {

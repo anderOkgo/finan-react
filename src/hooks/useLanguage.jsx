@@ -157,7 +157,16 @@ const translations = {
     'Invalid movement ID': 'Invalid movement ID',
     'Valid username is required': 'Valid username is required',
     'Initial load data retrieved successfully': 'Initial load data retrieved successfully',
+    'Start date is invalid': 'Start date is invalid',
+    'End date is invalid': 'End date is invalid',
+    'Currency must be a string': 'Currency must be a string',
+    'Username must be at least 3 characters': 'Username must be at least 3 characters',
+    'Failed to load initial data': 'Failed to load initial data',
+    'Linked movement not found': 'Linked movement not found',
     areYouSure: 'Are you sure you want to delete',
+    'Unknown error': 'Unknown error',
+    'Login failed': 'Login failed',
+    'Registration failed': 'Registration failed',
   },
   es: {
     inputTab: 'Entrada',
@@ -316,9 +325,50 @@ const translations = {
     'Invalid movement ID': 'ID de movimiento inválido',
     'Valid username is required': 'Se requiere un usuario válido',
     'Initial load data retrieved successfully': 'Datos de carga inicial recuperados exitosamente',
+    'Start date is invalid': 'La fecha de inicio no es válida',
+    'End date is invalid': 'La fecha de fin no es válida',
+    'Currency must be a string': 'La moneda debe ser un texto',
+    'Username must be at least 3 characters': 'El usuario debe tener al menos 3 caracteres',
+    'Failed to load initial data': 'Error al cargar los datos iniciales',
+    'Linked movement not found': 'Movimiento vinculado no encontrado',
     areYouSure: '¿Estás seguro de que deseas eliminar',
+    'Unknown error': 'Error desconocido',
+    'Login failed': 'Error al iniciar sesión',
+    'Registration failed': 'Error en el registro',
   },
 };
+
+const FAILED_LOAD_PREFIX = 'Failed to load initial data: ';
+
+/** Translates API messages (auth, finan validation, use cases). */
+export const translateApiMessage = (t, message) => {
+  if (!message) {
+    return t('Unknown error');
+  }
+  if (Array.isArray(message)) {
+    return message.map((part) => t(typeof part === 'string' ? part : String(part))).join(', ');
+  }
+  if (typeof message !== 'string') {
+    if (typeof message?.message === 'string') {
+      return translateApiMessage(t, message.message);
+    }
+    return t('Unknown error');
+  }
+  if (message.startsWith(FAILED_LOAD_PREFIX)) {
+    const detail = message.slice(FAILED_LOAD_PREFIX.length);
+    return `${t('Failed to load initial data')}: ${t(detail)}`;
+  }
+  if (message.includes(', ')) {
+    return message
+      .split(', ')
+      .map((part) => t(part.trim()))
+      .join(', ');
+  }
+  return t(message);
+};
+
+/** @deprecated Use translateApiMessage */
+export const translateAuthMessage = translateApiMessage;
 
 // Helper Functions
 const getBrowserLanguage = () => {
@@ -393,6 +443,14 @@ export const useLanguage = () => {
   // Translate a given key
   const t = (key) => {
     if (key === undefined || key === null || key === '') return '';
+    if (typeof key === 'object') {
+      return translateApiMessage((k) => {
+        const currentTranslations = translations[language];
+        if (currentTranslations[k]) return currentTranslations[k];
+        if (translations.en[k]) return translations.en[k];
+        return k;
+      }, key);
+    }
     const currentTranslations = translations[language];
     if (currentTranslations[key]) return currentTranslations[key];
 
