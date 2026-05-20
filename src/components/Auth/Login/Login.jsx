@@ -2,6 +2,7 @@ import { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import AuthService from '../../../services/auth.service';
 import { translateAuthMessage } from '../../../hooks/useLanguage';
+import { onNativeInvalid, onNativeInput } from '../../../helpers/nativeValidation';
 import './Login.css';
 import { useContext } from 'react';
 import GlobalContext from '../../../contexts/GlobalContext';
@@ -56,6 +57,8 @@ const Login = ({ t, onLoginButtonClick }) => {
               name="username"
               value={username}
               onChange={onChangeUsername}
+              onInvalid={(e) => onNativeInvalid(e, t)}
+              onInput={onNativeInput}
               maxLength={20}
               autoComplete="username"
               required
@@ -73,6 +76,8 @@ const Login = ({ t, onLoginButtonClick }) => {
               name="password"
               value={password}
               onChange={onChangePassword}
+              onInvalid={(e) => onNativeInvalid(e, t)}
+              onInput={onNativeInput}
               maxLength={20}
               autoComplete="off"
               required

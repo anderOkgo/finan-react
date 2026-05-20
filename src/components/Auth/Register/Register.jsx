@@ -2,6 +2,7 @@ import { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import AuthService from '../../../services/auth.service';
 import { translateAuthMessage } from '../../../hooks/useLanguage';
+import { onNativeInvalid, onNativeInput } from '../../../helpers/nativeValidation';
 import '../Login/Login';
 import { useContext } from 'react';
 import GlobalContext from '../../../contexts/GlobalContext';
@@ -88,6 +89,8 @@ const Register = ({ t }) => {
               name="email"
               value={email}
               onChange={onChangeEmail}
+              onInvalid={(e) => onNativeInvalid(e, t)}
+              onInput={onNativeInput}
               autoComplete="email"
               maxLength={30}
               required
@@ -105,6 +108,8 @@ const Register = ({ t }) => {
               name="password"
               value={password}
               onChange={onChangePassword}
+              onInvalid={(e) => onNativeInvalid(e, t)}
+              onInput={onNativeInput}
               autoComplete="off"
               maxLength={20}
               required

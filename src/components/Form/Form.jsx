@@ -6,6 +6,7 @@ import Table from '../Table/Table';
 import './Form.css';
 import GlobalContext from '../../contexts/GlobalContext.jsx';
 import { translateApiMessage } from '../../hooks/useLanguage';
+import { onNativeInvalid, onNativeInput } from '../../helpers/nativeValidation';
 
 function Form({ setForm, form, edit, setEdit, currency, operateFor }) {
   const { setInit, init, setProc, proc, t } = useContext(GlobalContext);
@@ -266,6 +267,8 @@ function Form({ setForm, form, edit, setEdit, currency, operateFor }) {
             name="movement_name"
             value={form.movement_name}
             onChange={handleChangeInput}
+            onInvalid={(e) => onNativeInvalid(e, t)}
+            onInput={onNativeInput}
             maxLength="50"
             minLength="2"
             required
@@ -283,6 +286,8 @@ function Form({ setForm, form, edit, setEdit, currency, operateFor }) {
             name="movement_val"
             value={form.movement_val}
             onChange={handleChangeInput}
+            onInvalid={(e) => onNativeInvalid(e, t)}
+            onInput={onNativeInput}
             required
             max="10000000000"
             min="0"
@@ -301,6 +306,8 @@ function Form({ setForm, form, edit, setEdit, currency, operateFor }) {
             onChange={handleChangeInput}
             value={form.movement_type}
             ref={buttonRef}
+            onInvalid={(e) => onNativeInvalid(e, t)}
+            onInput={onNativeInput}
             required
           >
             <option value="">---</option>
@@ -342,6 +349,8 @@ function Form({ setForm, form, edit, setEdit, currency, operateFor }) {
             name="movement_date"
             value={form.movement_date}
             onChange={handleChangeInput}
+            onInvalid={(e) => onNativeInvalid(e, t)}
+            onInput={onNativeInput}
             required
           />
         </div>
@@ -357,6 +366,8 @@ function Form({ setForm, form, edit, setEdit, currency, operateFor }) {
             name="movement_tag"
             value={form.movement_tag}
             onChange={handleChangeInput}
+            onInvalid={(e) => onNativeInvalid(e, t)}
+            onInput={onNativeInput}
             maxLength="30"
             required
           />
