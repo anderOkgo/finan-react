@@ -47,7 +47,6 @@ const Menu = () => {
   const menuItems = [
     { label: t('animecreamApp'), url: 'https://react.animecream.com/' },
     { label: t('cyfer'), url: 'https://cyfer.animecream.com/' },
-    { label: 'AI-Shield', url: 'https://shield.animecream.com/' },
     {
       label: t('userSession'),
       url: '#',
