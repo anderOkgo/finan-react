@@ -125,7 +125,7 @@ function Tab() {
   const tabsData = [
     {
       id: 1,
-      icon: '☰',
+      icon: '✎',
       label: t('inputTab'),
       component: true && (
         <TabInput {...{ totalDay, setForm, form, edit, setEdit, setCurrency, currency, operateFor, t }} />
@@ -133,7 +133,7 @@ function Tab() {
     },
     {
       id: 2,
-      icon: '☷',
+      icon: '▤',
       label: t('generalTab'),
       component: true && (
         <TabGeneral
@@ -153,13 +153,13 @@ function Tab() {
     },
     {
       id: 3,
-      icon: '♞',
+      icon: '⚑',
       label: t('tagTab'),
       component: true && <TabTag {...{ movementTag, totalDay, monthlyBudget, t, userRole }} />,
     },
     {
       id: 4,
-      icon: '❆',
+      icon: '⚖',
       label: t('balanceTab'),
       component: true && (
         <TabBalance {...{ bankTotal, balance, yearlyBalance, balanceUntilDate, monthlyExpensesUntilDay, t }} />
@@ -170,7 +170,7 @@ function Tab() {
   if (userRole === 'admin') {
     tabsData.push({
       id: 5,
-      icon: '⚅',
+      icon: 'ℹ',
       label: t('infoTab'),
       component: true && <TabInfo {...{ tripInfo, generalInfo, exchangeCol, t }} />,
     });
