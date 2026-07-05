@@ -58,7 +58,6 @@ tbody tr:hover {
 
 .table-container table td.money-column {
   max-width: none;
-  text-align: right;
 }
 
 .money-decimals {
