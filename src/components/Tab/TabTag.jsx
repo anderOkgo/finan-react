@@ -66,6 +66,7 @@ function TabTag({ movementTag, monthlyBudget, totalDay, t, userRole }) {
         hiddenColumns={['month_number_mov']}
         orderColumnsList={['month_number_mov', 'year_mov', 'month_mov', 'name_source', 'tag', 'montly_sum']}
         onFilteredDataChange={setFilteredData}
+        moneyColumns={['montly_sum']}
       />
       <br />
       <Table
@@ -74,6 +75,7 @@ function TabTag({ movementTag, monthlyBudget, totalDay, t, userRole }) {
         columns={[t('tag'), t('type'), t('total')]}
         orderColumnsList={['tag', 'source', 'total']}
         onFilteredDataChange={setFilteredTagData}
+        moneyColumns={['total']}
       />
       <br />
       <Table
@@ -81,6 +83,7 @@ function TabTag({ movementTag, monthlyBudget, totalDay, t, userRole }) {
         data={typeSummaryArray}
         columns={[t('type'), t('total')]}
         orderColumnsList={['type', 'total']}
+        moneyColumns={['total']}
       />
     </div>
   );

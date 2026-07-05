@@ -15,6 +15,7 @@ function TabBalance({ bankTotal, balance, yearlyBalance, balanceUntilDate, month
         data={yearlyBalance}
         columns={[t('year'), t('incomes'), t('expenses'), t('totalSave')]}
         hiddenColumns={['currency', 'user']}
+        moneyColumns={['incomes', 'expenses', 'Disparity']}
       />
       <br />
       <Table
@@ -22,6 +23,7 @@ function TabBalance({ bankTotal, balance, yearlyBalance, balanceUntilDate, month
         data={balance}
         columns={[t('year'), t('month'), t('incomes'), t('expenses'), t('totalSave')]}
         hiddenColumns={['currency', 'user', 'month_number']}
+        moneyColumns={['incomes', 'expenses', 'Disparity']}
       />
       <br />
       <Table
@@ -30,6 +32,7 @@ function TabBalance({ bankTotal, balance, yearlyBalance, balanceUntilDate, month
         hiddenColumns={['currency', 'user']}
         orderColumnsList={[]}
         data={balanceUntilDate?.filter((item) => item.detail !== 'final-trip') ?? []}
+        moneyColumns={['dayly_difference', 'running_total']}
       />
       <Table
         label={t('monthlyExpensesUntilDay')}
@@ -37,6 +40,7 @@ function TabBalance({ bankTotal, balance, yearlyBalance, balanceUntilDate, month
         hiddenColumns={['currency', 'user']}
         orderColumnsList={[]}
         data={monthlyExpensesUntilDay}
+        moneyColumns={['total_expenses']}
       />
     </div>
   );

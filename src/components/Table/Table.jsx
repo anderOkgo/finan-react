@@ -7,12 +7,14 @@ import set from '../../helpers/set.json';
 import TableSearch from './TableSearch';
 import { useContext } from 'react';
 import GlobalContext from '../../contexts/GlobalContext';
+import { tableMoneyFormat } from '../../helpers/operations';
 
 function Table({
   data = [],
   columns = [],
   orderColumnsList = false,
   hiddenColumns = [],
+  moneyColumns = [],
   onRowDoubleClick = false,
   label = 'No label',
   onFilteredDataChange = false,
@@ -43,7 +45,7 @@ function Table({
       const initialData = (orderColumnsList?.length ?? 0 > 0) ? reorderTableHeader(data, orderColumnsList) : data;
       setDataset(initialData);
       setFilteredData(initialData);
-      setHeader(Object.keys(initialData[0]));
+      setHeader([...new Set(initialData.flatMap((item) => Object.keys(item)))]);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
@@ -94,10 +96,23 @@ function Table({
   };
 
   const renderTableColumns = (row) => {
-    return Object.keys(row).map((key, index) => {
+    return header.map((key, index) => {
+      const isMoneyColumn = moneyColumns.includes(key);
+      const className = [hiddenColumns.includes(key) ? 'hidden-column' : '', isMoneyColumn ? 'money-column' : '']
+        .filter(Boolean)
+        .join(' ');
+      if (isMoneyColumn) {
+        const [whole, decimals] = tableMoneyFormat(row[key] || 0).split('.');
+        return (
+          <td key={index} className={className}>
+            {whole}
+            <span className="money-decimals">.{decimals}</span>
+          </td>
+        );
+      }
       const value = t(row[key]);
       return (
-        <td key={index} className={hiddenColumns.includes(key) ? 'hidden-column' : ''}>
+        <td key={index} className={className}>
           {value === '' ? 0 : value}
         </td>
       );
@@ -178,6 +193,7 @@ Table.propTypes = {
   onRowDoubleClick: PropTypes.any,
   columns: PropTypes.array,
   hiddenColumns: PropTypes.arrayOf(PropTypes.string),
+  moneyColumns: PropTypes.arrayOf(PropTypes.string),
   label: PropTypes.string,
   orderColumnsList: PropTypes.array,
   defaultItemsPerPage: PropTypes.number,

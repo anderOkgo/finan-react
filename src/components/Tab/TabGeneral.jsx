@@ -143,6 +143,7 @@ function TabGeneral({ movements, remainingBudget = 0, setForm, setEdit, setSelec
         data={movements}
         onRowDoubleClick={handleRowDoubleClick}
         onFilteredDataChange={setFilteredData}
+        moneyColumns={['val']}
       />
       <br />
       <Table
@@ -151,6 +152,7 @@ function TabGeneral({ movements, remainingBudget = 0, setForm, setEdit, setSelec
         columns={[t('name'), t('type'), t('total')]}
         orderColumnsList={['name', 'source', 'total']}
         onFilteredDataChange={setFilteredNameData}
+        moneyColumns={['total']}
       />
       <br />
       <Table
@@ -158,6 +160,7 @@ function TabGeneral({ movements, remainingBudget = 0, setForm, setEdit, setSelec
         data={typeSummaryArray}
         columns={[t('type'), t('total')]}
         orderColumnsList={['type', 'total']}
+        moneyColumns={['total']}
       />
       {selectedRow && true}
     </div>

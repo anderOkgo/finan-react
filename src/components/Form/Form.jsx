@@ -409,7 +409,6 @@ Form.propTypes = {
   setEdit: PropTypes.func.isRequired,
   currency: PropTypes.string.isRequired,
   operateFor: PropTypes.any.isRequired,
-  handleOfflineRowDelete: PropTypes.func.isRequired,
 };
 
 export default Form;

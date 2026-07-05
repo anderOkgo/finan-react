@@ -18,6 +18,7 @@ function TabInfo({ tripInfo, generalInfo, exchangeCol, t }) {
         hiddenColumns={[]}
         orderColumnsList={['detail', 'total']}
         data={tripInfo?.filter((item) => item.detail !== 'final-trip') ?? []}
+        moneyColumns={['total']}
       />
       <InfoBanner {...{ data: tripInfo?.[5]?.['total'] ?? -1, label: t('totalFinalTrip') }} />
       <br />
