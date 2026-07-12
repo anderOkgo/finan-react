@@ -1,4 +1,4 @@
-const VERSION = '2.1.19';
+const VERSION = '2.1.22';
 const CACHE_NAME = `finan-${VERSION}`;
 const appfiles = [
   './icon/icon-32x32.png',
@@ -31,11 +31,13 @@ self.addEventListener('fetch', (e) => {
       return fetch(e.request)
         .then((response) => {
           const responseClone = response.clone();
-          caches.open(CACHE_NAME).then((cache) => {
-            if (e.request.method === 'GET' && e.request.url.startsWith('http') && e.request.mode !== 'cors') {
-              cache.put(e.request, responseClone);
-            }
-          });
+          if (response.ok) {
+            caches.open(CACHE_NAME).then((cache) => {
+              if (e.request.method === 'GET' && e.request.url.startsWith('http') && e.request.mode !== 'cors') {
+                cache.put(e.request, responseClone);
+              }
+            });
+          }
           return response;
         })
         .catch(() => {
