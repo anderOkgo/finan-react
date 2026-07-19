@@ -8,6 +8,10 @@
     "build": "vite build",
     "lint": "eslint src --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:cov": "vitest run --coverage",
+    "test:e2e": "playwright test",
     "up": "node scripts/bump-sw-version.cjs && call com/db-sync-FTP-both.bat",
     "bup": "npm run build & npm run up"
   },
@@ -20,13 +24,20 @@
     "react-router-dom": "^6.14.2"
   },
   "devDependencies": {
+    "@playwright/test": "^1.61.1",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
     "@types/react": "^18.2.14",
     "@types/react-dom": "^18.2.6",
     "@vitejs/plugin-react": "^4.0.1",
+    "@vitest/coverage-v8": "^4.1.10",
     "eslint": "^8.44.0",
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.1",
-    "vite": "^4.4.0"
+    "jsdom": "^29.1.1",
+    "vite": "^4.4.0",
+    "vitest": "^4.1.10"
   }
 }

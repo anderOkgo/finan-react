@@ -40,7 +40,12 @@ function Tab() {
   const [balanceUntilDate, setBalanceUntilDate] = useState([]);
   const [monthlyExpensesUntilDay, setMonthlyExpensesUntilDay] = useState([]);
   const [monthlyBudget, setMonthlyBudget] = useState(0);
-  const [currentMonthExpenses, setCurrentMonthExpenses] = useState(0);
+  // Fetched and stored but never passed to any child component today --
+  // `monthlyBudget`/`remainingBudget` (derived from it) are both displayed,
+  // this raw figure currently isn't. Kept, not deleted: flagged as a
+  // possible missing-wiring gap for a product decision, not silently
+  // discarded.
+  const [_currentMonthExpenses, setCurrentMonthExpenses] = useState(0);
   const [remainingBudget, setRemainingBudget] = useState(0);
   const [currency, setCurrency] = useState('COP');
   const [nTab, setnTab] = useState(4);

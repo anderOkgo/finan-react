@@ -1,11 +1,9 @@
-/* eslint-disable react-refresh/only-export-components */
 import { useState, useEffect, useMemo, useContext } from 'react';
 import { Line } from 'react-chartjs-2';
 import PropTypes from 'prop-types';
 import './LineChart.css';
 import { generateUniqueId } from '../../helpers/operations';
 import GlobalContext from '../../contexts/GlobalContext';
-//import { options } from './chartOptions'; // Import the options from the separate file
 import {
   Chart as ChartJS,
   CategoryScale,

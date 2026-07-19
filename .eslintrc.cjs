@@ -16,5 +16,17 @@ module.exports = {
       'warn',
       { allowConstantExport: true },
     ],
+    // Destructuring-to-omit-a-key is used deliberately in a few places;
+    // underscore-prefixed names mark that intent explicitly, so exempt
+    // them instead of flagging as dead (matches animecream-react's config).
+    'no-unused-vars': ['error', { varsIgnorePattern: '^_', argsIgnorePattern: '^_' }],
   },
+  overrides: [
+    {
+      // Vitest's globals: true exposes describe/it/expect/vi at runtime;
+      // Jest's env covers the same API surface for lint purposes.
+      files: ['**/*.test.jsx', '**/*.test.js'],
+      env: { jest: true },
+    },
+  ],
 }

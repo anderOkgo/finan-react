@@ -490,7 +490,6 @@ export const useLanguage = () => {
       setLanguageState(browserLang);
       setLanguage(browserLang);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [useSystemDefault]);
 
   // Apply language on mount and sync with localStorage changes
