@@ -18,7 +18,6 @@ import GlobalContext from '../../contexts/GlobalContext';
 function Tab() {
   const {
     init,
-    setProc,
     username,
     role,
     language,
@@ -182,7 +181,6 @@ function Tab() {
     setWidth(per + '%');
 
     const fetchData = async () => {
-      setProc(true);
       const writeData = (resp) => {
         const {
           totalExpenseDay = [],
@@ -234,11 +232,10 @@ function Tab() {
           AuthService.logout();
         }
       }
-      setProc(false);
     };
 
     fetchData();
-  }, [init, setProc, currency, userName, tabsData.length]);
+  }, [init, currency, userName, tabsData.length]);
 
   // Restaurar tab desde el historial
   useEffect(() => {
