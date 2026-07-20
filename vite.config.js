@@ -13,6 +13,11 @@ export default defineConfig({
     // matches `*.spec.js`, so without this it tries to run them too and
     // fails immediately on Playwright's `test`/`expect` imports.
     exclude: ['node_modules/**', 'test/e2e/**'],
+    // Same fix as animecream-react: GitHub Actions' shared runners are far
+    // more CPU-constrained than a dev machine, and user-event-driven tests
+    // reproducibly exceeded Vitest's 5000ms default under a `--cpus=2`
+    // Docker container matching the runner's resources.
+    testTimeout: 15000,
     coverage: {
       provider: 'v8',
       reporter: ['text', 'html'],
