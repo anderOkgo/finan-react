@@ -103,7 +103,9 @@ Unlike `animecream-react`, this repo had **zero** `react/prop-types` findings (o
 
 **2026-07-20, later still** — Fourth component-tree batch: `Register` covered (4 tests) — the whitespace-stripping username sanitizer, the success path (alerts the translated message, reveals the verification-code field, marks `init`), the failure path (alerts, verification-code field stays hidden), and the offline guard. Submitted via `fireEvent.submit(form)` rather than clicking the button, for the same jsdom-native-validation-bypass reason established in `animecream-react`'s `AdminPanel.test.jsx`.
 
-Remaining candidates for a future pass: `TabGeneral`, `LineChart`, `Table.jsx`, `Home.jsx`, and the main `Tab.jsx` orchestrator.
+**2026-07-20, later still** — `Home.jsx` covered (4 tests): the logged-out/logged-in switch between `Login` and `Tab`, the language-toggle label/click, and the 10-tap-to-reveal-Register easter egg (`LOGIN_TAPS_TO_REVEAL_REGISTER`).
+
+Remaining candidates for a future pass: `TabGeneral`, `LineChart`, `Table.jsx`, and the main `Tab.jsx` orchestrator.
 
 ---
 
@@ -163,3 +165,4 @@ Not yet covered: chart rendering (`LineChart`, `TabBalance`) and currency select
 - **2026-07-20, later still** — Second component-tree batch: `AutoDismissMessage`/`CountDownEnd`/`TabBalance`/`TabTag` covered (12 tests, see Phase 2.5's entry above). 86/86 unit tests passing, `npm run lint`/`build` both clean.
 - **2026-07-20, later still** — Third component-tree batch: `TableSearch`/`Login`/`Menu` covered (15 tests, see Phase 2.5's entry above). 101/101 unit tests passing, `npm run lint`/`build` both clean.
 - **2026-07-20, later still** — Fourth component-tree batch: `Register` covered (4 tests, see Phase 2.5's entry above). 105/105 unit tests passing, `npm run lint`/`build` both clean.
+- **2026-07-20, later still** — `Home.jsx` covered (4 tests, see Phase 2.5's entry above). 109/109 unit tests passing, `npm run lint`/`build` both clean.
