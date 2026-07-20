@@ -107,6 +107,8 @@ Unlike `animecream-react`, this repo had **zero** `react/prop-types` findings (o
 
 Remaining candidates for a future pass: `TabGeneral`, `LineChart`, `Table.jsx`, and the main `Tab.jsx` orchestrator.
 
+**Paused here at the user's request** (2026-07-20), with everything green (`npm run test`/`lint`/`build`, 109/109 tests) and nothing left mid-edit. 15 of 18 previously-untested component files are now covered; the 4 above (all the largest/most complex remaining) are the natural next step for a future session. `LineChart.jsx` specifically will need `chart.js`/canvas mocking — flagged as "a real consideration" since Phase 0b and never yet exercised in this repo's test suite.
+
 ---
 
 ## Phase 3 — CI gate
