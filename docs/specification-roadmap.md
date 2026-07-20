@@ -99,10 +99,26 @@ Added `.github/workflows/ci.yml`: checkout → `npm ci` → `npm run lint` → `
 
 ## Phase 4 — Executable specification layers
 
-**Status: TODO**
+**Status: IN PROGRESS** (2026-07-19)
+
+### Playwright E2E — started, real backend, real browser, real results
+
+`test/e2e/` now exists and was run for real against a live stack: `module-api` built and running locally (`node dist/index.js`, port 3001) against the real, already-running `animecream-mariadb` Docker container (shared setup work done once, alongside `animecream-react`'s Phase 4 — see that repo's roadmap for the Docker-start details).
+
+**Enabling infrastructure, mirrored from `animecream-react`'s identical need:**
+- **`src/helpers/apiConfig.js`** (new) — same fix as `animecream-react`: `set.json`'s `base_url` was hardcoded to production with no override. Added `API_BASE_URL = import.meta.env.VITE_API_BASE_URL || set.base_url`, switched `auth.service.js`/`data.service.js` (the only 2 files reading `set.base_url` directly here, fewer than `animecream-react`'s 6) to import from it.
+- **`playwright.config.js`** — `webServer` auto-starts Vite on port 5181 (not 5180 — kept distinct from `animecream-react`'s in case both dev servers ever run at once) with `VITE_API_BASE_URL=http://localhost:3001/`.
+- **`.env.e2e.local`** (gitignored) / **`.env.e2e.local.example`** (committed) — same `--env-file-if-exists` pattern as `animecream-react`. Reuses the *same* real account (`module-api`'s auth is centralized across modules, not per-frontend), confirmed working against this app's login too.
+- **`vite.config.js`** — same `test.exclude: ['test/e2e/**']` fix, for the same reason (Vitest's default glob also matches Playwright's `*.spec.js` convention).
+
+**Golden path covered so far** (1 spec file, 2 tests, both passing against the real stack): `auth.spec.js` — this app has **no public/unauthenticated view** (`Home.jsx` renders the login form directly whenever `username` is unset, unlike `animecream-react`'s browsable public catalog), so login is the one golden path everything else sits behind. Covers: the login form renders when logged out, and a real login with a real account reaches the dashboard (`Tab`).
+
+**Not yet covered** (deferred, same session): the initial-load dashboard, full movement CRUD (`Form`/`Table`/`TabInput`), chart rendering (`LineChart`), and currency selection. Movement CRUD in particular mutates the real shared dev database — same disposable-fixture-discipline consideration flagged in `animecream-react`'s roadmap for its admin-CRUD E2E, needs its own careful pass.
+
+### Still open
 
 1. **`docs/SPECIFICATION.md`** — generative design rules: component/folder conventions (`components/<Name>/<Name>.jsx` + co-located `.css`), hook conventions, the `services/` HTTP-client layer's contract with `module-api`'s `finan` module, `GlobalContext` conventions, `localStorage`/auth-token/`cyfer.js` usage.
-2. **Playwright E2E** (`test/e2e/` or `e2e/`) — drives the real built app in a real browser against a real running `module-api` instance. Covers the golden paths: login, initial-load dashboard, full movement CRUD (`Form`, `Table`, `TabInput`), chart rendering (`LineChart`), currency selection.
+2. **Dashboard + movement-CRUD + chart E2E** (see above).
 3. **Post-deploy smoke check** — a small script confirming the deployed bundle actually loads and key routes render after `npm run up` ships it, the frontend analogue of the backend's `scripts/smoke-test.js`.
 
 ---
@@ -112,3 +128,6 @@ Added `.github/workflows/ci.yml`: checkout → `npm ci` → `npm run lint` → `
 - **2026-07-19** — Phase 0 baseline audit completed at the user's request, extending the executable-specification approach already applied to `module-api` and `animecream-react` to this frontend. Roadmap drafted.
 - **2026-07-19, same day** — Phases 0b, 1, and 3 executed in full: Vitest + Testing Library + Playwright installed (no fast-refresh/jsdom friction here, unlike `animecream-react`), the existing `npm run lint` run for the first time and brought from 35 to 0 problems (removing one genuinely dead file, `chartOptions.js` — see Phase 1's findings), two new test files written as the first real coverage (`nativeValidation.test.js`, `Loader.test.jsx`, 9/9 passing), and a CI workflow added. `npm run lint`, `npm run test:cov`, and `npm run build` all pass from the current working tree. Committed and pushed (`2d4e2f8`).
 - **2026-07-19, later same day** — Phase 2.5 started: added `operations.test.js` and `cyfer.test.js`, bringing `src/helpers/` to 97.89% statements / 100% branches (25/25 tests passing). Corrected the original plan's assumption that `GlobalContext.jsx` had reducer logic to test (it doesn't — 3-line `createContext` call, nothing there). Found a real, environment-dependent bug in `monthDiff` (timezone-dependent result for ISO date-only string arguments) while writing its tests — documented in Phase 2.5, not fixed (needs its own scoped pass against real callers).
+- **2026-07-19, later still** — Phase 2.5 continued: `TablePagination.jsx` and `currencySelector.jsx` covered (37/37 tests). Found and fixed the same crash bug as `animecream-react`'s `TablePagination.jsx` (optional `navigation`, here sourced from `GlobalContext`, dereferenced unconditionally in `useEffect` dependency arrays). Committed and pushed (`0af3851`).
+- **2026-07-19, later still** — `Form.jsx` (the main movement-entry form) covered: 11 tests via a stateful test harness, 0% → 56.8% statements. Found (not fixed) a dead-code bug in `handleChangeInput`'s emoji handling — documented as a product-call, not an engineering one. Committed and pushed (`224da75`).
+- **2026-07-19, later still** — Phase 4 started at the user's explicit request: `src/helpers/apiConfig.js` added (env-var override for the previously-hardcoded-to-production API base URL), and a Playwright E2E spec (`auth.spec.js`, 2 tests) written and run for real against the live local `module-api` + Docker DB stack shared with `animecream-react`'s Phase 4 work — both passing. Dashboard/movement-CRUD/chart E2E and `docs/SPECIFICATION.md` remain open.

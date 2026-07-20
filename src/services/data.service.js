@@ -1,8 +1,9 @@
 import set from '../helpers/set.json';
 import helpHttp from '../helpers/helpHttp';
 import AuthService from './auth.service';
+import { API_BASE_URL } from '../helpers/apiConfig';
 
-const BASE_URL = set.base_url;
+const BASE_URL = API_BASE_URL;
 const API_URL = BASE_URL + set.api_url;
 
 const formatToken = (token) => 'Bearer ' + token;
