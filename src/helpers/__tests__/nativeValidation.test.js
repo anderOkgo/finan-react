@@ -1,4 +1,5 @@
-import { getNativeValidationMessage } from '../nativeValidation';
+import { vi } from 'vitest';
+import { getNativeValidationMessage, onNativeInvalid, onNativeInput } from '../nativeValidation';
 
 const t = (key) => key;
 
@@ -81,5 +82,26 @@ describe('getNativeValidationMessage', () => {
 
   it('falls back to a generic message for an unrecognized invalid state', () => {
     expect(getNativeValidationMessage(t, target({}))).toBe('validationInvalidValue');
+  });
+});
+
+describe('onNativeInvalid / onNativeInput (DOM event wrappers)', () => {
+  it('onNativeInvalid sets the custom validity message from getNativeValidationMessage', () => {
+    const setCustomValidity = vi.fn();
+    const e = { target: target({ valueMissing: true }) };
+    e.target.setCustomValidity = setCustomValidity;
+
+    onNativeInvalid(e, t);
+
+    expect(setCustomValidity).toHaveBeenCalledWith('pleaseFillThisField');
+  });
+
+  it('onNativeInput clears the custom validity message', () => {
+    const setCustomValidity = vi.fn();
+    const e = { target: { setCustomValidity } };
+
+    onNativeInput(e);
+
+    expect(setCustomValidity).toHaveBeenCalledWith('');
   });
 });
