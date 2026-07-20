@@ -119,11 +119,12 @@ Added `.github/workflows/ci.yml`: checkout → `npm ci` → `npm run lint` → `
 
 Not yet covered: chart rendering (`LineChart`, `TabBalance`) and currency selection — both read-only/display concerns, lower risk than the CRUD path just covered.
 
+**`docs/SPECIFICATION.md` written** (same day, alongside `animecream-react`'s) — generative design rules extracted from the real code: component/folder conventions, the `GlobalContext`-pervasive state model (the opposite default from `animecream-react`'s prop-drilling — see that repo's own spec §2 for the contrast), `.jsx`-extension hook conventions, the `services/`+`apiConfig.js` contract, the `react-router-dom`-installed-but-unused finding (§6), `localStorage` key inventory (the offline mutation queue — `insert`/`update`/`del` — has no `animecream-react` equivalent), and testing conventions.
+
 ### Still open
 
-1. **`docs/SPECIFICATION.md`** — generative design rules: component/folder conventions (`components/<Name>/<Name>.jsx` + co-located `.css`), hook conventions, the `services/` HTTP-client layer's contract with `module-api`'s `finan` module, `GlobalContext` conventions, `localStorage`/auth-token/`cyfer.js` usage.
-2. **Chart + currency-selection E2E** (see above).
-3. **Post-deploy smoke check** — a small script confirming the deployed bundle actually loads and key routes render after `npm run up` ships it, the frontend analogue of the backend's `scripts/smoke-test.js`.
+1. **Chart + currency-selection E2E** (see above).
+2. **Post-deploy smoke check** — a small script confirming the deployed bundle actually loads and key routes render after `npm run up` ships it, the frontend analogue of the backend's `scripts/smoke-test.js`.
 
 ---
 
@@ -136,3 +137,4 @@ Not yet covered: chart rendering (`LineChart`, `TabBalance`) and currency select
 - **2026-07-19, later still** — `Form.jsx` (the main movement-entry form) covered: 11 tests via a stateful test harness, 0% → 56.8% statements. Found (not fixed) a dead-code bug in `handleChangeInput`'s emoji handling — documented as a product-call, not an engineering one. Committed and pushed (`224da75`).
 - **2026-07-19, later still** — Phase 4 started at the user's explicit request: `src/helpers/apiConfig.js` added (env-var override for the previously-hardcoded-to-production API base URL), and a Playwright E2E spec (`auth.spec.js`, 2 tests) written and run for real against the live local `module-api` + Docker DB stack shared with `animecream-react`'s Phase 4 work — both passing. Dashboard/movement-CRUD/chart E2E and `docs/SPECIFICATION.md` remain open.
 - **2026-07-19, later still** — `dashboard.spec.js` added: full movement CRUD (create, edit, delete) through the real dashboard UI against the real account's real financial data (1483 existing records). Two real fixes needed along the way: an old fixture date buried the row past the newest-first table's first page, and a distinctively-named movement matched two different tables' rows (scoped lookups to `.first()`). All 4 E2E tests across both spec files pass together; `npm run test`/`lint`/`build` all still pass (48/48 unit tests). Confirmed via a direct API check that no `__E2E_TEST_MOVEMENT_*` rows were left behind.
+- **2026-07-19, later still** — `docs/SPECIFICATION.md` written, cross-referencing `animecream-react`'s own spec wherever the two apps genuinely diverge (state model is the biggest one: `GlobalContext` here vs. prop-drilling there).
