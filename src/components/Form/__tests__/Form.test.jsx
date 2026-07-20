@@ -195,3 +195,108 @@ describe('Offline queue loaded on mount', () => {
     expect(screen.getByText('offlineTable')).toBeInTheDocument();
   });
 });
+
+describe('Offline queue sync (handleRowDoubleClick / handleBulkData)', () => {
+  const queueOneInsert = () =>
+    localStorage.setItem(
+      'insert',
+      JSON.stringify([{ movement_name: 'Queued item', movement_val: '10', movement_date: '2024-01-01T00:00' }])
+    );
+
+  it('syncs every queued type via DataService and clears the queue on full success', async () => {
+    queueOneInsert();
+    DataService.insert.mockResolvedValue({});
+    const setInit = vi.fn();
+    const setProc = vi.fn();
+    render(<FormHarness contextValue={{ t, init: true, proc: false, setInit, setProc }} />);
+
+    fireEvent.doubleClick(document.querySelector('tbody tr'));
+
+    await waitFor(() => expect(DataService.insert).toHaveBeenCalledTimes(1));
+    // handleBulkData iterates the queue *items*, not the queue types -- an
+    // empty update/del queue means DataService.update/.del are never
+    // invoked at all (not "called with an empty item"), only .insert is.
+    expect(DataService.update).not.toHaveBeenCalled();
+    expect(DataService.del).not.toHaveBeenCalled();
+    await waitFor(() => expect(screen.getByTestId('message')).toHaveTextContent('transactionSuccessful'));
+    expect(setInit).toHaveBeenCalledWith(expect.any(Number));
+    expect(setProc).toHaveBeenLastCalledWith(false);
+    expect(JSON.parse(localStorage.getItem('insert'))).toEqual([]);
+    // The offline table itself disappears once the queue (`off`) is empty.
+    await waitFor(() => expect(screen.queryByText('offlineTable')).not.toBeInTheDocument());
+  });
+
+  it('keeps a failed item queued and reports transactionFailed instead of clearing it', async () => {
+    queueOneInsert();
+    DataService.insert.mockResolvedValue({ err: { message: 'still offline' } });
+    const setInit = vi.fn();
+    render(<FormHarness contextValue={{ t, init: true, proc: false, setInit, setProc: vi.fn() }} />);
+
+    fireEvent.doubleClick(document.querySelector('tbody tr'));
+
+    await waitFor(() => expect(screen.getByTestId('message')).toHaveTextContent('transactionFailed'));
+    expect(JSON.parse(localStorage.getItem('insert'))).toHaveLength(1);
+    expect(screen.getByText('offlineTable')).toBeInTheDocument();
+    expect(setInit).toHaveBeenLastCalledWith(false);
+  });
+
+  it('shows transactionWaiting and never calls DataService when offline or a sync is already running', () => {
+    queueOneInsert();
+    const { rerender } = render(
+      <FormHarness contextValue={{ t, init: false, proc: false, setInit: vi.fn(), setProc: vi.fn() }} />
+    );
+    fireEvent.doubleClick(document.querySelector('tbody tr'));
+    expect(screen.getByTestId('message')).toHaveTextContent('transactionWaiting');
+    expect(DataService.insert).not.toHaveBeenCalled();
+
+    rerender(<FormHarness contextValue={{ t, init: true, proc: true, setInit: vi.fn(), setProc: vi.fn() }} />);
+    fireEvent.doubleClick(document.querySelector('tbody tr'));
+    expect(screen.getByTestId('message')).toHaveTextContent('transactionWaiting');
+    expect(DataService.insert).not.toHaveBeenCalled();
+  });
+});
+
+describe('Offline queue row actions (edit / delete)', () => {
+  const queueOneInsert = () =>
+    localStorage.setItem(
+      'insert',
+      JSON.stringify([
+        { movement_name: 'Queued item', movement_val: '10', movement_date: '2024-01-01T00:00', movement_tag: 'x' },
+      ])
+    );
+
+  it('loads a queued row back into the form for editing, via the row edit button', () => {
+    queueOneInsert();
+    render(<FormHarness contextValue={{ t, init: true, proc: false, setInit: vi.fn(), setProc: vi.fn() }} />);
+
+    fireEvent.click(screen.getByTitle('edit'));
+
+    expect(screen.getByLabelText('name')).toHaveValue('Queued item');
+    expect(screen.getByLabelText('value')).toHaveValue(10);
+    // It's also removed from whichever queue it came from at the same time.
+    expect(JSON.parse(localStorage.getItem('insert'))).toEqual([]);
+  });
+
+  it('removes a queued row on delete, after confirmation', () => {
+    queueOneInsert();
+    render(<FormHarness contextValue={{ t, init: true, proc: false, setInit: vi.fn(), setProc: vi.fn() }} />);
+
+    fireEvent.click(screen.getByTitle('delete'));
+
+    expect(window.confirm).toHaveBeenCalled();
+    expect(JSON.parse(localStorage.getItem('insert'))).toEqual([]);
+    expect(screen.queryByText('offlineTable')).not.toBeInTheDocument();
+    expect(screen.getByTestId('message')).toHaveTextContent('transactionSuccessful');
+  });
+
+  it('does not remove the queued row when the delete confirmation is declined', () => {
+    queueOneInsert();
+    window.confirm.mockReturnValue(false);
+    render(<FormHarness contextValue={{ t, init: true, proc: false, setInit: vi.fn(), setProc: vi.fn() }} />);
+
+    fireEvent.click(screen.getByTitle('delete'));
+
+    expect(JSON.parse(localStorage.getItem('insert'))).toHaveLength(1);
+    expect(screen.getByText('offlineTable')).toBeInTheDocument();
+  });
+});

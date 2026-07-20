@@ -89,7 +89,11 @@ Unlike `animecream-react`, this repo had **zero** `react/prop-types` findings (o
 
 **2026-07-20, continuing the autonomous roadmap sweep** — `nativeValidation.js`'s two remaining lines covered: `onNativeInvalid` (asserts `setCustomValidity` is called with `getNativeValidationMessage`'s output) and `onNativeInput` (asserts it clears the custom validity). `nativeValidation.js` now at 100%. 50/50 unit tests passing, `npm run lint`/`build` both clean.
 
-Remaining candidates for a future pass: `Form.jsx`'s offline-sync flow (`handleRowDoubleClick`/`handleBulkData`), and the rest of the component tree (all still at 0%).
+**2026-07-20, later still** — `Form.jsx`'s offline-sync flow covered (13 new tests): `handleRowDoubleClick`/`handleBulkData`'s full-success path (queue cleared, `transactionSuccessful`, `setInit(Date.now())`, offline table disappears), the keep-failed-items-queued/`transactionFailed` path, the offline/busy `transactionWaiting` guard, and the offline-queue row actions (`handleOfflineRowEdit` loads a queued entry back into the form and removes it from its queue; `handleOfflineRowDelete`'s confirm-gated removal, both accept and decline branches).
+
+**Real finding, not a bug:** `handleBulkData` iterates the queue's *items*, not its *type* unconditionally — an empty `update`/`del` queue means `DataService.update`/`.del` are never invoked at all during a sync (not "called with zero items"), only whichever type actually has queued entries gets a real API call. Worth knowing for anyone instrumenting or rate-limiting this sync path later.
+
+Remaining candidates for a future pass: the rest of the component tree (all still at 0%).
 
 ---
 
@@ -144,3 +148,4 @@ Not yet covered: chart rendering (`LineChart`, `TabBalance`) and currency select
 - **2026-07-19, later still** — `docs/SPECIFICATION.md` written, cross-referencing `animecream-react`'s own spec wherever the two apps genuinely diverge (state model is the biggest one: `GlobalContext` here vs. prop-drilling there).
 - **2026-07-20** — At the user's request to finish the whole roadmap, Phase 2's final systematic sweep run: found and deleted `services/data.local.service.js` (dead cookie helper, byte-identical to `animecream-react`'s copy). First sweep pass had false positives from a regex bug (didn't account for this repo's explicit `.jsx` import extensions) — caught and corrected before trusting the results. Phase 2 closed.
 - **2026-07-20, later still** — Autonomous continuation of the roadmap (user granted standing authorization to proceed through both repos' remaining Phase 2.5/Phase 4 items without per-step confirmation, push/deploy excluded). `nativeValidation.js` brought to 100% (its two DOM-event-wrapper lines covered). 50/50 unit tests passing, `npm run lint`/`build` both clean.
+- **2026-07-20, later still** — `Form.jsx`'s offline-sync flow covered (13 tests, see Phase 2.5's entry above). 56/56 unit tests passing, `npm run lint`/`build` both clean.
