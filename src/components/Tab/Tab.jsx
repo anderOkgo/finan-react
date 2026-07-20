@@ -268,7 +268,12 @@ function Tab() {
         isRestoringRef.current = false;
       }, 100);
     }
-  }, [navigation.currentState, selectedOption, setSelectedOption]);
+    // Same crash-bug class, and same fix, as TablePagination.jsx's two
+    // effects (see the comments there): a plain `navigation.currentState`
+    // throws whenever `navigation` is undefined, since dependency arrays
+    // are evaluated every render regardless of the
+    // `if (!navigation?.currentState) return` guard above ever running.
+  }, [navigation?.currentState, selectedOption, setSelectedOption]);
 
   // Marcar que el componente ya se montó inmediatamente
   useEffect(() => {
