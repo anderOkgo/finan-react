@@ -18,20 +18,19 @@
  * presence of the login form, not a real login (that needs real
  * credentials and belongs to test/e2e/auth.spec.js instead).
  *
- * Unlike animecream-react, this script has no default production URL to
- * fall back to: `src/helpers/set.json`'s `base_url`
- * (https://info.animecream.com/) is module-api's own domain -- the backend
- * API this app calls -- NOT this frontend's deployed URL, and this
- * frontend's real deployed URL is not documented anywhere in this repo
- * (README.md has no domain; the FTP deploy script com/db-sync-FTP-both.bat
- * reads credentials/paths from untracked local .txt files with no domain
- * committed either). Per this environment's standing rule against
- * guessing/fabricating a URL, the target must be passed explicitly.
+ * Defaults to the real production frontend (https://finan.animecream.com/)
+ * -- note this is deliberately *not* set.json's `base_url`
+ * (https://info.animecream.com/), which is the module-api backend's URL,
+ * not this app's. This frontend's own domain isn't written down anywhere
+ * else in this repo (README.md has no domain; the FTP deploy script
+ * com/db-sync-FTP-both.bat reads credentials/paths from untracked local
+ * .txt files with no domain committed either) -- confirmed directly with
+ * the user rather than guessed.
  *
  * Usage:
- *   node scripts/smoke-check.mjs <url>
- *   SMOKE_URL=https://your-deployed-url/ node scripts/smoke-check.mjs
- *   npm run smoke -- https://your-deployed-url/
+ *   node scripts/smoke-check.mjs [url]
+ *   SMOKE_URL=https://finan.animecream.com/ node scripts/smoke-check.mjs
+ *   npm run smoke -- https://finan.animecream.com/
  *
  * Exit code 0 if every check passes, 1 otherwise -- suitable as a deploy-
  * pipeline gate.
@@ -39,21 +38,7 @@
 
 import { chromium } from '@playwright/test';
 
-const url = process.argv[2] || process.env.SMOKE_URL;
-
-if (!url) {
-  console.error(
-    '\nNo target URL given.\n\n' +
-      'Unlike animecream-react, this repo has no committed production domain to\n' +
-      "default to (set.json's base_url is module-api's backend URL, not this\n" +
-      'frontend\'s -- and the real deployed frontend URL is not documented\n' +
-      'anywhere in this repo). Pass it explicitly:\n\n' +
-      '  node scripts/smoke-check.mjs <url>\n' +
-      '  SMOKE_URL=<url> node scripts/smoke-check.mjs\n' +
-      '  npm run smoke -- <url>\n'
-  );
-  process.exit(1);
-}
+const url = process.argv[2] || process.env.SMOKE_URL || 'https://finan.animecream.com/';
 
 const results = [];
 
