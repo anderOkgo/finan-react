@@ -101,7 +101,9 @@ Unlike `animecream-react`, this repo had **zero** `react/prop-types` findings (o
 
 **2026-07-20, later still** — Third component-tree batch: `TableSearch` (AND/OR search parsing — comma vs. plus-separated terms, mirroring `animecream-react`'s `searchUtils.js` tests — page-reset-on-search, and the items-per-page selector), `Login` (successful login marks `init`, a failed login alerts the translated error *without* marking `init` false since bad credentials aren't the same as the server being offline, the offline `init`-falsy guard, and the optional `onLoginButtonClick` callback), and `Menu` (session-aware login/logout link visibility, the status-icon boot+dark-mode-toggle click, both branches of the double-click theme-default save/restore, and logout closing the mobile menu) — 15 more tests.
 
-Remaining candidates for a future pass: `Register`, `TabGeneral`, `LineChart`, `Table.jsx`, `Home.jsx`, and the main `Tab.jsx` orchestrator.
+**2026-07-20, later still** — Fourth component-tree batch: `Register` covered (4 tests) — the whitespace-stripping username sanitizer, the success path (alerts the translated message, reveals the verification-code field, marks `init`), the failure path (alerts, verification-code field stays hidden), and the offline guard. Submitted via `fireEvent.submit(form)` rather than clicking the button, for the same jsdom-native-validation-bypass reason established in `animecream-react`'s `AdminPanel.test.jsx`.
+
+Remaining candidates for a future pass: `TabGeneral`, `LineChart`, `Table.jsx`, `Home.jsx`, and the main `Tab.jsx` orchestrator.
 
 ---
 
@@ -160,3 +162,4 @@ Not yet covered: chart rendering (`LineChart`, `TabBalance`) and currency select
 - **2026-07-20, later still** — Component-tree pass started: `ErrorBoundary`/`AppCrashFallback`/`Status`/`InfoBanner`/`TabInput`/`TabInfo` covered (17 tests). Found (not fixed) a `?? -1` fallback that never actually fires in `TabInfo.jsx` because `parseFloat`/`parseInt` of `undefined` is `NaN`, not `undefined`. 74/74 unit tests passing, `npm run lint`/`build` both clean.
 - **2026-07-20, later still** — Second component-tree batch: `AutoDismissMessage`/`CountDownEnd`/`TabBalance`/`TabTag` covered (12 tests, see Phase 2.5's entry above). 86/86 unit tests passing, `npm run lint`/`build` both clean.
 - **2026-07-20, later still** — Third component-tree batch: `TableSearch`/`Login`/`Menu` covered (15 tests, see Phase 2.5's entry above). 101/101 unit tests passing, `npm run lint`/`build` both clean.
+- **2026-07-20, later still** — Fourth component-tree batch: `Register` covered (4 tests, see Phase 2.5's entry above). 105/105 unit tests passing, `npm run lint`/`build` both clean.
