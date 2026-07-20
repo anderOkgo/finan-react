@@ -8,6 +8,18 @@ import { defineConfig, devices } from '@playwright/test';
 export default defineConfig({
   testDir: './test/e2e',
   fullyParallel: false,
+  // Real finding: every spec file reuses the *same* real account (module-api's
+  // auth is centralized, not per-frontend/per-file -- see the Enabling
+  // infrastructure notes in docs/specification-roadmap.md). `fullyParallel:
+  // false` only serializes tests *within* one file; across files, Playwright's
+  // default worker count (CPU-based) still ran auth.spec.js and
+  // dashboard.spec.js concurrently against the same account/session, and the
+  // resulting contention made dashboard.spec.js's delete step reliably exceed
+  // its 30s timeout (reproduced, then confirmed to pass immediately in
+  // isolation or with `--workers=1`). Pinning to a single worker trades a
+  // little wall-clock time for a suite that doesn't flake against a shared
+  // real backend.
+  workers: 1,
   retries: 0,
   reporter: 'list',
   use: {
