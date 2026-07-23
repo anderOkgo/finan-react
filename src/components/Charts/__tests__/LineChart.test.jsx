@@ -86,6 +86,28 @@ describe('LineChart year filtering', () => {
     const options = screen.getAllByRole('option').map((o) => o.value);
     expect(options).toEqual(['', '2022', '2023', '2024']);
   });
+
+  it('falls back to the most recent available year when dataI is replaced and the selected year disappears (e.g. switching currency)', () => {
+    const { rerender } = renderChart();
+
+    // Mount default is 2024 (fixed system time), which has data.
+    expect(readLineProps().data.labels).toEqual(['jan', 'mar']);
+
+    // Simulate a currency switch: the new dataset has no 2024 rows at all.
+    const otherCurrencyData = [
+      { year_number: 2021, month_number: 6, month_name: 'jun', incomes: 40, expenses: 20 },
+      { year_number: 2023, month_number: 2, month_name: 'feb', incomes: 70, expenses: 30 },
+    ];
+    rerender(
+      <GlobalContext.Provider value={{ isDarkMode: false }}>
+        <LineChart dataI={otherCurrencyData} height={300} t={t} />
+      </GlobalContext.Provider>
+    );
+
+    // Without the fallback, selectedYear would stay '2024' and the chart
+    // would render empty even though the new data has rows.
+    expect(readLineProps().data.labels).toEqual(['feb']);
+  });
 });
 
 describe('LineChart CSS-variable color resolution', () => {

@@ -47,6 +47,17 @@ function LineChart({ dataI = [], height, t }) {
 
   const years = useMemo(() => [...new Set(dataI.map((item) => item.year_number))], [dataI]);
 
+  // When dataI is replaced (e.g. switching currency), the previously
+  // selected year may no longer exist in the new dataset, leaving
+  // filteredData empty and the chart blank until the user manually
+  // reselects a year. Fall back to the most recent year actually present.
+  useEffect(() => {
+    if (years.length === 0 || selectedYear === '') return;
+    if (!years.includes(parseInt(selectedYear, 10))) {
+      setSelectedYear(Math.max(...years).toString());
+    }
+  }, [years, selectedYear]);
+
   // State to store resolved colors from CSS variables
   const [chartColors, setChartColors] = useState({
     incomes: 'rgb(53, 162, 235)',

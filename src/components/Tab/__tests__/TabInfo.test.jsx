@@ -21,35 +21,31 @@ describe('TabInfo', () => {
     render(
       <TabInfo
         tripInfo={tripInfo}
-        generalInfo={{ total: '1500.75' }}
         exchangeCol={{ total: '4200' }}
         t={t}
       />
     );
 
-    expect(screen.getByText('totalSaveAU: $1,500.75')).toBeInTheDocument();
     expect(screen.getByText('totalExchangeCol: $4,200.00')).toBeInTheDocument();
     expect(screen.getByTestId('countdown-mock')).toBeInTheDocument();
     // The 'final-trip' row is excluded from the trips table.
     expect(screen.getByTestId('table-mock')).toHaveTextContent('rows:2');
   });
 
-  it('shows $NaN, not the intended -1 fallback, when generalInfo/exchangeCol totals are missing', () => {
-    // Real gotcha, not a guess: `parseFloat(generalInfo?.['total']) ?? -1`
+  it('shows $NaN, not the intended -1 fallback, when exchangeCol total is missing', () => {
+    // Real gotcha, not a guess: `parseInt(exchangeCol?.['total']) ?? -1`
     // looks like a "-1 when missing" fallback, but `??` only substitutes on
-    // null/undefined -- parseFloat(undefined) returns NaN, which `??`
+    // null/undefined -- parseInt(undefined) returns NaN, which `??`
     // does NOT treat as nullish, so the fallback never actually fires. The
-    // rendered value is "$NaN", not "-$1.00". Same root cause affects
-    // exchangeCol's total (parseInt(undefined) is also NaN). Documented
-    // here rather than "fixed" since correcting it is a one-line change to
-    // a real component, out of scope for a coverage-only pass.
-    render(<TabInfo tripInfo={[]} generalInfo={{}} exchangeCol={{}} t={t} />);
-    expect(screen.getByText('totalSaveAU: $NaN')).toBeInTheDocument();
+    // rendered value is "$NaN", not "-$1.00". Documented here rather than
+    // "fixed" since correcting it is a one-line change to a real component,
+    // out of scope for a coverage-only pass.
+    render(<TabInfo tripInfo={[]} exchangeCol={{}} t={t} />);
     expect(screen.getByText('totalExchangeCol: $NaN')).toBeInTheDocument();
   });
 
   it('does fall back to -1 for a missing tripInfo[5] (optional chaining actually short-circuits here)', () => {
-    render(<TabInfo tripInfo={[]} generalInfo={{ total: '0' }} exchangeCol={{ total: '0' }} t={t} />);
+    render(<TabInfo tripInfo={[]} exchangeCol={{ total: '0' }} t={t} />);
     expect(screen.getByText('totalFinalTrip: -$1.00')).toBeInTheDocument();
   });
 });

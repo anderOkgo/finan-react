@@ -34,7 +34,6 @@ function Tab() {
   const [movements, setMovements] = useState([]);
   const [totalDay, setTotalDay] = useState(0);
   const [edit, setEdit] = useState(false);
-  const [generalInfo, setGeneralInfo] = useState({});
   const [exchangeCol, setExchangeCol] = useState({});
   const [tripInfo, setTripInfo] = useState([]);
   const [balanceUntilDate, setBalanceUntilDate] = useState([]);
@@ -176,7 +175,7 @@ function Tab() {
       id: 5,
       icon: 'ℹ',
       label: t('infoTab'),
-      component: true && <TabInfo {...{ tripInfo, generalInfo, exchangeCol, t }} />,
+      component: true && <TabInfo {...{ tripInfo, exchangeCol, t }} />,
     });
   }
 
@@ -210,7 +209,6 @@ function Tab() {
         setYearlyBalance(yearlyBalance);
         setBalance(monthlyBalance);
         setBalanceUntilDate(Array.isArray(balanceUntilDate) ? balanceUntilDate : []);
-        setGeneralInfo(generalInfoFormat?.find((item) => item.detail === 'total-save-au'));
         setExchangeCol(generalInfoFormat?.find((item) => item.detail === 'Exchange Colombia'));
         setTripInfo(Array.isArray(tripInfo) ? tripInfo : []);
         setOperatefor(movements.filter((item) => item.source === 'balance'));

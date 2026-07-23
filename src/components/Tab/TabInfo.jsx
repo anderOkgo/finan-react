@@ -3,14 +3,14 @@ import Table from '../Table/Table';
 import InfoBanner from '../InfoBanner/InfoBanner';
 import CountDownEnd from '../CountDownEnd/CountDownEnd';
 
-function TabInfo({ tripInfo, generalInfo, exchangeCol, t }) {
+function TabInfo({ tripInfo, exchangeCol, t }) {
   return (
     <div>
-      <InfoBanner {...{ data: parseFloat(generalInfo?.['total']) ?? -1, label: t('totalSaveAU') }} />
+      <InfoBanner {...{ data: parseInt(exchangeCol?.['total']) ?? -1, label: t('totalExchangeCol') }} />
       <br />
       <CountDownEnd t={t} />
       <br />
-      <InfoBanner {...{ data: parseInt(exchangeCol?.['total']) ?? -1, label: t('totalExchangeCol') }} />
+      <InfoBanner {...{ data: tripInfo?.[5]?.['total'] ?? -1, label: t('totalFinalTrip') }} />
       <br />
       <Table
         label={t('tripsTable')}
@@ -20,7 +20,6 @@ function TabInfo({ tripInfo, generalInfo, exchangeCol, t }) {
         data={tripInfo?.filter((item) => item.detail !== 'final-trip') ?? []}
         moneyColumns={['total']}
       />
-      <InfoBanner {...{ data: tripInfo?.[5]?.['total'] ?? -1, label: t('totalFinalTrip') }} />
       <br />
     </div>
   );
@@ -28,7 +27,6 @@ function TabInfo({ tripInfo, generalInfo, exchangeCol, t }) {
 
 TabInfo.propTypes = {
   tripInfo: PropTypes.arrayOf(PropTypes.object).isRequired,
-  generalInfo: PropTypes.object.isRequired,
   exchangeCol: PropTypes.object.isRequired,
   t: PropTypes.any.isRequired,
 };
