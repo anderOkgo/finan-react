@@ -272,7 +272,7 @@ describe('Offline queue row actions (edit / delete)', () => {
     fireEvent.click(screen.getByTitle('edit'));
 
     expect(screen.getByLabelText('name')).toHaveValue('Queued item');
-    expect(screen.getByLabelText('value')).toHaveValue(10);
+    expect(screen.getByLabelText('value')).toHaveValue('10');
     // It's also removed from whichever queue it came from at the same time.
     expect(JSON.parse(localStorage.getItem('insert'))).toEqual([]);
   });

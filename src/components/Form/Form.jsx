@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo, useRef, useEffect, useContext } from 'react';
+import { useState, useCallback, useMemo, useRef, useEffect, useLayoutEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
 import DataService from '../../services/data.service';
 import AutoDismissMessage from '../Message/AutoDismissMessage.jsx';
@@ -8,6 +8,17 @@ import GlobalContext from '../../contexts/GlobalContext.jsx';
 import { translateApiMessage } from '../../hooks/useLanguage';
 import { onNativeInvalid, onNativeInput } from '../../helpers/nativeValidation';
 
+const MAX_MOVEMENT_VAL = 10000000000;
+
+/** Adds thousands separators to a raw "1234.5"-style numeric string for display. */
+const formatWithThousands = (rawValue) => {
+  const str = String(rawValue ?? '');
+  if (str === '') return '';
+  const [intPart, decPart] = str.split('.');
+  const formattedInt = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  return decPart !== undefined ? `${formattedInt}.${decPart}` : formattedInt;
+};
+
 function Form({ setForm, form, edit, setEdit, currency, operateFor }) {
   const { setInit, init, setProc, proc, t } = useContext(GlobalContext);
   const [msg, setMsg] = useState('');
@@ -16,6 +27,8 @@ function Form({ setForm, form, edit, setEdit, currency, operateFor }) {
   const [off, setOff] = useState([]);
   const [disabled, setDisabled] = useState(false);
   const buttonRef = useRef(null);
+  const movementValInputRef = useRef(null);
+  const movementValCursorDigits = useRef(null);
 
   const initialForm = useMemo(
     () => ({
@@ -87,6 +100,64 @@ function Form({ setForm, form, edit, setEdit, currency, operateFor }) {
     },
     [currency, setForm, t]
   );
+
+  // Reformats the value field with thousands separators as the user types,
+  // while keeping form.movement_val as a plain unformatted numeric string
+  // (data.service parses it with parseFloat, which can't handle commas).
+  const handleMovementValChange = useCallback(
+    (e) => {
+      const input = e.target;
+      const cursorPos = input.selectionStart;
+      // Count everything but the comma separators we insert -- digits AND the
+      // decimal point -- so the cursor lands after a just-typed "." instead
+      // of snapping back in front of it (digit-only counting can't tell "." apart).
+      const charsBeforeCursor = input.value.slice(0, cursorPos).replace(/,/g, '').length;
+
+      let raw = input.value.replace(/[^\d.]/g, '');
+      const firstDot = raw.indexOf('.');
+      if (firstDot !== -1) {
+        raw = raw.slice(0, firstDot + 1) + raw.slice(firstDot + 1).replace(/\./g, '');
+      }
+
+      if (raw !== '' && parseFloat(raw) > MAX_MOVEMENT_VAL) {
+        return;
+      }
+
+      movementValCursorDigits.current = charsBeforeCursor;
+
+      setForm((prevForm) => ({
+        ...prevForm,
+        movement_val: raw,
+        currency: currency,
+      }));
+    },
+    [currency, setForm]
+  );
+
+  useLayoutEffect(() => {
+    const input = movementValInputRef.current;
+    const charsBeforeCursor = movementValCursorDigits.current;
+    if (!input || charsBeforeCursor === null || document.activeElement !== input) return;
+    movementValCursorDigits.current = null;
+
+    const formatted = formatWithThousands(form.movement_val);
+    let pos = formatted.length;
+    if (charsBeforeCursor === 0) {
+      pos = 0;
+    } else {
+      let count = 0;
+      for (let i = 0; i < formatted.length; i++) {
+        if (formatted[i] !== ',') {
+          count++;
+          if (count === charsBeforeCursor) {
+            pos = i + 1;
+            break;
+          }
+        }
+      }
+    }
+    input.setSelectionRange(pos, pos);
+  }, [form.movement_val]);
 
   useEffect(() => {
     setForm((prevForm) => ({
@@ -281,17 +352,16 @@ function Form({ setForm, form, edit, setEdit, currency, operateFor }) {
           </label>
           <input
             id="movement_val"
-            type="number"
+            type="text"
+            inputMode="decimal"
             className="form-control"
             name="movement_val"
-            value={form.movement_val}
-            onChange={handleChangeInput}
+            ref={movementValInputRef}
+            value={formatWithThousands(form.movement_val)}
+            onChange={handleMovementValChange}
             onInvalid={(e) => onNativeInvalid(e, t)}
             onInput={onNativeInput}
             required
-            max="10000000000"
-            min="0"
-            step="any"
           />
         </div>
 
