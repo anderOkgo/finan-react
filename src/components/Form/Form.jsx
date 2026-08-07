@@ -354,6 +354,7 @@ function Form({ setForm, form, edit, setEdit, currency, operateFor }) {
             id="movement_val"
             type="text"
             inputMode="decimal"
+            autoComplete="off"
             className="form-control"
             name="movement_val"
             ref={movementValInputRef}
