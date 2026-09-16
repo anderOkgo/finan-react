@@ -110,6 +110,18 @@ describe('Table rendering', () => {
     });
   });
 
+  it('clears previously rendered rows when data becomes empty (e.g. a currency switch with no rows)', () => {
+    const { rerender } = renderTable();
+    expect(bodyRows()).toHaveLength(3);
+
+    rerender(
+      <GlobalContext.Provider value={{ t }}>
+        <Table data={[]} columns={['Name', 'Value', 'Tag', 'Log']} orderColumnsList={['name', 'value', 'tag', 'log']} label="Test table" />
+      </GlobalContext.Provider>
+    );
+    expect(bodyRows()).toHaveLength(0);
+  });
+
   it('notifies the parent of filtered-data changes via onFilteredDataChange', () => {
     const onFilteredDataChange = vi.fn();
     renderTable({ onFilteredDataChange });

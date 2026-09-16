@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import Table from '../Table/Table';
 import { useState, useMemo } from 'react';
 import InfoBanner from '../InfoBanner/InfoBanner';
+import { sortBySourceType } from '../../helpers/operations';
 
 function TabGeneral({ movements, remainingBudget = 0, setForm, setEdit, setSelectedOption, currency, t, userRole, totalDay }) {
   const [selectedRow, setSelectedRow] = useState(null);
@@ -121,10 +122,12 @@ function TabGeneral({ movements, remainingBudget = 0, setForm, setEdit, setSelec
       return acc;
     }, {});
 
-    return Object.values(typeSummary).map((item) => ({
-      ...item,
-      total: Number(item.total.toFixed(2)),
-    }));
+    return sortBySourceType(
+      Object.values(typeSummary).map((item) => ({
+        ...item,
+        total: Number(item.total.toFixed(2)),
+      }))
+    );
   }, [filteredNameData, nameSummaryArray]);
 
   return (

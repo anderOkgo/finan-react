@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import { useState, useMemo } from 'react';
 import Table from '../Table/Table';
 import InfoBanner from '../InfoBanner/InfoBanner';
+import { sortBySourceType } from '../../helpers/operations';
 
 function TabTag({ movementTag, monthlyBudget, totalDay, t, userRole }) {
   const [filteredData, setFilteredData] = useState(movementTag);
@@ -45,10 +46,12 @@ function TabTag({ movementTag, monthlyBudget, totalDay, t, userRole }) {
       return acc;
     }, {});
 
-    return Object.values(typeSummary).map((item) => ({
-      ...item,
-      total: Number(item.total.toFixed(2)),
-    }));
+    return sortBySourceType(
+      Object.values(typeSummary).map((item) => ({
+        ...item,
+        total: Number(item.total.toFixed(2)),
+      }))
+    );
   }, [filteredTagData, tagSummaryArray]);
 
   return (

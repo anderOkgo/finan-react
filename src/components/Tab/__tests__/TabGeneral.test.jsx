@@ -90,10 +90,11 @@ describe('TabGeneral tables', () => {
     ]);
 
     // filteredNameData is still null at this point, so typeSummaryArray
-    // is derived from nameSummaryArray, grouped further by source.
+    // is derived from nameSummaryArray, grouped further by source, and
+    // sorted into the fixed income -> expense -> balance display order.
     expect(JSON.parse(screen.getByTestId('table-data-typeSummaryTable').textContent)).toEqual([
-      { type: 'expense', total: 15, currency: 'COP' },
       { type: 'income', total: 100, currency: 'COP' },
+      { type: 'expense', total: 15, currency: 'COP' },
     ]);
   });
 

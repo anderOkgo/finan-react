@@ -52,3 +52,15 @@ export const formattedDate = () => {
 export const generateUniqueId = () => {
   return '_' + Math.random().toString(36).slice(2, 11);
 };
+
+// Fixed display order for movement types, independent of the order they
+// first appear in a given month's data.
+const SOURCE_TYPE_ORDER = ['income', 'expense', 'balance'];
+
+export const sortBySourceType = (items, key = 'type') => {
+  const rank = (value) => {
+    const index = SOURCE_TYPE_ORDER.indexOf(value);
+    return index === -1 ? SOURCE_TYPE_ORDER.length : index;
+  };
+  return [...items].sort((a, b) => rank(a[key]) - rank(b[key]));
+};

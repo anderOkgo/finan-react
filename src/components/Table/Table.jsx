@@ -41,12 +41,11 @@ function Table({
 
   // reorder columns based on orderColumnsList array
   useEffect(() => {
-    if (data && data.length > 0) {
-      const initialData = (orderColumnsList?.length ?? 0 > 0) ? reorderTableHeader(data, orderColumnsList) : data;
-      setDataset(initialData);
-      setFilteredData(initialData);
-      setHeader([...new Set(initialData.flatMap((item) => Object.keys(item)))]);
-    }
+    const initialData =
+      data && data.length > 0 ? ((orderColumnsList?.length ?? 0 > 0) ? reorderTableHeader(data, orderColumnsList) : data) : [];
+    setDataset(initialData);
+    setFilteredData(initialData);
+    setHeader(initialData.length > 0 ? [...new Set(initialData.flatMap((item) => Object.keys(item)))] : []);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
