@@ -134,6 +134,20 @@ describe('Table sorting', () => {
     expect(rows.map((r) => within(r).getAllByRole('cell')[0].textContent)).toEqual(['Zeta', 'Mid', 'Alpha']);
     expect(screen.getByRole('columnheader', { name: /Name/ })).toHaveTextContent('Name ▼');
   });
+
+  it('resets to the original dataset order and clears the arrow on a third click of the same column', () => {
+    renderTable();
+    const nameHeader = screen.getByRole('columnheader', { name: 'Name' });
+
+    fireEvent.click(nameHeader); // asc
+    fireEvent.click(screen.getByRole('columnheader', { name: /Name/ })); // desc
+    fireEvent.click(screen.getByRole('columnheader', { name: /Name/ })); // reset
+
+    const rows = bodyRows();
+    expect(rows.map((r) => within(r).getAllByRole('cell')[0].textContent)).toEqual(['Zeta', 'Alpha', 'Mid']);
+    expect(screen.getByRole('columnheader', { name: 'Name' })).toHaveTextContent('Name');
+    expect(screen.getByRole('columnheader', { name: 'Name' })).not.toHaveTextContent(/[▲▼]/);
+  });
 });
 
 describe('Table row interactions', () => {

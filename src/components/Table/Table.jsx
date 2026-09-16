@@ -26,7 +26,7 @@ function Table({
   const [filteredData, setFilteredData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(set.pagination_default_items_per_page);
-  const [sortOrder, setSortOrder] = useState({ columnIndex: null, descending: false });
+  const [sortOrder, setSortOrder] = useState({ columnIndex: null, direction: null });
   const currentData = filteredData.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
   const { t } = useContext(GlobalContext);
 
@@ -57,16 +57,34 @@ function Table({
     }
   }, [filteredData, onFilteredDataChange]);
 
-  // Function to handle header click for sorting
+  // Function to handle header click for sorting.
+  // Cycles through ascending -> descending -> original order on repeated clicks of the same column.
   const handleHeaderClick = (columnIndex) => {
-    const descending = sortOrder.columnIndex === columnIndex ? !sortOrder.descending : false;
-    setSortOrder({ columnIndex, descending });
+    let direction;
+    if (sortOrder.columnIndex !== columnIndex) {
+      direction = 'asc';
+    } else if (sortOrder.direction === 'asc') {
+      direction = 'desc';
+    } else if (sortOrder.direction === 'desc') {
+      direction = null;
+    } else {
+      direction = 'asc';
+    }
+    setSortOrder({ columnIndex, direction });
+
+    if (direction === null) {
+      // Restore dataset order for whichever rows are currently part of the filtered set.
+      const currentItems = new Set(filteredData);
+      setFilteredData(dataset.filter((item) => currentItems.has(item)));
+      return;
+    }
+
     const visibleKeys = header.filter((key) => !hiddenColumns.includes(key));
     const sortKey = visibleKeys[columnIndex];
     const reorderedData = filteredData.slice().sort((a, b) => {
       const valueA = a[sortKey];
       const valueB = b[sortKey];
-      if (descending) {
+      if (direction === 'desc') {
         return valueA < valueB ? 1 : valueA > valueB ? -1 : 0;
       } else {
         return valueA < valueB ? -1 : valueA > valueB ? 1 : 0;
@@ -83,9 +101,9 @@ function Table({
         {filteredHeader.map((item, index) => (
           <th key={index} onClick={() => handleHeaderClick(index)}>
             {item}
-            {sortOrder.columnIndex === index && sortOrder.descending
+            {sortOrder.columnIndex === index && sortOrder.direction === 'desc'
               ? ' ▼'
-              : sortOrder.columnIndex === index
+              : sortOrder.columnIndex === index && sortOrder.direction === 'asc'
                 ? ' ▲'
                 : ''}
           </th>
