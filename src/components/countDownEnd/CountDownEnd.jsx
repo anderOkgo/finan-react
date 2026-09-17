@@ -13,6 +13,7 @@ export default function CountDownEnd({ t }) {
   const [timeTotal] = useState(calculateTime(dayEnd, dayIni));
   const [timeLeft, setTimeLeft] = useState(calculateTime(dayEnd, new Date()));
   const [timeNow, setTimeNow] = useState(calculateTime(new Date(), dayIni));
+  const [timeMonthTotal] = useState(monthDiff(dayIni, dayEnd));
   const [timeMonthLeft, setTimeMonthLeft] = useState(monthDiff(new Date(), dayEnd));
   const [timeMonthNow, setTimeMonthNow] = useState(monthDiff(dayIni, new Date()));
   const [data, setData] = useState([]);
@@ -43,7 +44,7 @@ export default function CountDownEnd({ t }) {
           [t('remaining')]: timeLeft.toFixed(5),
         },
         {
-          [t('total')]: (timeMonthNow + timeMonthLeft).toFixed(2),
+          [t('total')]: timeMonthTotal.toFixed(2),
           [t('elapsed')]: timeMonthNow.toFixed(2),
           [t('remaining')]: timeMonthLeft.toFixed(2),
         },
@@ -60,7 +61,7 @@ export default function CountDownEnd({ t }) {
     return () => {
       clearInterval(id);
     };
-  }, [t, timeTotal, timeLeft, timeNow, timeMonthLeft, timeMonthNow, dayEnd, dayIni]);
+  }, [t, timeTotal, timeLeft, timeNow, timeMonthTotal, timeMonthLeft, timeMonthNow, dayEnd, dayIni]);
 
   function calculateTime(date1, date2) {
     return Math.abs(date1 - date2) / (1000 * 3600 * 24);
