@@ -41,6 +41,7 @@ function TabBalance({ bankTotal, balance, yearlyBalance, balanceUntilDate, month
         orderColumnsList={[]}
         data={monthlyExpensesUntilDay}
         moneyColumns={['total_expenses']}
+        defaultSearchTerm={String(new Date().getFullYear())}
       />
     </div>
   );

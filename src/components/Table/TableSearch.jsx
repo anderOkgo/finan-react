@@ -5,9 +5,9 @@ import './TableSearch.css';
 import { generateUniqueId } from '../../helpers/operations';
 import GlobalContext from '../../contexts/GlobalContext';
 
-function TableSearch({ setCurrentPage, setFilteredData, setItemsPerPage, dataset, itemsPerPage }) {
+function TableSearch({ setCurrentPage, setFilteredData, setItemsPerPage, dataset, itemsPerPage, defaultSearchTerm = '' }) {
   const { t } = useContext(GlobalContext);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState(defaultSearchTerm);
 
   useEffect(() => {
     // If no search term, show all data
@@ -104,6 +104,7 @@ TableSearch.propTypes = {
   setItemsPerPage: PropTypes.func.isRequired,
   dataset: PropTypes.array.isRequired,
   itemsPerPage: PropTypes.number.isRequired,
+  defaultSearchTerm: PropTypes.string,
 };
 
 export default TableSearch;

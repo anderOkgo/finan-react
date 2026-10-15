@@ -20,6 +20,7 @@ function Table({
   onFilteredDataChange = false,
   onRowDelete = null,
   onRowEdit = null,
+  defaultSearchTerm = '',
 }) {
   const [dataset, setDataset] = useState([]);
   const [header, setHeader] = useState([]);
@@ -191,7 +192,7 @@ function Table({
       <div className="table-container">
         <h2>{label}</h2>
         <hr />
-        <TableSearch {...{ setCurrentPage, setFilteredData, setItemsPerPage, dataset, itemsPerPage }} />
+        <TableSearch {...{ setCurrentPage, setFilteredData, setItemsPerPage, dataset, itemsPerPage, defaultSearchTerm }} />
         <table>
           <thead>{columns.length === 0 ? renderTableHeader(header) : renderTableHeader(columns)}</thead>
           <tbody>{renderTableRows()}</tbody>
@@ -217,6 +218,7 @@ Table.propTypes = {
   onFilteredDataChange: PropTypes.func,
   onRowDelete: PropTypes.func,
   onRowEdit: PropTypes.func,
+  defaultSearchTerm: PropTypes.string,
 };
 
 export default Table;

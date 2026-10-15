@@ -32,6 +32,13 @@ describe('TableSearch', () => {
     expect(setFilteredData).toHaveBeenCalledWith(dataset);
   });
 
+  it('pre-fills the search box and filters by defaultSearchTerm', () => {
+    const setFilteredData = vi.fn();
+    renderSearch({ setFilteredData, defaultSearchTerm: 'transport' });
+    expect(screen.getByPlaceholderText('searchPlaceholder')).toHaveValue('transport');
+    expect(setFilteredData).toHaveBeenLastCalledWith([{ name: 'Bus ticket', tag: 'transport' }]);
+  });
+
   it('AND-filters (comma-separated terms) requiring every term to match', () => {
     const setFilteredData = vi.fn();
     renderSearch({ setFilteredData });
