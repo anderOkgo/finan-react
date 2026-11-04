@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import './countDownEnd.css';
+import './CountDownEnd.css';
 import PropTypes from 'prop-types'; // Import PropTypes
 import { monthDiff } from '../../helpers/operations';
 import Table from '../Table/Table';

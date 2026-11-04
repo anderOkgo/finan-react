@@ -5,7 +5,7 @@ import TabInfo from '../TabInfo';
 vi.mock('../../Table/Table', () => ({
   default: ({ data }) => <div data-testid="table-mock">rows:{data.length}</div>,
 }));
-vi.mock('../../CountDownEnd/CountDownEnd', () => ({
+vi.mock('../../countDownEnd/CountDownEnd', () => ({
   default: () => <div data-testid="countdown-mock" />,
 }));
 
