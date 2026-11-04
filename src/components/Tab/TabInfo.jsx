@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import Table from '../Table/Table';
 import InfoBanner from '../InfoBanner/InfoBanner';
-import CountDownEnd from '../CountDownEnd/CountDownEnd';
+import CountDownEnd from '../countDownEnd/CountDownEnd';
 
 function TabInfo({ tripInfo, exchangeCol, t }) {
   return (

@@ -1,4 +1,4 @@
-const VERSION = '2.1.35';
+const VERSION = '2.1.38';
 const CACHE_NAME = `finan-${VERSION}`;
 const appfiles = [
   './icon/icon-32x32.png',
@@ -21,6 +21,23 @@ self.addEventListener('install', (e) => {
 });
 
 self.addEventListener('fetch', (e) => {
+  // Pages: network first, so a deploy shows up on the first open instead of after a second reload;
+  // offline, the last cached copy of the page.
+  if (e.request.mode === 'navigate') {
+    e.respondWith(
+      fetch(e.request)
+        .then((response) => {
+          if (response.ok) {
+            const copy = response.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(e.request, copy));
+          }
+          return response;
+        })
+        .catch(() => caches.match(e.request))
+    );
+    return;
+  }
+
   e.respondWith(
     caches.match(e.request).then(async (res) => {
       if (res || false)
@@ -33,7 +50,11 @@ self.addEventListener('fetch', (e) => {
           const responseClone = response.clone();
           if (response.ok) {
             caches.open(CACHE_NAME).then((cache) => {
-              if (e.request.method === 'GET' && e.request.url.startsWith('http') && e.request.mode !== 'cors') {
+              // Vite loads the built JS, CSS and fonts in cors mode. They are content-hashed, so
+              // they are safe to keep and the app needs them offline. The API stays uncached.
+              const url = new URL(e.request.url);
+              const isBuiltFile = url.origin === self.location.origin && url.pathname.startsWith('/assets/');
+              if (e.request.method === 'GET' && url.protocol.startsWith('http') && (e.request.mode !== 'cors' || isBuiltFile)) {
                 cache.put(e.request, responseClone);
               }
             });
