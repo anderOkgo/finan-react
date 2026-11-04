@@ -1,4 +1,4 @@
-const VERSION = '2.1.38';
+const VERSION = '2.1.39';
 const CACHE_NAME = `finan-${VERSION}`;
 const appfiles = [
   './icon/icon-32x32.png',
@@ -9,10 +9,27 @@ const appfiles = [
   './icon/wide.png',
 ];
 
+// Every URL of the app is the same index.html: one cached copy opens any of them offline, whatever
+// its path or query (the installed app starts at /?utm_source=homescreen).
+const SHELL = '/';
+// A cached built file carries no Origin header but the page asks for it with one.
+const MATCH = { ignoreVary: true };
+
+// Keeps the whole app at install time, in this version's own cache. Waiting for the page's requests
+// is not enough: they land in the previous cache, which activation deletes.
+const precache = async (cache) => {
+  await cache.addAll(appfiles);
+  const response = await fetch(SHELL, { cache: 'reload' });
+  if (!response.ok) throw new Error('Service worker: the page could not be fetched');
+  const html = await response.clone().text();
+  await cache.put(SHELL, response);
+  await cache.addAll([...new Set(html.match(/\/assets\/[^"']+/g) || [])]);
+};
+
 self.addEventListener('install', (e) => {
   e.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(appfiles).then(() => {
+      return precache(cache).then(() => {
         console.log('Cache installation successful');
         return self.skipWaiting();
       });
@@ -27,19 +44,20 @@ self.addEventListener('fetch', (e) => {
     e.respondWith(
       fetch(e.request)
         .then((response) => {
-          if (response.ok) {
+          // Only the app's page replaces the shell: a navigation can also open robots.txt.
+          if (response.ok && (response.headers.get('content-type') || '').includes('text/html')) {
             const copy = response.clone();
-            caches.open(CACHE_NAME).then((cache) => cache.put(e.request, copy));
+            caches.open(CACHE_NAME).then((cache) => cache.put(SHELL, copy));
           }
           return response;
         })
-        .catch(() => caches.match(e.request))
+        .catch(() => caches.match(SHELL, MATCH))
     );
     return;
   }
 
   e.respondWith(
-    caches.match(e.request).then(async (res) => {
+    caches.match(e.request, MATCH).then(async (res) => {
       if (res || false)
         if (res.type !== 'cors' || !res.url.includes(self.location.origin))
           // If the resource is not a CORS request or doesn't belong to the same origin, return the cached response
