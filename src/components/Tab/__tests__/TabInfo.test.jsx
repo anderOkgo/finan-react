@@ -5,14 +5,11 @@ import TabInfo from '../TabInfo';
 vi.mock('../../Table/Table', () => ({
   default: ({ data }) => <div data-testid="table-mock">rows:{data.length}</div>,
 }));
-vi.mock('../../countDownEnd/CountDownEnd', () => ({
-  default: () => <div data-testid="countdown-mock" />,
-}));
 
 const t = (key) => key;
 
 describe('TabInfo', () => {
-  it('renders the summary banners, the countdown, and the filtered trips table', () => {
+  it('renders the summary banners and the filtered trips table, without the countdown', () => {
     const tripInfo = [
       { detail: 'trip-1', total: '10' },
       { detail: 'final-trip', total: '999' },
@@ -27,7 +24,7 @@ describe('TabInfo', () => {
     );
 
     expect(screen.getByText('totalExchangeCol: $4,200.00')).toBeInTheDocument();
-    expect(screen.getByTestId('countdown-mock')).toBeInTheDocument();
+    expect(screen.queryByText('remainingTimeTable')).not.toBeInTheDocument();
     // The 'final-trip' row is excluded from the trips table.
     expect(screen.getByTestId('table-mock')).toHaveTextContent('rows:2');
   });
