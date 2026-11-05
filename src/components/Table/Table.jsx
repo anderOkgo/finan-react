@@ -5,6 +5,8 @@ import './TablePagination.css';
 import TablePagination from './TablePagination';
 import set from '../../helpers/set.json';
 import TableSearch from './TableSearch';
+import SelectionBar from './SelectionBar';
+import useCellSelection from './useCellSelection';
 import { useContext } from 'react';
 import GlobalContext from '../../contexts/GlobalContext';
 import { tableMoneyFormat } from '../../helpers/operations';
@@ -30,6 +32,7 @@ function Table({
   const [sortOrder, setSortOrder] = useState({ columnIndex: null, direction: null });
   const currentData = filteredData.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
   const { t } = useContext(GlobalContext);
+  const selection = useCellSelection({ dataset, filteredData, moneyColumns });
 
   // Helper function useEffect to reorder data to print the table based on orderColumnsList array
   const reorderTableHeader = (data, orderColumnsList) => {
@@ -116,13 +119,18 @@ function Table({
   const renderTableColumns = (row) => {
     return header.map((key, index) => {
       const isMoneyColumn = moneyColumns.includes(key);
-      const className = [hiddenColumns.includes(key) ? 'hidden-column' : '', isMoneyColumn ? 'money-column' : '']
+      const isSelected = isMoneyColumn && selection.isSelected(row, key);
+      const className = [
+        hiddenColumns.includes(key) ? 'hidden-column' : '',
+        isMoneyColumn ? 'money-column' : '',
+        isSelected ? 'cell-selected' : '',
+      ]
         .filter(Boolean)
         .join(' ');
       if (isMoneyColumn) {
         const [whole, decimals] = tableMoneyFormat(row[key] || 0).split('.');
         return (
-          <td key={index} className={className}>
+          <td key={index} className={className} {...selection.cellProps(row, key)}>
             {whole}
             <span className="money-decimals">.{decimals}</span>
           </td>
@@ -139,7 +147,7 @@ function Table({
 
   const renderTableRows = () => {
     return currentData.map((item, index) => (
-      <tr key={index} onDoubleClick={() => (onRowDoubleClick ? onRowDoubleClick(item) : false)}>
+      <tr key={index} onDoubleClick={() => (onRowDoubleClick && !selection.active ? onRowDoubleClick(item) : false)}>
         {renderTableColumns(item)}
         {(onRowEdit || onRowDelete) && (
           <td>
@@ -189,7 +197,7 @@ function Table({
 
   return (
     <>
-      <div className="table-container">
+      <div className={selection.active ? 'table-container cell-selecting' : 'table-container'}>
         <h2>{label}</h2>
         <hr />
         <TableSearch {...{ setCurrentPage, setFilteredData, setItemsPerPage, dataset, itemsPerPage, defaultSearchTerm }} />
@@ -201,6 +209,7 @@ function Table({
           <TablePagination {...{ currentPage, setCurrentPage, filteredData, itemsPerPage, elemet: label }} />
         </div>
         <br />
+        {selection.active && <SelectionBar cells={selection.cells} onClear={selection.clear} t={t} />}
       </div>
     </>
   );

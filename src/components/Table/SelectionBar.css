@@ -1,0 +1,81 @@
+/* Above the tabs, so the total stays in view however long the table is. */
+.cell-selection-bar {
+  position: fixed;
+  left: 50%;
+  bottom: calc(9svh + 10px);
+  transform: translateX(-50%);
+  width: min(880px, calc(100% - 20px));
+  z-index: 6;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 6px 4px 6px 14px;
+  border-radius: 6px;
+  background: var(--brand-primary);
+  color: var(--text-invert);
+  box-shadow: 0 4px 12px var(--shadow-md);
+}
+
+.cell-selection-main {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.cell-selection-summary {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.cell-selection-count {
+  font-size: 13px;
+}
+
+.cell-selection-total {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.cell-selection-action {
+  flex: none;
+  width: 44px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 22px;
+  background: transparent;
+  color: inherit;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.cell-selection-details {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin: 0;
+  padding: 6px 10px 6px 0;
+  border-top: 1px solid var(--brand-accent);
+  font-size: 14px;
+}
+
+.cell-selection-details dt {
+  font-size: 12px;
+  opacity: 0.85;
+}
+
+.cell-selection-details dd {
+  margin: 2px 0 0;
+  font-weight: 600;
+}

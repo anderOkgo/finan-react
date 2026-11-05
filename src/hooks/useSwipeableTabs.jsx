@@ -23,6 +23,12 @@ function useSwipeableTabs(numOptions = NUM_OPTIONS, swipeThreshold = SWIPE_THRES
       return;
     }
 
+    // Selecting table cells: a slide over the table must not change tab
+    if (target.closest('.cell-selecting')) {
+      startXRef.current = null;
+      return;
+    }
+
     const endX = e.changedTouches[0].clientX;
     const deltaX = endX - startXRef.current; // Calculate the horizontal distance swiped
 
