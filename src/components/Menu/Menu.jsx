@@ -45,7 +45,7 @@ const Menu = () => {
   const title = t('finanzTitle'); // Use translation for the title
 
   const menuItems = [
-    { label: t('animecreamApp'), url: 'https://react.animecream.com/' },
+    { label: t('animecreamApp'), url: 'https://animecream.com/' },
     { label: t('cyfer'), url: 'https://cyfer.animecream.com/' },
     {
       label: t('userSession'),
