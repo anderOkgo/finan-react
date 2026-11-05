@@ -74,12 +74,6 @@ describe('Form input handling', () => {
   });
 
   it('rejects the whole keystroke when the value contains an emoji, instead of stripping just the emoji', () => {
-    // Real (surprising) behavior, not a guess: handleChangeInput's emoji
-    // check does `if (emojiRegex.test(value)) { message(...); return; }`
-    // BEFORE the `sanitizedValue = value.replace(emojiRegex, '')` line --
-    // so that stripping line is unreachable dead code for movement_name/
-    // movement_tag; any keystroke that makes the value contain an emoji
-    // is rejected outright (setForm is never called), not sanitized.
     render(<FormHarness contextValue={{ t, init: true, proc: false, setInit: vi.fn(), setProc: vi.fn() }} />);
     fireEvent.change(screen.getByLabelText('name'), { target: { name: 'movement_name', value: 'Hi😀' } });
     expect(screen.getByLabelText('name')).toHaveValue('');

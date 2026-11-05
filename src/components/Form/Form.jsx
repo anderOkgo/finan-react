@@ -89,12 +89,9 @@ function Form({ setForm, form, edit, setEdit, currency, operateFor }) {
         return;
       }
 
-      const sanitizedValue =
-        name === 'movement_name' || name === 'movement_tag' ? value.replace(emojiRegex, '') : value;
-
       setForm((prevForm) => ({
         ...prevForm,
-        [name]: sanitizedValue,
+        [name]: value,
         currency: currency,
       }));
     },

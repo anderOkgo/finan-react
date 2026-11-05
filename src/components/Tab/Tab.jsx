@@ -39,12 +39,6 @@ function Tab() {
   const [balanceUntilDate, setBalanceUntilDate] = useState([]);
   const [monthlyExpensesUntilDay, setMonthlyExpensesUntilDay] = useState([]);
   const [monthlyBudget, setMonthlyBudget] = useState(0);
-  // Fetched and stored but never passed to any child component today --
-  // `monthlyBudget`/`remainingBudget` (derived from it) are both displayed,
-  // this raw figure currently isn't. Kept, not deleted: flagged as a
-  // possible missing-wiring gap for a product decision, not silently
-  // discarded.
-  const [_currentMonthExpenses, setCurrentMonthExpenses] = useState(0);
   const [remainingBudget, setRemainingBudget] = useState(0);
   const [currency, setCurrency] = useState('COP');
   const [nTab, setnTab] = useState(4);
@@ -198,7 +192,6 @@ function Tab() {
           tripInfo = [],
           monthlyExpensesUntilDay = [],
           monthlyBudget = 0,
-          currentMonthExpenses = 0,
           remainingBudget = 0,
         } = resp;
         const generalInfoFormat = Array.isArray(generalInfo) ? generalInfo : [];
@@ -214,7 +207,6 @@ function Tab() {
         setOperatefor(movements.filter((item) => item.source === 'balance'));
         setMonthlyExpensesUntilDay(Array.isArray(monthlyExpensesUntilDay) ? monthlyExpensesUntilDay : []);
         setMonthlyBudget(typeof monthlyBudget === 'number' ? monthlyBudget : 0);
-        setCurrentMonthExpenses(typeof currentMonthExpenses === 'number' ? currentMonthExpenses : 0);
         setRemainingBudget(typeof remainingBudget === 'number' ? remainingBudget : 0);
       };
 

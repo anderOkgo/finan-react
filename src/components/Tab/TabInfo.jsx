@@ -3,14 +3,19 @@ import Table from '../Table/Table';
 import InfoBanner from '../InfoBanner/InfoBanner';
 import CountDownEnd from '../countDownEnd/CountDownEnd';
 
+const NO_DATA = -1;
+const orNoData = (value) => (Number.isFinite(value) ? value : NO_DATA);
+
 function TabInfo({ tripInfo, exchangeCol, t }) {
+  const finalTrip = tripInfo?.find((item) => item.detail === 'final-trip');
+
   return (
     <div>
-      <InfoBanner {...{ data: parseInt(exchangeCol?.['total']) ?? -1, label: t('totalExchangeCol') }} />
+      <InfoBanner {...{ data: orNoData(parseInt(exchangeCol?.['total'])), label: t('totalExchangeCol') }} />
       <br />
       <CountDownEnd t={t} />
       <br />
-      <InfoBanner {...{ data: tripInfo?.[5]?.['total'] ?? -1, label: t('totalFinalTrip') }} />
+      <InfoBanner {...{ data: orNoData(parseFloat(finalTrip?.total)), label: t('totalFinalTrip') }} />
       <br />
       <Table
         label={t('tripsTable')}
