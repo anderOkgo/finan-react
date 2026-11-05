@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import Table from '../Table/Table';
 import InfoBanner from '../InfoBanner/InfoBanner';
+import CountDownEnd from '../countDownEnd/CountDownEnd';
 
 const NO_DATA = -1;
 const orNoData = (value) => (Number.isFinite(value) ? value : NO_DATA);
@@ -11,6 +12,8 @@ function TabInfo({ tripInfo, exchangeCol, t }) {
   return (
     <div>
       <InfoBanner {...{ data: orNoData(parseInt(exchangeCol?.['total'])), label: t('totalExchangeCol') }} />
+      <br />
+      <CountDownEnd t={t} />
       <br />
       <InfoBanner {...{ data: orNoData(parseFloat(finalTrip?.total)), label: t('totalFinalTrip') }} />
       <br />
