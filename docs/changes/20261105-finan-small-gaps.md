@@ -1,6 +1,6 @@
 # Information banners and small gaps
 
-**Date:** 2026-11-05 · **Branch:** `fix/20261105-finan-small-gaps`
+**Date:** 2026-11-05 · **Branch:** `fix/20261105-finan-small-gaps` · **Released in:** https://finan.animecream.com, 2026-11-05
 **Implements:** `module-docs/apps/finan/SPEC.md` v0.4, gaps G1, G2, G3, G4, G8, G9
 **Change ID:** `20261105-finan-small-gaps`
 
@@ -18,7 +18,8 @@ any more. The unreachable emoji strip and the unused `currentMonthExpenses` stat
 `npm run bup`, after the API. Rollback: revert and deploy.
 
 ## Verification
-Unit, lint, build and local E2E pass.
+Unit, lint, build and local E2E pass. In production, with read-only requests: the served bundle matches the build and
+has the `final-trip` key, and `sw.js` matches. The banners with real data were not seen: the owner confirms them.
 
 ## Version history
 | Date | Change |
