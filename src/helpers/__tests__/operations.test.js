@@ -22,11 +22,7 @@ describe('monthDiff', () => {
   // strings parse as UTC midnight, which `monthDiff`'s getMonth()/getDate()
   // calls then read back in the *local* timezone -- in a UTC-negative zone
   // that silently shifts the date backward a day, corrupting the result.
-  // (Confirmed: this is a real, environment-dependent bug in monthDiff
-  // itself, not a test artifact -- flagged in the roadmap, not fixed here,
-  // since fixing it changes the return value for every existing ISO-string
-  // caller and needs its own verification pass.) Local-time Date objects
-  // sidestep the bug entirely, keeping this test deterministic everywhere.
+  // The app only ever passes Date objects, which sidestep this.
   it('is 0 for the same date', () => {
     const d = new Date(2024, 0, 15);
     expect(monthDiff(d, d)).toBe(0);

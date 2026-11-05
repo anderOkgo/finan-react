@@ -32,20 +32,26 @@ describe('TabInfo', () => {
     expect(screen.getByTestId('table-mock')).toHaveTextContent('rows:2');
   });
 
-  it('shows $NaN, not the intended -1 fallback, when exchangeCol total is missing', () => {
-    // Real gotcha, not a guess: `parseInt(exchangeCol?.['total']) ?? -1`
-    // looks like a "-1 when missing" fallback, but `??` only substitutes on
-    // null/undefined -- parseInt(undefined) returns NaN, which `??`
-    // does NOT treat as nullish, so the fallback never actually fires. The
-    // rendered value is "$NaN", not "-$1.00". Documented here rather than
-    // "fixed" since correcting it is a one-line change to a real component,
-    // out of scope for a coverage-only pass.
-    render(<TabInfo tripInfo={[]} exchangeCol={{}} t={t} />);
-    expect(screen.getByText('totalExchangeCol: $NaN')).toBeInTheDocument();
+  it('finds the final trip total by its key, wherever the row comes', () => {
+    const tripInfo = [
+      { detail: 'trip-1', total: '10' },
+      { detail: 'final-trip', total: '999.50' },
+      { detail: 'trip-2', total: '20' },
+    ];
+    render(<TabInfo tripInfo={tripInfo} exchangeCol={{ total: '0' }} t={t} />);
+    expect(screen.getByText('totalFinalTrip: $999.50')).toBeInTheDocument();
   });
 
-  it('does fall back to -1 for a missing tripInfo[5] (optional chaining actually short-circuits here)', () => {
-    render(<TabInfo tripInfo={[]} exchangeCol={{ total: '0' }} t={t} />);
+  it('falls back to -1, never $NaN, when the exchange total is missing', () => {
+    render(<TabInfo tripInfo={[]} exchangeCol={{}} t={t} />);
+    expect(screen.getByText('totalExchangeCol: -$1.00')).toBeInTheDocument();
+  });
+
+  it('falls back to -1 when there is no final trip row or its sum is null', () => {
+    const { rerender } = render(<TabInfo tripInfo={[]} exchangeCol={{ total: '0' }} t={t} />);
+    expect(screen.getByText('totalFinalTrip: -$1.00')).toBeInTheDocument();
+
+    rerender(<TabInfo tripInfo={[{ detail: 'final-trip', total: null }]} exchangeCol={{ total: '0' }} t={t} />);
     expect(screen.getByText('totalFinalTrip: -$1.00')).toBeInTheDocument();
   });
 });
