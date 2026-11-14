@@ -91,12 +91,29 @@ const getUserName = (token) => {
   }
 };
 
+// Auth SPEC v0.5, C4 and C5: self-service password reset with an emailed code.
+// Both answer { message } on success and { err: { message } } otherwise, like register.
+const callReset = async (path, body, fallback) => {
+  const response = await helpHttp.post(API_URL + path, { body });
+  if (response.err) {
+    return { err: { message: normalizeErrorMessage(response.err?.message, fallback) } };
+  }
+  return { message: response.message };
+};
+
+const requestPasswordReset = (email) => callReset('password-reset/request', { email }, 'Unknown error');
+
+const confirmPasswordReset = (email, code, newPassword) =>
+  callReset('password-reset/confirm', { email, code, newPassword }, 'Invalid or expired code');
+
 const AuthService = {
   register,
   login,
   logout,
   getCurrentUser,
   getUserName,
+  requestPasswordReset,
+  confirmPasswordReset,
 };
 
 export default AuthService;

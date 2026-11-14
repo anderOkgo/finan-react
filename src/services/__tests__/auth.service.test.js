@@ -109,4 +109,37 @@ describe('AuthService', () => {
       expect(error).toHaveBeenCalled();
     });
   });
+
+  describe('password reset (Auth SPEC v0.5, C4 and C5)', () => {
+    it('asks for a code with the email and returns the message', async () => {
+      helpHttp.post.mockResolvedValueOnce({ error: false, message: 'If an account uses this email, a code was sent' });
+      expect(await AuthService.requestPasswordReset('sample@example.com')).toEqual({
+        message: 'If an account uses this email, a code was sent',
+      });
+      expect(helpHttp.post).toHaveBeenCalledWith(expect.stringMatching(/api\/users\/password-reset\/request$/), {
+        body: { email: 'sample@example.com' },
+      });
+    });
+
+    it('confirms with email, code and new password', async () => {
+      helpHttp.post.mockResolvedValueOnce({ error: false, message: 'Password changed' });
+      expect(await AuthService.confirmPasswordReset('sample@example.com', '123456', 'newSecret')).toEqual({
+        message: 'Password changed',
+      });
+      expect(helpHttp.post).toHaveBeenCalledWith(expect.stringMatching(/api\/users\/password-reset\/confirm$/), {
+        body: { email: 'sample@example.com', code: '123456', newPassword: 'newSecret' },
+      });
+    });
+
+    it('returns the API error, or a fallback for each step', async () => {
+      helpHttp.post.mockResolvedValueOnce({ err: { message: 'Invalid email format' } });
+      expect(await AuthService.requestPasswordReset('x')).toEqual({ err: { message: 'Invalid email format' } });
+
+      helpHttp.post.mockResolvedValueOnce({ err: {} });
+      expect(await AuthService.requestPasswordReset('x')).toEqual({ err: { message: 'Unknown error' } });
+
+      helpHttp.post.mockResolvedValueOnce({ err: {} });
+      expect(await AuthService.confirmPasswordReset('x', '1', 'y')).toEqual({ err: { message: 'Invalid or expired code' } });
+    });
+  });
 });

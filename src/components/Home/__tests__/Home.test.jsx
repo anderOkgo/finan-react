@@ -16,6 +16,9 @@ vi.mock('../../Auth/Login/Login', () => ({
 vi.mock('../../Auth/Register/Register', () => ({
   default: () => <div data-testid="register-mock" />,
 }));
+vi.mock('../../Auth/ResetPassword/ResetPassword', () => ({
+  default: () => <div data-testid="reset-mock" />,
+}));
 
 const t = (key) => key;
 
@@ -55,9 +58,14 @@ describe('Home', () => {
 
     for (let i = 0; i < 9; i++) fireEvent.click(tapButton);
     expect(screen.queryByTestId('register-mock')).not.toBeInTheDocument();
+    // Auth SPEC v0.5, E10: the password reset is hidden with it
+    expect(screen.queryByTestId('reset-mock')).not.toBeInTheDocument();
+    expect(screen.queryByText('forgotPassword')).not.toBeInTheDocument();
 
     fireEvent.click(tapButton);
     expect(screen.getByTestId('register-mock')).toBeInTheDocument();
+    expect(screen.getByText('forgotPassword')).toBeInTheDocument();
+    expect(screen.getByTestId('reset-mock')).toBeInTheDocument();
   });
 
   it('offers English when the app is in Spanish', () => {
