@@ -21,19 +21,18 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       reporter: ['text', 'html'],
-      // Set from the real aggregate as of Phase 2.5's completion --
-      // statements 85.88 / branches 76.79 / functions 82.78 / lines 86.22
-      // (`npm run test:cov`) -- a few points below each, mirroring
-      // animecream-react's own vite.config.js reasoning: enough margin to
-      // not go flaky on normal fluctuation (a test or two being skipped,
-      // minor branch-count drift), tight enough that a large new untested
-      // file (the kind of regression this gate exists to catch) still
-      // fails the build.
+      // Every source file counts, tested or not (Vitest 4 only reports the files a test loads
+      // unless `include` is set), as in bitacora-react. main.jsx only mounts App.
+      include: ['src/**/*.{js,jsx}'],
+      exclude: ['src/**/__tests__/**', 'src/main.jsx'],
+      // Playbook §4: 100%. Negative numbers are the most uncovered items allowed: the one statement
+      // and five branches no test can reach, listed in docs/changes/20261114-finan-coverage-100.md
+      // (production code is not changed to reach them).
       thresholds: {
-        statements: 82,
-        branches: 72,
-        functions: 78,
-        lines: 82,
+        lines: 100,
+        functions: 100,
+        statements: -1,
+        branches: -5,
       },
     },
   },

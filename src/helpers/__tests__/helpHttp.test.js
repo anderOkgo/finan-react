@@ -10,7 +10,7 @@ const setOnline = (value) => Object.defineProperty(navigator, 'onLine', { value,
 describe('helpHttp', () => {
   beforeEach(() => {
     setOnline(true);
-    global.fetch = vi.fn();
+    globalThis.fetch = vi.fn();
     vi.spyOn(console, 'log').mockImplementation(() => {});
   });
   afterEach(() => {

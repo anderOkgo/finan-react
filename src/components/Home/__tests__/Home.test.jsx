@@ -59,4 +59,9 @@ describe('Home', () => {
     fireEvent.click(tapButton);
     expect(screen.getByTestId('register-mock')).toBeInTheDocument();
   });
+
+  it('offers English when the app is in Spanish', () => {
+    renderHome({ language: 'es' });
+    expect(screen.getByText('switchToEnglish')).toBeInTheDocument();
+  });
 });
