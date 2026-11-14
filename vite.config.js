@@ -25,15 +25,8 @@ export default defineConfig({
       // unless `include` is set), as in bitacora-react. main.jsx only mounts App.
       include: ['src/**/*.{js,jsx}'],
       exclude: ['src/**/__tests__/**', 'src/main.jsx'],
-      // Playbook §4: 100%. Negative numbers are the most uncovered items allowed: the one statement
-      // and five branches no test can reach, listed in docs/changes/20261114-finan-coverage-100.md
-      // (production code is not changed to reach them).
-      thresholds: {
-        lines: 100,
-        functions: 100,
-        statements: -1,
-        branches: -5,
-      },
+      // Playbook §4 and E.8: 100%, so any new untested line fails the build.
+      thresholds: { statements: 100, branches: 100, functions: 100, lines: 100 },
     },
   },
 })

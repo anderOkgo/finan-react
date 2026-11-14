@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 
-const translations = {
+// Exported for the test that keeps both languages on the same keys.
+export const translations = {
   en: {
     inputTab: 'Input',
     generalTab: 'General',
@@ -488,12 +489,9 @@ export const useLanguage = () => {
   const t = (key) => {
     if (key === undefined || key === null || key === '') return '';
     if (typeof key === 'object') {
-      return translateApiMessage((k) => {
-        const currentTranslations = translations[language];
-        if (currentTranslations[k]) return currentTranslations[k];
-        if (translations.en[k]) return translations.en[k];
-        return k;
-      }, key);
+      // Both languages have the same keys, none empty (a test checks it), so a key missing here is
+      // missing in English too: the message itself is shown.
+      return translateApiMessage((k) => translations[language][k] || k, key);
     }
     const currentTranslations = translations[language];
     if (currentTranslations[key]) return currentTranslations[key];

@@ -1,5 +1,15 @@
 import { renderHook, act } from '@testing-library/react';
-import { useLanguage, translateApiMessage, translateAuthMessage } from '../useLanguage.jsx';
+import { useLanguage, translateApiMessage, translateAuthMessage, translations } from '../useLanguage.jsx';
+
+describe('translations', () => {
+  // t() shows the message itself when a key is missing in the current language: that is only the
+  // same as falling back to English while both languages have the same keys, none of them empty.
+  it('has the same keys in English and Spanish, and no empty text', () => {
+    expect(Object.keys(translations.es).sort()).toEqual(Object.keys(translations.en).sort());
+    Object.values(translations.en).forEach((text) => expect(text).toBeTruthy());
+    Object.values(translations.es).forEach((text) => expect(text).toBeTruthy());
+  });
+});
 
 const setBrowserLanguage = (lang) => {
   Object.defineProperty(window.navigator, 'language', { value: lang, configurable: true });

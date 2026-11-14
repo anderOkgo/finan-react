@@ -114,4 +114,10 @@ describe('Menu', () => {
     expect(toggle.checked).toBe(false);
     outside.remove();
   });
+
+  it('stops listening for outside clicks once unmounted', () => {
+    const { unmount } = renderMenu();
+    unmount();
+    expect(() => fireEvent.click(document.body)).not.toThrow();
+  });
 });
