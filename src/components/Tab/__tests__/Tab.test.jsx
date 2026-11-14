@@ -12,17 +12,29 @@ import { formattedDate } from '../../../helpers/operations';
 // strategy as every other component-tree test in this repo: stub each to a
 // thin placeholder exposing just enough of its props to prove Tab.jsx
 // wired them correctly, without re-rendering the real subtree.
-vi.mock('../TabInput', () => ({ default: () => <div data-testid="tabinput-mock" /> }));
-vi.mock('../TabGeneral', () => ({
-  default: ({ movements, remainingBudget }) => (
-    <div data-testid="tabgeneral-mock">{JSON.stringify({ movementsCount: movements.length, remainingBudget })}</div>
+vi.mock('../TabInput', () => ({
+  default: ({ totalDay, operateFor }) => (
+    <div data-testid="tabinput-mock">{JSON.stringify({ totalDay, operateFor })}</div>
   ),
+}));
+vi.mock('../TabGeneral', () => ({
+  default: ({ movements, remainingBudget, setSelectedOption }) => (
+    <div>
+      <div data-testid="tabgeneral-mock">{JSON.stringify({ movementsCount: movements.length, remainingBudget })}</div>
+      {/* TabGeneral opens a movement in Input this way (a double click on a row) */}
+      <button type="button" onClick={() => setSelectedOption(1)}>
+        open-in-input
+      </button>
+    </div>
+  ),
+}));
+vi.mock('../TabInfo', () => ({
+  default: ({ exchangeCol }) => <div data-testid="tabinfo-mock">{JSON.stringify(exchangeCol ?? null)}</div>,
 }));
 vi.mock('../TabTag', () => ({ default: () => <div data-testid="tabtag-mock" /> }));
 vi.mock('../TabBalance', () => ({
   default: ({ bankTotal }) => <div data-testid="tabbalance-mock">{bankTotal}</div>,
 }));
-vi.mock('../TabInfo', () => ({ default: () => <div data-testid="tabinfo-mock" /> }));
 vi.mock('../../currencySelector/currencySelector', () => ({
   default: () => <div data-testid="currency-mock" />,
 }));
@@ -251,5 +263,121 @@ describe('Tab language toggle', () => {
 
     expect(restoreLanguageDefault).toHaveBeenCalled();
     expect(window.alert).toHaveBeenCalledWith('languageSystemDefault');
+  });
+
+  it('shows switchToEnglish in Spanish, and plain-text alerts when the keys are not translated', () => {
+    const blank = () => '';
+    renderTab(baseContext({ language: 'es', t: blank }));
+    vi.spyOn(window, 'alert').mockImplementation(() => {});
+    const label = document.querySelector('.lang');
+    fireEvent.doubleClick(label);
+    expect(window.alert).toHaveBeenCalledWith('Language: User Default');
+    localStorage.setItem('lang', 'es');
+    fireEvent.doubleClick(label);
+    expect(window.alert).toHaveBeenCalledWith('Language: System Default');
+
+    renderTab(baseContext({ language: 'es' }));
+    expect(screen.getAllByText('switchToEnglish').length).toBeGreaterThan(0);
+  });
+});
+
+describe('Tab history edge cases', () => {
+  it('opens Input from another tab and records it', () => {
+    const navigation = { pushHistory: vi.fn(), currentState: null };
+    renderTab(baseContext({ navigation }));
+    fireEvent.click(document.querySelector('label[for="tab-2"]'));
+    fireEvent.click(screen.getByText('open-in-input'));
+    expect(document.getElementById('tab-1')).toBeChecked();
+    expect(navigation.pushHistory).toHaveBeenLastCalledWith('tab-change', { tabId: 1 });
+  });
+
+  it('changes tab without recording it when there is no history to record in', () => {
+    renderTab(baseContext({ navigation: { currentState: null } }));
+    fireEvent.click(document.querySelector('label[for="tab-2"]'));
+    capturedOnSwipeChange(3);
+    expect(document.getElementById('tab-2')).toBeChecked();
+  });
+
+  it('does not record clicks or swipes while a tab is being restored from history', () => {
+    vi.useFakeTimers();
+    const navigation = { pushHistory: vi.fn(), currentState: { type: 'tab-change', data: { tabId: 3 } } };
+    renderTab(baseContext({ navigation }));
+    expect(document.getElementById('tab-3')).toBeChecked();
+    fireEvent.click(document.querySelector('label[for="tab-2"]'));
+    capturedOnSwipeChange(4);
+    expect(document.getElementById('tab-2')).toBeChecked();
+    expect(navigation.pushHistory).not.toHaveBeenCalled();
+    vi.useRealTimers();
+  });
+
+  it('ignores a history entry for the tab already shown, or without a tab', () => {
+    // One at a time: every Tab's radios share the name "tab", so two in one document form one group
+    const states = [
+      { type: 'tab-change' },
+      { type: 'tab-change', data: { tabId: 1 } },
+      { type: 'initial' },
+      { type: 'menu' },
+    ];
+    states.forEach((currentState) => {
+      const { unmount } = renderTab(baseContext({ navigation: { pushHistory: vi.fn(), currentState } }));
+      expect(document.getElementById('tab-1')).toBeChecked();
+      unmount();
+    });
+  });
+});
+
+describe('Tab data edge cases', () => {
+  it('fills defaults for a missing or malformed snapshot', () => {
+    const odd = {
+      data: {
+        totalExpenseDay: [],
+        totalBalance: [],
+        generalInfo: 'not a list',
+        balanceUntilDate: 'x',
+        tripInfo: 'x',
+        monthlyExpensesUntilDay: 'x',
+        monthlyBudget: '1000',
+        remainingBudget: '700',
+      },
+    };
+    localStorage.setItem('storage', cyfer().cy(JSON.stringify(odd), set.salt));
+    renderTab(baseContext({ role: 'admin' }));
+    expect(JSON.parse(screen.getByTestId('tabinput-mock').textContent).totalDay).toBe(0);
+    expect(screen.getByTestId('tabbalance-mock')).toHaveTextContent('-1');
+    expect(JSON.parse(screen.getByTestId('tabgeneral-mock').textContent)).toEqual({ movementsCount: 0, remainingBudget: 0 });
+  });
+
+  it('finds the Colombian exchange row and the balance origins', () => {
+    const resp = {
+      data: {
+        generalInfo: [{ detail: 'Other' }, { detail: 'Exchange Colombia', value: 4000 }],
+        movements: [{ id: 1, source: 'balance' }, { id: 2, source: 'expense' }],
+      },
+    };
+    localStorage.setItem('storage', cyfer().cy(JSON.stringify(resp), set.salt));
+    renderTab(baseContext({ role: 'admin' }));
+    expect(JSON.parse(screen.getByTestId('tabinfo-mock').textContent)).toEqual({ detail: 'Exchange Colombia', value: 4000 });
+    expect(JSON.parse(screen.getByTestId('tabinput-mock').textContent).operateFor).toEqual([{ id: 1, source: 'balance' }]);
+  });
+
+  it('logs and goes on when the cached snapshot cannot be read', () => {
+    const log = vi.spyOn(console, 'log').mockImplementation(() => {});
+    localStorage.setItem('storage', 'not a snapshot');
+    renderTab(baseContext());
+    expect(log).toHaveBeenCalled();
+  });
+
+  it('skips an empty cached snapshot', () => {
+    localStorage.setItem('storage', cyfer().cy(JSON.stringify({}), set.salt));
+    renderTab(baseContext());
+    expect(screen.getByTestId('tabbalance-mock')).toHaveTextContent('0');
+  });
+
+  it('keeps the cached data and stays logged in on a load error other than 401', async () => {
+    DataService.initialLoad.mockResolvedValue({ err: { status: 500 } });
+    renderTab(baseContext({ init: true }));
+    await waitFor(() => expect(DataService.initialLoad).toHaveBeenCalled());
+    expect(AuthService.logout).not.toHaveBeenCalled();
+    expect(localStorage.getItem('storage')).toBeNull();
   });
 });

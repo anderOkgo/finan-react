@@ -78,4 +78,34 @@ describe('Register', () => {
     expect(window.alert).toHaveBeenCalledWith('Offline');
     expect(AuthService.register).not.toHaveBeenCalled();
   });
+
+  it('sends the typed verification code on the second step, keeping the field shown', async () => {
+    AuthService.register.mockResolvedValue({ message: 'Check your email' });
+    renderRegister();
+    fireEvent.change(screen.getByLabelText('usernameForRegistration'), { target: { value: 'alice' } });
+    submitForm();
+    await waitFor(() => expect(screen.getByLabelText('verificationCode')).toBeInTheDocument());
+
+    AuthService.register.mockResolvedValue({ message: 'User created successfully' });
+    fireEvent.change(screen.getByLabelText('verificationCode'), { target: { value: '123456' } });
+    submitForm();
+    await waitFor(() => expect(AuthService.register).toHaveBeenLastCalledWith('alice', '', '', '123456'));
+    expect(screen.getByLabelText('verificationCode')).toBeInTheDocument();
+  });
+
+  it('shows a translated message for each invalid field', async () => {
+    AuthService.register.mockResolvedValue({ message: 'Check your email' });
+    renderRegister();
+    submitForm();
+    await waitFor(() => expect(screen.getByLabelText('verificationCode')).toBeInTheDocument());
+    // Empty required fields get a message; the code field has no constraint, so it stays valid
+    ['usernameForRegistration', 'email', 'password'].forEach((label) => {
+      const field = screen.getByLabelText(label);
+      fireEvent.invalid(field);
+      expect(field.validationMessage).not.toBe('');
+    });
+    const code = screen.getByLabelText('verificationCode');
+    fireEvent.invalid(code);
+    expect(code.validationMessage).toBe('');
+  });
 });

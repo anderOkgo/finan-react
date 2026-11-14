@@ -31,8 +31,8 @@ const blankForm = {
 // Stateful harness: Form is a fully controlled component (form/setForm,
 // edit/setEdit all come from the parent), so a real parent-state wrapper
 // is needed to exercise typing, reset, and edit-mode toggling faithfully.
-function FormHarness({ contextValue, currency = 'COP', operateFor = [], initialEdit = false }) {
-  const [form, setForm] = useState(blankForm);
+function FormHarness({ contextValue, currency = 'COP', operateFor = [], initialEdit = false, startForm = blankForm }) {
+  const [form, setForm] = useState(startForm);
   const [edit, setEdit] = useState(initialEdit);
   return (
     <GlobalContext.Provider value={contextValue}>
@@ -46,6 +46,7 @@ FormHarness.propTypes = {
   currency: PropTypes.string,
   operateFor: PropTypes.array,
   initialEdit: PropTypes.bool,
+  startForm: PropTypes.object,
 };
 
 const fillRequiredFields = () => {
@@ -292,5 +293,144 @@ describe('Offline queue row actions (edit / delete)', () => {
 
     expect(JSON.parse(localStorage.getItem('insert'))).toHaveLength(1);
     expect(screen.getByText('offlineTable')).toBeInTheDocument();
+  });
+
+  it('finds a queued row in the update or del queue, and fills missing fields with blanks', () => {
+    // Only the update and del queues exist: the insert queue is absent from storage
+    localStorage.setItem('update', JSON.stringify([{ id: 7, source: 'web', movement_name: 'Edited' }]));
+    localStorage.setItem('del', JSON.stringify([{ id: 9, movement_name: 'Removed', movement_val: '5' }]));
+    render(<FormHarness contextValue={{ t, init: true, proc: false, setInit: vi.fn(), setProc: vi.fn() }} />);
+
+    fireEvent.click(screen.getAllByTitle('edit')[1]); // the del row
+    expect(screen.getByLabelText('name')).toHaveValue('Removed');
+    expect(JSON.parse(localStorage.getItem('del'))).toEqual([]);
+    // A row with an id opens the form in edit mode
+    expect(screen.getByDisplayValue('delete')).toBeInTheDocument();
+
+    fireEvent.click(screen.getAllByTitle('edit')[0]); // the update row, with no value, date or tag
+    expect(screen.getByLabelText('name')).toHaveValue('Edited');
+    expect(screen.getByLabelText('value')).toHaveValue('');
+    expect(screen.getByLabelText('tag')).toHaveValue('');
+  });
+
+  it('deletes a queued row found in the update queue when there is no insert queue', () => {
+    localStorage.setItem('update', JSON.stringify([{ movement_name: 'Edited', movement_val: '1', movement_date: 'd' }]));
+    render(<FormHarness contextValue={{ t, init: true, proc: false, setInit: vi.fn(), setProc: vi.fn() }} />);
+    fireEvent.click(screen.getByTitle('delete'));
+    expect(JSON.parse(localStorage.getItem('update'))).toEqual([]);
+    expect(screen.queryByText('offlineTable')).not.toBeInTheDocument();
+  });
+
+  it('fills a blank name for a queued row that has none', () => {
+    localStorage.setItem('insert', JSON.stringify([{ movement_val: '3', movement_date: 'd' }]));
+    render(<FormHarness contextValue={{ t, init: true, proc: false, setInit: vi.fn(), setProc: vi.fn() }} />);
+    fireEvent.click(screen.getByTitle('edit'));
+    expect(screen.getByLabelText('name')).toHaveValue('');
+    expect(screen.getByLabelText('value')).toHaveValue('3');
+  });
+
+  it('edits a row in the offline table that is in no queue any more', () => {
+    localStorage.setItem('insert', JSON.stringify([{ movement_name: 'Gone', movement_val: '1', movement_date: 'd' }]));
+    render(<FormHarness contextValue={{ t, init: true, proc: false, setInit: vi.fn(), setProc: vi.fn() }} />);
+    localStorage.clear(); // removed elsewhere after the table was drawn
+    fireEvent.click(screen.getByTitle('edit'));
+    expect(screen.getByLabelText('name')).toHaveValue('Gone');
+  });
+
+  it('deletes a row in the offline table that is in no queue any more', () => {
+    localStorage.setItem('insert', JSON.stringify([{ movement_name: 'Gone', movement_val: '1', movement_date: 'd' }]));
+    render(<FormHarness contextValue={{ t, init: true, proc: false, setInit: vi.fn(), setProc: vi.fn() }} />);
+    localStorage.clear();
+    fireEvent.click(screen.getByTitle('delete'));
+    expect(screen.queryByText('offlineTable')).not.toBeInTheDocument();
+  });
+});
+
+describe('Form value field', () => {
+  const online = { t, init: true, proc: false, setInit: vi.fn(), setProc: vi.fn() };
+  const typeValue = (input, value, cursor = value.length) => {
+    input.focus();
+    fireEvent.change(input, { target: { value, selectionStart: cursor, selectionEnd: cursor } });
+  };
+
+  it('shows an empty field when the value is missing', () => {
+    const { movement_val: _omitted, ...withoutValue } = blankForm;
+    render(<FormHarness contextValue={online} startForm={withoutValue} />);
+    expect(screen.getByLabelText('value')).toHaveValue('');
+  });
+
+  it('keeps digits and the first decimal point, with thousands separators', () => {
+    render(<FormHarness contextValue={online} />);
+    const input = screen.getByLabelText('value');
+    typeValue(input, '1a234567.8.9');
+    expect(input).toHaveValue('1,234,567.89');
+    expect(input.selectionStart).toBe(input.value.length);
+  });
+
+  it('ignores a value above the maximum', () => {
+    render(<FormHarness contextValue={online} />);
+    const input = screen.getByLabelText('value');
+    typeValue(input, '5000');
+    typeValue(input, '99999999999');
+    expect(input).toHaveValue('5,000');
+  });
+
+  it('keeps the cursor in place among the separators', () => {
+    render(<FormHarness contextValue={online} />);
+    const input = screen.getByLabelText('value');
+    typeValue(input, '1234567', 3); // cursor after "123"
+    expect(input).toHaveValue('1,234,567');
+    expect(input.selectionStart).toBe(4); // after "1,23"
+  });
+
+  it('puts the cursor at the start when it was there', () => {
+    render(<FormHarness contextValue={online} />);
+    const input = screen.getByLabelText('value');
+    typeValue(input, '1234', 0);
+    expect(input.selectionStart).toBe(0);
+  });
+
+  it('puts the cursor at the end when the characters before it were dropped', () => {
+    render(<FormHarness contextValue={online} />);
+    const input = screen.getByLabelText('value');
+    typeValue(input, '12ab', 4);
+    expect(input).toHaveValue('12');
+    expect(input.selectionStart).toBe(2);
+  });
+
+  it('leaves the cursor alone when the field is not focused', () => {
+    render(<FormHarness contextValue={online} />);
+    const input = screen.getByLabelText('value');
+    screen.getByLabelText('name').focus();
+    fireEvent.change(input, { target: { value: '1234' } });
+    expect(input).toHaveValue('1,234');
+  });
+});
+
+describe('Form validation messages and origin options', () => {
+  it('shows a translated message for each invalid field', () => {
+    render(
+      <FormHarness
+        contextValue={{ t, init: true, proc: false, setInit: vi.fn(), setProc: vi.fn() }}
+        operateFor={[{ id: 3, name: 'Wallet' }]}
+      />
+    );
+    ['name', 'value', 'type', 'date', 'tag'].forEach((label) => {
+      const field = screen.getByLabelText(label);
+      fireEvent.invalid(field);
+      expect(field.validationMessage).not.toBe('');
+    });
+    expect(screen.getByRole('option', { name: 'Wallet' })).toHaveValue('3');
+  });
+});
+
+describe('Form submit with a pending offline queue', () => {
+  it('syncs the queue first, then sends the new movement', async () => {
+    localStorage.setItem('insert', JSON.stringify([{ movement_name: 'Queued', movement_val: '1', movement_date: 'd' }]));
+    DataService.insert.mockResolvedValue({});
+    render(<FormHarness contextValue={{ t, init: true, proc: false, setInit: vi.fn(), setProc: vi.fn() }} />);
+    fillRequiredFields();
+    fireEvent.click(screen.getByDisplayValue('submit'));
+    await waitFor(() => expect(DataService.insert).toHaveBeenCalledTimes(2));
   });
 });
