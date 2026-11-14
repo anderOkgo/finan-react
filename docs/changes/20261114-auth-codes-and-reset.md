@@ -1,6 +1,6 @@
 # Password reset in the hidden login panel
 
-**Date:** 2026-11-14 · **Branch:** `feature/20261114-auth-codes-and-reset` · **Released in:** — (waiting for the owner's merge and deploy)
+**Date:** 2026-11-14 · **Branch:** `feature/20261114-auth-codes-and-reset` · **Released in:** https://finan.animecream.com, 2026-11-14 (PR #11, sw.js 2.1.46)
 **Implements:** `module-docs/apps/auth/SPEC.md` v0.5 — R.2 "Where it shows" (P5, P7), C4 and C5 from the front, E10;
 design `module-docs/apps/finan/design/Login.dc.html` (tweak *Reset step*)
 **Change ID:** `20261114-auth-codes-and-reset` (the same in `module-data` and `module-api`)

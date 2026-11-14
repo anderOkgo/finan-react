@@ -1,6 +1,6 @@
 # Coverage gate at 100%
 
-**Date:** 2026-11-14 · **Branch:** `feature/20261114-finan-coverage-100` · **Released in:** https://finan.animecream.com after merge (`npm run bup`)
+**Date:** 2026-11-14 · **Branch:** `feature/20261114-finan-coverage-100` · **Released in:** https://finan.animecream.com, 2026-11-14, with `20261114-auth-codes-and-reset` (sw.js 2.1.46)
 **Implements:** `module-docs/apps/finan/SPEC.md` v0.8, gap G11, backlog B5 (P10)
 **Change ID:** `20261114-finan-coverage-100`
 
