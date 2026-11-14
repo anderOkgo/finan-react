@@ -55,4 +55,9 @@ describe('TabInfo', () => {
     rerender(<TabInfo tripInfo={[{ detail: 'final-trip', total: null }]} exchangeCol={{ total: '0' }} t={t} />);
     expect(screen.getByText('totalFinalTrip: -$1.00')).toBeInTheDocument();
   });
+
+  it('shows an empty trips table before the trips arrive', () => {
+    render(<TabInfo tripInfo={undefined} exchangeCol={{ total: '0' }} t={t} />);
+    expect(screen.getByTestId('table-mock')).toHaveTextContent('rows:0');
+  });
 });

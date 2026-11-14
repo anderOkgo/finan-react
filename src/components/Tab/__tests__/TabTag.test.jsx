@@ -1,10 +1,17 @@
 import { vi } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import TabTag from '../TabTag';
 
 vi.mock('../../Table/Table', () => ({
-  default: ({ label, data }) => (
-    <div data-testid={`table-${label}`}>{JSON.stringify(data)}</div>
+  default: ({ label, data, onFilteredDataChange }) => (
+    <div>
+      <div data-testid={`table-${label}`}>{JSON.stringify(data)}</div>
+      {onFilteredDataChange && (
+        <button type="button" data-testid={`filter-${label}`} onClick={() => onFilteredDataChange(data.slice(0, 1))}>
+          filter
+        </button>
+      )}
+    </div>
   ),
 }));
 
@@ -49,6 +56,24 @@ describe('TabTag', () => {
     expect(typeSummary).toEqual([
       { type: 'cash', total: 15, currency: 'COP' },
       { type: 'card', total: 100, currency: 'COP' },
+    ]);
+  });
+
+  it('adds up two tags of the same source in the type summary', () => {
+    const twoTagsOneSource = [...movementTag, { tag: 'fun', name_source: 'cash', montly_sum: 7, currency: 'COP' }];
+    render(<TabTag movementTag={twoTagsOneSource} monthlyBudget={0} totalDay={0} t={t} userRole="user" />);
+    expect(JSON.parse(screen.getByTestId('table-typeSummaryTable').textContent)[0]).toEqual({
+      type: 'cash',
+      total: 22,
+      currency: 'COP',
+    });
+  });
+
+  it('summarizes only the rows the tag-summary table shows after a search', () => {
+    render(<TabTag movementTag={movementTag} monthlyBudget={0} totalDay={0} t={t} userRole="user" />);
+    fireEvent.click(screen.getByTestId('filter-tagSummaryTable'));
+    expect(JSON.parse(screen.getByTestId('table-typeSummaryTable').textContent)).toEqual([
+      { type: 'cash', total: 15, currency: 'COP' },
     ]);
   });
 });

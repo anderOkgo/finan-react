@@ -194,4 +194,70 @@ describe('Table row interactions', () => {
     renderTable();
     expect(screen.queryByRole('columnheader', { name: 'actions' })).not.toBeInTheDocument();
   });
+
+  it('uses plain-text labels when the keys are not translated', () => {
+    renderTable({ onRowEdit: vi.fn(), onRowDelete: vi.fn() }, { t: () => '' });
+    expect(screen.getByRole('columnheader', { name: 'Actions' })).toBeInTheDocument();
+    expect(screen.getAllByTitle('Edit')).toHaveLength(3);
+    expect(screen.getAllByTitle('Delete')).toHaveLength(3);
+  });
+});
+
+describe('Table edge cases', () => {
+  const names = () => bodyRows().map((row) => within(row).getAllByRole('cell')[0].textContent);
+
+  it('uses the data keys as headers when no column names are given', () => {
+    renderTable({ columns: [] });
+    expect(screen.getByRole('columnheader', { name: 'name' })).toBeInTheDocument();
+  });
+
+  it('sorts equal values as a tie both ways, and sorts again after the original order', () => {
+    const tied = [
+      { name: 'B', value: 1, tag: 't', log: '' },
+      { name: 'A', value: 1, tag: 't', log: '' },
+      { name: 'C', value: 2, tag: 't', log: '' },
+    ];
+    renderTable({ data: tied });
+    const valueHeader = screen.getByRole('columnheader', { name: 'Value' });
+    fireEvent.click(valueHeader); // asc
+    expect(names()).toEqual(['B', 'A', 'C']);
+    fireEvent.click(valueHeader); // desc
+    expect(names()).toEqual(['C', 'B', 'A']);
+    fireEvent.click(valueHeader); // original
+    fireEvent.click(valueHeader); // asc again from no direction
+    expect(names()).toEqual(['B', 'A', 'C']);
+  });
+
+  it('sorts rows already in ascending order into descending order', () => {
+    const rising = [1, 2, 3, 4].map((value) => ({ name: `N${value}`, value, tag: 't', log: '' }));
+    renderTable({ data: rising });
+    const valueHeader = screen.getByRole('columnheader', { name: 'Value' });
+    fireEvent.click(valueHeader);
+    fireEvent.click(valueHeader);
+    expect(names()).toEqual(['N4', 'N3', 'N2', 'N1']);
+  });
+
+  it('sorts descending rows that arrive in falling order, keeping the column sort', () => {
+    const rows = (values) => values.map((value) => ({ name: `N${value}`, value, tag: 't', log: '' }));
+    const props = { columns: ['Name', 'Value', 'Tag', 'Log'], orderColumnsList: ['name', 'value', 'tag', 'log'], label: 'Test table' };
+    const { rerender } = render(
+      <GlobalContext.Provider value={{ t }}>
+        <Table data={rows([1, 2])} {...props} />
+      </GlobalContext.Provider>
+    );
+    fireEvent.click(screen.getByRole('columnheader', { name: /Value/ })); // asc on Value
+    // New data from the server, in falling order; the Value sort is still the active one
+    rerender(
+      <GlobalContext.Provider value={{ t }}>
+        <Table data={rows([4, 3, 2, 1])} {...props} />
+      </GlobalContext.Provider>
+    );
+    fireEvent.click(screen.getByRole('columnheader', { name: /Value/ })); // desc
+    expect(names()).toEqual(['N4', 'N3', 'N2', 'N1']);
+  });
+
+  it('shows 0 for an empty money cell', () => {
+    renderTable({ data: [{ name: 'N', value: null, tag: 't', log: '' }], moneyColumns: ['value'] });
+    expect(within(bodyRows()[0]).getAllByRole('cell')[1].textContent).toMatch(/^0/);
+  });
 });

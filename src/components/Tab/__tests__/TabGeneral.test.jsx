@@ -122,6 +122,13 @@ describe('TabGeneral tables', () => {
       { type: 'expense', total: 15, currency: 'COP' },
     ]);
   });
+
+  it('adds up two names of the same type in the type summary', () => {
+    const withTea = [...movements, { id: 4, source: 'expense', name: 'Tea', val: 3, tag: 'food', datemov: '2024-01-04', log: 'w', currency: 'COP' }];
+    render(<TabGeneral movements={withTea} remainingBudget={0} totalDay={0} currency="COP" t={t} userRole="user" />);
+    const types = JSON.parse(screen.getByTestId('table-data-typeSummaryTable').textContent);
+    expect(types.find((row) => row.type === 'expense').total).toBe(18);
+  });
 });
 
 describe('TabGeneral handleRowDoubleClick', () => {

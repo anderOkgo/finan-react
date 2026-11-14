@@ -90,4 +90,34 @@ describe('Menu', () => {
     expect(setInit).toHaveBeenCalled();
     expect(document.getElementById('checkbox_toggle').checked).toBe(false);
   });
+
+  it('uses plain-text alerts and label when the keys are not translated', () => {
+    const { container } = renderMenu({ t: () => '' });
+    const icon = container.querySelector('.icon-activity');
+    fireEvent.doubleClick(icon);
+    expect(window.alert).toHaveBeenCalledWith('Theme: User Default');
+    localStorage.setItem('themePreference', 'dark');
+    fireEvent.doubleClick(icon);
+    expect(window.alert).toHaveBeenCalledWith('Theme: System Default');
+    expect(container.querySelector('.hamburger')).toHaveAttribute('aria-label', 'Menu');
+  });
+
+  it('closes the open menu on a click outside it, and keeps it open on a click inside', () => {
+    renderMenu();
+    const toggle = document.getElementById('checkbox_toggle');
+    toggle.checked = true;
+    fireEvent.click(screen.getByText('cyfer'));
+    expect(toggle.checked).toBe(true);
+    const outside = document.createElement('div');
+    document.body.appendChild(outside);
+    fireEvent.click(outside);
+    expect(toggle.checked).toBe(false);
+    outside.remove();
+  });
+
+  it('stops listening for outside clicks once unmounted', () => {
+    const { unmount } = renderMenu();
+    unmount();
+    expect(() => fireEvent.click(document.body)).not.toThrow();
+  });
 });

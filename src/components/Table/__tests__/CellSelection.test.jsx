@@ -115,6 +115,27 @@ describe('Cell selection', () => {
     expect(within(bar()).getByText('3 selectedCells')).toBeInTheDocument();
   });
 
+  it('Shift + click with nothing selected yet selects just that cell', () => {
+    renderTable();
+    fireEvent.click(cell('950'), { shiftKey: true });
+    expect(within(bar()).getByText('1 selectedCells')).toBeInTheDocument();
+  });
+
+  it('Shift + click after the first cell was filtered out adds just the new one', () => {
+    renderTable();
+    fireEvent.click(cell('950'), { ctrlKey: true }); // Rent
+    fireEvent.click(screen.getByText('filter-first-row')); // only Salary is shown now
+    fireEvent.click(cell('3,200'), { shiftKey: true });
+    expect(bar().querySelector('.cell-selection-count').textContent).toBe('2 selectedCells · 1 hiddenCells');
+  });
+
+  it('counts an empty money cell as 0', () => {
+    renderTable({ data: [{ id: 9, name: 'Blank', val: null, source: 'expense' }, ...movements] });
+    const blank = within(screen.getByText('Blank').closest('tr')).getAllByRole('cell')[2];
+    fireEvent.click(blank, { ctrlKey: true });
+    expect(within(bar()).getByText('1 selectedCells')).toBeInTheDocument();
+  });
+
   it('a plain click on a computer does not start it', () => {
     renderTable();
     fireEvent.click(cell('3,200'));

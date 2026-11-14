@@ -44,4 +44,13 @@ describe('CountDownEnd', () => {
 
     vi.useRealTimers();
   });
+
+  it('logs and starts empty when the saved snapshot cannot be read', () => {
+    const log = vi.spyOn(console, 'log').mockImplementation(() => {});
+    localStorage.setItem('count_down', 'not a snapshot');
+    render(<CountDownEnd t={t} />);
+    expect(log).toHaveBeenCalled();
+    expect(screen.getByTestId('table-mock')).toHaveTextContent('remainingTimeTable:[]');
+    log.mockRestore();
+  });
 });

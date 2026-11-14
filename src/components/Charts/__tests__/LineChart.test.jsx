@@ -142,4 +142,22 @@ describe('LineChart CSS-variable color resolution', () => {
     expect(readLineProps().options.scales.x.grid.color).toBe('rgba(2, 2, 2, 0.1)');
     expect(readLineProps().options.scales.x.border.color).toBe('rgba(3, 3, 3, 0.2)');
   });
+
+  it('falls back to the built-in series colors when the theme sets none', () => {
+    const root = document.documentElement;
+    root.style.removeProperty('--chart-incomes');
+    root.style.removeProperty('--chart-expenses');
+    renderChart();
+    const [incomes, expenses] = readLineProps().data.datasets;
+    expect(incomes.borderColor).toBe('rgb(53, 162, 235)');
+    expect(incomes.backgroundColor).toBe('rgba(53, 162, 235, 0.5)');
+    expect(expenses.borderColor).toBe('rgb(255, 99, 132)');
+  });
+
+  it('uses a non-rgb series color as it is for the fill', () => {
+    document.documentElement.style.setProperty('--chart-incomes', '#abcdef');
+    renderChart();
+    const [incomes] = readLineProps().data.datasets;
+    expect(incomes.backgroundColor).toBe('#abcdef');
+  });
 });
