@@ -13,11 +13,22 @@ const normalizeHttpErrorMessage = (responseBody) => {
   if (typeof responseBody.message === 'string') {
     return responseBody.message;
   }
+  // Same reading as animecream-react's helpHttp (Animecream SPEC v0.8, G9): `{ error: '…' }`
+  if (typeof responseBody.error === 'string') {
+    return responseBody.error;
+  }
   if (Array.isArray(responseBody.errors)) {
     return responseBody.errors;
   }
   if (typeof responseBody.message === 'object' && responseBody.message !== null) {
     return normalizeHttpErrorMessage(responseBody.message);
+  }
+  // A validation answer keyed by field, such as `{ limit: 'Limit must be a positive number.' }`
+  if (typeof responseBody === 'object') {
+    const fieldErrors = Object.values(responseBody).filter((v) => typeof v === 'string');
+    if (fieldErrors.length > 0) {
+      return fieldErrors;
+    }
   }
   return 'Unknown error';
 };
@@ -54,7 +65,9 @@ const customFetch = async (endpoint, options = {}) => {
           }));
     } catch (err) {
       console.log({ err });
-      return { err };
+      // The timeout aborts the request: say so instead of the browser's own abort text (G9)
+      const normalizedErr = err?.name === 'AbortError' ? { ...err, message: 'Request timeout' } : err;
+      return { err: normalizedErr };
     }
   } else {
     return {
