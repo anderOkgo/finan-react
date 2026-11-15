@@ -111,7 +111,12 @@ test.describe('Dashboard: movement CRUD', () => {
     expect(deleteResponse.ok()).toBe(true);
     createdMovementId = undefined; // already deleted through the UI -- afterEach has nothing to do
 
+    // Scoped to the General panel: since Finanz v0.9 the deleted movement stays listed in the
+    // Deleted table of the Input tab, and every tab stays mounted (§2.1, §2.2.1).
     await page.locator('label[for="tab-2"]').click();
-    await expect(page.locator('tr', { hasText: movementName })).toHaveCount(0, { timeout: 15000 });
+    const generalPanel = page.locator('#tab-2 + label + .panel-tab');
+    await expect(generalPanel.locator('tr', { hasText: movementName })).toHaveCount(0, { timeout: 15000 });
+    // ...where it is kept (in the DOM; the Input panel is not the one shown now)
+    await expect(page.getByText('Deleted (1)')).toBeAttached();
   });
 });

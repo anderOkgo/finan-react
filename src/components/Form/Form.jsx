@@ -7,8 +7,19 @@ import './Form.css';
 import GlobalContext from '../../contexts/GlobalContext.jsx';
 import { translateApiMessage } from '../../hooks/useLanguage';
 import { onNativeInvalid, onNativeInput } from '../../helpers/nativeValidation';
+import { addDeleted, readDeleted, removeDeleted, toRestoreRequest } from '../../helpers/deletedMovements';
 
 const MAX_MOVEMENT_VAL = 10000000000;
+
+// movement_type id → the language key of its label (the three writable types, D1)
+const TYPE_LABELS = { 1: 'incomes', 2: 'expenses', 8: 'balance' };
+
+const pad = (n) => String(n).padStart(2, '0');
+/** "2026-11-15 09:05" in local time. */
+const formatLocalDateTime = (ms) => {
+  const d = new Date(ms);
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+};
 
 /** Adds thousands separators to a raw "1234.5"-style numeric string for display. */
 const formatWithThousands = (rawValue) => {
@@ -25,6 +36,8 @@ function Form({ setForm, form, edit, setEdit, currency, operateFor }) {
   const [bgColor, setBgColor] = useState('');
   const [visible, setVisible] = useState(false);
   const [off, setOff] = useState([]);
+  // Movements deleted from the server, kept 7 days on this device (SPEC v0.9, §2.2.1)
+  const [deleted, setDeleted] = useState(() => readDeleted());
   const [disabled, setDisabled] = useState(false);
   const buttonRef = useRef(null);
   const movementValInputRef = useRef(null);
@@ -176,7 +189,13 @@ function Form({ setForm, form, edit, setEdit, currency, operateFor }) {
       const updatedData = [];
       for (const item of JSON.parse(localStorage.getItem(type)) || []) {
         const response = await DataService[type](item);
-        response.err && updatedData.push(item) & setInit(false);
+        if (response.err) {
+          updatedData.push(item);
+          setInit(false);
+        } else if (type === 'del') {
+          // A queued delete reached the server: keep the movement for 7 days (H8)
+          setDeleted(addDeleted(item));
+        }
       }
       localStorage.setItem(type, JSON.stringify(updatedData));
       return updatedData;
@@ -298,6 +317,8 @@ function Form({ setForm, form, edit, setEdit, currency, operateFor }) {
             setInit(false);
           } else {
             message(t('transactionSuccessful'), 'var(--color-success)', true);
+            // A delete that reached the server can be undone for 7 days (H1)
+            if (actionType === 'del') setDeleted(addDeleted(form));
             setInit(Date.now());
           }
           setDisabled(false);
@@ -317,6 +338,57 @@ function Form({ setForm, form, edit, setEdit, currency, operateFor }) {
       }
     },
     [edit, proc, setProc, handleResetForm, form, handleOfflineData, setInit, init, off, handleRowDoubleClick, t]
+  );
+
+  /** ↺ Sends a deleted movement again as a new one; offline it waits in the Offline queue (H2–H4). */
+  const handleDeletedRestore = useCallback(
+    async (row) => {
+      // The table is built from `deleted`, so its row is always there
+      const stored = deleted.find((item) => item.key === row.key);
+      const request = toRestoreRequest(stored);
+      setDeleted(removeDeleted(stored.key));
+      if (init && !proc) {
+        setProc(true);
+        const response = await DataService.insert(request);
+        if (response?.err) {
+          message(translateApiMessage(t, response.err.message), 'var(--color-danger)', true);
+          handleOfflineData('insert', request);
+          setInit(false);
+        } else {
+          message(t('transactionSuccessful'), 'var(--color-success)', true);
+          setInit(Date.now());
+        }
+        setProc(false);
+      } else {
+        handleOfflineData('insert', request);
+        message(t('transactionWaiting'), 'var(--color-warning)', true);
+      }
+    },
+    [deleted, init, proc, setProc, setInit, handleOfflineData, t]
+  );
+
+  /** 🗑 Removes a deleted movement from the device for good, after asking (H5). */
+  const handleDeletedForGood = useCallback(
+    (row) => {
+      if (!window.confirm(`${t('areYouSureForGood')}: '${row[t('name')]}'?`)) return;
+      setDeleted(removeDeleted(row.key));
+    },
+    [t]
+  );
+
+  // The rows of the Deleted table: labels as keys, the storage key hidden for the actions
+  const deletedRows = useMemo(
+    () =>
+      deleted.map((item) => ({
+        [t('name')]: item.movement_name,
+        [t('value')]: Number(item.movement_val),
+        [t('type')]: TYPE_LABELS[item.movement_type] ?? String(item.movement_type),
+        [t('date')]: String(item.movement_date).replace('T', ' '),
+        [t('tag')]: item.movement_tag,
+        [t('deletedOn')]: formatLocalDateTime(item.deletedAt),
+        key: item.key,
+      })),
+    [deleted, t]
   );
 
   return (
@@ -464,6 +536,16 @@ function Form({ setForm, form, edit, setEdit, currency, operateFor }) {
           onRowDoubleClick={handleRowDoubleClick}
           onRowEdit={handleOfflineRowEdit}
           onRowDelete={handleOfflineRowDelete}
+        />
+      )}
+      {deletedRows.length !== 0 && (
+        <Table
+          label={`${t('deletedTable')} (${deletedRows.length})`}
+          data={deletedRows}
+          hiddenColumns={['key']}
+          moneyColumns={[t('value')]}
+          onRowRestore={handleDeletedRestore}
+          onRowDelete={handleDeletedForGood}
         />
       )}
     </div>
