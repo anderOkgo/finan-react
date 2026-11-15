@@ -434,3 +434,155 @@ describe('Form submit with a pending offline queue', () => {
     await waitFor(() => expect(DataService.insert).toHaveBeenCalledTimes(2));
   });
 });
+
+describe('Deleted movements, kept 7 days on the device (SPEC v0.9, §2.2.1)', () => {
+  const editing = {
+    id: 42,
+    movement_name: 'Lunch',
+    movement_val: '25000',
+    operate_for: '7',
+    movement_type: '2',
+    movement_date: '2026-11-14T12:30',
+    movement_tag: 'food',
+    currency: 'COP',
+  };
+  const keptRow = (overrides = {}) => ({
+    key: 'k1',
+    deletedAt: Date.now(),
+    movement_name: 'Lunch',
+    movement_val: '25000',
+    movement_type: '2',
+    movement_date: '2026-11-14T12:30',
+    movement_tag: 'food',
+    currency: 'COP',
+    ...overrides,
+  });
+  const keep = (...rows) => localStorage.setItem('deleted', JSON.stringify(rows));
+  const kept = () => JSON.parse(localStorage.getItem('deleted')) ?? [];
+  const cells = () => [...document.querySelectorAll('td')].map((td) => td.textContent);
+  const online = (extra = {}) => ({ t, init: true, proc: false, setInit: vi.fn(), setProc: vi.fn(), ...extra });
+
+  it('H1: a delete that reaches the server shows in Deleted (1) with its fields', async () => {
+    DataService.del.mockResolvedValue({});
+    render(<FormHarness contextValue={online()} initialEdit startForm={editing} />);
+
+    fireEvent.click(screen.getByDisplayValue('delete'));
+
+    await waitFor(() => expect(screen.getByText('deletedTable (1)')).toBeInTheDocument());
+    expect(cells()).toEqual(expect.arrayContaining(['Lunch', 'expenses', '2026-11-14 12:30', 'food']));
+    expect(kept()).toHaveLength(1);
+    expect(kept()[0].operate_for).toBeUndefined();
+  });
+
+  it('keeps nothing when the delete fails and waits in the Offline queue', async () => {
+    DataService.del.mockResolvedValue({ err: { message: 'offline' } });
+    render(<FormHarness contextValue={online()} initialEdit startForm={editing} />);
+
+    fireEvent.click(screen.getByDisplayValue('delete'));
+
+    await waitFor(() => expect(screen.getByText('offlineTable')).toBeInTheDocument());
+    expect(screen.queryByText(/deletedTable/)).not.toBeInTheDocument();
+    expect(kept()).toEqual([]);
+  });
+
+  it('H2, H3: restoring online sends it again as new, without id or origin, and empties the list', async () => {
+    keep(keptRow());
+    DataService.insert.mockResolvedValue({});
+    const setInit = vi.fn();
+    render(<FormHarness contextValue={online({ setInit })} />);
+
+    fireEvent.click(screen.getByTitle('restore'));
+
+    await waitFor(() => expect(DataService.insert).toHaveBeenCalledTimes(1));
+    const request = DataService.insert.mock.calls[0][0];
+    expect(request).toEqual({
+      movement_name: 'Lunch',
+      movement_val: '25000',
+      movement_type: '2',
+      movement_date: '2026-11-14T12:30',
+      movement_tag: 'food',
+      currency: 'COP',
+    });
+    await waitFor(() => expect(screen.getByTestId('message')).toHaveTextContent('transactionSuccessful'));
+    expect(setInit).toHaveBeenCalledWith(expect.any(Number));
+    expect(screen.queryByText(/deletedTable/)).not.toBeInTheDocument();
+    expect(localStorage.getItem('deleted')).toBeNull();
+  });
+
+  it('H4: restoring offline moves the row to the Offline queue', () => {
+    keep(keptRow());
+    render(<FormHarness contextValue={online({ init: false })} />);
+
+    fireEvent.click(screen.getByTitle('restore'));
+
+    expect(DataService.insert).not.toHaveBeenCalled();
+    expect(JSON.parse(localStorage.getItem('insert'))).toHaveLength(1);
+    expect(screen.getByText('offlineTable')).toBeInTheDocument();
+    expect(screen.queryByText(/deletedTable/)).not.toBeInTheDocument();
+    expect(screen.getByTestId('message')).toHaveTextContent('transactionWaiting');
+  });
+
+  it('a restore the API refuses waits in the Offline queue too', async () => {
+    keep(keptRow());
+    DataService.insert.mockResolvedValue({ err: { message: 'still offline' } });
+    const setInit = vi.fn();
+    render(<FormHarness contextValue={online({ setInit })} />);
+
+    fireEvent.click(screen.getByTitle('restore'));
+
+    await waitFor(() => expect(screen.getByText('offlineTable')).toBeInTheDocument());
+    expect(JSON.parse(localStorage.getItem('insert'))).toHaveLength(1);
+    expect(setInit).toHaveBeenLastCalledWith(false);
+    expect(kept()).toEqual([]);
+  });
+
+  it('H5: delete for good asks first, then removes the row and sends nothing', () => {
+    keep(keptRow());
+    window.confirm.mockReturnValueOnce(false);
+    render(<FormHarness contextValue={online()} />);
+
+    fireEvent.click(screen.getByTitle('delete'));
+    expect(kept()).toHaveLength(1);
+    expect(window.confirm).toHaveBeenLastCalledWith("areYouSureForGood: 'Lunch'?");
+
+    fireEvent.click(screen.getByTitle('delete'));
+    expect(kept()).toEqual([]);
+    expect(screen.queryByText(/deletedTable/)).not.toBeInTheDocument();
+    expect(DataService.del).not.toHaveBeenCalled();
+    expect(DataService.insert).not.toHaveBeenCalled();
+  });
+
+  it('H6: a row 7 days old is neither listed nor kept when the form opens', () => {
+    keep(keptRow({ key: 'old', deletedAt: Date.now() - 7 * 24 * 60 * 60 * 1000 - 1 }));
+    render(<FormHarness contextValue={online()} />);
+    expect(screen.queryByText(/deletedTable/)).not.toBeInTheDocument();
+    expect(localStorage.getItem('deleted')).toBeNull();
+  });
+
+  it('H7: removing an unsent row from the Offline table does not keep it', () => {
+    localStorage.setItem('insert', JSON.stringify([{ movement_name: 'Unsent', movement_val: '1', movement_date: 'd' }]));
+    render(<FormHarness contextValue={online()} />);
+
+    fireEvent.click(screen.getByTitle('delete'));
+
+    expect(kept()).toEqual([]);
+    expect(screen.queryByText(/deletedTable/)).not.toBeInTheDocument();
+  });
+
+  it('H8: a queued delete that syncs shows in Deleted', async () => {
+    localStorage.setItem('del', JSON.stringify([editing]));
+    DataService.del.mockResolvedValue({});
+    render(<FormHarness contextValue={online()} />);
+
+    fireEvent.doubleClick(document.querySelector('tbody tr'));
+
+    await waitFor(() => expect(screen.getByText('deletedTable (1)')).toBeInTheDocument());
+    expect(kept()[0].movement_name).toBe('Lunch');
+  });
+
+  it('shows a type it has no label for as its id', () => {
+    keep(keptRow({ movement_type: '3' }));
+    render(<FormHarness contextValue={online()} />);
+    expect(cells()).toContain('3');
+  });
+});

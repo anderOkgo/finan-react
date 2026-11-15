@@ -22,6 +22,7 @@ function Table({
   onFilteredDataChange = false,
   onRowDelete = null,
   onRowEdit = null,
+  onRowRestore = null,
   defaultSearchTerm = '',
 }) {
   const [dataset, setDataset] = useState([]);
@@ -111,7 +112,7 @@ function Table({
                 : ''}
           </th>
         ))}
-        {(onRowEdit || onRowDelete) && <th>{t('actions') || 'Actions'}</th>}
+        {(onRowEdit || onRowRestore || onRowDelete) && <th>{t('actions') || 'Actions'}</th>}
       </tr>
     );
   };
@@ -149,7 +150,7 @@ function Table({
     return currentData.map((item, index) => (
       <tr key={index} onDoubleClick={() => (onRowDoubleClick && !selection.active ? onRowDoubleClick(item) : false)}>
         {renderTableColumns(item)}
-        {(onRowEdit || onRowDelete) && (
+        {(onRowEdit || onRowRestore || onRowDelete) && (
           <td>
             <div style={{ display: 'flex', gap: '8px' }}>
               {onRowEdit && (
@@ -167,6 +168,24 @@ function Table({
                   title={t('edit') || 'Edit'}
                 >
                   &#9998; {/* Representa un lápiz: ✎ */}
+                </button>
+              )}
+
+              {onRowRestore && (
+                <button
+                  className="btn-primarys"
+                  style={{
+                    padding: '4px 8px',
+                    cursor: 'pointer',
+                    fontSize: '1.1rem',
+                  }}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onRowRestore(item);
+                  }}
+                  title={t('restore')}
+                >
+                  &#8634; {/* An anticlockwise arrow: ↺ */}
                 </button>
               )}
 
@@ -227,6 +246,7 @@ Table.propTypes = {
   onFilteredDataChange: PropTypes.func,
   onRowDelete: PropTypes.func,
   onRowEdit: PropTypes.func,
+  onRowRestore: PropTypes.func,
   defaultSearchTerm: PropTypes.string,
 };
 
