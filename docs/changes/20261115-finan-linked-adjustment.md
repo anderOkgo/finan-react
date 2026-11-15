@@ -1,6 +1,6 @@
 # A restore sends the origin again (the linked adjustment follows deletes and edits)
 
-**Date:** 2026-11-15 · **Branch:** `feature/20261115-finan-linked-adjustment` · **Released in:** not yet
+**Date:** 2026-11-15 · **Branch:** `feature/20261115-finan-linked-adjustment` · **Released in:** https://finan.animecream.com, 2026-11-15 (PR #15, after module-api #17; `sw.js` 2.1.49)
 **Implements:** `module-docs/apps/finan/SPEC.md` v0.10 — L.5 (front), J11, J12; §2.2.1 restore
 **Change ID:** `20261115-finan-linked-adjustment` (the same in `module-api`, which re-adjusts on delete and edit)
 
@@ -44,3 +44,4 @@ Rollback: revert, with the API's revert.
 | Date | Change |
 |---|---|
 | 2026-11-15 | Created; unit 100% (357), Playwright 9/9 local against the v0.10 API |
+| 2026-11-15 | **Merged** (PR #15, `d4389dd`) and **deployed** after the API: unit 357 at 100%, lint and build pass, `npm run up` "No error found". Served: `/version.json` commit `d4389dd`, `dirty: false`; `sw.js` 2.1.49; bundle `index-ec79a236.js` holds the restore-without-origin message |
