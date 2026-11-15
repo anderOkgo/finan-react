@@ -1,9 +1,11 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import versionJson from './scripts/version-json.mjs'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  // versionJson: dist/version.json with the commit that was built (playbook v2.11, D.1).
+  plugins: [react(), versionJson()],
   test: {
     globals: true,
     environment: 'jsdom',
