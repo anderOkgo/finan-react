@@ -79,6 +79,14 @@ describe('helpHttp', () => {
     expect(await helpHttp.get('/x')).toEqual({ err: boom });
   });
 
+  it('returns an abort by the timeout as "Request timeout" (Animecream SPEC v0.8, G9)', async () => {
+    const abort = Object.assign(new Error('signal is aborted without reason'), { name: 'AbortError' });
+    fetch.mockRejectedValueOnce(abort);
+    expect((await helpHttp.get('/x')).err.message).toBe('Request timeout');
+    fetch.mockRejectedValueOnce(undefined);
+    expect(await helpHttp.get('/x')).toEqual({ err: undefined });
+  });
+
   describe('a failed answer', () => {
     const failWith = async (body, init) => {
       fetch.mockReturnValue(answer(body, { ok: false, status: 400, statusText: 'Bad Request', ...init }));
@@ -102,6 +110,14 @@ describe('helpHttp', () => {
       expect((await failWith({ message: { message: 'Nested' } })).message).toBe('Nested');
       expect((await failWith({ message: null })).message).toBe('Unknown error');
       expect((await failWith({ code: 1 })).message).toBe('Unknown error');
+      // G9: the same reading as animecream-react
+      expect((await failWith({ error: 'Unauthorized: Missing or invalid token format' })).message).toBe(
+        'Unauthorized: Missing or invalid token format'
+      );
+      expect((await failWith({ limit: 'Limit cannot exceed 10,000.', code: 1 })).message).toEqual([
+        'Limit cannot exceed 10,000.',
+      ]);
+      expect((await failWith(5)).message).toBe('Unknown error');
     });
   });
 });
