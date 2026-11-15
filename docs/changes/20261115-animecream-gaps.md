@@ -33,3 +33,4 @@ Merge **after** PR #13 (this branch is built on it). Then `npm run build && npm 
 | Date | Change |
 |---|---|
 | 2026-11-15 | Created; unit 100% (332), lint and build pass |
+| 2026-11-15 | Rebased onto PR #13's branch, `sw.js` 2.1.48: unit 100% (40 files, 352 tests), lint and build pass |
