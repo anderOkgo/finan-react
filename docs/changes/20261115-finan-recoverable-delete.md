@@ -1,6 +1,6 @@
 # Deleted movements, kept 7 days on the device
 
-**Date:** 2026-11-15 · **Branch:** `feature/20261115-finan-recoverable-delete` · **Released in:** not yet
+**Date:** 2026-11-15 · **Branch:** `feature/20261115-finan-recoverable-delete` · **Released in:** https://finan.animecream.com, 2026-11-15 (PR #13, deployed with #14: `sw.js` 2.1.48)
 **Implements:** `module-docs/apps/finan/SPEC.md` v0.9 — §2.2.1 (P11, P12), D2, acceptance H1–H9
 **Change ID:** `20261115-finan-recoverable-delete` (finan-react only; no API or data change)
 
@@ -59,3 +59,4 @@ Rows already kept stay in `localStorage` harmlessly until logout.
 | Date | Change |
 |---|---|
 | 2026-11-15 | Created; unit 100% (351), Playwright 8/8 local |
+| 2026-11-15 | **Merged** (PR #13, `b094d37`), then #14 on top (`2022fc3`). **Deployed** together from `main`: unit 352 at 100%, lint and build pass, `npm run up` "No error found". Served: `/version.json` commit `2022fc3`, `dirty: false`; `sw.js` 2.1.48 (not 2.1.47: #14 bumped once more); bundle `index-5e5d04fd.js`, which holds the Deleted table. The phone check of the post-deploy checklist is the owner's (it writes a movement in production) |

@@ -1,6 +1,6 @@
 # helpHttp reads errors and timeouts like animecream-react's (Animecream G9)
 
-**Date:** 2026-11-15 · **Branch:** `feature/20261115-animecream-gaps` (on top of `feature/20261115-finan-recoverable-delete`) · **Released in:** not yet
+**Date:** 2026-11-15 · **Branch:** `feature/20261115-animecream-gaps` (on top of `feature/20261115-finan-recoverable-delete`) · **Released in:** https://finan.animecream.com, 2026-11-15 (PR #14, after #13; `sw.js` 2.1.48)
 **Implements:** `module-docs/apps/animecream/SPEC.md` v0.8 — G9 (P11)
 **Change ID:** `20261115-animecream-gaps` (the same in `animecream-react` for G2 and G6, and in `module-api` for G3)
 
