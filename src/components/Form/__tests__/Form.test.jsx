@@ -471,7 +471,8 @@ describe('Deleted movements, kept 7 days on the device (SPEC v0.9, §2.2.1)', ()
     await waitFor(() => expect(screen.getByText('deletedTable (1)')).toBeInTheDocument());
     expect(cells()).toEqual(expect.arrayContaining(['Lunch', 'expenses', '2026-11-14 12:30', 'food']));
     expect(kept()).toHaveLength(1);
-    expect(kept()[0].operate_for).toBeUndefined();
+    // SPEC v0.10: the copy keeps the origin, so a restore applies the effect again
+    expect(kept()[0].operate_for).toBe(7);
   });
 
   it('keeps nothing when the delete fails and waits in the Offline queue', async () => {
@@ -485,7 +486,47 @@ describe('Deleted movements, kept 7 days on the device (SPEC v0.9, §2.2.1)', ()
     expect(kept()).toEqual([]);
   });
 
-  it('H2, H3: restoring online sends it again as new, without id or origin, and empties the list', async () => {
+  it('J11: restoring sends the origin again', async () => {
+    keep(keptRow({ operate_for: 7 }));
+    DataService.insert.mockResolvedValue({});
+    render(<FormHarness contextValue={online()} />);
+
+    fireEvent.click(screen.getByTitle('restore'));
+
+    await waitFor(() => expect(DataService.insert).toHaveBeenCalledTimes(1));
+    expect(DataService.insert.mock.calls[0][0].operate_for).toBe(7);
+    await waitFor(() => expect(screen.getByTestId('message')).toHaveTextContent('transactionSuccessful'));
+  });
+
+  it('J12: when the origin no longer exists, it restores without it and says so', async () => {
+    keep(keptRow({ operate_for: 7 }));
+    DataService.insert
+      .mockResolvedValueOnce({ err: { message: 'Linked movement not found' } })
+      .mockResolvedValueOnce({});
+    const setInit = vi.fn();
+    render(<FormHarness contextValue={online({ setInit })} />);
+
+    fireEvent.click(screen.getByTitle('restore'));
+
+    await waitFor(() => expect(DataService.insert).toHaveBeenCalledTimes(2));
+    expect('operate_for' in DataService.insert.mock.calls[1][0]).toBe(false);
+    await waitFor(() => expect(screen.getByTestId('message')).toHaveTextContent('restoredWithoutOrigin'));
+    expect(setInit).toHaveBeenCalledWith(expect.any(Number));
+    expect(localStorage.getItem('insert')).toBeNull();
+  });
+
+  it('a row with no origin that gets "Linked movement not found" is not retried', async () => {
+    keep(keptRow());
+    DataService.insert.mockResolvedValue({ err: { message: 'Linked movement not found' } });
+    render(<FormHarness contextValue={online()} />);
+
+    fireEvent.click(screen.getByTitle('restore'));
+
+    await waitFor(() => expect(screen.getByText('offlineTable')).toBeInTheDocument());
+    expect(DataService.insert).toHaveBeenCalledTimes(1);
+  });
+
+  it('H2, H3: restoring online sends it again as new, without id (no origin kept before v0.10), and empties the list', async () => {
     keep(keptRow());
     DataService.insert.mockResolvedValue({});
     const setInit = vi.fn();

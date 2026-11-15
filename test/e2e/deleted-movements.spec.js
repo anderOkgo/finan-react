@@ -129,4 +129,67 @@ test.describe('Deleted movements (Finanz §2.2.1)', () => {
     await expect(page.locator('#username')).toBeVisible({ timeout: 10000 });
     expect(await page.evaluate(() => localStorage.getItem('deleted'))).toBeNull();
   });
+
+  // Finanz SPEC v0.10, J11: the origin balance follows the delete and the restore. Needs module-api with v0.10.
+  test('J11: deleting gives the value back to the origin, restoring takes it again', async ({ page, request }) => {
+    const originName = `__E2E_ORIGIN_${Date.now()}__`;
+    movementName = `__E2E_LINKED_${Date.now()}__`;
+    const auth = { Authorization: `Bearer ${await token(request)}` };
+    const originValue = async () => Number((await movementsNamed(request, originName))[0]?.val);
+    try {
+      const made = await request.post(`${API}/api/finan/insert`, {
+        headers: auth,
+        data: {
+          movement_name: originName,
+          movement_val: 1000,
+          movement_type: 8,
+          movement_date: nowLocal(),
+          movement_tag: 'e2e',
+          currency: 'COP',
+        },
+      });
+      expect(made.ok()).toBe(true);
+      expect(await originValue()).toBe(1000);
+
+      // An expense of 50 taken from that origin, through the form
+      await signIn(page);
+      await page.locator('#movement_name').fill(movementName);
+      await page.locator('#movement_val').fill('50');
+      await page.locator('#movement_type').selectOption('2');
+      await page.locator('#operate_for').selectOption({ label: originName });
+      await page.locator('#movement_date').fill(nowLocal());
+      await page.locator('#movement_tag').fill('e2e');
+      await Promise.all([
+        page.waitForResponse((res) => res.url().includes('/api/finan/insert') && res.request().method() === 'POST'),
+        page.locator('input[type="submit"]').click(),
+      ]);
+      await expect.poll(originValue).toBe(950);
+
+      // Delete it: the origin gets its 50 back
+      const row = () => page.locator('#tab-2 + label + .panel-tab tr', { hasText: movementName }).first();
+      await page.locator('label[for="tab-2"]').click();
+      await expect(row()).toBeVisible({ timeout: 15000 });
+      await row().dblclick();
+      page.once('dialog', (dialog) => dialog.accept());
+      await Promise.all([
+        page.waitForResponse((res) => res.url().includes('/api/finan/delete/') && res.request().method() === 'DELETE'),
+        page.locator('.delete-button').click(),
+      ]);
+      await expect.poll(originValue).toBe(1000);
+
+      // Restore it: the request carries the origin, which loses the 50 again
+      await page.locator('label[for="tab-1"]').click();
+      const [restored] = await Promise.all([
+        page.waitForResponse((res) => res.url().includes('/api/finan/insert') && res.request().method() === 'POST'),
+        page.locator('tr', { hasText: movementName }).getByTitle('Restore').click(),
+      ]);
+      expect(restored.ok()).toBe(true);
+      expect(restored.request().postDataJSON().operate_for).toBeTruthy();
+      await expect.poll(originValue).toBe(950);
+    } finally {
+      for (const m of await movementsNamed(request, originName)) {
+        await request.delete(`${API}/api/finan/delete/${m.id}`, { headers: auth, data: { username: login } });
+      }
+    }
+  });
 });
