@@ -34,3 +34,4 @@ Merge **after** PR #13 (this branch is built on it). Then `npm run build && npm 
 |---|---|
 | 2026-11-15 | Created; unit 100% (332), lint and build pass |
 | 2026-11-15 | Rebased onto PR #13's branch, `sw.js` 2.1.48: unit 100% (40 files, 352 tests), lint and build pass |
+| 2026-11-15 | **Merged** (PR #14, `2022fc3`) after #13 and **deployed** with it: `/version.json` commit `2022fc3`, `sw.js` 2.1.48, bundle `index-5e5d04fd.js` holds "Request timeout" and "Tiempo de espera agotado" |
