@@ -7,7 +7,13 @@ import './Form.css';
 import GlobalContext from '../../contexts/GlobalContext.jsx';
 import { translateApiMessage } from '../../hooks/useLanguage';
 import { onNativeInvalid, onNativeInput } from '../../helpers/nativeValidation';
-import { addDeleted, readDeleted, removeDeleted, toRestoreRequest } from '../../helpers/deletedMovements';
+import {
+  addDeleted,
+  readDeleted,
+  removeDeleted,
+  toRestoreRequest,
+  LINKED_NOT_FOUND,
+} from '../../helpers/deletedMovements';
 
 const MAX_MOVEMENT_VAL = 10000000000;
 
@@ -345,17 +351,25 @@ function Form({ setForm, form, edit, setEdit, currency, operateFor }) {
     async (row) => {
       // The table is built from `deleted`, so its row is always there
       const stored = deleted.find((item) => item.key === row.key);
-      const request = toRestoreRequest(stored);
+      // With its origin, so the API applies the effect again (SPEC v0.10, L.5)
+      let request = toRestoreRequest(stored);
       setDeleted(removeDeleted(stored.key));
       if (init && !proc) {
         setProc(true);
-        const response = await DataService.insert(request);
+        let response = await DataService.insert(request);
+        let withoutOrigin = false;
+        if (response?.err?.message === LINKED_NOT_FOUND && request.operate_for) {
+          // That balance no longer exists: restore it without origin, and say so (P14)
+          request = toRestoreRequest(stored, { withoutOrigin: true });
+          response = await DataService.insert(request);
+          withoutOrigin = true;
+        }
         if (response?.err) {
           message(translateApiMessage(t, response.err.message), 'var(--color-danger)', true);
           handleOfflineData('insert', request);
           setInit(false);
         } else {
-          message(t('transactionSuccessful'), 'var(--color-success)', true);
+          message(t(withoutOrigin ? 'restoredWithoutOrigin' : 'transactionSuccessful'), 'var(--color-success)', true);
           setInit(Date.now());
         }
         setProc(false);

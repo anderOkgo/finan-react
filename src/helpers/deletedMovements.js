@@ -5,9 +5,18 @@
 export const DELETED_KEY = 'deleted';
 export const KEEP_MS = 7 * 24 * 60 * 60 * 1000;
 
-// The fields a restore sends again. The origin (operate_for) is left out on purpose: deleting never
-// undid its adjustment (D4, G7), so sending it again would apply it twice.
+// The fields a restore sends again.
 const KEPT_FIELDS = ['movement_name', 'movement_val', 'movement_type', 'movement_date', 'movement_tag', 'currency'];
+
+/**
+ * The origin balance (operate_for) is kept too since SPEC v0.10: the API now gives a deleted movement's effect back
+ * to its origin, so a restore sends the origin and the effect comes back. A row kept before v0.10 has no origin:
+ * its delete undid nothing, so it is restored without one.
+ */
+const originOf = (value) => {
+  const id = Number(value);
+  return Number.isInteger(id) && id > 0 ? id : null;
+};
 
 const readRaw = () => {
   try {
@@ -38,6 +47,8 @@ export const readDeleted = (now = Date.now()) => {
 export const addDeleted = (movement, now = Date.now()) => {
   const kept = { key: `${now}-${Math.random().toString(36).slice(2, 8)}`, deletedAt: now };
   for (const field of KEPT_FIELDS) kept[field] = movement[field] ?? '';
+  const origin = originOf(movement.operate_for);
+  if (origin) kept.operate_for = origin;
   write([kept, ...fresh(readRaw(), now)]);
   return readDeleted(now);
 };
@@ -48,9 +59,14 @@ export const removeDeleted = (key, now = Date.now()) => {
   return readDeleted(now);
 };
 
-/** The movement a restore sends as a new one: no id, no origin. */
-export const toRestoreRequest = (row) => {
+/** The movement a restore sends as a new one: no id; its origin when it has one, unless `withoutOrigin`. */
+export const toRestoreRequest = (row, { withoutOrigin = false } = {}) => {
   const request = {};
   for (const field of KEPT_FIELDS) request[field] = row[field];
+  const origin = originOf(row.operate_for);
+  if (origin && !withoutOrigin) request.operate_for = origin;
   return request;
 };
+
+/** The API's answer when the origin balance no longer exists (Finanz SPEC v0.10, P14). */
+export const LINKED_NOT_FOUND = 'Linked movement not found';

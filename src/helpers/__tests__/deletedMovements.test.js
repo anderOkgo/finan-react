@@ -29,7 +29,7 @@ describe('deletedMovements (Finanz SPEC v0.9, §2.2.1)', () => {
     expect(KEEP_MS).toBe(7 * 24 * 60 * 60 * 1000);
   });
 
-  it('keeps the fields a restore needs, without the id or the origin (G7)', () => {
+  it('keeps the fields a restore needs and the origin, without the id (SPEC v0.10)', () => {
     const [row] = addDeleted(movement, 1000);
     expect(row).toEqual({
       key: expect.stringMatching(/^1000-/),
@@ -40,8 +40,17 @@ describe('deletedMovements (Finanz SPEC v0.9, §2.2.1)', () => {
       movement_date: '2026-11-14T12:30',
       movement_tag: 'food',
       currency: 'COP',
+      operate_for: 7,
     });
     expect(stored()).toHaveLength(1);
+  });
+
+  it('keeps no origin for a movement without one', () => {
+    for (const none of ['', 0, null, undefined, 'x']) {
+      localStorage.clear();
+      const [row] = addDeleted({ ...movement, operate_for: none }, 1000);
+      expect('operate_for' in row).toBe(false);
+    }
   });
 
   it('fills a missing field with a blank', () => {
@@ -94,7 +103,7 @@ describe('deletedMovements (Finanz SPEC v0.9, §2.2.1)', () => {
     expect(removeDeleted(row.key)).toEqual([]);
   });
 
-  it('builds the restore request: the kept fields, no id, no origin (H3)', () => {
+  it('builds the restore request: the kept fields and the origin, no id (H3 since SPEC v0.10)', () => {
     const [row] = addDeleted(movement, 1000);
     const request = toRestoreRequest(row);
     expect(request).toEqual({
@@ -104,8 +113,15 @@ describe('deletedMovements (Finanz SPEC v0.9, §2.2.1)', () => {
       movement_date: '2026-11-14T12:30',
       movement_tag: 'food',
       currency: 'COP',
+      operate_for: 7,
     });
-    expect('operate_for' in request).toBe(false);
     expect('id' in request).toBe(false);
+  });
+
+  it('builds it without origin when asked, and for a row kept before v0.10', () => {
+    const [row] = addDeleted(movement, 1000);
+    expect('operate_for' in toRestoreRequest(row, { withoutOrigin: true })).toBe(false);
+    const { operate_for: _origin, ...oldRow } = row;
+    expect('operate_for' in toRestoreRequest(oldRow)).toBe(false);
   });
 });
