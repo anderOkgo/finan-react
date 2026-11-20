@@ -47,9 +47,18 @@ describe('CountDownEnd', () => {
 
   it('logs and starts empty when the saved snapshot cannot be read', () => {
     const log = vi.spyOn(console, 'log').mockImplementation(() => {});
-    localStorage.setItem('count_down', 'not a snapshot');
+    localStorage.setItem('count_down', cyfer().cy('not a snapshot', set.salt));
     render(<CountDownEnd t={t} />);
     expect(log).toHaveBeenCalled();
+    expect(screen.getByTestId('table-mock')).toHaveTextContent('remainingTimeTable:[]');
+    log.mockRestore();
+  });
+
+  it('starts empty, quietly, with a snapshot from the old cyfer (change 20261120-cyfer-v2)', () => {
+    const log = vi.spyOn(console, 'log').mockImplementation(() => {});
+    localStorage.setItem('count_down', 'not a snapshot');
+    render(<CountDownEnd t={t} />);
+    expect(log).not.toHaveBeenCalled();
     expect(screen.getByTestId('table-mock')).toHaveTextContent('remainingTimeTable:[]');
     log.mockRestore();
   });

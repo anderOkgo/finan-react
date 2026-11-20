@@ -362,9 +362,17 @@ describe('Tab data edge cases', () => {
 
   it('logs and goes on when the cached snapshot cannot be read', () => {
     const log = vi.spyOn(console, 'log').mockImplementation(() => {});
-    localStorage.setItem('storage', 'not a snapshot');
+    localStorage.setItem('storage', cyfer().cy('not a snapshot', set.salt));
     renderTab(baseContext());
     expect(log).toHaveBeenCalled();
+  });
+
+  it('ignores a cached snapshot from the old cyfer (change 20261120-cyfer-v2): it reads as nothing', () => {
+    const log = vi.spyOn(console, 'log').mockImplementation(() => {});
+    localStorage.setItem('storage', 'not a snapshot');
+    renderTab(baseContext());
+    expect(log).not.toHaveBeenCalled();
+    log.mockRestore();
   });
 
   it('skips an empty cached snapshot', () => {

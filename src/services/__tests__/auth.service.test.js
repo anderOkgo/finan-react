@@ -1,6 +1,8 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import AuthService from '../auth.service';
 import helpHttp from '../../helpers/helpHttp';
+import cyfer from '../../helpers/cyfer';
+import set from '../../helpers/set.json';
 
 vi.mock('../../helpers/helpHttp', () => ({ default: { post: vi.fn(), get: vi.fn() } }));
 
@@ -84,9 +86,16 @@ describe('AuthService', () => {
 
     it('is null, and logs, when the stored session cannot be read', () => {
       const error = vi.spyOn(console, 'error').mockImplementation(() => {});
-      localStorage.setItem('user-in', 'not a session');
+      localStorage.setItem('user-in', cyfer().cy('not a session', set.salt));
       expect(AuthService.getCurrentUser()).toBeNull();
       expect(error).toHaveBeenCalled();
+    });
+
+    it('is null, quietly, for a session stored with the old cyfer: the user logs in again (change 20261120-cyfer-v2)', () => {
+      const error = vi.spyOn(console, 'error').mockImplementation(() => {});
+      localStorage.setItem('user-in', 'not a session');
+      expect(AuthService.getCurrentUser()).toBeNull();
+      expect(error).not.toHaveBeenCalled();
     });
   });
 
